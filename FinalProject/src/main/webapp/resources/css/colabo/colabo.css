@@ -21077,3 +21077,10 @@ ul {
 {
 	background: #109177;
 }
+
+.fc-view-harness fc-view-harness-active {
+	height: 800px;
+}
+
+
+

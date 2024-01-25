@@ -6,7 +6,7 @@
       <div class="scroll-sidebar" data-simplebar>
         <div class="d-flex mb-4 align-items-center justify-content-between">
          	<a class="btn btn-primary" href="/colabo">협업홈으로 바로가기</a>
-         	 <a class="btn btn-primary">게시판으로 바로가기</a>
+         	 <a class="btn btn-primary">채팅방으로 바로가기</a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             </div>
         </div>
@@ -76,7 +76,7 @@
             <li class="sidebar-item">
               <a
                 class="sidebar-link sidebar-link warning-hover-bg"
-                href="./ui-buttons.html"
+                href="/colabo/colaboNotice"
                 aria-expanded="false"
               >
                 <span class="aside-icon p-2 bg-light-warning rounded-3">

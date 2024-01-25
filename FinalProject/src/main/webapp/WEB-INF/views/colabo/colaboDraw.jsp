@@ -51,7 +51,7 @@
     <button id="clearBtn">전체 지우기</button>
     
     <!-- 이미지 저장 버튼 -->
-    <button id="saveBtn">이미지 저장</button>
+    <button id="saveBtn">내 PC에 이미지 저장</button>
     
 	<button>파일채팅으로 전송하기</button>
 	<br>
