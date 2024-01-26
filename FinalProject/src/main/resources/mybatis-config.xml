@@ -9,10 +9,12 @@
 	<typeAliases>
 		<typeAlias type="kr.co.coco.colabo.model.dto.ColaboDTO" alias="colabo"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.ScheduleDTO" alias="schedule"/>
+		<typeAlias type="kr.co.coco.member.model.dto.MemberDTO" alias="member"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/colabo/colabo-mapper.xml"/>
+		<mapper resource="/mappers/member/member-mapper.xml"/>
 	</mappers>
 	
 
