@@ -11,10 +11,12 @@
 		<typeAlias type="kr.co.coco.colabo.model.dto.ScheduleDTO" alias="schedule"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.SkillChartDTO" alias="skillChart"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO" alias="projectMember"/>
+		<typeAlias type="kr.co.coco.member.model.dto.MemberDTO" alias="member"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/colabo/colabo-mapper.xml"/>
+		<mapper resource="/mappers/member/member-mapper.xml"/>
 	</mappers>
 	
 

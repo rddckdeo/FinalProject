@@ -1,0 +1,372 @@
+:root {
+    --gray-color: #717271;
+    --light-gray-color: #dee0e5;
+    --medium-gray-color: #999fa6;
+    --button-gray-color: #f0f1f0;
+    --button-text-gray-color: #5F6368;
+    --font-family: 'Apple SD Gothic Neo', arial, sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-family);
+}
+
+#cooperation-btn {
+    margin: 0 auto;
+    margin: 30px 30px 30px 0px;
+
+}
+
+.main-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 25px;
+    padding-bottom: 50px;
+    font-size: 12px;
+}
+
+.main-section .searchbar-wrap {
+    border: 1px solid var(--light-gray-color);
+    width: 490px;
+    height: 50px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: white;
+}
+
+.main-section .searchbar-wrap i {
+    color: var(--medium-gray-color);
+}
+
+.main-section .searchbar-wrap .search-input {
+    width: 400px;
+    height: 50px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.main-section .buttons {
+    padding-top: 30px;
+}
+
+.main-section .buttons button {
+    background-color: var(--button-gray-color);
+    border: none;
+    height: 38px;
+    padding: 0 15px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--button-text-gray-color);
+}
+
+/* 메인 스와이프 카테고리 */
+
+#swipe-category-div {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#main-swipe-category {
+    display: flex;
+    width: 480px;
+    overflow: hidden;
+}
+
+#circles {
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.swipe-category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: lightgrey;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+#swipe-category-prevBtn,
+#swipe-category-nextBtn {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+/* 헤더 */
+
+#header-bell {
+    margin-top: 7px;
+}
+
+#header-chat {
+    margin-top: 7px;
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+.dropdown-menu {
+    display: none;
+    right: 10px;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* 추천 프로젝트 */
+.card-project-name {
+    text-align: center;
+    margin-top: 15px;
+
+}
+
+.project-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-body {
+    display: flex;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+    overflow-x: auto;
+    width: 3000px;
+    margin: 0px 20px 20px 20px;
+}
+
+.card-item {
+    flex: 0 0 auto;
+    width: 258px;
+    height: 350px;
+    margin-right: 15px;
+    box-shadow: 0px 2px 6px rgba(37, 83, 185, 0.1);
+    margin-bottom: 10px;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#projects {
+    display: flex;
+    width: 840px;
+    overflow: hidden;
+}
+
+.project-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+    box-shadow: 0px 2px 6px rgba(37, 83, 185, 0.1);
+}
+
+.project-card-img-top {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+#project-prevBtn,
+#project-nextBtn {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+
+.board-card-row {
+    width: 50%;
+    height: 600px;
+    background-color: white;
+    border-radius: calc(0.625rem - 0px);
+    box-shadow: 0px 2px 6px rgba(37, 83, 185, 0.1);
+    margin: 10px 10px 5px 10px;
+
+}
+
+.board-row {
+    display: flex;
+}
+
+.main-boardList {
+    padding: 20px 20px 30px 10px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.card-project-hr {
+    width: 80%;
+    background: #ced4da;
+    height: 1px;
+    border: 0;
+
+}
+
+/* -----------------개별 추가 ------------------ */
+.cardSize{
+    padding-top: 70px;
+}
+
+.profileImg{
+    width: 200px;
+    height: 200px;
+    margin-right: 50px;
+}
+
+.profileP{
+    font-size: 20px;
+}
+
+.scrollbar{
+    overflow: auto;
+}
+
+/* 스크롤바 색상 */
+.scrollbar::-webkit-scrollbar {
+    width: 12px; /* 스크롤바 너비 */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #46CAEB; /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background-color: white;  /*스크롤바 뒷 배경 색상*/
+}
+
+/* myInfo */
+.myInfo{
+    min-width: 50%;
+    min-height: 50px;
+
+    border: 1px solid #e7ecf0;
+    box-shadow: 1px 2px 6px rgba(37, 83, 185, 0.1);
+
+    font-size: 20px;
+}
+
+.infoStack{
+    padding: 9px 27px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #333; /* 예시: 텍스트 색상을 #333으로 지정 */
+    border: 1px solid #e7ecf0;
+    border-radius: 7px;
+    box-shadow: 0 5px 12px rgba(26, 115, 232, 0.1);
+}
+
+
+
+
+
+.main-boardList {
+    margin: 0 30px 20px 30px;
+    padding: 10px 0 0 0;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.main-boardList-bottm-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-boardList-tag {
+    display: flex;
+    flex-direction: row;
+}
+
+.main-comment-section {
+    display: flex;
+}
+
+.titleText1{
+    margin: 20px 20px 0 20px;
+    border-bottom: 1px solid #e7ecf0;
+    padding: 0 0 10px 0;
+}
+
+    /* 페이지 네이션 */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    
+.pagination a {
+    color: black;
+    padding: 10px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border-radius: 50%;  
+}
+
+.pagination a.active {
+    background-color: #0085db;  
+    color: white;
+}
+
+.pagination a.active:hover{
+    background-color: #0071ba;  
+    color: white;
+}
+
+/* Comment */
+
+.commentCard{
+    width: 100%;
+    height: 70px;
+    display: flex;
+}
+
+.commentItem{
+    margin: 5px 20px 0 5px;
+}
+
+.main-commentList {
+    margin: 0 30px 0 30px;
+    padding: 10px 0 0 0;
+    display: flex;
+    flex-direction: column;
+
+}

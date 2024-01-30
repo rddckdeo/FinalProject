@@ -1,0 +1,214 @@
+.sidebarColor {
+    background-color: #353535;
+}
+
+.whiteColor {
+    color: white;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link {
+    color: white;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    white-space: nowrap;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    line-height: 25px;
+    position: relative;
+    margin: 12px 0
+}
+
+.nav-small-cap {
+    padding: 15px 0;
+    margin-top: 15px;
+    color: white;
+    font-weight: 500
+}
+
+.bodyBackColor {
+    background-color: #B2B4B5;
+}
+
+.app-header {
+    position: relative;
+    z-index: 50;
+    width: 100%;
+    background-color: #B2B4B5;
+}
+
+.sidebarPosition {
+    z-index: 2;
+}
+
+.position {
+    position: fixed;
+}
+
+.headerPosition {
+    z-index: 1;
+}
+
+.headerItem-bell {
+    margin-top: 7px;
+}
+
+.headerItem-message {
+    margin: 7px 10px 0 20px;
+}
+
+.headerItem-icon {
+    padding: 5px 15px 0 15px;
+}
+
+.mainCard {
+    margin-left: 270px;
+}
+
+.cardSize {
+    min-height: 700px;
+}
+
+.subCard {
+    width: 95%;
+    min-height: 300px;
+    height: 500px;
+}
+
+.subCard2 {
+    width: 47%;
+    height: 90%;
+
+    padding: 10px;
+}
+
+.subCard3{
+    width: 49%;
+    height: 90%;
+}
+.subCard4{
+    width: 90%;
+    height: 100%;
+    padding: 10px;
+}
+
+.subP {
+    margin: 10px 0 10px 20px;
+}
+
+.visitPadding {
+    padding: 5px 10px 5px 10px;
+}
+
+.visitImgSize {
+    width: 30px;
+    height: 30px;
+}
+
+.li1 {
+    width: 10%;
+    text-align: center;
+}
+
+.li2 {
+    width: 25%;
+    text-align: center;
+}
+
+.li3{
+    width: 45%;
+    text-align: center;
+    text-overflow: ellipsis; /* 텍스트가 상자를 벗어날 때 "..."으로 표시되도록 설정 */
+    white-space: nowrap; /* 텍스트가 한 줄로 줄 바꿈되지 않도록 설정 */
+    overflow: hidden; /* 내용이 요소의 상자를 벗어날 때, 내용을 감추도록 설정 */
+    display: inline-block; /* inline-block으로 설정하여 요소가 한 줄에 표시되도록 설정 */
+
+}
+.li4{
+    width: 30%;
+    text-align: center;
+}
+
+/* 페이지 네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+
+.pagination a {
+    color: black;
+    padding: 10px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border-radius: 50%;
+}
+
+.pagination a.active {
+    background-color: #0085db;
+    color: white;
+}
+
+.pagination a.active:hover {
+    background-color: #0071ba;
+    color: white;
+}
+
+.adminMain{
+    width: 95%;
+    height: 250px;
+    box-shadow: 1px 2px 6px rgba(37, 83, 185, 0.1);
+}
+
+.iconItem{
+    width: 75px;
+    height: 75px;
+    margin-bottom: 5px;
+}
+.iconFont{
+    text-align: center;
+}
+.iconSmall{
+    font-size: 12px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.boardLiSize{
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.deleteBtn{
+    background-color: #ff491c;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 1px 5px 1px 5px;
+    border: 1px solid #B2B4B5;
+}
+
+.deleteNoneBtn{
+    background-color: rgb(51, 51, 255);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 1px 5px 1px 5px;
+    border: 1px solid #B2B4B5;
+}
+
+.searchInput{
+    border-radius: 1rem;
+    border: 1px solid #B2B4B5;
+    width: 150px;
+    height: 25px;
+
+    padding: 10px;
+    font-size: 14px;
+}
+
+.fontSize14{
+    font-size: 14px;
+    color: #707a82;
+}
