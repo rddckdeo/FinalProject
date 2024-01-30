@@ -9,6 +9,8 @@
 	<typeAliases>
 		<typeAlias type="kr.co.coco.colabo.model.dto.ColaboDTO" alias="colabo"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.ScheduleDTO" alias="schedule"/>
+		<typeAlias type="kr.co.coco.colabo.model.dto.SkillChartDTO" alias="skillChart"/>
+		<typeAlias type="kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO" alias="projectMember"/>
 		<typeAlias type="kr.co.coco.member.model.dto.MemberDTO" alias="member"/>
 	</typeAliases>
 	

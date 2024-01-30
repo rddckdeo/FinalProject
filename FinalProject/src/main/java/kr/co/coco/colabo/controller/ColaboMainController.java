@@ -25,6 +25,8 @@ import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.common.paging.Pagination;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
+import kr.co.coco.colabo.model.dto.SkillChartDTO;
+import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
 import kr.co.coco.colabo.model.service.ColaboServiceImpl;
 
 @Controller
@@ -46,8 +48,26 @@ public class ColaboMainController {
 	public String projectEnroll() {
 		return "colabo/projectEnroll";
 	}
+	
+	// 기본개요 페이지로 이동 하면서 DB에 있는 팀원 리스트를 가져와서 넘겨줌과 동기적으로 나타나게 함 
 	@GetMapping("/colaboBasicPage")
-	public String BasicPage() {
+	public String BasicPage(Model model,HttpSession session) {
+		
+		TeamProjectPerSonDTO teamProject = new TeamProjectPerSonDTO();
+		teamProject.setProjectNo(1);   //  프로젝트 넘버 세션으로 가져와서 수정
+		
+		
+		List<TeamProjectPerSonDTO> list = colaboService.getProjectMember(teamProject); 
+		
+		for(TeamProjectPerSonDTO item : list) {
+			String enrollDate = item.getTeamEnrollDate().substring(0,10);
+			item.setTeamEnrollDate(enrollDate);
+		}
+		
+		
+		model.addAttribute("list", list);
+		
+		
 		return "colabo/colaboBasic";
 	}
 	@GetMapping("/colaboSchedule")
@@ -57,6 +77,10 @@ public class ColaboMainController {
 	@GetMapping("/colaboDraw")
 	public String colaboDraw() {
 		return "colabo/colaboDraw";
+	}
+	@GetMapping("/colaboSkill")
+	public String colaboSkill() {
+		return "colabo/colaboSkill";
 	}
 	
 	// 콜라보 팀 공지 페이지 가기
@@ -178,7 +202,6 @@ public class ColaboMainController {
 		ArrayList<Map<String, String>> list = new ArrayList<>();
 		
 		
-//		System.out.println("다 들어간 생성자 입니다. : "+newData);
 //		
 		for(int i= 0; i<scheduleList.size(); i++) {
 			Map<String, String> map = new HashMap<>();
@@ -188,16 +211,6 @@ public class ColaboMainController {
 			list.add(map);
 		}
 		
-//		Gson gson = new Gson();
-//		// Java 객체 -> JSON 문자열로 변환
-//		String jsonString = gson.toJson(scheduleList);
-//		System.out.println("json 문자열 입니다. : "+jsonString);
-//		
-//		// JSON 문자열 -> Java 객체로 변환
-//		ScheduleDTO data = gson.fromJson(jsonString, ScheduleDTO.class);
-//		System.out.println(data);
-//		System.out.println(data.getTitle());
-		// list.add(map)
 		
 		return list;
 	}
@@ -221,7 +234,15 @@ public class ColaboMainController {
 		Date startDate = new Date(schedule.getStart());
 		Date endDate = new Date(schedule.getEnd());
 		
-		SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
+		
+		// 월에서 일정작성하는것과  일단위로 시간 포함 일정작성 하는것 구별
+		SimpleDateFormat simple;
+		
+		if(startDate.toString().substring(11, 16).equals("00:00")) {
+			simple = new SimpleDateFormat("yyyy-MM-DD");
+		}else {
+			simple = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+		}
 		
 		schedule.setStart(simple.format(startDate));
 		schedule.setEnd(simple.format(endDate));
@@ -248,7 +269,14 @@ public class ColaboMainController {
 		Date startDate = new Date(startTime);
 		Date endDate = new Date(endTime);
 		
-		SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-DD");
+		// 월에서 일정작성하는것과  일단위로 시간 포함 일정작성 하는것 구별
+		SimpleDateFormat simple;
+		
+		if(startDate.toString().substring(11, 16).equals("00:00")) {
+			simple = new SimpleDateFormat("yyyy-MM-DD");
+		}else {
+			simple = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+		}
 		
 		schedule.setProjectNo(1);   // 프로젝트넘버 나중에 가져와서 변경하기
 		schedule.setTitle((String)scheduleJson.get("title"));
@@ -265,6 +293,182 @@ public class ColaboMainController {
 		}
 		
 	}
+	
+	@PostMapping("/SkillChart.do")
+	@ResponseBody
+	public ArrayList<Map<String, Object>> SkillChartGet() {
+		
+		SkillChartDTO skillChart = new SkillChartDTO();
+		skillChart.setProjectNo(1); // 프로젝트 넘버 가져와서 수정
+		
+		ArrayList<Map<String, Object>> list = new ArrayList<>();
+		
+		List<SkillChartDTO> chartList = colaboService.skillChartGet(skillChart);
+		
+		for(int i =0; i<chartList.size(); i++) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("memberNames", chartList.get(i).getMemberName());
+			map.put("labels", chartList.get(i).getPmSkillName());
+			map.put("full", chartList.get(i).getPmSkillFull());
+			map.put("backgroundColors", chartList.get(i).getPmSkillColor());
+			list.add(map);
+		}
+		
+		
+		return list;
+	}
+	
+	// 전체 달성도 가져와서 계산하기
+	// DB 에서 front ,  back 에 해당하는값을 가져올때  쿼리를 평균값 가져오는 avg(컬럼명) 으로 
+	// 가져올생각   avg로 가져오게되면 따로 가져온뒤 안나눠줘도되고 맥스가 100퍼센트가 나오는이유는   
+	// 처음에 skillChart 에 데이터를 넣을때  0~~100 에 해당하는 수만 넣게끔해놨기때문
+	@PostMapping("/allSkillChart.do")
+	@ResponseBody
+	public HashMap<String, Object> allSkillChartGet() {
+		
+		SkillChartDTO skillChart = new SkillChartDTO();
+		skillChart.setProjectNo(1); // 프로젝트 넘버 가져와서 수정
+		
+		HashMap<String, Object> list = colaboService.allSkillChartGet(skillChart);
+		
+		// front back 을 합치고 평균을 낸 전체 달성도 변수
+		double allResult;
+		
+		if(list.get("front") != null && list.get("back") != null) {
+			
+			allResult = Math.ceil(((double)list.get("front")+(double)list.get("back"))/2);
+		}else if(list.get("front") == null) {
+			allResult = Math.ceil((double)list.get("back")/2);
+			
+		}else if(list.get("back") == null) {
+			allResult = Math.ceil((double)list.get("back")/2);
+			
+		}else {
+			allResult = 0;
+		}
+		
+		list.put("allResult", allResult);
+//		
+		
+		return list;
+	}
+	
+	// 프로젝트 참가인원들 가져오기  (기능추가 하기위함)
+	@PostMapping("/getProjectMember.do")
+	@ResponseBody
+	public ArrayList<Map<String,Object>> getProjectMember() {
+		
+		TeamProjectPerSonDTO teamProject = new TeamProjectPerSonDTO();
+		teamProject.setProjectNo(1); // 프로젝트넘버 가져와서 교체
+		
+		ArrayList<Map<String,Object>> list = new ArrayList<>();
+		
+		List<TeamProjectPerSonDTO> teamPersonList = colaboService.getProjectMember(teamProject);
+		
+		for(int i =0; i<teamPersonList.size(); i++) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("projectNo", teamPersonList.get(i).getProjectNo());
+			map.put("memberNo", teamPersonList.get(i).getMemberNo());
+			map.put("memberName", teamPersonList.get(i).getMemberName());
+			map.put("memberEmail", teamPersonList.get(i).getMemberEmail());
+			list.add(map);
+		}
+		
+		return list;
+	}
+	
+	// 기능 입력된인원들 가져오기 (기능 수정하기위함) 
+	@PostMapping("/getSkillMember.do")
+	@ResponseBody
+	public ArrayList<Map<String,Object>> getSkillMember() {
+		
+		SkillChartDTO skillChart = new SkillChartDTO();
+		skillChart.setProjectNo(1); // 프로젝트넘버 가져와서 교체
+		
+		ArrayList<Map<String,Object>> list = new ArrayList<>();
+		
+		List<SkillChartDTO> skillPersonList = colaboService.getSkillMember(skillChart);
+		
+		for(int i =0; i<skillPersonList.size(); i++) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("projectNo", skillPersonList.get(i).getProjectNo());
+			map.put("memberNo", skillPersonList.get(i).getMemberNo());
+			map.put("memberName", skillPersonList.get(i).getMemberName());
+			map.put("memberEmail", skillPersonList.get(i).getMemberEmail());
+			map.put("skillName", skillPersonList.get(i).getPmSkillName());
+			map.put("skillCategory", skillPersonList.get(i).getPmSkillCategory());
+			list.add(map);
+		}
+		
+		return list;
+	}
+	
+	// 기능추가 리스트 DB 넣기
+	@PostMapping("/enrollSkillList.do")
+	@ResponseBody
+	public String enrollSkillList(SkillChartDTO skillChart) {
+		
+		// DB 에 넣을때 랜덤으로 색을 주기위한 변수
+		String[] skillColor = {"red","blue","green","black"};
+		int color = (int)( Math.random()*4);
+		
+		// 진행도 기본값 0 
+		skillChart.setPmSkillFull(0);
+		skillChart.setPmSkillColor(skillColor[color]);
+		
+		
+		
+		
+		
+		// ajax에서 넘어오는 데이터가 비어있지 않을때만 DB에 저장하기위한 if 문
+		if(skillChart.getMemberEmail() != "" &&
+				skillChart.getMemberName() != "" &&
+				skillChart.getPmSkillCategory() != "" &&
+				skillChart.getPmSkillName() != "") {
+			
+			int result = colaboService.enrollSkillList(skillChart);
+			
+			if(result == 1) {
+				return "success";
+			}else {
+				return "failed";
+			}
+		}
+		
+		
+		
+		return "failed";
+	}
+	
+	@PostMapping("/editSkillList.do")
+	@ResponseBody
+	public String editSkillList(SkillChartDTO skillChart) {
+		
+		
+		int result = colaboService.editSkillList(skillChart);
+		
+		if(result == 1) {
+			return "success";
+		}else {
+			return "failed";
+		}
+	}
+	
+	@PostMapping("/deleteSkillList.do")
+	@ResponseBody
+	public String deleteSkillList(SkillChartDTO skillChart) {
+		
+		
+		int result = colaboService.deleteSkillList(skillChart);
+		
+		if(result == 1) {
+			return "success";
+		}else {
+			return "failed";
+		}
+		
+	}
+	
 	
 	
 	

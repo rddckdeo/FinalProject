@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+    
 <!doctype html>
 <html lang="UTF-8">
 
@@ -37,7 +39,7 @@
 	 <%@ include file="./common/colaboHeader.jsp" %>
       <div class="container-fluid">
         <!--  Row 1 -->
-        <div class="row">
+        <div class="row" style="width:1700px">
           <div class="col-lg-8 d-flex align-items-strech">
             <div class="card w-100">
               <div class="card-body">
@@ -70,81 +72,27 @@
                     </ul>
                   </div>
                 </div>
-                <div id="profit">
-                	<div style="max-width: 80%;">
-						<canvas id="pieExample"></canvas>
+                <div id="profit" style="text-aline:center">
+                	<div >
+						<canvas id="barExample" style="width: 500px; height: 500px; display:inline; float:left;"></canvas>
+						<div style="float:left; margin-left:100px; margin-top:100px;">
+							<h4>전체 진행도</h4>
+							<p class="fs-3 fw-normal mb-0 text-success" id="allPercent" style="display:block;">asdasd</p>
+							<br><br>
+							<h4>front 진행도</h4>
+							<p class="fs-3 fw-normal mb-0 text-success" id="frontPercent" style="display:block;">asdasd</p>
+							<br><br>
+							<h4>back 진행도</h4>
+							<p class="fs-3 fw-normal mb-0 text-success" id="backPercent" style="display:block;">asdasd</p>
+						</div>
 					</div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="row">
-              <div class="col-lg-12 col-sm-6">
-                <!-- Yearly Breakup -->
-                <div class="card overflow-hidden">
-                  <div class="card-body p-4">
-                    <h5 class="card-title mb-10 fw-semibold">Traffic Distribution</h5>
-                    <div class="row align-items-center">
-                      <div class="col-7">
-                        <h4 class="fw-semibold mb-3">$36,358</h4>
-                        <div class="d-flex align-items-center mb-2">
-                          <span
-                            class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-arrow-up-left text-success"></i>
-                          </span>
-                          <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                          <p class="fs-3 mb-0">last year</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                          <div class="me-3">
-                            <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                            <span class="fs-2">Oragnic</span>
-                          </div>
-                          <div>
-                            <span class="round-8 bg-danger rounded-circle me-2 d-inline-block"></span>
-                            <span class="fs-2">Refferal</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-5">
-                        <div class="d-flex justify-content-center">
-                          <div id="grade"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div>
+<!--                 	<div style="max-width: 30%;"> -->
+<!-- 						<canvas id="pieExample"></canvas> -->
+<!-- 					</div> -->
                 </div>
-              </div>
-              <div class="col-lg-12 col-sm-6">
-                <!-- Monthly Earnings -->
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row alig n-items-start">
-                      <div class="col-8">
-                        <h5 class="card-title mb-10 fw-semibold"> Product Sales</h5>
-                        <h4 class="fw-semibold mb-3">$6,820</h4>
-                        <div class="d-flex align-items-center pb-1">
-                          <span
-                            class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-arrow-down-right text-danger"></i>
-                          </span>
-                          <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                          <p class="fs-3 mb-0">last year</p>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="d-flex justify-content-end">
-                          <div
-                            class="text-white bg-danger rounded-circle p-7 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-currency-dollar fs-6"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="earning"></div>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -168,7 +116,7 @@
                 <div
                   class="d-flex mb-4 justify-content-between align-items-center"
                 >
-                  <h5 class="mb-0 fw-bold">팀원 및 맡은 임무</h5>
+                  <h5 class="mb-0 fw-bold">팀원정보</h5>
 
                   <div class="dropdown">
                     <button
@@ -202,148 +150,30 @@
                   >
                     <thead>
                       <tr>
-                        <th scope="col">Profile</th>
-                        <th scope="col">Hour Rate</th>
-                        <th scope="col">Extra classes</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">팀원 이름</th>
+                        <th scope="col">팀원 이메일</th>
+                        <th scope="col">팀 가입일</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="me-4">
-                              <img
-                                src="../assets/images/profile/user1.jpg"
-                                width="50"
-                                class="rounded-circle"
-                                alt=""
-                              />
-                            </div>
-
-                            <div>
-                              <h6 class="mb-1 fw-bolder">Mark J. Freeman</h6>
-                              <p class="fs-3 mb-0">Prof. English</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0">$150/hour</p>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0 text-success">
-                            +53
-                          </p>
-                        </td>
-                        <td>
-                          <span
-                            class="badge bg-light-success rounded-pill text-success px-3 py-2 fs-3"
-                            >Available</span
-                          >
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="me-4">
-                              <img
-                                src="../assets/images/profile/user2.jpg"
-                                width="50"
-                                class="rounded-circle"
-                                alt=""
-                              />
-                            </div>
-
-                            <div>
-                              <h6 class="mb-1 fw-bolder">Nina R. Oldman</h6>
-                              <p class="fs-3 mb-0">Prof. History</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0">$150/hour</p>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0 text-success">
-                            +68
-                          </p>
-                        </td>
-                        <td>
-                          <span
-                            class="badge bg-light-primary rounded-pill text-primary px-3 py-2 fs-3"
-                            >In Class</span
-                          >
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="me-4">
-                              <img
-                                src="../assets/images/profile/user3.jpg"
-                                width="50"
-                                class="rounded-circle"
-                                alt=""
-                              />
-                            </div>
-
-                            <div>
-                              <h6 class="mb-1 fw-bolder">Arya H. Shah</h6>
-                              <p class="fs-3 mb-0">Prof. Maths</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0">$150/hour</p>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0 text-success">
-                            +94
-                          </p>
-                        </td>
-                        <td>
-                          <span
-                            class="badge bg-light-danger rounded-pill text-danger px-3 py-2 fs-3"
-                            >Absent</span
-                          >
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="me-4">
-                              <img
-                                src="../assets/images/profile/user4.jpg"
-                                width="50"
-                                class="rounded-circle"
-                                alt=""
-                              />
-                            </div>
-
-                            <div>
-                              <h6 class="mb-1 fw-bolder">June R. Smith</h6>
-                              <p class="fs-3 mb-0">Prof. Arts</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0">$150/hour</p>
-                        </td>
-                        <td>
-                          <p class="fs-3 fw-normal mb-0 text-success">
-                            +27
-                          </p>
-                        </td>
-                        <td>
-                          <span
-                            class="badge bg-light-warning rounded-pill text-warning px-3 py-2 fs-3"
-                            >On Leave</span
-                          >
-                        </td>
-                      </tr>
+                    	<c:choose>
+                    		<c:when test="${empty list}">
+                    			<tr>
+				           			<td colspan="3">
+				           				<h3 class="text-center">등록된 글이 없습니다.</h3>
+				           			</td>
+				           		</tr>
+                    		</c:when>
+                    		<c:otherwise>
+		                     <c:forEach var="item" items="${list}">
+			                      <tr>
+			                      	<td class="mb-1 fw-bolder">${item.memberName}</td>
+			                      	<td class="fs-3 fw-normal mb-0 text-success">${item.memberEmail}</td>
+			                      	<td class="badge bg-light-success rounded-pill text-success px-3 py-2 fs-3">${item.teamEnrollDate}</td>
+			                      </tr>
+							 </c:forEach>
+                    		</c:otherwise>
+                    	</c:choose>
                     </tbody>
                   </table>
                 </div>
