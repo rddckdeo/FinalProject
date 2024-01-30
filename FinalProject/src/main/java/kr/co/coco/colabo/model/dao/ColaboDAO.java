@@ -1,6 +1,9 @@
 package kr.co.coco.colabo.model.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
+import kr.co.coco.colabo.model.dto.SkillChartDTO;
+import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
 
 @Repository
 public class ColaboDAO {
@@ -52,12 +57,71 @@ public class ColaboDAO {
 	}
 
 	public int scheduleDelete(SqlSessionTemplate sqlSession, ScheduleDTO schedule) {
-		System.out.println("DAO ㄴㅇㄹㄴㅁㄻㄴㅇㄹ");
-		System.out.println(schedule.getProjectNo());
-		System.out.println(schedule.getTitle());
-		System.out.println(schedule.getStart());
-		System.out.println(schedule.getEnd());
 		return sqlSession.delete("colaboMapper.scheduleDelete", schedule);
 	}
 
+	public List<SkillChartDTO> skillChartGet(SqlSessionTemplate sqlSession, SkillChartDTO skillChart) {
+		return sqlSession.selectList("colaboMapper.skillChartGet", skillChart);
+	}
+
+	public List<TeamProjectPerSonDTO> getProjectMember(SqlSessionTemplate sqlSession,
+			TeamProjectPerSonDTO teamProject) {
+		return sqlSession.selectList("colaboMapper.getProjectMember", teamProject);
+	}
+
+	public int enrollSkillList(SqlSessionTemplate sqlSession, SkillChartDTO skillChart) {
+		return sqlSession.insert("colaboMapper.enrollSkillList", skillChart);
+	}
+
+	public List<SkillChartDTO> getSkillMember(SqlSessionTemplate sqlSession, SkillChartDTO skillChart) {
+		return sqlSession.selectList("colaboMapper.getSkillMember", skillChart);
+	}
+
+	public int editSkillList(SqlSessionTemplate sqlSession, SkillChartDTO skillChart) {
+		return sqlSession.update("colaboMapper.editSkillList", skillChart);
+	}
+
+	public int deleteSkillList(SqlSessionTemplate sqlSession, SkillChartDTO skillChart) {
+		return sqlSession.delete("colaboMapper.deleteSkillList", skillChart);
+	}
+
+	public HashMap<String, Object> allSkillChartGet(SqlSessionTemplate sqlSession, SkillChartDTO skillChart) {
+		
+		Double frontResult = sqlSession.selectOne("colaboMapper.frontSkillAvg", skillChart);
+		Double backResult = sqlSession.selectOne("colaboMapper.backSkillAvg", skillChart);
+		
+		HashMap<String, Object> list = new HashMap<>();
+		list.put("front", frontResult);
+		list.put("back", backResult);
+		
+		return list;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

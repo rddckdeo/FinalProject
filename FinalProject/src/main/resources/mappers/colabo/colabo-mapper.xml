@@ -25,6 +25,76 @@
 		<result column="PS_END" property="end"></result>
 	</resultMap>
 	
+	<resultMap type="skillChart" id="skillChartResultSet">
+		<result column="P_NO" property="projectNo"></result>
+		<result column="M_NO" property="memberNo"></result>
+		<result column="M_NAME" property="memberName"></result>
+		<result column="M_EMAIL" property="memberEmail"></result>
+		<result column="PM_SKILL_NAME" property="pmSkillName"></result>
+		<result column="PM_SKILL_FULL" property="pmSkillFull"></result>
+		<result column="PM_SKILL_COLOR" property="pmSkillColor"></result>
+		<result column="PM_SKILL_CATEGORY" property="pmSkillCategory"></result>
+	</resultMap>
+	
+	<resultMap type="projectMember" id="projectMemberResultSet">
+		<result column="P_NO" property="projectNo"></result>
+		<result column="M_NO" property="memberNo"></result>
+		<result column="M_NAME" property="memberName"></result>
+		<result column="M_EMAIL" property="memberEmail"></result>
+		<result column="TEAM_ENROLL_DATE" property="teamEnrollDate"></result>
+	</resultMap>
+	
+	<select id="frontSkillAvg" parameterType="skillChart" resultType="Double">
+		SELECT AVG(PM_SKILL_FULL)  FROM COLABO_SKILL_COMPLETE csc
+		WHERE P_NO = #{projectNo}
+		AND PM_SKILL_CATEGORY = #{front}
+	</select>
+	
+	<select id="backSkillAvg" parameterType="skillChart" resultType="Double">
+		SELECT AVG(PM_SKILL_FULL)  FROM COLABO_SKILL_COMPLETE csc
+		WHERE P_NO = #{projectNo}
+		AND PM_SKILL_CATEGORY = #{back}
+	</select>
+	
+	
+	<delete id="deleteSkillList" parameterType="skillChart">
+		DELETE FROM COLABO_SKILL_COMPLETE
+		WHERE P_NO = #{projectNo}
+		AND M_EMAIL = #{memberEmail}
+		AND PM_SKILL_NAME = #{pmSkillName}
+	</delete>
+	
+	
+	<update id="editSkillList" parameterType="skillChart">
+		UPDATE COLABO_SKILL_COMPLETE SET PM_SKILL_FULL = #{pmSkillFull}
+									WHERE P_NO = #{projectNo}
+									AND M_EMAIL = #{memberEmail}
+									AND PM_SKILL_NAME = #{pmSkillName}
+	</update>
+	
+	<select id="getSkillMember" parameterType="skillChart" resultMap="skillChartResultSet">
+		SELECT * FROM COLABO_SKILL_COMPLETE
+		WHERE P_NO = #{projectNo}
+	</select>
+	
+	<insert id="enrollSkillList" parameterType="skillChart">
+		INSERT INTO COLABO_SKILL_COMPLETE
+		VALUES (#{projectNo},#{memberNo},#{memberName},
+				#{memberEmail},#{pmSkillName},#{pmSkillFull},
+				#{pmSkillColor},#{pmSkillCategory})
+	</insert>
+	
+	<select id="getProjectMember" parameterType="projectMember" resultMap="projectMemberResultSet">
+		SELECT * FROM COLABO_PERSON 
+		WHERE P_NO = #{projectNo}
+	</select>
+	
+	<select id="skillChartGet" parameterType="skillChart" resultMap="skillChartResultSet">
+		SELECT * FROM COLABO_SKILL_COMPLETE
+		WHERE P_NO = #{projectNo}
+	</select>
+	
+	
 	<delete id="scheduleDelete" parameterType="schedule">
 		DELETE FROM PROJECT_SCHEDULE
 		WHERE P_NO = #{projectNo}

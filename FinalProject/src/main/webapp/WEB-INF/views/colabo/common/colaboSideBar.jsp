@@ -121,6 +121,18 @@
                 <span class="hide-menu ms-2 ps-1">프로젝트 수정</span>
               </a>
             </li>
+            <li class="sidebar-item">
+              <a
+                class="sidebar-link sidebar-link primary-hover-bg"
+                href="/colabo/colaboSkill"
+                aria-expanded="false"
+              >
+                <span class="aside-icon p-2 bg-light-primary rounded-3">
+                  <i class="ti ti-file-description fs-7 text-primary"></i>
+                </span>
+                <span class="hide-menu ms-2 ps-1">프로젝트 기능분담</span>
+              </a>
+            </li>
            
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-5"></i>

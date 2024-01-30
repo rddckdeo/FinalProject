@@ -1,26 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
-		var events = [];
-		$.ajax({
-                type:'post',
-                url:'/colabo/schedule.do',
-                dataType: "json",
-                success: function(data){   //요청 성공시 실행될 메서드
-					
-					for(let i =0; i<data.length; i++){
-						var eventData = {
-			                title: data[i].title,
-			                start: data[i].start,
-			                end: data[i].end
-			            };
-           			 events.push(eventData);
-						eventData = {};
-					}
-					createCalendar()
-			    },
-			    error:function(){		 //요청 실패시 에러 확인을 위함
-					createCalendar()
-			    }
-			})
+	var events = [];
+	$.ajax({
+        type:'post',
+        url:'/colabo/schedule.do',
+        dataType: "json",
+        success: function(data){   //요청 성공시 실행될 메서드
+			
+			for(let i =0; i<data.length; i++){
+				var eventData = {
+	                title: data[i].title,
+	                start: data[i].start,
+	                end: data[i].end
+	            };
+   			 events.push(eventData);
+				eventData = {};
+			}
+			createCalendar()
+	    },
+	    error:function(){		 //요청 실패시 에러 확인을 위함
+			createCalendar()
+	    }
+	})
 		
 	function createCalendar(){
 		console.log("events  는 : "+ events);
@@ -88,34 +88,33 @@ document.addEventListener('DOMContentLoaded', function() {
 			calendar.unselect()
 		 },
 			eventClick: function (info){
-                    if(confirm("'"+ info.event.title +"' 매니저의 일정을 삭제하시겠습니까 ?")){
-                        // 확인 클릭 시
-                        info.event.remove();
+                if(confirm("'"+ info.event.title +"' 매니저의 일정을 삭제하시겠습니까 ?")){
+                    // 확인 클릭 시
+                    info.event.remove();
 
-						var obj = new Object();     // Json 을 담기 위해 Object 선언
-		                obj.title = info.event.title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
-		                obj.start = info.event.start.toString(); // 시작
-		                obj.end = info.event.end.toString(); // 끝
+					var obj = new Object();     // Json 을 담기 위해 Object 선언
+	                obj.title = info.event.title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
+	                obj.start = info.event.start.toString(); // 시작
+	                obj.end = info.event.end.toString(); // 끝
 
-				
-						$.ajax({
-			                type:'post',
-			                url:'/colabo/scheduleDelete.do',
-			                dataType: "text",
-							data: JSON.stringify(obj),
-							contentType: 'application/json; charset=utf-8',
-							
-			                success: function(data){   //요청 성공시 실행될 메서드
-						        console.log("데이터 지우기 성공");
-								alert('삭제' + data);
-								console.log(data);
-						    },
-						    error:function(){		 //요청 실패시 에러 확인을 위함
-						        console.log("통신에러");
-						    }
-						})
+			
+					$.ajax({
+		                type:'post',
+		                url:'/colabo/scheduleDelete.do',
+		                dataType: "text",
+						data: JSON.stringify(obj),
+						contentType: 'application/json; charset=utf-8',
 						
-                    }
+		                success: function(data){   //요청 성공시 실행될 메서드
+					        console.log("데이터 지우기 성공");
+							alert('삭제' + data);
+							console.log(data);
+					    },
+					    error:function(){		 //요청 실패시 에러 확인을 위함
+					        console.log("통신에러");
+					    }
+					})
+                }
 				
 //				var deleteSchedule = {
 //					title: info.event.title,
