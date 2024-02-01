@@ -7,12 +7,11 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias type="kr.co.coco.colabo.model.dto.ColaboDTO" alias="colabo"/>
+		<typeAlias type="kr.co.coco.board.model.dto.InfoDTO" alias="info"/>
+		<typeAlias type="kr.co.coco.board.model.dto.InfoCommentDTO" alias="infoComment"/>
 	</typeAliases>
 	
 	<mappers>
-		<mapper resource="/mappers/colabo/colabo-mapper.xml"/>
+		<mapper resource="/mappers/board/info-mapper.xml"/>
 	</mappers>
-	
-
 </configuration>

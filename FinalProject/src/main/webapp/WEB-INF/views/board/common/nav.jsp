@@ -1,0 +1,144 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+		<!-- 페이지 완쪽 사이드바 영역-->
+		<aside class="left-sidebar">
+			<!-- 사이드바 스크롤-->
+			<div class="scroll-sidebar" data-simplebar>
+				<!-- 로고 -->
+				<div class="d-flex mb-4 align-items-center justify-content-between">
+					<a href="#" class="text-nowrap logo-img ms-0 ms-md-1"> <img
+						src="" width="180" alt="">
+					</a>
+					<div
+						class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
+						id="sidebarCollapse">
+						<i class="ti ti-x fs-8"></i>
+					</div>
+					<!-- 사이드바 네비게이션-->
+					<nav class="sidebar-nav">
+						<ul id="sidebarnav" class="mb-4 pb-2">
+							<!-- 사이드바 협업툴 바로가기-->
+							<li class="sidebar-item"><span
+								class="aside-icon p-2 bg-light-primary rounded-3"> <a
+									href="" id="cooperation-btn" class="btn btn-primary">협업툴
+										바로가기</a>
+							</span> </a></li>
+							<!-- 사이드바 정보게시판 -->
+							<li class="nav-small-cap">
+							<i class="ti ti-dots nav-small-cap-icon fs-5"></i> 
+							<span class="hide-menu">정보게시판</span>
+							</li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link warning-hover-bg"
+								href="/info/category?name=programming"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-warning rounded-3"> <i
+										class="ti ti-article fs-7 text-warning"></i>
+								</span> <span class="hide-menu ms-2 ps-1">프로그래밍 언어</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link danger-hover-bg" href="/info/category?name=framework"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-danger rounded-3"> <i
+										class="ti ti-alert-circle fs-7 text-danger"></i>
+								</span> <span class="hide-menu ms-2 ps-1">프레임워크 및 라이브러리</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link success-hover-bg" href="/info/category?name=database"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-success rounded-3"> <i
+										class="ti ti-cards fs-7 text-success"></i>
+								</span> <span class="hide-menu ms-2 ps-1">데이터베이스</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link primary-hover-bg" href="/info/category?name=webDev"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-primary rounded-3"> <i
+										class="ti ti-file-description fs-7 text-primary"></i>
+								</span> <span class="hide-menu ms-2 ps-1">웹 개발</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link indigo-hover-bg" href="/info/category?name=mobileDev"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-indigo rounded-3"> <i
+										class="ti ti-typography fs-7 text-indigo"></i>
+								</span> <span class="hide-menu ms-2 ps-1">모바일 개발</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link indigo-hover-bg" href="/info/category?name=machineLearning"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-indigo rounded-3"> <i
+										class="ti ti-typography fs-7 text-indigo"></i>
+								</span> <span class="hide-menu ms-2 ps-1">기계 학습 / 인공지능</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link indigo-hover-bg" href="/info/category?name=cloud"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-indigo rounded-3"> <i
+										class="ti ti-typography fs-7 text-indigo"></i>
+								</span> <span class="hide-menu ms-2 ps-1">클라우드 & 서버</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link indigo-hover-bg" href="/info/category?name=devTools"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-indigo rounded-3"> <i
+										class="ti ti-typography fs-7 text-indigo"></i>
+								</span> <span class="hide-menu ms-2 ps-1">개발 도구</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link indigo-hover-bg" href="/info/category?name=portfolio"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-indigo rounded-3"> <i
+										class="ti ti-typography fs-7 text-indigo"></i>
+								</span> <span class="hide-menu ms-2 ps-1">프로젝트 & 포트폴리오</span>
+							</a></li>
+
+							<!-- 사이트바 자유게시판 -->
+							<li class="nav-small-cap"><i
+								class="ti ti-dots nav-small-cap-icon fs-5"></i> <span
+								class="hide-menu">자유게시판</span></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link warning-hover-bg" href="#"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-warning rounded-3"> <i
+										class="ti ti-article fs-7 text-warning"></i>
+								</span> <span class="hide-menu ms-2 ps-1">일상 이야기</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link danger-hover-bg" href="#"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-danger rounded-3"> <i
+										class="ti ti-alert-circle fs-7 text-danger"></i>
+								</span> <span class="hide-menu ms-2 ps-1">정보 공유</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link success-hover-bg"
+								href="#
+                                    aria-expanded="
+								false> <span
+									class="aside-icon p-2 bg-light-success rounded-3"> <i
+										class="ti ti-cards fs-7 text-success"></i>
+								</span> <span class="hide-menu ms-2 ps-1">취미 공유</span>
+							</a></li>
+							<li class="sidebar-item"><a
+								class="sidebar-link sidebar-link primary-hover-bg" href="#"
+								aria-expanded="false"> <span
+									class="aside-icon p-2 bg-light-primary rounded-3"> <i
+										class="ti ti-file-description fs-7 text-primary"></i>
+								</span> <span class="hide-menu ms-2 ps-1">추천 & 리뷰</span>
+							</a></li>
+						</ul>
+					</nav>
+					<!-- End Sidebar navigation -->
+				</div>
+				<!-- End Sidebar scroll-->
+		</aside>
+</body>
+</html>

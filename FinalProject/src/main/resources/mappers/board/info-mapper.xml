@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="infoMapper">
+	<insert id="enrollBoard" parameterType="info">
+		INSERT INTO INFO (
+		info_no,
+		info_title,
+		info_content,
+		info_category,
+		info_date,
+		info_tag1,
+		info_tag2,
+		info_tag3,
+		m_no
+		)
+		VALUES (
+		info_no_seq.NEXTVAL,
+		#{infoTitle},
+		#{infoContent},
+		#{infoCategory},
+		SYSDATE,
+		#{infoTag1},
+		#{infoTag2},
+		#{infoTag3},
+		#{mNo}
+		)
+	</insert>
+
+	<select id="selectPostsByCategory" parameterType="string"
+		resultType="info">
+		SELECT
+		i.info_no AS infoNo,
+		i.info_title AS infoTitle,
+		i.info_content AS infoContent,
+		i.info_category AS infoCategory,
+		i.info_date AS infoDate,
+		i.info_update_date AS infoUpdateDate,
+		i.info_delete_date AS infoDeleteDate,
+		i.info_views AS infoViews,
+		i.info_tag1 AS infoTag1,
+		i.info_tag2 AS infoTag2,
+		i.info_tag3 AS
+		infoTag3,
+		i.m_no AS mNo,
+		m.m_nickname AS nickname,
+		(SELECT COUNT(*) FROM
+		info_comment WHERE info_no = i.info_no) AS commentCount
+		FROM
+		info i
+		JOIN
+		member m ON i.m_no = m.m_no
+		WHERE
+		i.info_category = #{categoryName}
+	</select>
+
+
+<!-- 댓글 저장하기 -->
+<insert id="insertComment" parameterType="infoComment">
+	INSERT INTO
+	info_comment(info_comment_no, info_no, m_no, info_comment_content)
+	VALUES (info_comment_no_seq.NEXTVAL, #{infoNo}, #{mNo}, #{infoCommentContent})
+</insert>
+
+
+	<!-- 댓글 목록 가져오기 -->
+	<select id="selectCommentsByPostId" parameterType="string" resultType="kr.co.coco.board.model.dto.InfoCommentDTO">
+    SELECT
+        ic.info_comment_no AS infoCommentNo,
+        ic.info_no AS infoNo,
+        ic.m_no AS mNo,
+        ic.info_comment_content AS infoCommentContent,
+        ic.info_comment_date AS infoCommentDate,
+        m.m_nickname AS nickname
+    FROM
+        info_comment ic
+    JOIN
+        member m ON ic.m_no = m.m_no
+    WHERE
+        ic.info_no = #{infoNo}
+</select>
+
+<!-- 게시글 상세 보기 진입 -->
+<select id="getPostById" parameterType="string" resultType="kr.co.coco.board.model.dto.InfoDTO">
+    SELECT
+        i.info_no AS infoNo,
+        i.info_title AS infoTitle,
+        m.m_nickname AS nickname,
+        i.info_content AS infoContent,
+        i.info_date AS infoDate,
+        i.info_views AS infoViews,
+        i.info_tag1 AS infoTag1,
+        i.info_tag2 AS infoTag2,
+        i.info_tag3 AS infoTag3,
+        (SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no) AS commentCount
+    FROM
+        info i
+    JOIN
+        member m ON i.m_no = m.m_no
+    WHERE
+        i.info_no = #{infoNo}
+</select>   
+
+<!-- 게시글 수정 -->
+<update id="updatePost" parameterType="info">
+    UPDATE info SET
+    info_title = #{infoTitle},
+    info_content = #{infoContent},
+    info_category = #{infoCategory},
+    info_tag1 = #{infoTag1},
+    info_tag2 = #{infoTag2},
+    info_tag3 = #{infoTag3},
+    info_update_date = SYSDATE
+    WHERE info_no = #{infoNo}
+</update>
+
+<delete id="deletePost" parameterType="int">
+    DELETE FROM INFO
+    WHERE info_no = #{infoNo}
+</delete>
+
+<!-- 조회수 증가 -->
+<update id="increaseViewCount" parameterType="int">
+    UPDATE info
+    SET info_views = info_views + 1
+    WHERE info_no = #{infoNo}
+</update>
+
+</mapper>
+
+
+
+
