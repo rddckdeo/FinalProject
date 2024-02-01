@@ -31,7 +31,7 @@
 						<div class="card mb-0">
 
 							<div class="card-body">
-								<form>
+								<form action="/member/login.do" method="post" >
 									<div class="alignCenter direction1">
 										<h1 class="defaultColor">CoCo</h1>
 										<h3 class="defaultColor small15">Collaboration Code</h3>
@@ -39,14 +39,14 @@
 									<!-- id칸 -->
 									<div class="mb-3">
 										<label for="exampleInputEmail1" class="form-label">ID</label>
-										<input type="email" class="form-control"
-											id="exampleInputEmail1" aria-describedby="emailHelp">
+										<input type="text" class="form-control"
+											id="exampleInputEmail1" name="id" aria-describedby="emailHelp">
 									</div>
 									<!-- password 칸 -->
 									<div class="mb-4">
 										<label for="exampleInputPassword1" class="form-label">Password</label>
 										<input type="password" class="form-control"
-											id="exampleInputPassword1">
+											id="exampleInputPassword1" name="pwd">
 									</div>
 
 									<div
@@ -54,7 +54,7 @@
 										<div class="form-check"></div>
 										<a class="text-primary fw-bold" href="#">비밀번호를 잊었나요?</a>
 									</div>
-									<a href="#" class="btn btn-primary w-100 fs-4 mb-4 rounded-2">로그인</a>
+									<button type="submit" class="btn btn-primary w-100 fs-4 mb-4 rounded-2">로그인</button>
 									<div class="d-flex align-items-center justify-content-center">
 										<p class="fs-4 mb-0 fw-bold">아직 회원이 아니신가요?</p>
 										<a class="text-primary fw-bold ms-2" href="registerForm.do">회원가입</a>
