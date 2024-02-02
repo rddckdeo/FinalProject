@@ -143,11 +143,11 @@
 									<div class="mb-4">
 										<label for="number" class="form-label">휴대폰</label> 
 										<div class="direction2">
-											<input type="text" class="form-control phoneInput" id="number1" name="number1" required>
+											<input type="text" class="form-control phoneInput" maxlength="3" id="number1" name="number1" required>
 											<b class="alignCenter rightMargin20">-</b>
-											<input type="text" class="form-control phoneInput" id="number2" name="number2" required>
+											<input type="text" class="form-control phoneInput" maxlength="4" id="number2" name="number2" required>
 											<b class="alignCenter rightMargin20">-</b>
-											<input type="text" class="form-control phoneInput" id="number3" name="number3" required onkeyup="submitData()">
+											<input type="text" class="form-control phoneInput" maxlength="4" id="number3" name="number3" required onkeyup="submitData()">
 											<input type="hidden" name="number" id="TotalNum">
 										</div>
 									</div>
@@ -199,7 +199,6 @@
 										<p class="fs-4 mb-0 fw-bold">이미 회원이신가요?</p>
 										<a class="text-primary fw-bold ms-2" href="loginForm.do">로그인</a>
 									</div>
-
 								</form>
 							</div>
 						</div>
