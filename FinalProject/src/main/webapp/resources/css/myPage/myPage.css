@@ -370,3 +370,19 @@
     flex-direction: column;
 
 }
+
+.sidebarMain{
+	padding-bottom:10px;
+	padding-left:10px;
+	font-size : 20px;
+	border-bottom: 1px solid #e7ecf0;;
+	
+}
+.sidebarFont{
+	font-style:normal;
+}
+.alignEnd{
+	display:flex !important;
+	align-items:flex-end !important;
+	margin-top:0 !important;
+}

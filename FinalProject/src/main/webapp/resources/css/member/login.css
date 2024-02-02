@@ -76,6 +76,9 @@
 	font-size: 35px;
 	font-weight: 700;
 }
+.totalBtn:hover {
+    color: white !important;
+}
 
 .mainTitleFont {
 	font-size: 50px;
