@@ -4,6 +4,19 @@
 <mapper namespace="colaboMapper"> 
 
 	<resultMap type="colabo" id="colaboResultSet">
+		<result column="P_NO" property="no"></result>
+		<result column="P_SUBJECT" property="subject"></result>
+		<result column="P_NAME" property="name"></result>
+		<result column="P_DETAIL" property="detail"></result>
+		<result column="P_STACK" property="stack"></result>
+		<result column="P_PERSON_COUNT" property="personCount"></result>
+		<result column="P_PERIOD" property="period"></result>
+		<result column="P_UPLOAD_PATH" property="uploadPath"></result>
+		<result column="P_UPLOAD_NAME" property="uploadName"></result>
+		<result column="P_UPLOAD_ORIGIN_NAME" property="uploadOriginName"></result>
+		<result column="P_STATE" property="state"></result>
+		<result column="P_START_DATE" property="startDate"></result>
+		<result column="P_END_DATE" property="endDate"></result>
 		<result column="P_NOTICE_NO" property="noticeNo"></result>
 		<result column="P_NOTICE_TITLE" property="noticeTitle"></result>
 		<result column="P_NOTICE_CONTENT" property="noticeContent"></result>
@@ -12,10 +25,9 @@
 		<result column="P_NOTICE_UPLOAD_ORIGIN_NAME" property="uploadOriginName"></result>
 		<result column="P_NOTICE_DATE" property="noticeDate"></result>
 		<result column="P_NOTICE_VIEWS" property="noticeViews"></result>
-		<result column="P_NO" property="no"></result>
-		<result column="P_NAME" property="name"></result>
 		<result column="M_NO" property="memberNo"></result>
 		<result column="M_NAME" property="memberName"></result>
+		<result column="M_EMAIL" property="memberEmail"></result>
 	</resultMap>
 	
 	<resultMap type="schedule" id="scheduleResultSet">
@@ -38,11 +50,122 @@
 	
 	<resultMap type="projectMember" id="projectMemberResultSet">
 		<result column="P_NO" property="projectNo"></result>
+		<result column="P_NAME" property="projectName"></result>
 		<result column="M_NO" property="memberNo"></result>
 		<result column="M_NAME" property="memberName"></result>
 		<result column="M_EMAIL" property="memberEmail"></result>
 		<result column="TEAM_ENROLL_DATE" property="teamEnrollDate"></result>
 	</resultMap>
+	
+	<select id="selectEmailMember" parameterType="String" resultMap="colaboResultSet">
+		SELECT M_NO, M_NAME, M_EMAIL FROM MEMBER 
+		WHERE M_EMAIL LIKE '%' || #{selectText} || '%'
+	</select>
+	
+	<select id="getProjectNameNumberList" parameterType="int" resultMap="colaboResultSet">
+		SELECT P_NO, P_NAME FROM COLABO
+		WHERE M_NO = #{memberNo}
+	</select>
+	
+	
+	
+	<select id="getProjectCreateMember" parameterType="int" resultType="_int">
+		SELECT M_NO FROM COLABO
+		WHERE P_NO = #{projectNo}
+	</select>
+	
+	<delete id="AllScheduleDelete" parameterType="colabo">
+		DELETE FROM PROJECT_SCHEDULE
+		WHERE P_NO = #{no}
+	</delete>
+	
+	<delete id="AllNoticeDelete" parameterType="colabo">
+		DELETE FROM PROJECT_NOTICE
+		WHERE P_NO = #{no}
+	</delete>
+	
+	<delete id="AllSkillDelete" parameterType="colabo">
+		DELETE FROM COLABO_SKILL_COMPLETE
+		WHERE P_NO = #{no}
+	</delete>
+	
+	<delete id="AllTeamDelete" parameterType="colabo">
+		DELETE FROM COLABO_PERSON
+		WHERE P_NO = #{no}
+	</delete>
+	
+	<delete id="projectDelete" parameterType="colabo">
+		DELETE FROM COLABO 
+		WHERE P_NO = #{no}
+	</delete>
+	
+	
+	
+	<update id="projectEdit" parameterType="colabo">
+		<choose>
+			<when test="uploadPath != null">
+				UPDATE COLABO SET P_SUBJECT = #{subject},
+								P_NAME = #{name},
+								P_DETAIL = #{detail},
+								P_STACK = #{stack},
+								P_PERSON_COUNT = #{personCount},
+								P_PERIOD = #{period},
+								P_UPLOAD_PATH = #{uploadPath},
+								P_UPLOAD_NAME = #{uploadName},
+								P_UPLOAD_ORIGIN_NAME = #{uploadOriginName}
+					WHERE P_NO = #{no}
+			</when>
+			<otherwise>
+				UPDATE COLABO SET P_SUBJECT = #{subject},
+								P_NAME = #{name},
+								P_DETAIL = #{detail},
+								P_STACK = #{stack},
+								P_PERSON_COUNT = #{personCount},
+								P_PERIOD = #{period}
+					WHERE P_NO = #{no}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<select id="getProjectContent" parameterType="int" resultMap="colaboResultSet">
+		SELECT * FROM COLABO
+		WHERE P_NO = #{projectNo}
+	</select>
+	
+	<select id="selectProjectList" parameterType="int" resultMap="projectMemberResultSet">
+		SELECT cp.P_NO , c.P_NAME  FROM COLABO_PERSON cp
+		JOIN COLABO c 
+		ON cp.P_NO  = c.P_NO 
+		WHERE cp.M_NO  = #{memberNo}
+	</select>
+	
+	<select id="getProjectNumber" parameterType="colabo" resultType="_int">
+		SELECT P_NO FROM COLABO
+		WHERE P_SUBJECT = #{subject}
+		AND P_NAME = #{name}
+		AND P_STACK = #{stack}
+		AND P_PERSON_COUNT = #{personCount}
+		AND P_PERIOD = #{period}
+		AND M_NO = #{memberNo}
+	</select>
+	
+	<insert id="projectTeamEnroll" parameterType="projectMember">
+		INSERT INTO COLABO_PERSON VALUES(#{projectNo}, #{memberNo},
+									#{memberName}, #{memberEmail}, SYSDATE)
+	</insert>
+	
+	<insert id="projectEnroll" parameterType="colabo">
+		INSERT INTO COLABO VALUES(p_no_seq.nextval,#{subject},#{name},
+							#{detail},#{stack},#{personCount},
+							#{period},#{uploadPath},#{uploadName},
+							#{uploadOriginName},#{state},#{memberNo},
+							SYSDATE, null)
+	</insert>
+	
+	<select id="getMemberName" parameterType="colabo" resultMap="colaboResultSet">
+		SELECT M_NO, M_NAME, M_EMAIL   FROM MEMBER
+		WHERE M_NO = #{memberNo}
+	</select>
 	
 	<select id="frontSkillAvg" parameterType="skillChart" resultType="Double">
 		SELECT AVG(PM_SKILL_FULL)  FROM COLABO_SKILL_COMPLETE csc

@@ -97,6 +97,73 @@ public class ColaboDAO {
 		return list;
 	}
 
+	public ColaboDTO getMemberName(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.selectOne("colaboMapper.getMemberName", colabo);
+	}
+
+	public int projectEnroll(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.insert("colaboMapper.projectEnroll", colabo);
+	}
+
+	public int projectTeamEnroll(SqlSessionTemplate sqlSession, TeamProjectPerSonDTO teamProject) {
+		return sqlSession.insert("colaboMapper.projectTeamEnroll", teamProject);
+	}
+
+	public int getProjectNumber(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.selectOne("colaboMapper.getProjectNumber", colabo);
+	}
+
+	public List<TeamProjectPerSonDTO> selectProjectList(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectList("colaboMapper.selectProjectList", memberNo);
+	}
+
+	public ColaboDTO getProjectContent(SqlSessionTemplate sqlSession, int projectNo) {
+		return sqlSession.selectOne("colaboMapper.getProjectContent", projectNo);
+	}
+
+	public int projectEdit(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.update("colaboMapper.projectEdit", colabo);
+	}
+
+	public int projectDelete(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.delete("colaboMapper.projectDelete", colabo);
+	}
+
+	public boolean projectConnectDeleteAll(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		boolean result = false;
+		
+		int scheduleResult = sqlSession.delete("colaboMapper.AllScheduleDelete", colabo);
+		int noticeResult = sqlSession.delete("colaboMapper.AllNoticeDelete", colabo);
+		int skillResult = sqlSession.delete("colaboMapper.AllSkillDelete", colabo);
+		int teamResult = sqlSession.delete("colaboMapper.AllTeamDelete", colabo);
+		
+//		System.out.println("스케줄 삭제결과 : " + scheduleResult);
+//		System.out.println("스케줄 삭제결과 : " + noticeResult);
+//		System.out.println("스케줄 삭제결과 : " + skillResult);
+//		System.out.println("스케줄 삭제결과 : " + teamResult);
+		
+		if(scheduleResult >= 0 && noticeResult >= 0 &&
+			skillResult >= 0 && teamResult >= 0) {
+			result = true;
+		}
+		
+		
+		
+		return result;
+	}
+
+	public int getProjectCreateMember(SqlSessionTemplate sqlSession, int projectNo) {
+		return sqlSession.selectOne("colaboMapper.getProjectCreateMember", projectNo);
+	}
+
+	public List<ColaboDTO> getProjectNameNumberList(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectList("colaboMapper.getProjectNameNumberList", memberNo);
+	}
+
+	public List<ColaboDTO> selectEmailMember(SqlSessionTemplate sqlSession, String selectText) {
+		return sqlSession.selectList("colaboMapper.selectEmailMember", selectText);
+	}
+
 }
 
 

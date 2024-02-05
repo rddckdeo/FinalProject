@@ -15,6 +15,7 @@ public class ColaboDTO {
 	
 	// 멤버관련 변수 
 	private int memberNo;
+	private String memberEmail;
 	
 	// 프로젝트 관련 변수
 	private int no;
@@ -24,6 +25,7 @@ public class ColaboDTO {
 	private String stack;
 	private int personCount;
 	private String period;
+	private String stateKor;
 	private char state;
 	private String startDate;
 	private String endDate;

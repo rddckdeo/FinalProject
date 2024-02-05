@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>프로젝트 생성</title>
+  <title>프로젝트 수정삭제</title>
 <!--   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" /> -->
   <link rel="stylesheet" href="../../resources/css/colabo/colabo.css" />
   
@@ -30,38 +30,31 @@
 			 <div class="row">
 			  <div class="card w-100">
 				<div class="form-style-5" style="height:1200px">
-					<form action="/colabo/projectEnroll.do" method="post" enctype="multipart/form-data">
+					<form action="/colabo/projectEdit.do" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<legend>
-								<span class="number">1</span> 프로젝트 생성자 정보
+								<span class="number">1</span> 프로젝트 정보
 							</legend>
-							<input type="hidden" name="memberNo" value="${list.memberNo}">
-							<input type="text" name="memberName" value="${list.memberName}" readonly>
-							<input type="email" name="memberEmail" value="${list.memberEmail}" readonly>
-							
-						</fieldset>
-						<fieldset>
-							<legend>
-								<span class="number">2</span> 프로젝트 정보
-							</legend>
+							<img src="/resources/uploads/colabo/project/${list.uploadName}" alt="이미지" style="width: 200px; height:100px">
 							<div style="width:100px; height:100px;">
-								<p>이미지 업로드</p>
+								<input type="hidden" name="uploadName" value="${list.uploadName}">
 								<input type="file" name="upload">
 							</div>
-							<input type="text" name="subject" id="projectSubject" onchange="nullCheckBtn()" placeholder="프로젝트 주제" maxlength="30">
-							<input type="text" name="name" id="projectName" onchange="nullCheckBtn()" placeholder="프로젝트 이름" maxlength="30">
-							<textarea name="detail" id="projectContent" onchange="nullCheckBtn()" placeholder="프로젝트 설명" maxlength="150"></textarea>
+							<input type="text" name="subject" id="projectSubject" value="${list.subject}" onchange="nullCheckBtn()" placeholder="프로젝트 주제" maxlength="30">
+							<input type="text" name="name" id="projectName" value="${list.name}"  onchange="nullCheckBtn()" placeholder="프로젝트 이름" maxlength="30">
+							<textarea name="detail" id="projectContent" onchange="nullCheckBtn()" placeholder="프로젝트 설명" maxlength="150">${list.detail}</textarea>
 							<label for="useStackName">사용기술스택 입력</label>
-							<input type="text" name="stack" id="useStackName" onchange="nullCheckBtn()" placeholder="사용할 기술스택" maxlength="50">
+							<input type="text" name="stack" id="useStackName" value="${list.stack}"  onchange="nullCheckBtn()" placeholder="사용할 기술스택" maxlength="50">
 							
 							<label for="projectPerson">프로젝트 전체인원 입력</label>
-							<input type="number" name="personCount" id="projectPerson" onchange="nullCheckBtn()" onkeyup="checkNumber()" placeholder="프로젝트 인원 ( 명 )"  min="1" max="10" maxlength="2">
+							<input type="number" name="personCount" id="projectPerson" value="${list.personCount}"  onchange="nullCheckBtn()" onkeyup="checkNumber()" placeholder="프로젝트 인원 ( 명 )"  min="1" max="10" maxlength="2">
 							
 							<label for="projectTerm">프로젝트 진행기간 입력</label>
-							<input type="number" name="period" id="projectTerm" onchange="nullCheckBtn()" onkeyup="checkNumber()" placeholder="프로젝트 기간 ( 달 )"  min="1" max="12" maxlength="2">
+							<input type="number" name="period" id="projectTerm" value="${list.period}"  onchange="nullCheckBtn()" onkeyup="checkNumber()" placeholder="프로젝트 기간 ( 달 )"  min="1" max="12" maxlength="2">
 							
 						</fieldset>
-						<input type="submit" name="stateKor" id="projectSubmit" value="프로젝트생성" disabled>
+						<input type="submit" name="stateKor" id="projectEdit" value="프로젝트수정" >
+						<input type="submit" name="stateKor" id="projectDelete" value="프로젝트삭제" >
 					</form>
 				</div>
 			</div>
