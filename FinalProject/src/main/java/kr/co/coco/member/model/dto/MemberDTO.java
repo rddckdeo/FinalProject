@@ -16,7 +16,7 @@ public class MemberDTO {
 	private String email;
 	private String type;
 	private String nickname;
-	private String pircture;
+	private String picture;
 	private String path;
 	private String hope;
 	private String stack;

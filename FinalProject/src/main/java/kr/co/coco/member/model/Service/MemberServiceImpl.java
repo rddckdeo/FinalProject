@@ -19,4 +19,24 @@ public class MemberServiceImpl implements MemberService{
 	public int registerMember(MemberDTO member) {
 		return memberDao.registerMember(sqlSession, member);
 	}
+//	아이디 중복체크
+	@Override
+	public String idCheck(String idInput) {
+		return memberDao.idCheck(sqlSession, idInput);
+	}
+//	닉네임 중복체크
+	@Override
+	public String nicknameCheck(String nicknameInput) {
+		return memberDao.nicknameCheck(sqlSession, nicknameInput);
+	}
+//	로그인
+	@Override
+	public MemberDTO login(MemberDTO member) {
+		return memberDao.login(sqlSession, member);
+	}
+// 로그인 Date Update
+	@Override
+	public int loginDateUpdate(int no) {
+		return memberDao.loginDateUpdate(sqlSession, no);
+	}
 }

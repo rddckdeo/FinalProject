@@ -14,6 +14,11 @@
     justify-content: center;
 }
 
+.justifyEnd{
+	display:flex;
+	justify-content:flex-end;
+}
+
 .justifyAround{
     display: flex;
     justify-content:space-around;
@@ -37,10 +42,16 @@
     flex-direction: row;
 }
 
-
+/* 표시 관련 */
+.displayNone{
+	display:none;
+}
 /* 크기 관련 - width */
 .width100{
     width: 100%;
+}
+.width90{
+    width: 90% !important;
 }
 .width70{
     min-width: 70%;
@@ -58,6 +69,9 @@
 /* 크기 관련 - height */
 .height150{
     height: 150px;
+}
+.height60{
+    height: 60px;
 }
 .height100{
     height: 100px;
@@ -103,7 +117,7 @@
 
 /* margin 관련 */
 .noMargin{
-    margin: 0;
+    margin: 0 !important;
 }
 .Margin10{
     margin-right: 10px;
@@ -117,14 +131,23 @@
 .leftMargin20{
     margin-left: 20px;
 }
+.leftMargin10{
+    margin-left: 10px;
+}
 .leftMargin40{
     margin-left: 40px;
 }
 .topMargin20{
     margin-top: 20px;
 }
+.bottomMargin10{
+    margin-bottom: 10px;
+}
 .bottomMargin20{
     margin-bottom: 20px;
+}
+.bottomMargin30{
+    margin-bottom: 30px;
 }
 .topMargin20{
     margin-top: 20px;
@@ -138,11 +161,20 @@
 .rightMargin10{
     margin-right: 10px;
 }
+.rightMargin20{
+    margin-right: 20px;
+}
 .defaultMargin{
     margin: 0.25rem;
 }
 
 /* font 관련 */
+.font12px{
+    font-size: 12px;
+}
+.font16px{
+    font-size: 16px;
+}
 .font20px{
     font-size: 20px;
 }
@@ -202,4 +234,41 @@
 }
 .defaultColor{
     color: #707a82;
+}
+
+.defaultBtn{
+    background-color: #353535;
+    border-radius: 0.5rem;
+    border: 1px solid #e7ecf0;
+    padding:1px 10px 1px 10px;
+    color:white;
+}
+
+.cursorPointer{
+	cursor: pointer;
+}
+
+.positionFix{
+	position:fixed;
+}
+
+/* 임의의 영역 생성 */
+.scrollBar { 
+  overflow-y: scroll;
+}
+
+/* 아래의 모든 코드는 영역::코드로 사용 */
+.scrollBar::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #217af4; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
 }
