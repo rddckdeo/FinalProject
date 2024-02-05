@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="../../resources/css/colabo/colabo.css" />
   <link rel="stylesheet" href="../../resources/css/colabo/colaboNotice.css" />
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -29,7 +31,7 @@
 					<div class="card w-100" style="width:70%; height:70%;">
 						<h3> ${projectName} 팀 공지게시판</h3>
 						<div style="text-align: right;">
-							<button style="width:60px; text-align: center;" onclick="enterNoticePage()">글작성</button>
+							<button class="btn btn-outline-primary" style="width:150px; text-align: center; type:button;" onclick="enterNoticePage()">글작성</button>
 						</div>
 						<table>
 						    <thead>

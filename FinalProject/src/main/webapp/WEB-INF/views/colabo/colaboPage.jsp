@@ -10,9 +10,12 @@
 <!--   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" /> -->
   <link rel="stylesheet" href="../../resources/css/colabo/colabo.css" />
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!--  Body Wrapper -->
@@ -28,16 +31,9 @@
 					<div class="card w-100" style="width:70%; height:70%;">
 						<h3>내 진행중인 프로젝트 목록</h3>
 						<div>
-							<p>~~~~ 프로젝트</p>
-							<div style="max-width: 40%;">
-								<canvas id="pieExample"></canvas>
+							<div style="max-width: 80%;">
+								<canvas id="barExample" style="height: 530px; width:800px"></canvas>
 							</div>
-							<input type="text">
-							<ul> 프로젝트 인원
-								<li>홍길동</li>
-								<li>냥냥냥</li>
-								<li>김김김</li>
-							</ul>
 						</div>
 					</div>
 				</div>
@@ -49,7 +45,7 @@
     
     
     
-    <script src="../../resources/js/colabo/colabo.js" ></script>
+    <script src="../../resources/js/colabo/colaboMain.js" ></script>
 </body>
 
 </html>

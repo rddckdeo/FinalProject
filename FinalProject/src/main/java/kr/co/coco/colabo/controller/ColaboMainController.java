@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 
 import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.common.paging.Pagination;
+import kr.co.coco.colabo.common.upload.UploadFile;
+import kr.co.coco.colabo.common.validation.DataValidation;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
@@ -39,22 +42,305 @@ public class ColaboMainController {
 	
 	
 	@GetMapping("")
-	public String enterColabo() {
+	public String enterColabo(Model model, HttpSession session) {
+		
+		// 최초에 colabo 페이지 들어왔을대 default 값으로 getProjectNo 을 0으로 넣어놈
+		session.setAttribute("getProjectNo", 0);
+//		System.out.println(session.getAttribute("getProjectNo"));
+		session.setAttribute("no", 1); // 나중에 멤버넘버 로그인했을때 생긴 세션으로 처리하기
+		int memberNo =  (int)session.getAttribute("no");
+		
+		
+		
+		List<TeamProjectPerSonDTO> projectList = colaboService.selectProjectList(memberNo);
+		
+		session.setAttribute("projectList", projectList);
 		
 		return "colabo/colaboPage";
 	}
 	
+	@PostMapping("/getProjectSession.do")
+	@ResponseBody
+	public String getProjectSession(@RequestParam("projectNo")int projectNo,HttpSession session) {
+		
+		// 배너에 생성되어있는 프로젝트를 선택했을때 projectNo 기존에있던 세션제거 새로생성
+		session.removeAttribute("getProjectNo");
+		
+		session.setAttribute("getProjectNo", projectNo);
+		
+//		System.out.println("가져온 넘버는 : "+projectNo);
+		
+		return "";
+	}
+	
+	
+	@PostMapping("/getProjectNameNumberList.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getProjectNameNumberList(HttpSession session) {
+		
+		int memberNo =  (int)session.getAttribute("no");
+		
+		// 처음 협업페이지에 내가 지금 가입된 프로젝트들의 진행도를 나타낼수있는 리스트 만들기
+				// 멤버넘버로 프로젝트 리스트 가져오는데 프로젝트의 이름들도 가져와야함. 
+				// colaboDTO 로 프로젝트 넘버와 이름을 담아서 가져옴
+				List<ColaboDTO> getProjectNameNumberList = colaboService.getProjectNameNumberList(memberNo);
+				
+//				System.out.println(getProjectNameNumberList.size());
+//				System.out.println(getProjectNameNumberList.get(0).getNo());
+//				System.out.println(getProjectNameNumberList.get(0).getName());
+//				System.out.println(getProjectNameNumberList.size());
+				
+				List<HashMap<String, Object>> resultList = new ArrayList<>();
+				SkillChartDTO skillChart = new SkillChartDTO();
+				
+				for(int i=0; i<getProjectNameNumberList.size(); i++) {
+					skillChart.setProjectNo(getProjectNameNumberList.get(i).getNo());
+					
+					HashMap<String, Object> list = colaboService.allSkillChartGet(skillChart);
+					// front back 을 합치고 평균을 낸 전체 달성도 변수
+					double allResult = 0;
+					if(list != null) {
+						if(list.get("front") != null && list.get("back") != null) {
+							
+							allResult = Math.ceil(((double)list.get("front")+(double)list.get("back"))/2);
+						}else if(list.get("front") == null && list.get("back") != null) {
+							allResult = Math.ceil((double)list.get("back")/2);
+							
+						}else if(list.get("back") == null && list.get("front") != null) {
+							allResult = Math.ceil((double)list.get("front")/2);
+							
+						}else {
+							allResult = 0;
+						}
+						list.put("projectName", getProjectNameNumberList.get(i).getName());
+						list.put("allResult", allResult);
+						
+					}else {
+						list.put("projectName", "noList");
+						list.put("allResult", 0);
+						
+					}
+					resultList.add(list);
+					
+//					System.out.println("list 는 : " + list);
+				
+				}
+//				System.out.println("resultList 결과는 : "+resultList.get(0));
+//				System.out.println("resultList 결과는 : "+resultList.get(1));
+//				System.out.println("resultList 결과는 : "+resultList.get(2));
+				
+		
+		return resultList;
+	}
+	
+	
+	
+	
+	// 프로젝트생성 누를때 기존에 생성되어있는 memeberNo session 을 이용해서 프로젝트
+	// 생성자 이름을 넣을에정. get매핑이라 가져오고난뒤 생성버튼을 눌렀을때의 로직을 실행할때
+	// 거기서 다시한번 가져와서 생성시 memberNo 을 다시생성해서 거기서 가져온 이름과 비교 후 로직실행하게
 	@GetMapping("/projectEnroll")
-	public String projectEnroll() {
+	public String getProjectMember(Model model, HttpSession session) {
+		
+		ColaboDTO colabo = new ColaboDTO();
+		colabo.setMemberNo((int)session.getAttribute("no"));  // 나중에 세션으로 멤버넘버 가져오기 ********
+		
+		// 멤버의 이름과 멤버no 가져오기
+		ColaboDTO list = colaboService.getMemberName(colabo); 
+		
+		model.addAttribute("list", list);
+		
+		
 		return "colabo/projectEnroll";
 	}
+	
+	@GetMapping("/projectEditForm")
+	public String projectEdit(HttpSession session, Model model) {
+		
+		int projectNo = (int)session.getAttribute("getProjectNo");
+		
+		ColaboDTO colabo = colaboService.getProjectContent(projectNo);
+		
+		model.addAttribute("list", colabo);
+		
+		return "colabo/projectEdit";
+	}
+	
+	@PostMapping("/projectEdit.do")
+	public String projectEdit(MultipartFile upload, ColaboDTO colabo, HttpSession session) {
+		
+		String submitPage = "error/errorPage";
+		
+		// 이용하고있는회원의 멤버넘버랑 프로젝트넘버를가지고 DB에 프로젝트 저장되어있는 멤버와 프로젝트넘버가 일치하는지 확인
+		 int projectNo = (int)session.getAttribute("getProjectNo");
+		
+		colabo.setNo(projectNo);
+		
+		// 프로젝트 생성멤버
+		int projectCreateMember = colaboService.getProjectCreateMember(projectNo);
+		
+		// 로그인한 멤버
+		int loginMember = (int)session.getAttribute("no");
+		
+		// 수정 삭제하는 인원이 프로젝트를 생성한 인원인지 확인 후 수정삭제진행
+		if(projectCreateMember == loginMember) {
+			
+				// 파일관련 수정은 프로젝트 수정일때만    삭제일때는 파일삭제하는 Delete 메소드만 실행
+				if(colabo.getStateKor().equals("프로젝트수정")) {
+					
+					
+					List<Object> arrayList = new ArrayList<>();
+					arrayList.add(colabo.getSubject());
+					arrayList.add(colabo.getName());
+					arrayList.add(colabo.getDetail());
+					arrayList.add(colabo.getStack());
+					arrayList.add(colabo.getPersonCount());
+					arrayList.add(colabo.getPeriod());
+					
+					// 글작성 내용들 제한 두기 
+					List<Integer> limitNumberlist = new ArrayList<>(); 
+					limitNumberlist.add(200);
+					limitNumberlist.add(200);
+					limitNumberlist.add(500);
+					
+					// 비어있는지 체크
+					boolean emptyListCheckResult = DataValidation.emptyListCheck(arrayList);
+					
+					// 입력한 내용들이 일정 범위를 넘어가는지 조회
+					boolean validationResult =  DataValidation.CheckListLength(limitNumberlist, arrayList);
+					
+					System.out.println("비어있는지 체크 : "+ emptyListCheckResult);
+					System.out.println("일정범위 넘어가는지 조회 : "+ validationResult);
+					
+//					System.out.println("업로드 올린 파일이 비어있는지 체크 : "+upload.isEmpty());
+//					System.out.println("업로드파일 보내는 이름이 비어있는지 체크 : "+colabo.getUploadName().isEmpty());
+//					
+//					System.out.println("히든타입의 업로드이름 내용 : "+ colabo.getUploadName());
+					
+					// 비어있는지 확인, 제한된 글자수를 넘어가는지 확인
+					if(emptyListCheckResult && validationResult) {
+						
+						// 수정시 업로드된 파일이 있는지 여부, DB에 이미 저장된 파일이 있는지 여부에 따라 조건문
+						if(!upload.isEmpty() && !colabo.getUploadName().isEmpty()) {
+							// 업로드파일이 있고  DB에 이미 저장된 파일이 있을시
+							UploadFile.deleteFile(colabo.getUploadName());
+							UploadFile.uploadMethod(upload, colabo);
+	//						System.out.println("둘다 비어있지않음 실행 ");
+						}else if(!upload.isEmpty() && colabo.getUploadName().isEmpty()){
+							// 업로드파일이 있고  DB에 저장된 파일이 없을시
+							UploadFile.uploadMethod(upload, colabo);
+	//						System.out.println("업로드파일 있고  DB에 값은 비어있음 실행 ");
+						}
+						// 이제 업로드 파일이 있을땐 다 처리를하였지만 업로드파일이 없는데 DB엔 있을때는 
+						// mapper 에서 쿼리문을 작성할때  uploadPath 로 조건문을 돌린다. 이유는
+						// 파일이있을땐 이미 업로드되어있는 이름이 hidden 으로 서버쪾으로 넘어오기때문에
+						// 항상 들어있게되어서 업로드가 있는것처럼 쿼리문이 실행된다.
+						// 업로드파일이 없을땐  UploadFile클래스가 실행이 안되기때문에 uploadName 을 제외하고는 다 비어있다.
+						
+						int result = colaboService.projectEdit(colabo);
+						
+						if(result == 1 ) {
+							submitPage = "redirect:/colabo/colaboBasicPage";
+						}else {
+							submitPage = "error/errorPage";
+						}
+					
+					}else {
+						submitPage = "error/errorPage";
+					}
+					// 삭제같은경우 프로젝트를 지우게되면  그 해당 프로젝트에대한
+					// 스케줄, 게시판, 프로젝트 기술, 팀원들이 남아있기때문에 Serivce 단에서 트랜잭션
+					// 사용해서 스케줄데이터, 게시판데이터, 프로젝트 기술목록,
+					// 팀원목록 삭제와 같이 진행할예정
+				}else if(colabo.getStateKor().equals("프로젝트삭제")) {
+					
+					// 삭제일경우   기존에 업로드된 파일이 있을때와 없을때 구분
+					// 있을때는 파일을 삭제하는 메소드만 추가해서 실행
+					if(!colabo.getUploadName().isEmpty()) {
+						UploadFile.deleteFile(colabo.getUploadName());
+					}
+					
+					int result = colaboService.projectDelete(colabo);
+					
+					if(result == 1 ) {
+						submitPage = "redirect:/colabo";
+					}else {
+						submitPage = "error/errorPage";
+					}
+					
+					
+				}
+			
+		}
+		
+		
+		
+		return submitPage;
+	}
+	
+	
+	@PostMapping("/projectEnroll.do")
+	public String projectEnroll(MultipartFile upload, ColaboDTO colabo) {
+		
+		
+		List<Object> arrayList = new ArrayList<>();
+		arrayList.add(colabo.getSubject());
+		arrayList.add(colabo.getName());
+		arrayList.add(colabo.getDetail());
+		arrayList.add(colabo.getStack());
+		arrayList.add(colabo.getPersonCount());
+		arrayList.add(colabo.getPeriod());
+		
+		// 글작성 내용들 제한 두기 
+		List<Integer> limitNumberlist = new ArrayList<>(); 
+		limitNumberlist.add(200);
+		limitNumberlist.add(200);
+		limitNumberlist.add(500);
+		
+		// 비어있는지 체크
+		boolean emptyListCheckResult = DataValidation.emptyListCheck(arrayList);
+		
+		// 입력한 내용들이 일정 범위를 넘어가는지 조회
+		boolean validationResult =  DataValidation.CheckListLength(limitNumberlist, arrayList);
+		
+		
+		if(emptyListCheckResult && validationResult) {
+		
+			if(!upload.isEmpty()) {
+				UploadFile.uploadMethod(upload, colabo);
+			}
+			
+			// 클라이언트가 프로젝트 생성 버튼의 value 값을 수정안했을때 만 가능
+			if(colabo.getStateKor().equals("프로젝트생성")) {
+				colabo.setState('N');
+				int result = colaboService.projectEnroll(colabo);
+				
+				if(result == 1) {
+					return  "redirect:/colabo";
+				}else {
+					return "error/errorPage";
+				}
+				
+			}else {
+				
+				return "error/errorPage";
+			}
+		
+		}
+		return "error/errorPage";
+		
+		
+	}
+	
 	
 	// 기본개요 페이지로 이동 하면서 DB에 있는 팀원 리스트를 가져와서 넘겨줌과 동기적으로 나타나게 함 
 	@GetMapping("/colaboBasicPage")
 	public String BasicPage(Model model,HttpSession session) {
 		
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
+		
 		TeamProjectPerSonDTO teamProject = new TeamProjectPerSonDTO();
-		teamProject.setProjectNo(1);   //  프로젝트 넘버 세션으로 가져와서 수정
+		teamProject.setProjectNo(getProjectNo);   //  프로젝트 넘버 세션으로 가져와서 수정
 		
 		
 		List<TeamProjectPerSonDTO> list = colaboService.getProjectMember(teamProject); 
@@ -90,9 +376,11 @@ public class ColaboMainController {
 							Model model,
 							HttpSession session) {
 		
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
+		
 		// 전체공지글을 보여주는게 아니라 프로젝트마다 따로만들것이기때문에  p_no 을 가져와야함 
 		// 지금은 임의로 정해서 할 에정
-		colabo.setNo(1);
+		colabo.setNo(getProjectNo);
 		
 		
 		int listCount = colaboService.selectListCount(colabo);
@@ -107,16 +395,26 @@ public class ColaboMainController {
 		// 목록 불러오기
 		List<ColaboDTO> list = colaboService.selectListAll(pi, colabo);
 		
-		for(ColaboDTO item : list) {
-			String noticeDate = item.getNoticeDate().substring(0,10);
-			item.setNoticeDate(noticeDate);
+		// 게시글 없는 프로젝트에서 공지부분 들어가게되면 nullpointException 나옴
+		if(!list.isEmpty()) {
+			for(ColaboDTO item : list) {
+				String noticeDate = item.getNoticeDate().substring(0,10);
+				item.setNoticeDate(noticeDate);
+			}
+			String projectName = list.get(0).getName();
+			
+			model.addAttribute("projectName", projectName);
+			model.addAttribute("row", row);
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			
+		}else {
+			model.addAttribute("projectName", null);
+			model.addAttribute("row", row);
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			
 		}
-		String projectName = list.get(0).getName();
-		
-		model.addAttribute("projectName", projectName);
-		model.addAttribute("row", row);
-		model.addAttribute("list", list);
-		model.addAttribute("pi", pi);
 		
 		
 		return "colabo/colaboNotice";
@@ -129,15 +427,40 @@ public class ColaboMainController {
 	
 	@PostMapping("/noticeEnroll.do")
 	public String noticeEnroll(ColaboDTO colabo, HttpSession session) {
-		colabo.setNo(1);
-		colabo.setMemberNo(1); // 나중에 세션으로
-		int result = colaboService.noticeEnroll(colabo);
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
 		
-		if(result == 1) {
-			return  "redirect:/colabo/colaboNotice";
+		colabo.setNo(getProjectNo);
+		colabo.setMemberNo((int)session.getAttribute("no")); // 나중에 세션으로
+		
+		// 게시글 비었는지, 글자수제한 확인
+		List<Object> arrayList = new ArrayList<>();
+		arrayList.add(colabo.getNoticeTitle());
+		arrayList.add(colabo.getNoticeContent());
+		
+		// 글작성 내용들 제한 두기 
+		List<Integer> limitNumberlist = new ArrayList<>(); 
+		limitNumberlist.add(100);
+		limitNumberlist.add(500);
+		
+		// 비어있는지 체크
+		boolean emptyListCheckResult = DataValidation.emptyListCheck(arrayList);
+		
+		// 입력한 내용들이 일정 범위를 넘어가는지 조회
+		boolean validationResult =  DataValidation.CheckListLength(limitNumberlist, arrayList);
+		
+		if(emptyListCheckResult && validationResult) {
+			int result = colaboService.noticeEnroll(colabo);
+			
+			if(result == 1) {
+				return  "redirect:/colabo/colaboNotice";
+			}else {
+				return "error/errorPage";
+			}
+			
 		}else {
 			return "error/errorPage";
 		}
+		
 		
 	}
 	
@@ -179,23 +502,44 @@ public class ColaboMainController {
 	@PostMapping("/noticeEdit.do")
 	public String noticeEdit(ColaboDTO colabo) {
 		
-		int result = colaboService.noticeEdit(colabo);
+		// 게시글 비었는지, 글자수제한 확인
+		List<Object> arrayList = new ArrayList<>();
+		arrayList.add(colabo.getNoticeTitle());
+		arrayList.add(colabo.getNoticeContent());
 		
-		if(result == 1) {
-			return "redirect:/colabo/colaboNotice";
-		}else {
-			return "error/errorPage";
-		}
+		// 글작성 내용들 제한 두기 
+		List<Integer> limitNumberlist = new ArrayList<>(); 
+		limitNumberlist.add(100);
+		limitNumberlist.add(500);
 		
+		// 비어있는지 체크
+		boolean emptyListCheckResult = DataValidation.emptyListCheck(arrayList);
+		
+		// 입력한 내용들이 일정 범위를 넘어가는지 조회
+		boolean validationResult =  DataValidation.CheckListLength(limitNumberlist, arrayList);
+		
+				if(emptyListCheckResult && validationResult) {
+				
+					int result = colaboService.noticeEdit(colabo);
+					
+					if(result == 1) {
+						return "redirect:/colabo/colaboNotice";
+					}else {
+						return "error/errorPage";
+					}
+				}else {
+					return "error/errorPage";
+				}
 	}
 	
 	@PostMapping("/schedule.do")
 	@ResponseBody
-	public ArrayList<Map<String, String>> scheduleIO() {
+	public ArrayList<Map<String, String>> scheduleIO(HttpSession session) {
 		
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
 		ScheduleDTO schedule = new ScheduleDTO();
 		
-		schedule.setProjectNo(1);   // 나중에 프로젝트넘버 받아서 넣기
+		schedule.setProjectNo(getProjectNo);   // 나중에 프로젝트넘버 받아서 넣기
 		
 		List<ScheduleDTO> scheduleList = colaboService.scheduleIO(schedule);
 		
@@ -217,43 +561,59 @@ public class ColaboMainController {
 	
 	@PostMapping("/scheduleEnroll.do")
 	@ResponseBody
-	public String scheduleEnroll(ScheduleDTO inputSchedule) {
+	public String scheduleEnroll(ScheduleDTO inputSchedule, HttpSession session) {
 		
-		// 파라미터 가져올때 객체가 생성되어있어서  그상태로  setProjectNo(1)을하게되면
-		// 이미 생성된 객체엔 접근할수가없어서 새로 객체생성후 로직실행
-		ScheduleDTO schedule = new ScheduleDTO();
-		
-		schedule.setProjectNo(1);  //  후에 프로젝트넘버 가져오기
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
 		
 		
-		schedule.setTitle(inputSchedule.getTitle());
-		schedule.setStart(inputSchedule.getStart());
-		schedule.setEnd(inputSchedule.getEnd());
+		// 비어있는지 체크
+		boolean emptyCheckResult = DataValidation.emptyOneCheck(inputSchedule.getTitle());
 		
+		// 입력한 내용들이 일정 범위를 넘어가는지 조회
+		boolean validationResult =  DataValidation.CheckOneLength(inputSchedule.getTitle(), 40);
 		
-		Date startDate = new Date(schedule.getStart());
-		Date endDate = new Date(schedule.getEnd());
+		System.out.println("비어있는지 체크 : "+ emptyCheckResult);
+		System.out.println("범위넘어가는지 체크 : "+ validationResult);
 		
-		
-		// 월에서 일정작성하는것과  일단위로 시간 포함 일정작성 하는것 구별
-		SimpleDateFormat simple;
-		
-		if(startDate.toString().substring(11, 16).equals("00:00")) {
-			simple = new SimpleDateFormat("yyyy-MM-DD");
-		}else {
-			simple = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+		if(emptyCheckResult && validationResult) {
+			
+			// 파라미터 가져올때 객체가 생성되어있어서  그상태로  setProjectNo(1)을하게되면
+			// 이미 생성된 객체엔 접근할수가없어서 새로 객체생성후 로직실행
+			ScheduleDTO schedule = new ScheduleDTO();
+			
+			schedule.setProjectNo(getProjectNo);  //  후에 프로젝트넘버 가져오기
+			
+			
+			schedule.setTitle(inputSchedule.getTitle());
+			schedule.setStart(inputSchedule.getStart());
+			schedule.setEnd(inputSchedule.getEnd());
+			
+			Date startDate = new Date(schedule.getStart());
+			Date endDate = new Date(schedule.getEnd());
+			
+			// 월에서 일정작성하는것과  일단위로 시간 포함 일정작성 하는것 구별
+			SimpleDateFormat simple;
+			
+			if(startDate.toString().substring(11, 16).equals("00:00")) {
+				simple = new SimpleDateFormat("yyyy-MM-dd");
+			}else {
+				simple = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			}
+			
+			schedule.setStart(simple.format(startDate));
+			schedule.setEnd(simple.format(endDate));
+			
+			int result = colaboService.scheduleEnroll(schedule);
+			
+			if(result == 1) {
+				return "success";
+			}else {
+				return "failed";
+			}
 		}
 		
-		schedule.setStart(simple.format(startDate));
-		schedule.setEnd(simple.format(endDate));
 		
-		int result = colaboService.scheduleEnroll(schedule);
-		
-		if(result == 1) {
-			return "success";
-		}else {
-			return "failed";
-		}
+		return "failed";
 		
 	}
 	
@@ -273,9 +633,9 @@ public class ColaboMainController {
 		SimpleDateFormat simple;
 		
 		if(startDate.toString().substring(11, 16).equals("00:00")) {
-			simple = new SimpleDateFormat("yyyy-MM-DD");
+			simple = new SimpleDateFormat("yyyy-MM-dd");
 		}else {
-			simple = new SimpleDateFormat("yyyy-MM-DD HH:mm");
+			simple = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		}
 		
 		schedule.setProjectNo(1);   // 프로젝트넘버 나중에 가져와서 변경하기
@@ -285,21 +645,22 @@ public class ColaboMainController {
 		
 		int result = colaboService.scheduleDelete(schedule);
 		
-		
 		if (result > 0) {
-			return "성공";
+			return "success";
 		}else {
-			return "실패";
+			return "failed";
 		}
 		
 	}
 	
 	@PostMapping("/SkillChart.do")
 	@ResponseBody
-	public ArrayList<Map<String, Object>> SkillChartGet() {
+	public ArrayList<Map<String, Object>> SkillChartGet(HttpSession session) {
+		
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
 		
 		SkillChartDTO skillChart = new SkillChartDTO();
-		skillChart.setProjectNo(1); // 프로젝트 넘버 가져와서 수정
+		skillChart.setProjectNo(getProjectNo); // 프로젝트 넘버 가져와서 수정
 		
 		ArrayList<Map<String, Object>> list = new ArrayList<>();
 		
@@ -324,42 +685,53 @@ public class ColaboMainController {
 	// 처음에 skillChart 에 데이터를 넣을때  0~~100 에 해당하는 수만 넣게끔해놨기때문
 	@PostMapping("/allSkillChart.do")
 	@ResponseBody
-	public HashMap<String, Object> allSkillChartGet() {
+	public HashMap<String, Object> allSkillChartGet(HttpSession session) {
+		
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
 		
 		SkillChartDTO skillChart = new SkillChartDTO();
-		skillChart.setProjectNo(1); // 프로젝트 넘버 가져와서 수정
+		skillChart.setProjectNo(getProjectNo); // 프로젝트 넘버 가져와서 수정
 		
 		HashMap<String, Object> list = colaboService.allSkillChartGet(skillChart);
 		
 		// front back 을 합치고 평균을 낸 전체 달성도 변수
-		double allResult;
-		
-		if(list.get("front") != null && list.get("back") != null) {
+		double allResult = 0;
+		if(list != null) {
 			
-			allResult = Math.ceil(((double)list.get("front")+(double)list.get("back"))/2);
-		}else if(list.get("front") == null) {
-			allResult = Math.ceil((double)list.get("back")/2);
+			if(list.get("front") != null && list.get("back") != null) {
+				System.out.println(list.get("front"));
+				
+				allResult = Math.ceil(((double)list.get("front")+(double)list.get("back"))/2);
+			}else if(list.get("front") == null && list.get("back") != null) {
+				allResult = Math.ceil((double)list.get("back")/2);
+				
+			}else if(list.get("back") == null && list.get("front") != null) {
+				allResult = Math.ceil((double)list.get("front")/2);
+				
+			}else {
+				allResult = 0;
+			}
 			
-		}else if(list.get("back") == null) {
-			allResult = Math.ceil((double)list.get("back")/2);
-			
+			list.put("allResult", allResult);
+			return list;
 		}else {
-			allResult = 0;
+			list.put("front", 0);
+			list.put("back", 0);
+			list.put("allResult", 0);
+			return list;
+			
 		}
-		
-		list.put("allResult", allResult);
-//		
-		
-		return list;
 	}
 	
 	// 프로젝트 참가인원들 가져오기  (기능추가 하기위함)
 	@PostMapping("/getProjectMember.do")
 	@ResponseBody
-	public ArrayList<Map<String,Object>> getProjectMember() {
+	public ArrayList<Map<String,Object>> getProjectMember(HttpSession session) {
+		
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
 		
 		TeamProjectPerSonDTO teamProject = new TeamProjectPerSonDTO();
-		teamProject.setProjectNo(1); // 프로젝트넘버 가져와서 교체
+		teamProject.setProjectNo(getProjectNo); // 프로젝트넘버 가져와서 교체
 		
 		ArrayList<Map<String,Object>> list = new ArrayList<>();
 		
@@ -380,10 +752,12 @@ public class ColaboMainController {
 	// 기능 입력된인원들 가져오기 (기능 수정하기위함) 
 	@PostMapping("/getSkillMember.do")
 	@ResponseBody
-	public ArrayList<Map<String,Object>> getSkillMember() {
+	public ArrayList<Map<String,Object>> getSkillMember(HttpSession session) {
+		
+		int getProjectNo = (int)session.getAttribute("getProjectNo");
 		
 		SkillChartDTO skillChart = new SkillChartDTO();
-		skillChart.setProjectNo(1); // 프로젝트넘버 가져와서 교체
+		skillChart.setProjectNo(getProjectNo); // 프로젝트넘버 가져와서 교체
 		
 		ArrayList<Map<String,Object>> list = new ArrayList<>();
 		
@@ -469,6 +843,18 @@ public class ColaboMainController {
 		
 	}
 	
+	
+	@PostMapping("/selectEmailMember.do")
+	@ResponseBody
+	public List<ColaboDTO> selectEmailMember(@RequestParam("selectText")String selectText) {
+		
+		
+		List<ColaboDTO> list = colaboService.selectEmailMember(selectText);
+		
+		System.out.println(selectText);
+		
+		return list;
+	}
 	
 	
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
  <!-- Sidebar Start -->
     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
@@ -33,30 +34,29 @@
               <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
               <span class="hide-menu">프로젝트 목록</span>
             </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link warning-hover-bg"
-                href="./authentication-login.html"
-                aria-expanded="false"
-              >
-                <span class="aside-icon p-2 bg-light-warning rounded-3">
-                  <i class="ti ti-login fs-7 text-warning"></i>
-                </span>
-                <span class="hide-menu ms-2 ps-1">~~~프로젝트</span>
-              </a>
-            </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link danger-hover-bg"
-                href="./authentication-register.html"
-                aria-expanded="false"
-              >
-                <span class="aside-icon p-2 bg-light-danger rounded-3">
-                  <i class="ti ti-user-plus fs-7 text-danger"></i>
-                </span>
-                <span class="hide-menu ms-2 ps-1">!!!@~프로젝트</span>
-              </a>
-            </li>
+            
+            
+            <div>
+            	<c:forEach var="item" items="${sessionScope.projectList}">
+		            <li class="sidebar-item">
+		              <a
+		                class="sidebar-link sidebar-link warning-hover-bg"
+		                href="#" onclick="projectSession(${item.projectNo})"
+		                aria-expanded="false"
+		              >
+		                <span class="aside-icon p-2 bg-light-warning rounded-3">
+		                  <i class="ti ti-login fs-7 text-warning"></i>
+		                </span>
+		                <div>
+		                <span class="hide-menu ms-2 ps-1" >${item.projectName} 프로젝트 </span>
+		                </div>
+		              </a>
+		            </li>
+	            </c:forEach>
+            </div>
+	            
+	            
+	            
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
               <span class="hide-menu">협업프로젝트</span>
@@ -112,7 +112,7 @@
             <li class="sidebar-item">
               <a
                 class="sidebar-link sidebar-link primary-hover-bg"
-                href="./ui-forms.html"
+                href="/colabo/projectEditForm"
                 aria-expanded="false"
               >
                 <span class="aside-icon p-2 bg-light-primary rounded-3">
@@ -198,3 +198,26 @@
       <!-- End Sidebar scroll-->
     </aside>
     <!--  Sidebar End -->
+    
+    <script>
+    	function projectSession(no){
+    		console.log(no);
+    		
+    		$.ajax({
+    			url: '/colabo/getProjectSession.do',
+    			type: 'post',
+    			data: {
+    				projectNo: no
+    			},
+    			success: function(data) {
+    				window.location.href = "/colabo/colaboBasicPage";
+    			},
+    			error: function(err) {
+
+    			}
+    		});
+    		
+    	}
+    </script>
+    
+    

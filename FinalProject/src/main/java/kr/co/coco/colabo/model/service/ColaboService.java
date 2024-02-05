@@ -60,6 +60,32 @@ public interface ColaboService {
 	
 	// 전체 skillChart (front, back) 퍼센트 가져오기
 	public HashMap<String, Object> allSkillChartGet(SkillChartDTO skillChart);
+	
+	// ------------------------프로젝트 생성관련 -----
+	
+	// 프로젝트 생성시 생성멤버 이름과 No 가져오기
+	public ColaboDTO getMemberName(ColaboDTO colabo);
+	
+	// 프로젝트 생성 
+	public int projectEnroll(ColaboDTO colabo);
+	
+	// 프로젝트 수정을위해 페이지 가기전 프로젝트넘버를 이용해 해당프로젝트의 컨텐츠들을 가져옴
+	public ColaboDTO getProjectContent(int projectNo);
+	
+	// 프로젝트 수정
+	public int projectEdit(ColaboDTO colabo);
+	
+	// 프로젝트 삭제
+	public int projectDelete(ColaboDTO colabo);
+	
+	// 프로젝트 수정삭제시 프로젝트생성한 멤버넘버 가져오기
+	public int getProjectCreateMember(int projectNo);
+	
+	// 가입되어있는 프로젝트 리스트 (프로젝트넘버, 프로젝트 이름) 들 가져오기 멤버세션사용
+	public List<ColaboDTO> getProjectNameNumberList(int memberNo);
+	
+	// 기본개요 홈페이지에서 이메일로 검색후 인원 초대하기 
+	public List<ColaboDTO> selectEmailMember(String selectText);
 }
 
 

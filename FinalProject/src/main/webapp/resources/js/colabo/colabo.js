@@ -182,7 +182,54 @@ document.addEventListener('DOMContentLoaded', function() {
  });
 
 
-
+function selectEmailMember(){
+	let selectMemberInput = document.getElementById("selectMemberInput").value;
+	let inviteListUl = document.getElementById("inviteListUl");
+	
+	inviteListUl.textContent = "";
+	
+	
+	$.ajax({
+        type:'post',
+        url:'/colabo/selectEmailMember.do',
+		data: {
+			selectText : selectMemberInput
+		},
+        dataType: "json",
+        success: function(data){   //요청 성공시 실행될 메서드
+			console.log(data);
+//			inviteListUl.removeAttribute();
+			for(let i=0; i<data.length; i++){
+				let list=document.createElement("li");
+					list.textContent = data[i].memberEmail+'-'+data[i].memberName;
+					list.value = data[i].memberNo;
+					inviteListUl.appendChild(list);
+					
+				let inviteBtn = document.createElement("button");
+					inviteBtn.value = data[i].memberNo;
+					inviteBtn.textContent = data[i].memberName+ '님 초대';
+					inviteBtn.setAttribute('type','button');
+					inviteBtn.setAttribute('class','btn btn-outline-primary');
+					inviteBtn.addEventListener("click", function(){
+						// 동적으로 생성된 리스트에 버튼을누르면 해당 멤버의 idx 값을 가져옴
+						// 이걸로 채팅구현 후 초대메시지 보내기 로직추가
+						console.log(inviteBtn.value);
+					
+					})
+					
+					
+					inviteListUl.appendChild(inviteBtn);
+					
+			}
+			
+			
+	    },
+	    error:function(){		 //요청 실패시 에러 확인을 위함
+	    }
+	})
+	
+	
+}
 
 
 

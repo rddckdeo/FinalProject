@@ -77,13 +77,13 @@
 						<canvas id="barExample" style="width: 500px; height: 500px; display:inline; float:left;"></canvas>
 						<div style="float:left; margin-left:100px; margin-top:100px;">
 							<h4>전체 진행도</h4>
-							<p class="fs-3 fw-normal mb-0 text-success" id="allPercent" style="display:block;">asdasd</p>
+							<p class="fs-3 fw-normal mb-0 text-success" id="allPercent" style="display:block;"></p>
 							<br><br>
 							<h4>front 진행도</h4>
-							<p class="fs-3 fw-normal mb-0 text-success" id="frontPercent" style="display:block;">asdasd</p>
+							<p class="fs-3 fw-normal mb-0 text-success" id="frontPercent" style="display:block;"></p>
 							<br><br>
 							<h4>back 진행도</h4>
-							<p class="fs-3 fw-normal mb-0 text-success" id="backPercent" style="display:block;">asdasd</p>
+							<p class="fs-3 fw-normal mb-0 text-success" id="backPercent" style="display:block;"></p>
 						</div>
 					</div>
                 </div>
@@ -177,6 +177,14 @@
                     </tbody>
                   </table>
                 </div>
+                
+                	<h5 class="mb-0 fw-bold">팀원 초대하기 이메일로 검색</h5>
+                	<br>
+            		<input type="text" id="selectMemberInput" onkeyup="selectEmailMember()">
+            		<ul id="inviteListUl">
+            		
+            		</ul>
+            
               </div>
             </div>
           </div>
