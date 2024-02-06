@@ -119,6 +119,10 @@
 .noMargin{
     margin: 0 !important;
 }
+.Margin5{
+    margin-right: 5px;
+    margin-left: 5px;
+}
 .Margin10{
     margin-right: 10px;
     margin-left: 10px;
@@ -139,6 +143,9 @@
 }
 .topMargin20{
     margin-top: 20px;
+}
+.topMargin50{
+    margin-top: 50px;
 }
 .bottomMargin10{
     margin-bottom: 10px;
@@ -198,7 +205,10 @@
     border-radius: 0.5rem;
 }
 .borderRadiusd2{
-    border-radius: 1rem;
+    border-radius: 1rem !important;
+}
+.borderRadiusd3{
+    border-radius: 2rem !important;
 }
 
 .borderNone{

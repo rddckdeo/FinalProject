@@ -130,6 +130,9 @@
     text-align: center;
 }
 
+.ulSize{
+	height:210px;
+}
 /* 페이지 네이션 */
 .pagination {
     display: flex;
