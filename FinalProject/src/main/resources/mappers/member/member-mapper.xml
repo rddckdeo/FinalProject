@@ -61,4 +61,16 @@
 		UPDATE MEMBER SET M_LOGIN_DATE = SYSDATE WHERE M_NO = #{no}
 	</update>
 	
+	<!-- admin Page List -->
+	<select id="visitList" resultMap="memberResultSet">
+		SELECT * FROM MEMBER WHERE M_DELETE_DATE IS NULL
+		AND M_LOGIN_DATE IS NOT NULL 
+		AND TRUNC(M_LOGIN_DATE) = TRUNC(SYSDATE) 
+		ORDER BY M_LOGIN_DATE DESC
+	</select>
+	<select id="selectVisitList" resultType="int">
+		SELECT COUNT(M_NO) FROM MEMBER WHERE M_DELETE_DATE IS NULL
+		AND M_LOGIN_DATE IS NOT NULL
+		AND TRUNC(M_LOGIN_DATE) = TRUNC(SYSDATE)
+	</select>
 </mapper>
