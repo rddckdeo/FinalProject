@@ -1,106 +1,156 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="freeMapper"> 
+<mapper namespace="colaboMapper"> 
 
-	<resultMap type="free" id="freeResultSet">
-		<result column="FREE_IDX" property="idx"/>
-		<result column="FREE_TITLE" property="title"/>
-		<result column="FREE_CONTENT" property="content"/>
-		<result column="FREE_WRITER" property="writer"/>
-		<result column="FREE_INDATE" property="indate"/>
-		<result column="FREE_VIEWS" property="views"/>
+	<resultMap type="colabo" id="colaboResultSet">
+		<result column="P_NOTICE_NO" property="noticeNo"></result>
+		<result column="P_NOTICE_TITLE" property="noticeTitle"></result>
+		<result column="P_NOTICE_CONTENT" property="noticeContent"></result>
+		<result column="P_NOTICE_UPLOAD_PATH" property="uploadPath"></result>
+		<result column="P_NOTICE_UPLOAD_NAME" property="uploadName"></result>
+		<result column="P_NOTICE_UPLOAD_ORIGIN_NAME" property="uploadOriginName"></result>
+		<result column="P_NOTICE_DATE" property="noticeDate"></result>
+		<result column="P_NOTICE_VIEWS" property="noticeViews"></result>
+		<result column="P_NO" property="no"></result>
+		<result column="P_NAME" property="name"></result>
+		<result column="M_NO" property="memberNo"></result>
+		<result column="M_NAME" property="memberName"></result>
 	</resultMap>
 	
-	<select id="selectFileName" resultType="String">
-		SELECT upload_name FROM free
-		WHERE free_idx = #{idx}
+	<resultMap type="schedule" id="scheduleResultSet">
+		<result column="P_NO" property="projectNo"></result>
+		<result column="PS_CONTENT" property="title"></result>
+		<result column="PS_START" property="start"></result>
+		<result column="PS_END" property="end"></result>
+	</resultMap>
+	
+	<resultMap type="skillChart" id="skillChartResultSet">
+		<result column="P_NO" property="projectNo"></result>
+		<result column="M_NO" property="memberNo"></result>
+		<result column="M_NAME" property="memberName"></result>
+		<result column="M_EMAIL" property="memberEmail"></result>
+		<result column="PM_SKILL_NAME" property="pmSkillName"></result>
+		<result column="PM_SKILL_FULL" property="pmSkillFull"></result>
+		<result column="PM_SKILL_COLOR" property="pmSkillColor"></result>
+		<result column="PM_SKILL_CATEGORY" property="pmSkillCategory"></result>
+	</resultMap>
+	
+	<resultMap type="projectMember" id="projectMemberResultSet">
+		<result column="P_NO" property="projectNo"></result>
+		<result column="M_NO" property="memberNo"></result>
+		<result column="M_NAME" property="memberName"></result>
+		<result column="M_EMAIL" property="memberEmail"></result>
+		<result column="TEAM_ENROLL_DATE" property="teamEnrollDate"></result>
+	</resultMap>
+	
+	<select id="frontSkillAvg" parameterType="skillChart" resultType="Double">
+		SELECT AVG(PM_SKILL_FULL)  FROM COLABO_SKILL_COMPLETE csc
+		WHERE P_NO = #{projectNo}
+		AND PM_SKILL_CATEGORY = #{front}
 	</select>
 	
-	<select id="selectWriter" resultType="String">
-		SELECT free_writer FROM free
-		WHERE free_idx = #{idx}
+	<select id="backSkillAvg" parameterType="skillChart" resultType="Double">
+		SELECT AVG(PM_SKILL_FULL)  FROM COLABO_SKILL_COMPLETE csc
+		WHERE P_NO = #{projectNo}
+		AND PM_SKILL_CATEGORY = #{back}
 	</select>
 	
-	<delete id="deleteBoard">
-		DELETE FROM free
-		WHERE free_idx = #{idx}
+	
+	<delete id="deleteSkillList" parameterType="skillChart">
+		DELETE FROM COLABO_SKILL_COMPLETE
+		WHERE P_NO = #{projectNo}
+		AND M_EMAIL = #{memberEmail}
+		AND PM_SKILL_NAME = #{pmSkillName}
 	</delete>
 	
-	<update id="editBoard" parameterType="free">
-		UPDATE free SET free_title = #{title},
-						free_content = #{content},
-						upload_path = #{uploadPath},
-						upload_name = #{uploadName},
-						upload_origin_name = #{uploadOriginName}
-					WHERE free_idx = #{idx}
+	
+	<update id="editSkillList" parameterType="skillChart">
+		UPDATE COLABO_SKILL_COMPLETE SET PM_SKILL_FULL = #{pmSkillFull}
+									WHERE P_NO = #{projectNo}
+									AND M_EMAIL = #{memberEmail}
+									AND PM_SKILL_NAME = #{pmSkillName}
 	</update>
 	
-	<update id="editBoardEmptyUpload" parameterType="free">
-		UPDATE free SET free_title = #{title},
-						free_content = #{content}
-					WHERE free_idx = #{idx}
-	</update>
-	
-	<update id="views" parameterType="free">
-			UPDATE free SET free_views = #{views}
-						WHERE free_idx = #{idx}
-	</update>
-	
-	<select id="detailBoard" resultMap="freeResultSet">
-		SELECT * FROM free
-		WHERE free_idx = #{idx}
+	<select id="getSkillMember" parameterType="skillChart" resultMap="skillChartResultSet">
+		SELECT * FROM COLABO_SKILL_COMPLETE
+		WHERE P_NO = #{projectNo}
 	</select>
 	
-	
-	<insert id="enrollBoard" parameterType="board">
-		INSERT INTO free VALUES(seq_free_idx.NEXTVAL,
-								#{title},
-								#{content},
-								#{writer},
-								SYSDATE,
-								0,
-								#{uploadPath},
-								#{uploadName},
-								#{uploadOriginName})
+	<insert id="enrollSkillList" parameterType="skillChart">
+		INSERT INTO COLABO_SKILL_COMPLETE
+		VALUES (#{projectNo},#{memberNo},#{memberName},
+				#{memberEmail},#{pmSkillName},#{pmSkillFull},
+				#{pmSkillColor},#{pmSkillCategory})
 	</insert>
 	
-	<select id="selectListAll" parameterType="board" resultMap="freeResultSet">
-		SELECT * FROM free
-		
-		<choose>
-			<when test="searchCategory.equals('content')">
-				WHERE free_content LIKE '%' || #{searchText} || '%'
-			</when>
-			<when test="searchCategory.equals('title')">
-				WHERE free_title LIKE '%' || #{searchText} || '%'
-			</when>
-			<when test="searchCategory.equals('writer')">
-				WHERE free_writer LIKE '%' || #{searchText} || '%'
-			</when>
-		</choose>
-		
-		ORDER BY FREE_IDX DESC
+	<select id="getProjectMember" parameterType="projectMember" resultMap="projectMemberResultSet">
+		SELECT * FROM COLABO_PERSON 
+		WHERE P_NO = #{projectNo}
 	</select>
-
-								<!-- int : integer 로반환 _int : int 로반환 -->
-	<select id="selectListCount" parameterType="board" resultType="_int">  
-		SELECT COUNT(*) FROM free
-		
-		<choose>
-			<when test="searchCategory.equals('content')">
-				WHERE free_content LIKE '%' || #{searchText} || '%'
-			</when>
-			<when test="searchCategory.equals('title')">
-				WHERE free_title LIKE '%' || #{searchText} || '%'
-			</when>
-			<when test="searchCategory.equals('writer')">
-				WHERE free_writer LIKE '%' || #{searchText} || '%'
-			</when>
-		</choose>
-		
-		
+	
+	<select id="skillChartGet" parameterType="skillChart" resultMap="skillChartResultSet">
+		SELECT * FROM COLABO_SKILL_COMPLETE
+		WHERE P_NO = #{projectNo}
 	</select>
+	
+	
+	<delete id="scheduleDelete" parameterType="schedule">
+		DELETE FROM PROJECT_SCHEDULE
+		WHERE P_NO = #{projectNo}
+		AND PS_CONTENT = #{title}
+		AND PS_START = #{start}
+		AND PS_END = #{end}
+	</delete>
+	
+	
+	<select id="scheduleIO" resultMap="scheduleResultSet">
+		SELECT * FROM PROJECT_SCHEDULE
+		WHERE P_NO = #{projectNo}
+	</select>
+	
+	<insert id="scheduleEnroll" parameterType="schedule">
+		INSERT INTO PROJECT_SCHEDULE
+				 VALUES (#{projectNo},#{title},#{start},#{end})
+	</insert>
+	
+	
+	<insert id="noticeEnroll">
+		INSERT INTO PROJECT_NOTICE (P_NOTICE_NO, P_NOTICE_TITLE, P_NOTICE_CONTENT, P_NOTICE_VIEWS, M_NO, P_NO )
+							VALUES (p_notice_no_seq.nextval, #{noticeTitle}, #{noticeContent}, 0, #{memberNo}, #{no})
+	</insert>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*) FROM PROJECT_NOTICE 
+		WHERE P_NO = #{no}
+	</select>
+	
+	<select id="selectListAll" resultMap="colaboResultSet">
+		SELECT * FROM PROJECT_NOTICE pn
+		JOIN MEMBER m
+		ON m.M_NO = pn.M_NO 
+		JOIN COLABO c 
+		ON pn.P_NO = c.P_NO 
+		WHERE pn.P_NO = #{no}
+		ORDER BY pn.P_NOTICE_DATE DESC 
+	</select>
+	
+	<select id="noticeDetail" resultMap="colaboResultSet">
+		SELECT * FROM PROJECT_NOTICE
+		WHERE P_NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<delete id="noticeDelete">
+		DELETE FROM PROJECT_NOTICE
+		WHERE P_NOTICE_NO = #{noticeNo} 
+	</delete>
+	
+	<update id="noticeEdit">
+		UPDATE PROJECT_NOTICE SET P_NOTICE_TITLE = #{noticeTitle},
+								P_NOTICE_CONTENT = #{noticeContent}
+						WHERE P_NOTICE_NO = #{noticeNo}
+	</update>
+	
 	
 </mapper>
 

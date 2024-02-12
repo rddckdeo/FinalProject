@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="InfoCommentMapper">
+
+	<!-- 댓글 저장 -->
+<insert id="insertComment" parameterType="infoComment">
+    <selectKey keyProperty="infoCommentNo" resultType="int" order="BEFORE">
+        SELECT info_comment_no_seq.NEXTVAL FROM dual
+    </selectKey>
+    INSERT INTO info_comment (
+        info_comment_no,
+        info_no,
+        m_no,
+        info_comment_content,
+        info_comment_date,
+        info_comment_blind,
+        info_comment_writer
+    ) VALUES (
+        #{infoCommentNo},
+        #{infoNo},
+        #{mNo},
+        #{infoCommentContent},
+        SYSDATE,
+        'N',
+        #{infoCommentWriter}
+    )
+</insert>
+
+<!-- 댓글 등록 시, info_comment_count 업데이트  -->
+<update id="increaseCommentCount" parameterType="int">
+    UPDATE info
+    SET info_comment_count = info_comment_count + 1
+    WHERE info_no = #{infoNo}
+</update>
+
+
+	<!-- 댓글 목록 불러오기 -->
+	<select id="selectCommentsByPostId" parameterType="int"
+		resultType="infoComment">
+		SELECT
+		ic.info_comment_no AS infoCommentNo,
+		ic.info_no AS infoNo,
+		ic.m_no AS mNo,
+		ic.info_comment_content AS infoCommentContent,
+		ic.info_comment_date AS infoCommentDate,
+		m.m_nickname AS nickname
+		FROM
+		info_comment ic
+		JOIN
+		member m ON ic.m_no = m.m_no
+		WHERE
+		ic.info_no = #{infoNo}
+	</select>
+
+
+	<!-- 사용자 닉네임 불러오기 -->
+	<select id="getNickname" parameterType="int" resultType="string">
+		SELECT
+		m_nickname FROM member WHERE m_no = #{mNo}
+	</select>
+
+	<!-- 새로고침 없이 댓글 수 업데이트 -->
+	<select id="countComments" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM info_comment WHERE info_no = #{infoNo}
+	</select>
+
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM
+		info_comment WHERE info_comment_no = #{id}
+	</delete>
+
+	<!-- 댓글 번호로 댓글 정보 가져오기 -->
+	<select id="getCommentById" parameterType="int"
+		resultType="infoComment">
+		SELECT * FROM info_comment WHERE info_comment_no = #{info_comment_no}
+	</select>
+
+
+	<!-- 댓글 번호로 게시글 번호 가져오기 -->
+	<select id="getInfoNoFromComment" resultType="int"
+		parameterType="int">
+		SELECT info_no FROM info_comment WHERE info_comment_no = #{infoCommentNo}
+	</select>
+
+
+
+</mapper>  

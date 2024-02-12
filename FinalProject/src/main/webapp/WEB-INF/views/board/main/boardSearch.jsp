@@ -11,7 +11,8 @@
 	href="../../../../resources/css/board/common/template.css" />
 <link rel="stylesheet"
 	href="../../../../resources/css/board/main/search.css" />
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
 <body>
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
@@ -32,7 +33,10 @@
 
 				<div class="container-fluid">
 					<div class="container-fluid">
-						<p class="search-text">''에 대한 검색결과 입니다.</p>
+						<p class="search-text">
+							<c:out value="${query}" />
+							에 대한 검색결과 입니다.
+						</p>
 					</div>
 				</div>
 
@@ -52,14 +56,15 @@
 										<button class="nav-link dropdown-toggle toggle-btn" href="#"
 											id="dropdownMenuButton" role="button"
 											data-bs-toggle="dropdown" aria-expanded="false">
-											<img class="sort-img" src="../../../../resources/uploads/icon/Sort.png"
-												alt=""> 정렬 </ㅠ>
-											<ul class="dropdown-menu"
-												aria-labelledby="dropdownMenuButton">
-												<li><a class="dropdown-item" href="#">최신순</a></li>
-												<li><a class="dropdown-item" href="#">댓글순</a></li>
-												<li><a class="dropdown-item" href="#">조회순</a></li>
-											</ul>
+											<img class="sort-img"
+												src="../../../../resources/uploads/icon/Sort.png" alt="">
+											정렬
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+											<li><a class="dropdown-item" href="#">최신순</a></li>
+											<li><a class="dropdown-item" href="#">댓글순</a></li>
+											<li><a class="dropdown-item" href="#">조회순</a></li>
+										</ul>
 									</li>
 								</div>
 
@@ -75,163 +80,102 @@
 							<div class="card">
 								<h1 class="card-project-name">정보 게시판</h1>
 								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
+								<c:choose>
+									<c:when test="${infoPosts == null || infoPosts.size() == 0}">
+										<p
+											style="text-align: center; font-size: 18px; margin: 10px 0px 10px 0px;">등록된
+											게시물이 없습니다.</p>
+									</c:when>
+									<c:otherwise>
+										<!-- 게시글 -->
+										<c:forEach var="post" items="${infoPosts}">
 
-									</div>
-									<div class="main-boardList-title">
-										<a
-											href="file:///Users/kangnayoung/front/COCO/views/infoBoard/infoBoardDtail.html">제목</a>
-									</div>
-									<div class="main-boardList-bottm-div">
+											<div class="main-boardList">
+												<div class="main-boardList-info">
+													<div>
+														<a href="#"><img
+															src="../../../../resources/uploads/member/기본프로필.png"
+															alt="프로필" width="30" height="30"
+															class="main-boardList-user-img"></a>
+														<p class="main-boardList-info-text">${post.nickname}</p>
+														<p class="main-boardList-info-text">|</p>
+														<p class="main-boardList-info-text">${post.infoDate}</p>
+													</div>
 
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
-											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-project-hr-div">
-									<hr class="card-project-hr">
-								</div>
-								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
+												</div>
+												<div class="main-boardList-title">
+													<a href="/info/infoDtail/${post.infoNo}">${post.infoTitle}</a>
+												</div>
 
-									</div>
-									<div class="main-boardList-title">제목</div>
-									<div class="main-boardList-bottm-div">
+												<div class="main-boardList-bottm-div">
 
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
-											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-project-hr-div">
-									<hr class="card-project-hr">
-								</div>
-								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
+													<div class="main-boardList-tag">
+														<c:if
+															test="${post.infoTag1 != null && !empty post.infoTag1}">
+															<p class="tag-div">#${post.infoTag1}</p>
+														</c:if>
+														<c:if
+															test="${post.infoTag2 != null && !empty post.infoTag2}">
+															<p class="tag-div">#${post.infoTag2}</p>
+														</c:if>
+														<c:if
+															test="${post.infoTag3 != null && !empty post.infoTag3}">
+															<p class="tag-div">#${post.infoTag3}</p>
+														</c:if>
+													</div>
 
-									</div>
-									<div class="main-boardList-title">제목</div>
-									<div class="main-boardList-bottm-div">
+													<div class="main-comment-section">
+														<div class="main-project-comment">
+															<img src="../../../../resources/uploads/icon/message.png"
+																alt="message" width="20" height="20"
+																class="main-project-comment-text">
+															<p class="main-project-comment-text">${post.commentCount}</p>
+														</div>
+														<div class="main-project-comment">
+															<img src="../../../../resources/uploads/icon/views.png"
+																alt="views" width="20" height="20"
+																class="main-project-comment-text">
+															<p class="main-project-comment-text">${post.infoViews}</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="card-project-hr-div">
+												<hr class="card-project-hr">
+											</div>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
 
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
-											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-project-hr-div">
-									<hr class="card-project-hr">
-								</div>
-								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
-
-									</div>
-									<div class="main-boardList-title">제목</div>
-									<div class="main-boardList-bottm-div">
-
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
-											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
-											</div>
-										</div>
-									</div>
-								</div>
 								<!-- 페이지네이션 -->
-								<div class="pagination">
-									<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-										href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a>
-									<a href="#">&gt;</a>
+								<div class="pagination" id="pagination">
+									<div>
+										<c:if test="${infoPage != 1}">
+											<a
+												href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage - 1}&pageSize=${pageSize}">&lt;</a>
+										</c:if>
+
+										<c:forEach var="i" begin="1" end="${totalPages}">
+											<c:choose>
+												<c:when test="${i == infoPage}">
+													<a
+														href="/board/search?query=${query}&freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}"
+														class="active">${i}</a>
+												</c:when>
+												<c:otherwise>
+													<a
+														href="/board/search?query=${query}&freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}">${i}</a>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+
+										<c:if test="${infoPage != totalPages}">
+											<a
+												href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage + 1}&pageSize=${pageSize}">&gt;</a>
+										</c:if>
+									</div>
 								</div>
+
 
 							</div>
 						</div>
@@ -245,163 +189,93 @@
 							<div class="card">
 								<h1 class="card-project-name">자유 게시판</h1>
 								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
-
-									</div>
-									<div class="main-boardList-title">
-										<a
-											href="file:///Users/kangnayoung/front/COCO/views/infoBoard/infoBoardDtail.html">제목</a>
-									</div>
-									<div class="main-boardList-bottm-div">
-
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
+								<c:choose>
+									<c:when test="${empty freePosts}">
+										<p
+											style="text-align: center; font-size: 18px; margin: 10px 0px 10px 0px;">등록된
+											게시물이 없습니다.</p>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="post" items="${freePosts}">
+											<div class="main-boardList">
+												<div class="main-boardList-info">
+													<div>
+														<a href="#"><img src="${post.profileImage}" alt=""
+															width="30" height="30" class="main-boardList-user-img"></a>
+														<a href="#" class="main-boardList-info-text">${post.nickname}</a>
+														<p class="main-boardList-info-text">|</p>
+														<p class="main-boardList-info-text">${post.postDate}</p>
+													</div>
+												</div>
+												<div class="main-boardList-title">
+													<a href="/free/freeDtail/${post.postNo}">${post.postTitle}</a>
+												</div>
+												<div class="main-boardList-bottm-div">
+													<div class="main-boardList-tag">
+														<c:if test="${post.tag1 != null && !empty post.tag1}">
+															<p class="tag-div">#${post.tag1}</p>
+														</c:if>
+														<c:if test="${post.tag2 != null && !empty post.tag2}">
+															<p class="tag-div">#${post.tag2}</p>
+														</c:if>
+														<c:if test="${post.tag3 != null && !empty post.tag3}">
+															<p class="tag-div">#${post.tag3}</p>
+														</c:if>
+													</div>
+													<div class="main-comment-section">
+														<div class="main-project-comment">
+															<img src="../../../../resources/uploads/icon/views.png"
+																alt="" width="20" height="20"
+																class="main-project-comment-text">
+															<p class="main-project-comment-text">${post.views}</p>
+														</div>
+														<div class="main-project-comment">
+															<img src="../../../../resources/uploads/icon/message.png"
+																" alt="" width="20" height="20"
+																class="main-project-comment-text">
+															<p class="main-project-comment-text">${post.commentCount}</p>
+														</div>
+													</div>
+												</div>
 											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
+											<div class="card-project-hr-div">
+												<hr class="card-project-hr">
 											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-project-hr-div">
-									<hr class="card-project-hr">
-								</div>
-								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
 
-									</div>
-									<div class="main-boardList-title">제목</div>
-									<div class="main-boardList-bottm-div">
 
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
-											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-project-hr-div">
-									<hr class="card-project-hr">
-								</div>
-								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
-
-									</div>
-									<div class="main-boardList-title">제목</div>
-									<div class="main-boardList-bottm-div">
-
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
-											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="card-project-hr-div">
-									<hr class="card-project-hr">
-								</div>
-								<!-- 게시글 -->
-								<div class="main-boardList">
-									<div class="main-boardList-info">
-										<div>
-											<a href="#"><img src="../../../dog-4390885_1280.jpg"
-												alt="" width="30" height="30"
-												class="main-boardList-user-img"></a> <a href="#"
-												class="main-boardList-info-text">닉네임</a>
-											<p class="main-boardList-info-text">|</p>
-											<p class="main-boardList-info-text">등록일</p>
-										</div>
-
-									</div>
-									<div class="main-boardList-title">제목</div>
-									<div class="main-boardList-bottm-div">
-
-										<div class="main-boardList-tag">
-											<p>#</p>
-											<p>#</p>
-											<p>#</p>
-										</div>
-										<div class="main-comment-section">
-											<div class="main-project-comment">
-												<img src="./image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">조회 수</p>
-											</div>
-											<div class="main-project-comment">
-												<img src="../../image/profile/message.png" alt="" width="20"
-													height="20" class="main-project-comment-text">
-												<p class="main-project-comment-text">댓글 수</p>
-											</div>
-										</div>
-									</div>
-								</div>
 								<!-- 페이지네이션 -->
-								<div class="pagination">
-									<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-										href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a>
-									<a href="#">&gt;</a>
+								<div class="pagination" id="pagination">
+									<div>
+										<c:if test="${freePage != 1}">
+											<a
+												href="/board/search?query=${query}&freePage=${freePage - 1}&infoPage=${infoPage}&pageSize=${pageSize}">&lt;</a>
+										</c:if>
+
+										<c:forEach var="i" begin="1" end="${totalPages}">
+											<c:choose>
+												<c:when test="${i == freePage}">
+													<a
+														href="/board/search?query=${query}&freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}"
+														class="active">${i}</a>
+												</c:when>
+												<c:otherwise>
+													<a
+														href="/board/search?query=${query}&freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}">${i}</a>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+
+										<c:if test="${freePage != totalPages}">
+											<a
+												href="/board/search?query=${query}&freePage=${freePage + 1}&infoPage=${infoPage}&pageSize=${pageSize}">&gt;</a>
+										</c:if>
+									</div>
 								</div>
+
+
 
 							</div>
 						</div>

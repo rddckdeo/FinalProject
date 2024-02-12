@@ -1,1 +1,221 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="freeMapper">
+
+	<!-- 게시물 등록 -->
+	<insert id="enrollBoard" parameterType="free">
+		INSERT INTO FREE (
+		free_no,
+		m_no,
+		free_title,
+		free_content,
+		free_category,
+		free_date,
+		free_views,
+		free_tag1,
+		free_tag2,
+		free_tag3,
+		free_blind,
+		free_comment_count
+		)
+		VALUES (
+		free_no_seq.NEXTVAL,
+		#{mNo},
+		#{freeTitle},
+		#{freeContent},
+		#{freeCategory},
+		SYSDATE,
+		0,
+		#{freeTag1},
+		#{freeTag2},
+		#{freeTag3},
+		'N',
+		0
+		)
+	</insert>
+
+
+	<!-- 게시글 상세 보기 진입 -->
+	<select id="getPostById" parameterType="int" resultType="free">
+		SELECT
+		f.free_no AS freeNo,
+		f.free_title AS freeTitle,
+		m.m_nickname AS
+		nickname,
+		f.free_content AS freeContent,
+		f.free_date AS freeDate,
+		f.free_views AS freeViews,
+		f.free_tag1 AS freeTag1,
+		f.free_tag2 AS
+		freeTag2,
+		f.free_tag3 AS freeTag3,
+		(SELECT COUNT(*) FROM free_comment
+		WHERE free_no = f.free_no) AS commentCount
+		FROM
+		FREE f
+		JOIN
+		member m ON
+		f.m_no = m.m_no
+		WHERE
+		f.free_no = #{freeNo}
+	</select>
+
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="free">
+		UPDATE FREE SET
+		free_title
+		= #{freeTitle},
+		free_content = #{freeContent},
+		free_category =
+		#{freeCategory},
+		free_tag1 = #{freeTag1},
+		free_tag2 = #{freeTag2},
+		free_tag3 = #{freeTag3},
+		free_update_date = SYSDATE
+		WHERE free_no =
+		#{freeNo}
+	</update>
+
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM FREE
+		WHERE
+		free_no = #{freeNo}
+	</delete>
+
+	<!-- 조회수 증가 -->
+	<update id="increaseViews" parameterType="int">
+		UPDATE FREE SET
+		free_views = free_views + 1 WHERE free_no = #{freeNo}
+	</update>
+
+	<select id="countPostsByCategory" parameterType="string"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM FREE
+		WHERE FREE_CATEGORY =
+		#{categoryName}
+	</select>
+
+	<!-- 카테고리별 게시글 조회 (페이징 처리) -->
+	<select id="getPostsByCategory" parameterType="map"
+		resultType="free">
+		SELECT f.*, member.m_nickname AS nickname,
+		COUNT(free_comment.free_comment_no) AS commentCount
+		FROM FREE f
+		JOIN
+		member ON f.m_no = member.m_no
+		LEFT JOIN free_comment ON f.free_no =
+		free_comment.free_no
+		WHERE f.FREE_CATEGORY = #{categoryName}
+		GROUP BY
+		f.free_no
+		HAVING row_number() over (order by f.FREE_DATE DESC) between
+		#{startIndex} +
+		1 and #{startIndex} + #{pageSize}
+	</select>
+
+
+<!-- 검색 결과 게시물 조회 -->
+<select id="searchPosts" parameterType="map"
+	resultType="free">
+    SELECT * FROM (
+        SELECT f.*, m.m_nickname, NVL((SELECT COUNT(*) FROM free_comment WHERE free_no = f.free_no), 0) AS commentCount,
+        row_number() over (order by f.FREE_DATE DESC) rnum
+        FROM FREE f
+        JOIN member m ON f.m_no = m.m_no
+        WHERE f.free_title LIKE '%' || #{query} || '%'
+        OR f.free_content LIKE '%' || #{query} || '%'
+    ) temp
+    WHERE rnum BETWEEN #{startIndex} AND #{endIndex}
+</select>
+
+
+	<!-- 해당 게시글에 연결된 모든 댓글 삭제 -->
+	<delete id="deleteByFreeNo">
+		DELETE FROM free_comment WHERE free_no = #{freeNo}
+	</delete>
+
+	<!-- 전체 게시글 조회 (페이징 처리) -->
+	<select id="getAllPosts" parameterType="map" resultType="free">
+		SELECT *
+		FROM (
+		SELECT f.*, m.M_NICKNAME AS nickname, row_number() over (order
+		by
+		f.FREE_DATE DESC) rnum
+		FROM FREE f
+		JOIN MEMBER m ON f.M_NO = m.M_NO
+		)
+		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
+
+	<!-- 게시글 정렬: 최신순 -->
+	<select id="selectPostsOrderByDate" resultType="free">
+		SELECT * FROM (
+		SELECT f.*, member.m_nickname AS nickname,
+		COALESCE(fc.commentCount, 0)
+		AS commentCount,
+		row_number() over (order by f.FREE_DATE DESC) rnum
+		FROM FREE f
+		JOIN member ON f.m_no = member.m_no
+		LEFT JOIN (
+		SELECT
+		free_no, COUNT(*) as commentCount
+		FROM free_comment
+		GROUP BY free_no
+		) fc
+		ON f.free_no = fc.free_no
+		WHERE f.FREE_CATEGORY = #{categoryName}
+		)
+		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
+
+
+	<!-- 게시글 정렬: 댓글 수별 -->
+	<select id="selectPostsOrderByComments" resultType="free">
+		SELECT * FROM
+		(
+		SELECT f.*, member.m_nickname AS nickname,
+		COALESCE(fc.commentCount,
+		0) AS commentCount,
+		row_number() over (order by
+		COALESCE(fc.commentCount, 0) DESC) rnum
+		FROM FREE f
+		JOIN member ON
+		f.m_no = member.m_no
+		LEFT JOIN (
+		SELECT free_no, COUNT(*) as
+		commentCount
+		FROM free_comment
+		GROUP BY free_no
+		) fc ON f.free_no =
+		fc.free_no
+		WHERE f.FREE_CATEGORY = #{categoryName}
+		) WHERE rnum between
+		#{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
+
+
+	<!-- 게시글 정렬: 조회 수별 -->
+	<select id="selectPostsOrderByViews" resultType="free">
+		SELECT * FROM (
+		SELECT f.*, member.m_nickname AS nickname,
+		COALESCE(fc.commentCount, 0)
+		AS commentCount,
+		row_number() over (order by f.FREE_VIEWS DESC) rnum
+		FROM FREE f
+		JOIN member ON f.m_no = member.m_no
+		LEFT JOIN (
+		SELECT
+		free_no, COUNT(*) as commentCount
+		FROM free_comment
+		GROUP BY free_no
+		) fc
+		ON f.free_no = fc.free_no
+		WHERE f.FREE_CATEGORY = #{categoryName}
+		)
+		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
+
+
+</mapper>

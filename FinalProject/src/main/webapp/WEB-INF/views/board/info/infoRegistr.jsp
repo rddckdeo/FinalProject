@@ -81,7 +81,7 @@
 												<input type="text" name="infoTag2" class="form-input-tag"
 													placeholder="태그를 입력해주세요">
 												<p class="form-input-tag-text">#</p>
-												<input type="text" name="infoTag3 " class="form-input-tag"
+												<input type="text" name="infoTag3" class="form-input-tag"
 													placeholder="태그를 입력해주세요">
 											</div>
 										</div>
@@ -230,7 +230,6 @@
 
 document.querySelector( '#submit' ).addEventListener( 'click', () => {
     const editorData = editor.getData();
-    /* console.log(editorData); */
     document.querySelector('#editorData').value = editorData;
 } );
 

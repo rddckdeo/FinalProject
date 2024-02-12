@@ -2,17 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="infoMapper">
+
+	<!-- 게시물 등록 -->
 	<insert id="enrollBoard" parameterType="info">
+
 		INSERT INTO INFO (
 		info_no,
 		info_title,
 		info_content,
 		info_category,
 		info_date,
+		info_views,
 		info_tag1,
 		info_tag2,
 		info_tag3,
-		m_no
+		m_no,
+		info_blind,
+		info_comment_count
 		)
 		VALUES (
 		info_no_seq.NEXTVAL,
@@ -20,111 +26,211 @@
 		#{infoContent},
 		#{infoCategory},
 		SYSDATE,
+		0,
 		#{infoTag1},
 		#{infoTag2},
 		#{infoTag3},
-		#{mNo}
+		#{mNo},
+		'N',
+		0
 		)
+
 	</insert>
 
-	<select id="selectPostsByCategory" parameterType="string"
-		resultType="info">
+
+	<!-- 게시글 상세 보기 진입 -->
+	<select id="getPostById" parameterType="int" resultType="info">
 		SELECT
 		i.info_no AS infoNo,
 		i.info_title AS infoTitle,
+		m.m_nickname AS
+		nickname,
 		i.info_content AS infoContent,
-		i.info_category AS infoCategory,
-		i.info_date AS infoDate,
-		i.info_update_date AS infoUpdateDate,
-		i.info_delete_date AS infoDeleteDate,
+		i.info_date AS
+		infoDate,
 		i.info_views AS infoViews,
 		i.info_tag1 AS infoTag1,
-		i.info_tag2 AS infoTag2,
-		i.info_tag3 AS
-		infoTag3,
-		i.m_no AS mNo,
-		m.m_nickname AS nickname,
+		i.info_tag2 AS
+		infoTag2,
+		i.info_tag3 AS infoTag3,
 		(SELECT COUNT(*) FROM
-		info_comment WHERE info_no = i.info_no) AS commentCount
+		info_comment
+		WHERE info_no = i.info_no) AS commentCount
 		FROM
 		info i
 		JOIN
-		member m ON i.m_no = m.m_no
+		member m ON
+		i.m_no = m.m_no
 		WHERE
-		i.info_category = #{categoryName}
+		i.info_no = #{infoNo}
+	</select>
+
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="info">
+		UPDATE info SET
+		info_title
+		= #{infoTitle},
+		info_content = #{infoContent},
+		info_category =
+		#{infoCategory},
+		info_tag1 = #{infoTag1},
+		info_tag2 = #{infoTag2},
+		info_tag3 = #{infoTag3},
+		info_update_date = SYSDATE
+		WHERE info_no =
+		#{infoNo}
+	</update>
+
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM INFO
+		WHERE
+		info_no = #{infoNo}
+	</delete>
+
+	<!-- 조회수 증가 -->
+	<update id="increaseViews" parameterType="int">
+		UPDATE INFO SET
+		info_views = info_views + 1 WHERE info_no = #{infoNo}
+	</update>
+
+
+	<select id="countPostsByCategory" parameterType="string"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM INFO
+		WHERE INFO_CATEGORY =
+		#{categoryName}
+	</select>
+
+	<!-- 카테고리별 게시글 조회 (페이징 처리) -->
+	<select id="getPostsByCategory" parameterType="map"
+		resultType="info">
+		SELECT * FROM (
+		SELECT a.*, member.m_nickname AS nickname,
+		COUNT(info_comment.info_comment_no) OVER (PARTITION BY a.info_no) AS
+		commentCount,
+		row_number() over (order by a.INFO_DATE DESC) rnum
+		FROM
+		INFO a
+		JOIN member ON a.m_no = member.m_no
+		LEFT JOIN info_comment ON
+		a.info_no = info_comment.info_no AND a.m_no =
+		info_comment.m_no
+		WHERE
+		a.INFO_CATEGORY = #{categoryName}
+		)
+		WHERE rnum between #{startIndex} + 1
+		and #{startIndex} + #{pageSize}
 	</select>
 
 
-<!-- 댓글 저장하기 -->
-<insert id="insertComment" parameterType="infoComment">
-	INSERT INTO
-	info_comment(info_comment_no, info_no, m_no, info_comment_content)
-	VALUES (info_comment_no_seq.NEXTVAL, #{infoNo}, #{mNo}, #{infoCommentContent})
-</insert>
-
-
-	<!-- 댓글 목록 가져오기 -->
-	<select id="selectCommentsByPostId" parameterType="string" resultType="kr.co.coco.board.model.dto.InfoCommentDTO">
-    SELECT
-        ic.info_comment_no AS infoCommentNo,
-        ic.info_no AS infoNo,
-        ic.m_no AS mNo,
-        ic.info_comment_content AS infoCommentContent,
-        ic.info_comment_date AS infoCommentDate,
-        m.m_nickname AS nickname
-    FROM
-        info_comment ic
-    JOIN
-        member m ON ic.m_no = m.m_no
-    WHERE
-        ic.info_no = #{infoNo}
+	<!-- 검색 결과 게시물 조회 -->
+	<select id="searchPosts" parameterType="map" resultType="info">
+    SELECT * FROM (
+        SELECT i.*, m.m_nickname, NVL((SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no), 0) AS commentCount,
+        row_number() over (order by i.INFO_DATE DESC) rnum
+        FROM info i
+        JOIN member m ON i.m_no = m.m_no
+        WHERE i.info_title LIKE '%' || #{query} || '%'
+        OR i.info_content LIKE '%' || #{query} || '%'
+    )
+   WHERE rnum BETWEEN #{startIndex} AND #{startIndex} + #{pageSize}
 </select>
 
-<!-- 게시글 상세 보기 진입 -->
-<select id="getPostById" parameterType="string" resultType="kr.co.coco.board.model.dto.InfoDTO">
-    SELECT
-        i.info_no AS infoNo,
-        i.info_title AS infoTitle,
-        m.m_nickname AS nickname,
-        i.info_content AS infoContent,
-        i.info_date AS infoDate,
-        i.info_views AS infoViews,
-        i.info_tag1 AS infoTag1,
-        i.info_tag2 AS infoTag2,
-        i.info_tag3 AS infoTag3,
-        (SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no) AS commentCount
-    FROM
-        info i
-    JOIN
-        member m ON i.m_no = m.m_no
-    WHERE
-        i.info_no = #{infoNo}
-</select>   
 
-<!-- 게시글 수정 -->
-<update id="updatePost" parameterType="info">
-    UPDATE info SET
-    info_title = #{infoTitle},
-    info_content = #{infoContent},
-    info_category = #{infoCategory},
-    info_tag1 = #{infoTag1},
-    info_tag2 = #{infoTag2},
-    info_tag3 = #{infoTag3},
-    info_update_date = SYSDATE
-    WHERE info_no = #{infoNo}
-</update>
+	<!-- 해당 게시글에 연결된 모든 댓글 삭제 -->
+	<delete id="deleteByInfoNo">
+		DELETE FROM info_comment WHERE info_no = #{infoNo}
+	</delete>
 
-<delete id="deletePost" parameterType="int">
-    DELETE FROM INFO
-    WHERE info_no = #{infoNo}
-</delete>
+	<!-- 전체 게시글 조회 (페이징 처리) -->
+	<select id="getAllPosts" parameterType="map" resultType="info">
+		SELECT *
+		FROM (
+		SELECT a.*, m.M_NICKNAME AS nickname, row_number() over (order
+		by
+		a.INFO_DATE DESC) rnum
+		FROM INFO a
+		JOIN MEMBER m ON a.M_NO = m.M_NO
+		)
+		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
 
-<!-- 조회수 증가 -->
-<update id="increaseViewCount" parameterType="int">
-    UPDATE info
-    SET info_views = info_views + 1
-    WHERE info_no = #{infoNo}
-</update>
+	<!-- 게시글 정렬: 최신순 -->
+	<select id="selectPostsOrderByDate" resultType="info">
+		SELECT * FROM (
+		SELECT a.*, member.m_nickname AS nickname,
+		COALESCE(ic.commentCount, 0)
+		AS commentCount,
+		row_number() over (order by a.INFO_DATE DESC) rnum
+		FROM INFO a
+		JOIN member ON a.m_no = member.m_no
+		LEFT JOIN (
+		SELECT
+		info_no, COUNT(*) as commentCount
+		FROM info_comment
+		GROUP BY info_no
+		) ic
+		ON a.info_no = ic.info_no
+		WHERE a.INFO_CATEGORY = #{categoryName}
+		)
+		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
+
+
+	<!-- 게시글 정렬: 댓글 수별 -->
+	<select id="selectPostsOrderByComments" resultType="info">
+		SELECT * FROM
+		(
+		SELECT a.*, member.m_nickname AS nickname,
+		COALESCE(ic.commentCount,
+		0) AS commentCount,
+		row_number() over (order by
+		COALESCE(ic.commentCount, 0) DESC) rnum
+		FROM INFO a
+		JOIN member ON
+		a.m_no = member.m_no
+		LEFT JOIN (
+		SELECT info_no, COUNT(*) as
+		commentCount
+		FROM info_comment
+		GROUP BY info_no
+		) ic ON a.info_no =
+		ic.info_no
+		WHERE a.INFO_CATEGORY = #{categoryName}
+		) WHERE rnum between
+		#{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
+
+
+	<!-- 게시글 정렬: 조회 수별 -->
+	<select id="selectPostsOrderByViews" resultType="info">
+		SELECT * FROM (
+		SELECT a.*, member.m_nickname AS nickname,
+		COALESCE(ic.commentCount, 0)
+		AS commentCount,
+		row_number() over (order by a.INFO_VIEWS DESC) rnum
+		FROM INFO a
+		JOIN member ON a.m_no = member.m_no
+		LEFT JOIN (
+		SELECT
+		info_no, COUNT(*) as commentCount
+		FROM info_comment
+		GROUP BY info_no
+		) ic
+		ON a.info_no = ic.info_no
+		WHERE a.INFO_CATEGORY = #{categoryName}
+		)
+		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+	</select>
+
+
+
+
+
+
+
+
 
 </mapper>
 

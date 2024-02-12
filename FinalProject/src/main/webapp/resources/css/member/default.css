@@ -1,0 +1,271 @@
+
+/* ------------------------- default css------------------- */
+
+/* 정렬 관련 */
+
+.sortCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.justifyCenter{
+    display: flex;
+    justify-content: center;
+}
+
+.justifyEnd{
+	display:flex;
+	justify-content:flex-end;
+}
+
+.justifyAround{
+    display: flex;
+    justify-content:space-around;
+    
+}
+.justifyBet{
+    display: flex;
+    justify-content:space-between;
+    
+}
+.alignCenter{
+    display: flex;
+    align-items: center;
+}
+.direction1{
+    display: flex;
+    flex-direction: column;
+}
+.direction2{
+    display: flex;
+    flex-direction: row;
+}
+
+/* 표시 관련 */
+.displayNone{
+	display:none;
+}
+/* 크기 관련 - width */
+.width100{
+    width: 100%;
+}
+.width90{
+    width: 90% !important;
+}
+.width70{
+    min-width: 70%;
+}
+.minWidth600{
+    min-width: 600px;
+}
+.minWidth500{
+    min-width: 500px;
+}
+.minWidth1200{
+    min-width: 1200px;
+}
+
+/* 크기 관련 - height */
+.height150{
+    height: 150px;
+}
+.height60{
+    height: 60px;
+}
+.height100{
+    height: 100px;
+}
+.height100per{
+    height: 100% !important;
+}
+.height80per{
+    height: 80% !important;
+}
+
+.height500{
+    min-height: 500px;
+}
+.height600{
+    min-height: 600px;
+}
+.height200{
+    min-height: 200px;
+}
+
+
+
+/* padding 관련 */
+.paddingDefault{
+    padding: 8px;
+    padding-right: 16px;
+    padding-left: 16px;
+}
+
+.noPadding{
+    padding: 0;;
+}
+
+.padding30{
+    padding: 30px;
+}
+
+.bottomPadding10{
+    padding-bottom: 10px;
+}
+
+
+/* margin 관련 */
+.noMargin{
+    margin: 0 !important;
+}
+.Margin10{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.Margin20{
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.leftMargin20{
+    margin-left: 20px;
+}
+.leftMargin10{
+    margin-left: 10px;
+}
+.leftMargin40{
+    margin-left: 40px;
+}
+.topMargin20{
+    margin-top: 20px;
+}
+.bottomMargin10{
+    margin-bottom: 10px;
+}
+.bottomMargin20{
+    margin-bottom: 20px;
+}
+.topMargin20{
+    margin-top: 20px;
+}
+.bottomMargin10{
+    margin-bottom: 10px;
+}
+.leftMargin20{
+    margin-left: 20px;
+}
+.rightMargin10{
+    margin-right: 10px;
+}
+.rightMargin20{
+    margin-right: 20px;
+}
+.defaultMargin{
+    margin: 0.25rem;
+}
+
+/* font 관련 */
+.font12px{
+    font-size: 12px;
+}
+.font16px{
+    font-size: 16px;
+}
+.font20px{
+    font-size: 20px;
+}
+.font30px{
+    font-size: 30px;
+}
+
+.small15{
+    font-size: 15px;
+}
+
+.textCenter{
+    text-align: center;
+}
+
+/* border 관련 */
+.borderDefault{
+    border: 1px solid #e7ecf0;
+}
+.borderRadiusd{
+    border-radius: 0.5rem;
+}
+.borderRadiusd2{
+    border-radius: 1rem;
+}
+
+.borderNone{
+    border: none;
+}
+
+.boxShadow{
+    box-shadow: 1px 2px 6px rgba(37, 83, 185, 0.1);
+}
+.bottomBorder{
+    border-bottom: 1px solid #e7ecf0;
+}
+
+/* background-color */
+.backRed{
+    background-color: red;
+}
+.backRed2{
+    background-color: #FB977D;
+}
+.backBlue2{
+    background-color: #0085DB;
+}
+.backGray{
+    background-color: #353535;
+}
+.backWhite{
+    background-color: white;
+}
+
+.whiteColor{
+    color: white;
+}
+.defaultColor{
+    color: #707a82;
+}
+
+.defaultBtn{
+    background-color: #353535;
+    border-radius: 0.5rem;
+    border: 1px solid #e7ecf0;
+    padding:1px 10px 1px 10px;
+    color:white;
+}
+
+.cursorPointer{
+	cursor: pointer;
+}
+
+.positionFix{
+	position:fixed;
+}
+
+/* 임의의 영역 생성 */
+.scrollBar { 
+  overflow-y: scroll;
+}
+
+/* 아래의 모든 코드는 영역::코드로 사용 */
+.scrollBar::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #217af4; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+}
