@@ -10,4 +10,8 @@ public interface AdminService {
 	int boardCount();
 	int deCount();
 	
+//	admin Visit Page
+	int dayVisit();
+	int weekVisit();
+	int monthVisit();
 }

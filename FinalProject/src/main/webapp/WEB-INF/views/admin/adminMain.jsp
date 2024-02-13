@@ -74,7 +74,7 @@
 											<!-- 죄측 화살표 -->
 											<div class="pagination alignCenter">
 												<c:choose>
-													<c:when test="${piVisit.vcpage eq 1 }">
+													<c:when test="${piVisit.cpage eq 1 }">
 														<li class="page-item Margin5 borderRadiusd2">
 													    	<a class="page-link borderRadiusd3" href="#" aria-label="Previous">
 																<span aria-hidden="true">&laquo;</span>
@@ -83,7 +83,7 @@
 													</c:when>
 													<c:otherwise>
 														<li class="page-item Margin5">
-													    	<a class="page-link borderRadiusd3" href="adminForm.do?vcpage=${piVisit.vcpage-1}" aria-label="Previous">
+													    	<a class="page-link borderRadiusd3" href="adminForm.do?cpage=${piVisit.cpage-1}" aria-label="Previous">
 																<span aria-hidden="true">&laquo;</span>
 															</a>
 														</li>
@@ -92,12 +92,12 @@
 												<!-- page 번호 -->
 												<c:forEach var="page" begin="${piVisit.startPage}" end="${piVisit.endPage}">
 													<li class="Margin5">
-														<a href="adminForm.do?vcpage=${page}" class="active">${page}</a>
+														<a href="adminForm.do?cpage=${page}" class="active">${page}</a>
 													</li>
 												</c:forEach>
 												<!-- 우측 화살표 -->				
 												<c:choose>
-													<c:when test="${piVisit.vcpage eq piVisit.maxPage}">
+													<c:when test="${piVisit.cpage eq piVisit.maxPage}">
 														<li class="page-item Margin5">
 													    	<a class="page-link borderRadiusd3" href="#" aria-label="Previous">
 																<span aria-hidden="true">&raquo;</span>
@@ -106,7 +106,7 @@
 													</c:when>
 													<c:otherwise>
 														<li class="page-item Margin5">
-													    	<a class="page-link borderRadiusd3" href="adminForm.do?vcpage=${piVisit.vcpage+1}" aria-label="Previous">
+													    	<a class="page-link borderRadiusd3" href="adminForm.do?cpage=${piVisit.cpage+1}" aria-label="Previous">
 																<span aria-hidden="true">&raquo;</span>
 															</a>
 														</li>
