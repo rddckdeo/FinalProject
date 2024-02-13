@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="declarationMapper">
+
+	<!-- 정보게시판 신고 등록 -->
+    <insert id="insertInfoDeclaration" parameterType="declaration">
+        INSERT INTO Declaration (
+            declaration_no,
+            m_no,
+            declaration_type,
+            board_no,
+            declaration_content,
+            declaration_date,
+            declaration_withdrawal
+        ) VALUES (
+            declaration_no_seq.NEXTVAL,
+            #{mNo},
+            #{declarationType},
+            #{boardNo},
+            #{declarationContent},
+            SYSDATE,
+            'N'
+        )
+    </insert>
+    
+</mapper>

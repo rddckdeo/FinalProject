@@ -7,20 +7,32 @@
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="kr.co.coco.board.model.dto.InfoDTO" alias="info"/>
+		<typeAlias type="kr.co.coco.board.model.dto.InfoCommentDTO" alias="infoComment"/>
+		<typeAlias type="kr.co.coco.board.model.dto.FreeDTO" alias="free"/>
+		<typeAlias type="kr.co.coco.board.model.dto.FreeCommentDTO" alias="freeComment"/>
+		<typeAlias type="kr.co.coco.board.model.dto.DeclarationDTO" alias="declaration"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.ColaboDTO" alias="colabo"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.ScheduleDTO" alias="schedule"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.SkillChartDTO" alias="skillChart"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO" alias="projectMember"/>
 		<typeAlias type="kr.co.coco.member.model.dto.MemberDTO" alias="member"/>
+
 	</typeAliases>
 	
 	<mappers>
+
+		<mapper resource="/mappers/board/info-mapper.xml"/>
+		<mapper resource="/mappers/board/info-comment-mapper.xml"/>
+		<mapper resource="/mappers/board/free-mapper.xml"/>
+		<mapper resource="/mappers/board/free-comment-mapper.xml"/>
+		<mapper resource="/mappers/board/declaration-mapper.xml"/>
 		<mapper resource="/mappers/colabo/colabo-mapper.xml"/>
 		<mapper resource="/mappers/member/member-mapper.xml"/>
 		<mapper resource="/mappers/admin/total/admin-total-mapper.xml"/>
 		<mapper resource="/mappers/admin/visit/admin-visit-mapper.xml"/>
 		<mapper resource="/mappers/admin/member/admin-member-mapper.xml"/>
 	</mappers>
-	
+
 
 </configuration>

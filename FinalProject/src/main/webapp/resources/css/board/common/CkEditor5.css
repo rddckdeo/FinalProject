@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+.ck-editor__editable {
+    min-height: 250px; 
+     max-height: 300px;
+    overflow-y: auto;
+    margin-bottom : 20px;
+    padding: 10px;
+}
+
+.ck-content ul, .ck-content ol {
+    padding-left: 20px; /* 기본값보다 더 큰 값으로 조정 */
+    margin-left: 0;
+}
+.ck-content li {
+    text-align: start;
+}
+
+.ck-content ul {
+    list-style-type: disc; /* 점 목록에 대한 스타일 */
+}
+
+.ck-content ol {
+    list-style-type: decimal; /* 숫자 목록에 대한 스타일 */
+}

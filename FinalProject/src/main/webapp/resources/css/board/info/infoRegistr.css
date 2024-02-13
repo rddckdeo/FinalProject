@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+    .card-project-name {
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 0px;
+
+    }
+
+
+    .main-boardList {
+        margin: 20px 30px 20px 30px;
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .button-wrapper {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .button-wrapper > a {
+       margin-right: 10px;
+    }
+
+    /* 수정하기 버튼 */
+    .board-update-btn {
+        color: #fff;
+        border-color: #0085db;
+        background-color: #0085db;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 12px rgba(26, 115, 232, 0.3);
+        text-align: center;
+        text-decoration: none;
+        vertical-align: middle;
+        cursor: pointer;
+        padding: 9px 27px 9px 27px;
+        border-radius: 7px;
+
+    }
+
+    .board-update-btn:hover {
+        color: #fff;
+        background-color: #0071ba;
+        border-color: #006aaf;
+    }
+
+    .board-update-btn:focus {
+        color: #fff;
+        background-color: #0071ba;
+        border-color: #006aaf;
+        box-shadow: 0 0 0 0.2rem rgba(38, 151, 224, 0.5);
+    }
+
+    .board-update-btn:active {
+        color: #fff;
+        background-color: #006aaf;
+        border-color: #0064a4;
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    }
+
+    .board-update-btn:disabled {
+        color: #fff;
+        background-color: #0085db;
+        border-color: #0085db;
+    }
+
+    .form-lable {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .form-input-content{
+        margin-bottom: 20px;
+        width: 100%;
+        height: 200px;
+        padding: 5px 10px 5px 10px;
+        border-radius: 7px;
+        border: 1px solid #adb5bd;
+        
+    }
+
+    .form-input {
+        margin-bottom: 20px;
+        width: 100%;
+        height: 35px;
+        padding: 5px 10px 5px 10px;
+        border-radius: 7px;
+        border: 1px solid #adb5bd;
+    }
+
+    .form-tag-div{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .form-input-tag {
+        margin-bottom: 20px;
+        width: 25%;
+        margin-right: 10px;
+        height: 35px;
+        padding: 5px 10px 5px 10px;
+        border-radius: 7px;
+        border: 1px solid #adb5bd;
+    }
+
+    .form-input-tag-text{
+        font-size: 18px;
+        margin-top: 3px;
+        margin-right: 5px;
+    }
