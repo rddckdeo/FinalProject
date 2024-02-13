@@ -17,7 +17,9 @@
 	<mappers>
 		<mapper resource="/mappers/colabo/colabo-mapper.xml"/>
 		<mapper resource="/mappers/member/member-mapper.xml"/>
-		<mapper resource="/mappers/admin/admin-mapper.xml"/>
+		<mapper resource="/mappers/admin/total/admin-total-mapper.xml"/>
+		<mapper resource="/mappers/admin/visit/admin-visit-mapper.xml"/>
+		<mapper resource="/mappers/admin/member/admin-member-mapper.xml"/>
 	</mappers>
 	
 
