@@ -82,6 +82,7 @@ public class BoardController {
 	    // 총 페이지 수 계산
 	    int totalInfoPages = (int) Math.ceil((double) totalInfoPosts / pageSize);
 	    int totalFreePages = (int) Math.ceil((double) totalFreePosts / pageSize);
+	    
 
 	    // 모델에 추가
 	    model.addAttribute("query", query);
@@ -92,7 +93,18 @@ public class BoardController {
 	    model.addAttribute("totalFreePages", totalFreePages);
 	    model.addAttribute("infoPosts", infoPosts);
 	    model.addAttribute("freePosts", freePosts);
+	    model.addAttribute("totalInfoPosts", totalInfoPosts);
+	    model.addAttribute("totalFreePosts", totalFreePosts);
 
+
+	 // 페이지 값 로깅
+	    System.out.println("Current Info Page: " + infoPage);
+	    System.out.println("Current Free Page: " + freePage);
+	    System.out.println("Total Info Pages: " + totalInfoPages);
+	    System.out.println("Total Free Pages: " + totalFreePages);
+	    System.out.println("totalInfoPosts: " + totalInfoPosts);
+	    System.out.println("totalFreePosts: " + totalFreePosts);
+	    
 	    // 검색 결과와 함께 뷰 이름을 반환
 	    return "board/main/boardSearch";
 	}

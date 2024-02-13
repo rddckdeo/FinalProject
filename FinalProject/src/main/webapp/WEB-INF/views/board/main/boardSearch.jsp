@@ -14,6 +14,12 @@
 	href="../../../../resources/css/board/main/search.css" />
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
+<style>
+a.disabled {
+	pointer-events: none;
+	color: gray;
+}
+</style>
 <body>
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
@@ -45,7 +51,7 @@
 							<div class="categoryNavigation-div">
 
 								<c:if test="${!empty infoPosts}">
-									<p>정보 게시판에서 ${infoPosts.size()} 개의 결과를 찾았습니다.</p>
+									<p>정보 게시판에서 ${totalInfoPosts} 개의 결과를 찾았습니다.</p>
 								</c:if>
 
 								<div class="button-wrapper">
@@ -152,12 +158,10 @@
 								<!-- 페이지네이션 -->
 								<div class="pagination" id="pagination">
 									<div>
-										<c:if test="${infoPage != 1}">
-											<a
-												href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage - 1}&pageSize=${pageSize}">&lt;</a>
-										</c:if>
-
-										<c:forEach var="i" begin="1" end="${totalPages}">
+										<a
+											href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage - 1 < 1 ? 1 : infoPage - 1}&pageSize=${pageSize}"
+											class="${infoPage == 1 ? 'disabled' : ''}">&lt;</a>
+										<c:forEach var="i" begin="1" end="${totalInfoPages}">
 											<c:choose>
 												<c:when test="${i == infoPage}">
 													<a
@@ -170,13 +174,12 @@
 												</c:otherwise>
 											</c:choose>
 										</c:forEach>
-
-										<c:if test="${infoPage != totalPages}">
-											<a
-												href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage + 1}&pageSize=${pageSize}">&gt;</a>
-										</c:if>
+										<a
+											href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage + 1 > totalInfoPages ? totalInfoPages : infoPage + 1}&pageSize=${pageSize}"
+											class="${infoPage == totalInfoPages ? 'disabled' : ''}">&gt;</a>
 									</div>
 								</div>
+
 
 
 							</div>
@@ -191,7 +194,7 @@
 							<div class="categoryNavigation-div">
 
 								<c:if test="${!empty freePosts}">
-									<p>자유 게시판에서 ${freePosts.size()} 개의 결과를 찾았습니다.</p>
+									<p>자유 게시판에서 ${totalFreePosts} 개의 결과를 찾았습니다.</p>
 								</c:if>
 
 								<div class="button-wrapper">
@@ -297,12 +300,10 @@
 								<!-- 페이지네이션 -->
 								<div class="pagination" id="pagination">
 									<div>
-										<c:if test="${freePage != 1}">
-											<a
-												href="/board/search?query=${query}&freePage=${freePage - 1}&infoPage=${infoPage}&pageSize=${pageSize}">&lt;</a>
-										</c:if>
-
-										<c:forEach var="i" begin="1" end="${totalPages}">
+										<a
+											href="/board/search?query=${query}&freePage=${freePage - 1 < 1 ? 1 : freePage - 1}&infoPage=${infoPage}&pageSize=${pageSize}"
+											class="${freePage == 1 ? 'disabled' : ''}">&lt;</a>
+										<c:forEach var="i" begin="1" end="${totalFreePages}">
 											<c:choose>
 												<c:when test="${i == freePage}">
 													<a
@@ -315,13 +316,13 @@
 												</c:otherwise>
 											</c:choose>
 										</c:forEach>
-
-										<c:if test="${freePage != totalPages}">
-											<a
-												href="/board/search?query=${query}&freePage=${freePage + 1}&infoPage=${infoPage}&pageSize=${pageSize}">&gt;</a>
-										</c:if>
+										<a
+											href="/board/search?query=${query}&freePage=${freePage + 1 > totalFreePages ? totalFreePages : freePage + 1}&infoPage=${infoPage}&pageSize=${pageSize}"
+											class="${freePage == totalFreePages ? 'disabled' : ''}">&gt;</a>
 									</div>
 								</div>
+
+
 							</div>
 						</div>
 					</div>
