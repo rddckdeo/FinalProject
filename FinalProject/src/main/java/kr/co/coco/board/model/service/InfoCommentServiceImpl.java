@@ -2,9 +2,14 @@ package kr.co.coco.board.model.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.coco.board.controller.CommentController;
 import kr.co.coco.board.model.dao.InfoCommentDAO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class InfoCommentServiceImpl implements InfoCommentService {

@@ -28,7 +28,7 @@ import kr.co.coco.board.model.service.FreeCommentServiceImpl;
 import kr.co.coco.board.model.service.FreeServiceImpl;  
 
 @Controller
-@RequestMapping("/free")  // "/info" 대신 "/free"로 수정
+@RequestMapping("/free")  
 public class FreeController {
 
     @Autowired

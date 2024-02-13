@@ -94,6 +94,10 @@ public class InfoServiceImpl implements InfoService {
 	    return infoDao.searchPosts(query, startIndex, endIndex);
 	}
 
+	//전체 게시글 조회(검색)
+	public int searchCountInfoPosts(String query) {
+		return infoDao.searchCountPosts(query);
+	}
 
 
 	//카테고리 게시글 조회(정렬)
@@ -128,6 +132,9 @@ public class InfoServiceImpl implements InfoService {
     public boolean processDeclaration(DeclarationDTO declarationDto) {
         return declarationDao.insertDeclaration(declarationDto);
     }
+
+	
+
 
 
 

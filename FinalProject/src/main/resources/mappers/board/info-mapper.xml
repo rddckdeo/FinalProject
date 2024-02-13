@@ -124,18 +124,30 @@
 	</select>
 
 
-	<!-- 검색 결과 게시물 조회 -->
-	<select id="searchPosts" parameterType="map" resultType="info">
+<!-- 검색 결과 게시물 조회 -->
+<select id="searchPosts" parameterType="map" resultType="info">
     SELECT * FROM (
-        SELECT i.*, m.m_nickname, NVL((SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no), 0) AS commentCount,
-        row_number() over (order by i.INFO_DATE DESC) rnum
-        FROM info i
-        JOIN member m ON i.m_no = m.m_no
-        WHERE i.info_title LIKE '%' || #{query} || '%'
-        OR i.info_content LIKE '%' || #{query} || '%'
+    SELECT i.*, m.m_nickname, NVL((SELECT COUNT(*) FROM info_comment WHERE
+    info_no = i.info_no), 0) AS commentCount,
+    row_number() over (order by i.INFO_DATE DESC) rnum
+    FROM info i
+    JOIN member m ON i.m_no = m.m_no
+    WHERE i.info_title LIKE '%' || #{query} || '%'
+    OR i.info_content LIKE '%' || #{query} || '%'
     )
-   WHERE rnum BETWEEN #{startIndex} AND #{startIndex} + #{pageSize}
+    WHERE rnum BETWEEN #{startIndex} AND #{endIndex}
 </select>
+
+
+
+	<!-- 검색 게시글 개수 조회 -->
+	<select id="searchCountPosts" parameterType="string"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM INFO
+		WHERE INFO_TITLE LIKE '%'||#{query}||'%' OR INFO_CONTENT LIKE
+		'%'||#{query}||'%'
+	</select>
 
 
 	<!-- 해당 게시글에 연결된 모든 댓글 삭제 -->

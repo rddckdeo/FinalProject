@@ -76,6 +76,9 @@
 	font-size: 35px;
 	font-weight: 700;
 }
+.totalBtn:hover {
+    color: white !important;
+}
 
 .mainTitleFont {
 	font-size: 50px;
@@ -219,6 +222,19 @@
 }
 .logoutAtag{
 	margin:15px 30px 4px 4px;
+}
+.displayNone{
+	display:none;
+}
+.recaptchaBtn{
+	width:120px;
+	height:40px;
+	border-radius:1rem;
+	border: 1px solid #e7ecf0;
+	margin-top : 10px;
+	margin-bottom:10px;
+	background-color:#0085db;
+	color:white;
 }
 /* ----------------------------기존 style 추가 ----------------------- */
 

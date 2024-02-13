@@ -27,6 +27,9 @@
     )
 </insert>
 
+
+
+
 <!-- 댓글 등록 시, info_comment_count 업데이트  -->
 <update id="increaseCommentCount" parameterType="int">
     UPDATE info

@@ -116,19 +116,34 @@
 	</select>
 
 
-<!-- 검색 결과 게시물 조회 -->
-<select id="searchPosts" parameterType="map"
-	resultType="free">
-    SELECT * FROM (
-        SELECT f.*, m.m_nickname, NVL((SELECT COUNT(*) FROM free_comment WHERE free_no = f.free_no), 0) AS commentCount,
-        row_number() over (order by f.FREE_DATE DESC) rnum
-        FROM FREE f
-        JOIN member m ON f.m_no = m.m_no
-        WHERE f.free_title LIKE '%' || #{query} || '%'
-        OR f.free_content LIKE '%' || #{query} || '%'
-    ) temp
-    WHERE rnum BETWEEN #{startIndex} AND #{endIndex}
-</select>
+	<!-- 검색 결과 게시물 조회 --> 
+	<select id="searchPosts" parameterType="map" resultType="free">
+		SELECT *
+		FROM (
+		SELECT f.*, m.m_nickname, NVL((SELECT COUNT(*) FROM free_comment
+		WHERE
+		free_no = f.free_no), 0) AS commentCount,
+		row_number() over (order
+		by f.FREE_DATE DESC) rnum
+		FROM FREE f
+		JOIN member m ON f.m_no = m.m_no
+		WHERE f.free_title LIKE '%' || #{query} || '%'
+		OR f.free_content LIKE
+		'%' || #{query} || '%'
+		) temp
+		WHERE rnum BETWEEN #{startIndex} AND
+		#{endIndex}
+	</select>
+
+	<!-- 검색 게시글 개수 조회 -->
+	<select id="searchCountPosts" parameterType="string"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM FREE
+		WHERE FREE_TITLE LIKE
+		'%'||#{query}||'%' OR FREE_CONTENT LIKE
+		'%'||#{query}||'%'
+	</select>
 
 
 	<!-- 해당 게시글에 연결된 모든 댓글 삭제 -->

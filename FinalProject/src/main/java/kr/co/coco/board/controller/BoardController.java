@@ -1,5 +1,6 @@
 package kr.co.coco.board.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("/board")
@@ -66,43 +68,35 @@ public class BoardController {
 	public String searchBoard(@RequestParam(required = false) String query, 
 	                          @RequestParam(defaultValue = "1") int infoPage, 
 	                          @RequestParam(defaultValue = "1") int freePage, 
-	                          @RequestParam(defaultValue = "10") int pageSize, 
+	                          @RequestParam(defaultValue = "5") int pageSize, 
 	                          Model model) {
 
-	    // info 게시글 검색 로직 수행
+	    // 게시글 검색 로직 수행
 	    List<InfoDTO> infoPosts = infoService.searchInfoPosts(query, infoPage, pageSize);
-
-	    // free 게시글 검색 로직 수행
 	    List<FreeDTO> freePosts = freeService.searchFreePosts(query, freePage, pageSize);
 
-	    // 검색 결과를 모델에 추가
-	    model.addAttribute("infoPosts", infoPosts);
-	    model.addAttribute("freePosts", freePosts);
-	    model.addAttribute("pageSize", pageSize);
+	    // 총 게시글 수 조회
+	    int totalInfoPosts = infoService.searchCountInfoPosts(query);
+	    int totalFreePosts = freeService.searchCountFreePosts(query);
 
+	    // 총 페이지 수 계산
+	    int totalInfoPages = (int) Math.ceil((double) totalInfoPosts / pageSize);
+	    int totalFreePages = (int) Math.ceil((double) totalFreePosts / pageSize);
 
-	    // infoPosts와 freePosts의 내용 확인
-	    for (InfoDTO post : infoPosts) {
-	        logger.info(post.toString());
-	    }
-	    for (FreeDTO post : freePosts) {
-	        logger.info(post.toString());
-	    }
-
-	    logger.info("infoPosts: {}", infoPosts);
-	    logger.info("freePosts: {}", freePosts);
-
-	    // 검색 텍스트를 모델에 추가
+	    // 모델에 추가
 	    model.addAttribute("query", query);
-
-	    // 현재 페이지 번호와 페이지 크기를 모델에 추가
 	    model.addAttribute("infoPage", infoPage);
 	    model.addAttribute("freePage", freePage);
 	    model.addAttribute("pageSize", pageSize);
+	    model.addAttribute("totalInfoPages", totalInfoPages);
+	    model.addAttribute("totalFreePages", totalFreePages);
+	    model.addAttribute("infoPosts", infoPosts);
+	    model.addAttribute("freePosts", freePosts);
 
 	    // 검색 결과와 함께 뷰 이름을 반환
 	    return "board/main/boardSearch";
 	}
+
 	
 
 

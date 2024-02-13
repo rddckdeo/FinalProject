@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	})
 		
 	function createCalendar(){
-		console.log("events  는 : "+ events);
        var calendarEl = document.getElementById('calendar');
        var calendar = new FullCalendar.Calendar(calendarEl, {
 		 expandRows: true, // 화면에 맞게 높이 재설정
@@ -52,11 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		},
 		select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
 			var title = prompt('할일 작성 :');
-			if (title) {
-				console.log(title);
-				console.log(arg.start);
-				console.log(arg.end);
-				console.log(arg.allDay);
+			if (title && title.length < 20) {
 				calendar.addEvent({
 				title: title,
 				start: arg.start,
@@ -75,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				},
                 success: function(data){   //요청 성공시 실행될 메서드
 			        console.log("데이터 넣기 통신성공");
-					console.log(data);
 			    },
 			    error:function(){		 //요청 실패시 에러 확인을 위함
 			        console.log("통신에러");
@@ -88,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			calendar.unselect()
 		 },
 			eventClick: function (info){
-                if(confirm("'"+ info.event.title +"' 매니저의 일정을 삭제하시겠습니까 ?")){
+                if(confirm("'"+ info.event.title +"' 일정을 삭제하시겠습니까 ?")){
                     // 확인 클릭 시
                     info.event.remove();
 
@@ -96,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	                obj.title = info.event.title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
 	                obj.start = info.event.start.toString(); // 시작
 	                obj.end = info.event.end.toString(); // 끝
-
+					
 			
 					$.ajax({
 		                type:'post',
@@ -108,7 +102,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		                success: function(data){   //요청 성공시 실행될 메서드
 					        console.log("데이터 지우기 성공");
 							alert('삭제' + data);
-							console.log(data);
 					    },
 					    error:function(){		 //요청 실패시 에러 확인을 위함
 					        console.log("통신에러");

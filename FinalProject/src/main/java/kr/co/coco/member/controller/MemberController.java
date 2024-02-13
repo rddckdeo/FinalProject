@@ -1,5 +1,7 @@
 package kr.co.coco.member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
@@ -64,7 +66,16 @@ public class MemberController {
 	
 //	로그인 Form 이동
 	@GetMapping("/loginForm.do")
-	public String loginForm() {
+	public String loginForm(HttpSession session, Model model) {
+		String msg = (String)session.getAttribute("msg");
+		String status = (String)session.getAttribute("status");
+		
+		model.addAttribute("status", status);
+		model.addAttribute("msg", msg);
+		
+		session.removeAttribute("msg");
+		session.removeAttribute("status");
+		
 		return "member/login";
 	}
 	
@@ -79,18 +90,36 @@ public class MemberController {
 			session.setAttribute("name", login.getName());
 			session.setAttribute("type", login.getType());
 			session.setAttribute("nickname", login.getNickname());
+			session.setAttribute("path", login.getPath());
+			session.setAttribute("picture", login.getPicture());
+			
+			
+			session.setAttribute("msg", "로그인 되었습니다.");
+			session.setAttribute("status", "success");
 			
 			System.out.println("로그인 성공");
 			int loginDateUpdate = memberService.loginDateUpdate(login.getNo());
 			return "redirect:/member/mainForm.do";
 		}else {
+			session.setAttribute("msg", "아이디 또는 비밀번호를 확인해주세요");
+			session.setAttribute("status", "error");
+			
 			System.out.println("로그인 실패");
-			return "member/login";
+			return "redirect:/member/loginForm.do";
 		}
 	}
 	// mainForm 이동
 	@GetMapping("/mainForm.do")
-	public String mainPage() {
+	public String mainPage(HttpSession session, Model model) {
+		String msg = (String)session.getAttribute("msg");
+		String status = (String)session.getAttribute("status");
+		
+		model.addAttribute("status", status);
+		model.addAttribute("msg", msg);
+		
+		session.removeAttribute("msg");
+		session.removeAttribute("status");
+		
 		return "main";
 	}
 	// 로그아웃
@@ -99,8 +128,16 @@ public class MemberController {
 		session.invalidate();
 		return "redirect:/member/mainForm.do";
 	}
-	
-	
+	// adminPage 이동
+	@GetMapping("/adminForm.do")
+	public String adminForm() {
+		return "redirect:/admin/adminForm.do";
+	}
+	// myPagePage 이동
+	@GetMapping("/mypage.do")
+	public String profileForm() {
+		return "redirect:/mypage/mypage.do";
+	}
 	
 	
 }

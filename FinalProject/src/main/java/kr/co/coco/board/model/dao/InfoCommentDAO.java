@@ -23,6 +23,11 @@ public class InfoCommentDAO {
 		sqlSession.insert("InfoCommentMapper.insertComment", commentDTO);
 		return getCommentById(commentDTO.getInfoCommentNo());
 	}
+	
+	//댓글 등록 시, info_comment_count 업데이트 
+    public void increaseCommentCount(int infoNo) {
+        sqlSession.update("InfoCommentMapper.increaseCommentCount", infoNo);
+    }
 
 	// 댓글 번호로 댓글 정보 가져오기
 	public InfoCommentDTO getCommentById(int commentId) {
@@ -55,10 +60,6 @@ public class InfoCommentDAO {
 		return sqlSession.selectOne("InfoCommentMapper.getInfoNoFromComment", infoCommentNo);
 	}
 	
-	//댓글 등록 시, info_comment_count 업데이트 
-    public void increaseCommentCount(int infoNo) {
-        sqlSession.update("InfoCommentMapper.increaseCommentCount", infoNo);
-    }
 
  // 해당 게시글에 연결된 모든 댓글 삭제
     public void deleteByInfoNo(int infoNo) {

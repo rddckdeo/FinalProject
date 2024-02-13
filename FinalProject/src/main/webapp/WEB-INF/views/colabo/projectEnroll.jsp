@@ -9,6 +9,12 @@
   <title>프로젝트 생성</title>
 <!--   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" /> -->
   <link rel="stylesheet" href="../../resources/css/colabo/colabo.css" />
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  
 </head>
 
 <body>
@@ -23,15 +29,15 @@
 			<div class="container-fluid">
 			 <div class="row">
 			  <div class="card w-100">
-				<div class="form-style-5">
-					<form>
+				<div class="form-style-5" style="height:1200px">
+					<form action="/colabo/projectEnroll.do" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<legend>
-								<span class="number">1</span> 프로젝트 대표자 정보
+								<span class="number">1</span> 프로젝트 생성자 정보
 							</legend>
-							<input type="text" name="" placeholder="이름">
-							<input type="email" name="" placeholder="이메일">
-							<textarea name="field3" placeholder="About yourself"></textarea>
+							<input type="hidden" name="memberNo" value="${list.memberNo}">
+							<input type="text" name="memberName" value="${list.memberName}" readonly>
+							<input type="email" name="memberEmail" value="${list.memberEmail}" readonly>
 							
 						</fieldset>
 						<fieldset>
@@ -40,39 +46,22 @@
 							</legend>
 							<div style="width:100px; height:100px;">
 								<p>이미지 업로드</p>
-								<input type="file">
+								<input type="file" name="upload">
 							</div>
-							<input type="text" name="" placeholder="프로젝트 주제">
-							<input type="text" name="" placeholder="프로젝트 이름">
-							<textarea name="" placeholder="프로젝트 설명"></textarea>
-							<input type="text" name="" placeholder="사용할 기술스택">
-							<label for="job">기술스택 선택</label> 
-							<select id="job"
-								name="field4" style="height: 50px;">
-								<optgroup label="Indoors">
-									<option value="fishkeeping">자바</option>
-									<option value="reading">파이썬</option>
-									<option value="boxing">등등</option>
-									<option value="debate">Debate</option>
-									<option value="gaming">Gaming</option>
-									<option value="snooker">Snooker</option>
-									<option value="other_indoor">Other</option>
-								</optgroup>
-								<optgroup label="Outdoors">
-									<option value="football">Football</option>
-									<option value="swimming">Swimming</option>
-									<option value="fishing">Fishing</option>
-									<option value="climbing">Climbing</option>
-									<option value="cycling">Cycling</option>
-									<option value="other_outdoor">Other</option>
-								</optgroup>
-							</select>
-							<p>기술스택 목록나옴 ~~~~~</p>
-							<input type="number" name="" placeholder="프로젝트 인원 ( 명 )">
-							<input type="number" name="" placeholder="프로젝트 기간 ( 달 )">
+							<input type="text" name="subject" id="projectSubject" onchange="nullCheckBtn()" placeholder="프로젝트 주제" maxlength="30">
+							<input type="text" name="name" id="projectName" onchange="nullCheckBtn()" placeholder="프로젝트 이름" maxlength="30">
+							<textarea name="detail" id="projectContent" onchange="nullCheckBtn()" placeholder="프로젝트 설명" maxlength="150"></textarea>
+							<label for="useStackName">사용기술스택 입력</label>
+							<input type="text" name="stack" id="useStackName" onchange="nullCheckBtn()" placeholder="사용할 기술스택" maxlength="50">
+							
+							<label for="projectPerson">프로젝트 전체인원 입력</label>
+							<input type="number" name="personCount" id="projectPerson" onchange="nullCheckBtn()" onkeyup="checkNumber()" placeholder="프로젝트 인원 ( 명 )"  min="1" max="10" maxlength="2">
+							
+							<label for="projectTerm">프로젝트 진행기간 입력</label>
+							<input type="number" name="period" id="projectTerm" onchange="nullCheckBtn()" onkeyup="checkNumber()" placeholder="프로젝트 기간 ( 달 )"  min="1" max="12" maxlength="2">
+							
 						</fieldset>
-						<input type="submit" value="모집등록" />
-						<input type="submit" value="프로젝트 결성" />
+						<input type="submit" name="stateKor" id="projectSubmit" value="프로젝트생성" disabled>
 					</form>
 				</div>
 			</div>
@@ -82,29 +71,7 @@
     </div>
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <script src="../../resources/js/colabo/colaboProject.js" ></script>
 </body>
 
 </html>

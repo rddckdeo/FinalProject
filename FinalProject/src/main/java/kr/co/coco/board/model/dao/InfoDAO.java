@@ -69,6 +69,12 @@ public class InfoDAO {
 	    return sqlSession.selectList("infoMapper.searchPosts", params);
 	}
 
+	//전체 게시글 조회(검색)
+	public int searchCountPosts(String query) {
+		System.out.println("sqlSession: " + sqlSession);
+		 System.out.println("Query: " + query); 
+		 return sqlSession.selectOne("infoMapper.searchCountPosts", query);
+	}
 
 	// 전체 게시글 조회
 	public List<InfoDTO> getAllPosts(int startIndex, int pageSize) {
@@ -106,6 +112,8 @@ public class InfoDAO {
 
 	    return sqlSession.selectList("infoMapper.selectPostsOrderByViews", params);
 	}
+
+
 
 
 

@@ -12,6 +12,7 @@ import lombok.Setter;
 public class TeamProjectPerSonDTO {
 
 	private int projectNo;
+	private String projectName;
 	private int memberNo;
 	private String memberName;
 	private String memberEmail;

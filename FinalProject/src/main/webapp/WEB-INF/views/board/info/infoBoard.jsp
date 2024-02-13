@@ -101,7 +101,7 @@ a.disabled {
 												<div class="main-boardList-info">
 													<div>
 														<a href="#"><img
-															src="../../../../resources/uploads/member/기본프로필.png"
+															src="${sessionScope.path}${sessionScope.picture}"
 															alt="프로필" width="30" height="30"
 															class="main-boardList-user-img"></a>
 														<p class="main-boardList-info-text">${post.nickname}</p>

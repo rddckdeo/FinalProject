@@ -88,6 +88,11 @@ public class FreeServiceImpl implements FreeService {
 	    int endIndex = startIndex + pageSize;
         return freeDao.searchPosts(query, startIndex, endIndex);
     }
+    
+  //전체 게시글 조회(검색)
+	public int searchCountFreePosts(String query) {
+		return freeDao.searchCountPosts(query);
+	}
 
     // 카테고리 게시글 조회(정렬)
     public List<FreeDTO> getPostsByCategory(String categoryName, String sortType, int startIndex, int pageSize) {
@@ -115,5 +120,7 @@ public class FreeServiceImpl implements FreeService {
 
         return posts;
     }
+
+
 
 }
