@@ -34,7 +34,7 @@
 			<div class="container-fluid">
 				<h1 class="card-project-name">게시글 등록</h1>
 			</div>
-			<form action="/info/SubmitRegistr" method="post">
+			<form action="/info/SubmitRegistr" method="post" id="submitForm">
 				<div class="row">
 					<div class="main-section">
 						<div class="container-fluid">
@@ -228,10 +228,14 @@
                 editor = newEditor;
             });
 
-document.querySelector( '#submit' ).addEventListener( 'click', () => {
-    const editorData = editor.getData();
-    document.querySelector('#editorData').value = editorData;
-} );
+          document.querySelector('#submit').addEventListener('click', function() {
+      	    const shouldSubmit = window.confirm("등록하시겠습니까?");
+      	    if (shouldSubmit) {
+      	        const editorData = editor.getData();
+      	        document.querySelector('#editorData').value = editorData;
+      	        document.querySelector('#submitForm').submit(); 
+      	    }
+      	});
 
 
 </script>

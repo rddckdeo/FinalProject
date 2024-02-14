@@ -46,7 +46,8 @@
 											</c:when>
 											<c:otherwise>
 												<!-- 비로그인 사용자용 알림 -->
-												<a href="/member/loginForm.do">로그인 후 알림을 확인할 수 있습니다.</a>
+												<p>로그인 후 알림을 확인할 수 있습니다.</p>
+												<a href="/member/loginForm.do">로그인 하러 가기</a>
 											</c:otherwise>
 										</c:choose>
 									</div>
@@ -74,15 +75,15 @@
 										<c:choose>
 											<c:when test="${sessionScope.no != null}">
 												<!-- 로그인한 사용자용 헤더 -->
-												<a href="javascript:void(0)"
+												<a href="/mypage/mypage.do"
 													class="d-flex align-items-center gap-2 dropdown-item">
 													<i class="ti ti-user fs-6"></i>
-													<p class="mb-0 fs-3">내 프로필</p>
+													<p class="mb-0 fs-3">마이페이지</p>
 												</a>
 												<a href="javascript:void(0)"
 													class="d-flex align-items-center gap-2 dropdown-item">
 													<i class="ti ti-mail fs-6"></i>
-													<p class="mb-0 fs-3">마이페이지</p>
+													<p class="mb-0 fs-3">내 정보</p>
 												</a>
 												<a href="javascript:void(0)"
 													class="d-flex align-items-center gap-2 dropdown-item">
@@ -94,7 +95,8 @@
 											</c:when>
 											<c:otherwise>
 												<!-- 비로그인 사용자용 헤더 -->
-												<a href="/member/loginForm.do">로그인 후 이용가능합니다.</a>
+												<p>로그인 후 이용가능합니다.</p>
+												<a href="/member/loginForm.do">로그인 하러 가기</a>
 											</c:otherwise>
 										</c:choose>
 

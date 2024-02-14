@@ -36,8 +36,8 @@
 						<div id="main-swipe-category">
 							<div id="circles">
 								<a class="swipe-category"
-									href="file:///Users/kangnayoung/front/COCO/views/supportPage/supportPage.html">QnA</a>
-								<div class="swipe-category">2</div>
+									href="/member/mainForm.do">CoCo</a>
+								<div class="swipe-category">QnA</div>
 								<div class="swipe-category">3</div>
 								<div class="swipe-category">4</div>
 								<div class="swipe-category">5</div>

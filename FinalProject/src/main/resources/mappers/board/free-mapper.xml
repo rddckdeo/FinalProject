@@ -231,6 +231,20 @@
 		)
 		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
 	</select>
+	
+		<!-- 마이페이지 no로 게시글 가져오기 -->
+	<select id="fetchInfoBoardPostsByMemberNo" resultType="free">
+		SELECT * FROM FREE
+		WHERE m_no = #{mNo}
+		ORDER BY info_no DESC
+		OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
+	</select>
+	
+	<!--마이페이지 총 게시글 수 가져오기 -->
+	    <select id="allInfoBoardPostsNo" resultType="int">
+        SELECT COUNT(*) FROM FREE
+        WHERE m_no = #{mNo}
+    </select>
 
 
 </mapper>

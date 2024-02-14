@@ -30,7 +30,7 @@
             class="aside-icon p-2 bg-light-primary rounded-3"> <a
                 href="" id="cooperation-btn" class="btn btn-primary">협업툴
                     바로가기</a>
-        </span> </a></li>
+        </span></li>
         <!-- 사이드바 정보게시판 -->
         <li class="nav-small-cap"><i
             class="ti ti-dots nav-small-cap-icon fs-5"></i> <span

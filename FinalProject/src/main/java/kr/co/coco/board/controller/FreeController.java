@@ -119,7 +119,7 @@ public class FreeController {
     public String freeEnroll(FreeDTO free, HttpSession session) throws IllegalStateException, IOException {
         Integer mNo = (Integer) session.getAttribute("no");
         free.setMNo(mNo);
-
+        
         freeService.enrollBoard(free);
         return "redirect:/free/category?name=" + free.getFreeCategory() + "&page=1";  
     }

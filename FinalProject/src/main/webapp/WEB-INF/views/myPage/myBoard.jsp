@@ -33,7 +33,7 @@
 											<div class="main-boardList bottomBorder">
 												<div class="main-boardList-info">
 													<div>
-														<a href="#"><img src="../../image/naver.png" alt="" width="30" height="30" class="main-boardList-user-img"></a> <a href="#" class="main-boardList-info-text">닉네임</a>
+														<a href="#"><img src="${sessionScope.path}${sessionScope.picture}" alt="" width="30" height="30" class="main-boardList-user-img"></a> <a href="#" class="main-boardList-info-text">닉네임</a>
 														<p class="main-boardList-info-text">등록일</p>
 													</div>
 												</div>
