@@ -1,13 +1,14 @@
 package kr.co.coco.admin.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.co.coco.admin.common.paging.AdminPageInfo;
-import kr.co.coco.admin.model.dto.AdminDTO;
+import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
 
 @Repository
@@ -36,6 +37,23 @@ public class AdminDAO {
 	//deCount
 	public int deCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("admin-totalMapper.deCount");
+	}
+	// -----------------------list-------------------------
+	public int freeListCountToday(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-totalMapper.freeListCountToday");
+	}
+	public int infoListCountToday(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-totalMapper.infoListCountToday");
+	}
+	public List<InfoDTO> freeListToday(SqlSessionTemplate sqlSession, InfoDTO info,AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-totalMapper.freeListToday",info, rb);
+	}
+	public List<InfoDTO> infoListToday(SqlSessionTemplate sqlSession, InfoDTO info,AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-totalMapper.infoListToday",info, rb);
 	}
 //	-------------------------visit-------------------------
 //	-------------admin visit Page Summary------------------
@@ -124,10 +142,63 @@ public class AdminDAO {
 //		return sqlSession.selectList("memberMapper.searchMember",searchMember);
 //	}
 //	-------------------Admini Board Page-------------------
-	//info
-	public List<AdminDTO> infoList(SqlSessionTemplate sqlSession, AdminDTO admin){
-		return sqlSession.selectList("boardMapper.infoList");
+//	-------------admin member Page Summary------------------
+	public int infoTodayCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.infoTodayCount");
 	}
-	
+	public int infoCommentTodayCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.infoCommentTodayCount");
+	}
+	public int freeTodayCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.freeTodayCount");
+	}
+	public int freeCommentTodayCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.freeCommentTodayCount");
+	}
+//	-------------admin member Page List------------------
+	//info
+	public List<InfoDTO> infoList(SqlSessionTemplate sqlSession, InfoDTO info, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-boardMapper.infoList", info, rb);
+	}
+	//info count
+	public int infoListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.infoListCount");
+	}
+	//info comment
+	public List<InfoDTO> infoCommentList(SqlSessionTemplate sqlSession, InfoDTO info, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-boardMapper.infoCommentList", info, rb);
+	}
+	//info comment count
+	public int infoCommentListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.infoCommentListCount");
+	}
+	//free
+	public List<InfoDTO> freeList(SqlSessionTemplate sqlSession, InfoDTO info, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-boardMapper.freeList", info, rb);
+	}
+	//free count
+	public int freeListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.freeListCount");
+	}
+	//free comment
+	public List<InfoDTO> freeCommentList(SqlSessionTemplate sqlSession, InfoDTO info, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-boardMapper.freeCommentList", info, rb);
+	}
+	//free comment count
+	public int freeCommentListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-boardMapper.freeCommentListCount");
+	}
+//	--------------------board delete---------------------
+	public int deleteBoard(SqlSessionTemplate sqlSession, Map<String,Object>param) {
+		return sqlSession.update("admin-boardMapper.deleteBoard", param);
+	}
 	
 }

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="admin-totalMapper">
+	<resultMap type="info" id="infoListToday">
+		<result column="info_no" property="infoNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="info_title" property="infoTitle"></result>
+	</resultMap>
+	<resultMap type="info" id="freeListToday">
+		<result column="free_no" property="infoNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="free_title" property="infoTitle"></result>
+	</resultMap>
+	
 	<!-- visit Count -->
 	<select id="visitCount" resultType="int">
 		SELECT COUNT(M_LOGIN_DATE) FROM MEMBER WHERE M_DELETE_DATE IS NULL
@@ -26,4 +36,28 @@
 	<select id="deCount" resultType="int">
 		SELECT COUNT(DECLARATION_NO) FROM DECLARATION
 	</select>
+	<!-- ***************list********************** -->
+	<select id="freeListCountToday" resultType="_int">
+		SELECT COUNT(*) FROM FREE
+		WHERE FREE_DELETE_DATE IS NULL
+		AND FREE_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE) + 1
+	</select>
+	<select id="infoListCountToday" resultType="_int">
+		SELECT COUNT(*) FROM INFO
+		WHERE INFO_DELETE_DATE IS NULL
+		AND INFO_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE) + 1
+	</select>
+	<select id="freeListToday" resultMap="freeListToday">
+	    SELECT FREE_NO, FREE_TITLE, FREE_DATE FROM FREE
+	    WHERE FREE_DELETE_DATE IS NULL
+   		AND FREE_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE) + 1
+	    ORDER BY FREE_DATE DESC
+	</select>
+	<select id="infoListToday" resultMap="infoListToday">
+	    SELECT INFO_NO, INFO_TITLE, INFO_DATE FROM INFO
+	    WHERE INFO_DELETE_DATE IS NULL
+		AND INFO_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE) + 1
+	    ORDER BY INFO_DATE DESC
+	</select>
+	
 </mapper>

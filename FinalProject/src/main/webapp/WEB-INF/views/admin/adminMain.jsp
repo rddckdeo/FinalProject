@@ -5,10 +5,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>admin</title>
-<link href="/resources/css/member/default.css" rel="stylesheet">
-<link href="/resources/css/common/styles.min.css" rel="stylesheet">
-<link href="/resources/css/admin/admin.css" rel="stylesheet">
+<%@ include file="/WEB-INF/views/admin/common/head.jsp"%>
 </head>
 <body class="bodyBackColor">
 	<%@ include file="/WEB-INF/views/admin/common/sidebar.jsp"%>
@@ -135,16 +132,17 @@
 												<li class="li4">Creation time</li>
 											</ul>
 											<ul>
-												<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자</span> <span class="li2">16:17:52</span></li>
-												<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">4</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자</span> <span class="li2">16:17:52</span></li>
-												<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">3</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자</span> <span class="li2">16:17:52</span></li>
-												<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">2</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자</span> <span class="li2">16:17:52</span></li>
-												<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">1</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자</span> <span class="li2">16:17:52</span></li>
-
+												<c:forEach var="item2" items="${infotList}">
+													<li class="borderDefault visitPadding justifyAround boardLiSize">
+														<span class="li1">${item.infoNo}</span> 
+														<span class="li3">${item.infoTitle}</span> 
+														<span class="li2">${item.infoDate}</span>
+													</li>
+												</c:forEach>
+											</ul>
 												<div class="pagination">
 													<a href="#">&lt;</a> <a href="#" class="active">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">&gt;</a>
 												</div>
-											</ul>
 										</div>
 									</div>
 								</div>
