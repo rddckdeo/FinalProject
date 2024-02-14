@@ -5,10 +5,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>admin</title>
-<link href="/resources/css/member/default.css" rel="stylesheet">
-<link href="/resources/css/common/styles.min.css" rel="stylesheet">
-<link href="/resources/css/admin/admin.css" rel="stylesheet">
+<%@ include file="/WEB-INF/views/admin/common/head.jsp"%>
 </head>
 
 <body class="bodyBackColor">
@@ -29,73 +26,117 @@
 							<div class="direction2 justifyEve width100">
 								<a href="/admin/adminBoard.do?status=info&cpage=1" class="card1 backColor1 direction1">
 									<h1 class="fontTitle">정보게시판</h1>
-									<h3 class="fontContent">금일 작성 : 00</h3>
+									<h3 class="fontContent">금일 작성 : ${info}</h3>
 								</a>
 								<a href="/admin/adminBoard.do?status=infoComment&cpage=1" class="card1 backColor2 direction1">
 									<h1 class="fontTitle">정보게시판 댓글</h1>
-									<h3 class="fontContent">금일 작성 : 00</h3>
+									<h3 class="fontContent">금일 작성 : ${infoComment}</h3>
 								</a>
 								<a href="/admin/adminBoard.do?status=free&cpage=1" class="card1 backColor3 direction1">
 									<h1 class="fontTitle">자유게시판</h1>
-									<h3 class="fontContent">금일 작성 : 00</h3>
+									<h3 class="fontContent">금일 작성 : ${free}</h3>
 								</a>
 								<a href="/admin/adminBoard.do?status=freeComment&cpage=1" class="card1 backColor4 direction1">
 									<h1 class="fontTitle">자유게시판 댓글</h1>
-									<h3 class="fontContent">금일 작성 : 00</h3>
+									<h3 class="fontContent">금일 작성 : ${freeComment}</h3>
 								</a>
 							</div>
 							<!-- 게시판 시작 -->
 							<div class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
-								<p class="font20px subP whiteColor">List</p>
+							<input type="hidden" value="${status}" id="status">
+								<c:choose>
+									<c:when test="${empty title}">
+										<p class="font20px subP whiteColor">버튼을 클릭해주세요</p>
+									</c:when>
+									<c:otherwise>
+										<p class="font20px subP whiteColor">${title}</p>
+									</c:otherwise>
+								</c:choose>
 								<div class="direction2 justifyAround alignCenter height80per">
-									<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
-										<div class="direction2 justifyBet">
-											<p>게시판</p>
-										</div>
-										<ul class="direction2 noMargin justifyAround visitPadding borderDefault">
-											<li class="li1">No</li>
-											<li class="li1">작성자</li>
-											<li class="li3">제목</li>
-											<li class="li1">ID</li>
-											<li class="li2">작성 날짜</li>
-											<li class="li1">삭제</li>
-										</ul>
-										<ul class="visitUlSize">
-											<c:forEach var="item" items="${totalList}">
-												<li class="borderDefault visitPadding justifyAround">
-	                                                <span class="li1">${item.no}</span>
-	                                                <span class="li1">${item.name}</span>
-	                                                <span class="li3">${item.title}</span>
-	                                                <span class="li1">${item.id}</span>
-	                                                <span class="li2">${item.inDate}</span>
-	                                                <span class="li1"><button value="${item.no}" class="deleteBtn" onclick="deleteBtn(this.value)">삭제</button></span>
-	                                            </li>
-                                            </c:forEach>
-										</ul>
-										<div class="pagination">
-											<c:choose>
-												<c:when test="${pi1.cpage eq 1}">
-													<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a> 
-												</c:when>
-												<c:otherwise>
-													<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${pi1.cpage-1}">&lt;</a> 
-												</c:otherwise>
-											</c:choose>
-												
-											<c:forEach var="page" begin="${pi1.startPage}" end="${pi1.endPage}">
-												<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${page}">${page}</a>
-											</c:forEach>
-												
-											<c:choose>
-												<c:when test="${pi1.cpage eq pi1.maxPage}">
-													<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
-												</c:when>
-												<c:otherwise>
-													<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${pi1.cpage + 1}">&gt;</a>
-												</c:otherwise>
-											</c:choose>
-										</div>
-									</div>
+									
+											<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
+												<div class="direction2 justifyBet">
+													<p>게시판</p>
+												</div>
+												<c:choose>
+												    <c:when test="${status eq 'infoComment' || status eq 'freeComment'}">
+												        <!-- 댓글 목록 -->
+												        <ul class="direction2 noMargin justifyAround visitPadding borderDefault">
+												            <li class="li1">댓글 No</li>
+												            <li class="li1">게시글 No</li>
+												            <li class="li1">작성자</li>
+												            <li class="li1">ID</li>
+												            <li class="li3">내용</li>
+												            <li class="li2">작성 날짜</li>
+												            <li class="li1">삭제</li>
+												        </ul>
+												        <ul class="visitUlSize">
+												            <c:forEach var="item" items="${list}">
+												                <li class="borderDefault visitPadding justifyAround">
+												                    <span class="li1">${item.commentNo}</span>
+												                    <span class="li1">${item.boardNo}</span>
+												                    <span class="li1">${item.name}</span>
+												                    <span class="li1">${item.id}</span>
+												                    <span class="li3">${item.content}</span>
+												                    <span class="li2">${item.date}</span>
+												                    <span class="li1"><button value="${item.commentNo}" class="deleteBtn" onclick="boardDeleteBtn(this.value)">삭제</button></span>
+												                    
+												                </li>
+												            </c:forEach>
+												        </ul>
+												    </c:when>
+												    <c:otherwise>
+												        <!-- 게시글 목록 -->
+												        <ul class="direction2 noMargin justifyAround visitPadding borderDefault">
+												            <li class="li1">No</li>
+												            <li class="li1">작성자</li>
+												            <li class="li3">제목</li>
+												            <li class="li1">ID</li>
+												            <li class="li2">작성 날짜</li>
+												            <li class="li1">삭제</li>
+												        </ul>
+												        <ul class="visitUlSize">
+												            <c:forEach var="item" items="${list}">
+												                <li class="borderDefault visitPadding justifyAround">
+												                    <span class="li1">${item.boardNo}</span>
+												                    <span class="li1">${item.name}</span>
+												                    <span class="li3">${item.title}</span>
+												                    <span class="li1">${item.id}</span>
+												                    <span class="li2">${item.date}</span>
+												                    <span class="li1"><button value="${item.boardNo}" class="deleteBtn" onclick="boardDeleteBtn(this.value)">삭제</button></span>
+												                </li>
+												            </c:forEach>
+												        </ul>
+												    </c:otherwise>
+												</c:choose>
+												<div class="pagination">
+													<c:choose>
+														<c:when test="${pi.cpage eq 1}">
+															<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a> 
+														</c:when>
+														<c:otherwise>
+															<a class="Margin5 borderRadius3 paginationBtn" href="adminBoard.do?status=${status}&cpage=${pi.cpage-1}">&lt;</a> 
+														</c:otherwise>
+													</c:choose>
+														
+													<c:forEach var="page" begin="${pi.startPage}" end="${pi.endPage}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminBoard.do?status=${status}&cpage=${page}">${page}</a>
+													</c:forEach>
+														
+													<c:choose>
+														<c:when test="${pi.cpage eq pi.maxPage}">
+															<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+														</c:when>
+														<c:otherwise>
+															<a class="Margin5 borderRadius3 paginationBtn" href="adminBoard.do?status=${status}&cpage=${pi.cpage + 1}">&gt;</a>
+														</c:otherwise>
+													</c:choose>
+												</div>
+											</div>
+										
+									
+									
+									
 								</div>
 							</div>
 							<!-- 게시판 끝 -->
