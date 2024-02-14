@@ -40,7 +40,6 @@ public class ColaboMainController {
 	private ColaboServiceImpl colaboService;
 	
 	
-	
 	@GetMapping("")
 	public String enterColabo(Model model, HttpSession session) {
 		
@@ -57,6 +56,12 @@ public class ColaboMainController {
 		session.setAttribute("projectList", projectList);
 		
 		return "colabo/colaboPage";
+	}
+	
+	@GetMapping("/Chat")
+	public String enterChat() {
+		
+		return "colabo/Chat";
 	}
 	
 	@PostMapping("/getProjectSession.do")
@@ -856,7 +861,23 @@ public class ColaboMainController {
 		return list;
 	}
 	
-	
+	@PostMapping("/getMemberInfo.do")
+	@ResponseBody
+	public Map<String,Object> getMemberInfo(HttpSession session) {
+		
+		int memberNo = (int)session.getAttribute("no");
+		ColaboDTO colabo = colaboService.getMemberInfo(memberNo);
+		
+		
+		Map<String, Object> list = new HashMap<>();
+		
+		list.put("memberNo", colabo.getMemberNo());
+		list.put("memberName", colabo.getMemberName());
+		list.put("memberEmail", colabo.getMemberEmail());
+		
+		System.out.println(colabo);
+		return list;  
+	}
 	
 	
 	
