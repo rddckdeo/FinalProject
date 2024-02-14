@@ -164,6 +164,10 @@ public class ColaboDAO {
 		return sqlSession.selectList("colaboMapper.selectEmailMember", selectText);
 	}
 
+	public ColaboDTO getMemberInfo(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectOne("colaboMapper.getMemberInfo", memberNo);
+	}
+
 }
 
 
