@@ -57,6 +57,11 @@
 		<result column="TEAM_ENROLL_DATE" property="teamEnrollDate"></result>
 	</resultMap>
 	
+	<select id="getMemberInfo" parameterType="int" resultMap="colaboResultSet">
+		SELECT M_NO, M_NAME, M_EMAIL FROM MEMBER
+		WHERE M_NO = #{memberNo}
+	</select>
+	
 	<select id="selectEmailMember" parameterType="String" resultMap="colaboResultSet">
 		SELECT M_NO, M_NAME, M_EMAIL FROM MEMBER 
 		WHERE M_EMAIL LIKE '%' || #{selectText} || '%'

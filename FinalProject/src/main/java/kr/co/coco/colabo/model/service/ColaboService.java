@@ -86,6 +86,9 @@ public interface ColaboService {
 	
 	// 기본개요 홈페이지에서 이메일로 검색후 인원 초대하기 
 	public List<ColaboDTO> selectEmailMember(String selectText);
+	
+	// 채팅에서 보내는사람 이름 가져오기, 이메일도 넣음
+	public ColaboDTO getMemberInfo(int memberNo);
 }
 
 

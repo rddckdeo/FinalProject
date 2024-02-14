@@ -1,5 +1,7 @@
 package kr.co.coco.colabo.model.dto;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor 
 @AllArgsConstructor
-public class TeamProjectPerSonDTO {
+public class TeamProjectPerSonDTO implements Serializable {
 
 	private int projectNo;
 	private String projectName;
