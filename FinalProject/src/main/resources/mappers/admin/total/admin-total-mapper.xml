@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="admin-totalMapper">
+	<!-- visit Count -->
+	<select id="visitCount" resultType="int">
+		SELECT COUNT(M_LOGIN_DATE) FROM MEMBER WHERE M_DELETE_DATE IS NULL
+	</select>
+	<!-- free Count -->
+	<select id="freeCount" resultType="int">
+		SELECT COUNT(FREE_NO) FROM FREE WHERE FREE_DELETE_DATE IS NULL
+	</select>
+	<!-- info Count -->
+	<select id="infoCount" resultType="int">
+		SELECT COUNT(INFO_NO) FROM INFO WHERE INFO_DELETE_DATE IS NULL
+	</select>
+	<!-- project Count -->
+	<select id="projectCount" resultType="int">
+		SELECT COUNT(P_NO) FROM COLABO
+	</select>
+	<!-- board Count -->
+	<select id="boardCount" resultType="int">
+		SELECT COUNT(A_BOARD_NO) FROM ADMIN_BOARD WHERE A_BOARD_DELETE_DATE IS NULL
+	</select>
+	<!-- de Count -->
+	<select id="deCount" resultType="int">
+		SELECT COUNT(DECLARATION_NO) FROM DECLARATION
+	</select>
+</mapper>

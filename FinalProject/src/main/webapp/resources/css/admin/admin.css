@@ -105,6 +105,10 @@
     width: 30px;
     height: 30px;
 }
+.li0{
+    width: 15%;
+    text-align: center;
+}
 
 .li1 {
     width: 10%;
@@ -129,7 +133,17 @@
     width: 30%;
     text-align: center;
 }
+.li5{
+	width:60%;
+	text-align:center;
+}
 
+.ulSize{
+	height:210px;
+}
+.visitUlSize{
+	height:250px;
+}
 /* 페이지 네이션 */
 .pagination {
     display: flex;
@@ -211,4 +225,60 @@
 .fontSize14{
     font-size: 14px;
     color: #707a82;
+}
+
+.paginationBtn{
+    background-color: white;
+}
+
+.boardSummaryBox{
+	width:50%;
+    box-shadow: 1px 2px 6px rgba(37, 83, 185, 0.1);
+	margin:10px;
+}
+.marginTopLeft{
+	margin:10px 0 0 20px;
+}
+
+/* 게시판 */
+.card1{
+	width : 200px;
+	height : 100px;
+    box-shadow: 1px 2px 6px rgba(37, 83, 185, 0.1);
+    margin : 10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:20px;
+    font-weight:900;
+    border-radius:0.5rem;
+    cursor:pointer;
+}
+.fontTitle{
+	font-size:20px;
+	color:white;
+	font-weight:900;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.fontContent{
+	font-size:14px;
+	color:white;
+	font-weight:600;
+}
+.backColor1{
+    background-color:#007BFF;
+}
+.backColor2{
+    background-color:#FFC108;
+}
+.backColor3{
+    background-color:#28A745;
+}
+.backColor4{
+    background-color:#DC3545;
+}
+.cardSize2{
+	min-height:580px !important;
 }

@@ -21,10 +21,12 @@ public class MemberDTO {
 	private String hope;
 	private String stack;
 	private String intro;
-	private Date inDate;
-	private Date deleteDate;
-	private Date loginDate;
+	private String inDate;
+	private String deleteDate;
+	private String loginDate;
 	private String stop;
-	private Date stopDate;
+	private String stopDate;
 	private String number;
+	
+	private String loginDay;
 }

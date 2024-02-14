@@ -60,5 +60,4 @@
 	<update id="loginDateUpdate">
 		UPDATE MEMBER SET M_LOGIN_DATE = SYSDATE WHERE M_NO = #{no}
 	</update>
-	
 </mapper>
