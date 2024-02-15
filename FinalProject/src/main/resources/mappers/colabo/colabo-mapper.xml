@@ -64,7 +64,8 @@
 	
 	<select id="selectEmailMember" parameterType="String" resultMap="colaboResultSet">
 		SELECT M_NO, M_NAME, M_EMAIL FROM MEMBER 
-		WHERE M_EMAIL LIKE '%' || #{selectText} || '%'
+		WHERE LENGTH(#{selectText}) >= 3
+		AND M_EMAIL LIKE '%' || #{selectText} || '%'
 	</select>
 	
 	<select id="getProjectNameNumberList" parameterType="int" resultMap="colaboResultSet">

@@ -49,7 +49,9 @@ public class ColaboMainController {
 		session.setAttribute("no", 1); // 나중에 멤버넘버 로그인했을때 생긴 세션으로 처리하기
 		int memberNo =  (int)session.getAttribute("no");
 		
-		
+//		if(memberNo == 0) {
+//			return "";
+//		}
 		
 		List<TeamProjectPerSonDTO> projectList = colaboService.selectProjectList(memberNo);
 		
