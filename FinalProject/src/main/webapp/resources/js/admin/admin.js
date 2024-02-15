@@ -72,3 +72,27 @@ function boardDeleteBtn(no) {
 		})
 	}
 }
+//admin Project Delete
+/*function projectDeleteBtn(no) {
+	let status = document.getElementById("status").value;
+	let confirmValue = confirm("정말 삭제하시겠습니까?");
+	console.log(confirmValue);
+	if (confirmValue === true){
+		$.ajax({
+			url: '/admin/deleteProject.do',
+			type: 'POST',
+			data: {
+				boardNo: no,
+				status: status
+			},
+			success: function(response) {
+				if (response === 1){
+					alert("성공적으로 삭제되었습니다.");
+					location.reload(true);
+				} else {
+					alert("삭제에 실패하였습니다.");
+				}
+			}
+		})
+	}
+}*/

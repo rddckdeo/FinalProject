@@ -19,6 +19,7 @@ import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.common.paging.AdminPagination;
 import kr.co.coco.admin.model.service.AdminServiceImpl;
 import kr.co.coco.board.model.dto.InfoDTO;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
 
 @Controller
@@ -31,7 +32,7 @@ public class AdminController {
 	@GetMapping("/adminForm.do")
 	public String adminForm(HttpSession session, Model model, MemberDTO member, InfoDTO info,
 			@RequestParam(value = "cpage", defaultValue = "1") int cpage,
-			@RequestParam(value = "status", defaultValue = " ") String status) {
+			@RequestParam(value = "status", defaultValue = "visit") String status) {
 // --------------------------Summay Count------------------------------ //
 		// Count list 가져오기
 		int visitCount = adminService.visitCount(); // 전체 방문
@@ -62,16 +63,16 @@ public class AdminController {
 		AdminPageInfo pi3 = new AdminPageInfo(); // free
 		if(status.equals("visit")) {
 			pi1 = AdminPagination.getPageInfo(visitListCount, cpage, pageLimit, boardLimit);
-			pi2 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
-			pi3 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
+			pi2 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
+			pi3 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
 		}else if(status.equals("info")) {
 			pi1 = AdminPagination.getPageInfo(visitListCount,1, pageLimit, boardLimit);
-			pi2 = AdminPagination.getPageInfo(freeListCount,cpage, pageLimit, boardLimit);
-			pi3 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
+			pi2 = AdminPagination.getPageInfo(infoListCount,cpage, pageLimit, boardLimit);
+			pi3 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
 		}else if(status.equals("free")) {
 			pi1 = AdminPagination.getPageInfo(visitListCount,1, pageLimit, boardLimit);
-			pi2 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
-			pi3 = AdminPagination.getPageInfo(infoListCount,cpage, pageLimit, boardLimit);
+			pi2 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
+			pi3 = AdminPagination.getPageInfo(freeListCount,cpage, pageLimit, boardLimit);
 		}
 // --------------------------LIST------------------------------ //
 		// visit List 가져오기
@@ -86,6 +87,9 @@ public class AdminController {
 		List<InfoDTO> infoList = adminService.infoListToday(info, pi2);
 		// free list 가져오기
 		List<InfoDTO> freeList = adminService.freeListToday(info, pi3);
+		
+		System.out.println(infoListCount);
+		
 // --------------------------model------------------------------ //
 		model.addAttribute("visitList",visitList);
 		model.addAttribute("freeList",freeList);
@@ -201,7 +205,53 @@ public class AdminController {
 	}
 	// 프로젝트 관리
 	@GetMapping("/adminProject.do")
-	public String adminProject(){
+	public String adminProject(Model model, ColaboDTO colabo,
+						@RequestParam(value="cpage",defaultValue="1")int cpage,
+						@RequestParam(value="status",defaultValue="n")String status){
+		// ----------------------summary----------------------
+		int np = adminService.newProject();
+		int sp = adminService.startProject();
+		int ep = adminService.endProject();
+		// ----------------------paging----------------------
+		int boardLimit = 6;
+		int pageLimit = 5;
+		
+		int newProjectListCount = adminService.newProjectListCount(); // total paging
+		int startProjectListCount = adminService.startProjectListCount(); // newMember paging
+		int endProjectListCount = adminService.endProjectListCount(); // deleteMember paging
+		// 객체 생성(pi1, pi2, pi3)
+		AdminPageInfo pi1 = new AdminPageInfo();
+		AdminPageInfo pi2 = new AdminPageInfo();
+		AdminPageInfo pi3 = new AdminPageInfo();
+		if(status.equals("n")) {
+			pi1 = AdminPagination.getPageInfo(newProjectListCount, cpage, pageLimit, boardLimit);
+			pi2 = AdminPagination.getPageInfo(startProjectListCount,1, pageLimit, boardLimit);
+			pi3 = AdminPagination.getPageInfo(endProjectListCount,1, pageLimit, boardLimit);
+		}else if(status.equals("s")) {
+			pi1 = AdminPagination.getPageInfo(newProjectListCount,1, pageLimit, boardLimit);
+			pi2 = AdminPagination.getPageInfo(startProjectListCount,cpage, pageLimit, boardLimit);
+			pi3 = AdminPagination.getPageInfo(endProjectListCount,1, pageLimit, boardLimit);
+		}else if(status.equals("e")) {
+			pi1 = AdminPagination.getPageInfo(newProjectListCount,1, pageLimit, boardLimit);
+			pi2 = AdminPagination.getPageInfo(startProjectListCount,1, pageLimit, boardLimit);
+			pi3 = AdminPagination.getPageInfo(endProjectListCount,cpage, pageLimit, boardLimit);
+		}
+		System.out.println();
+		// ----------------------List----------------------
+		List<ColaboDTO> newProjectList = adminService.newProjectList(colabo, pi1);
+		List<ColaboDTO> startProjectList = adminService.startProjectList(colabo, pi2);
+		List<ColaboDTO> endProjectList = adminService.endProjectList(colabo, pi3);
+		// ----------------------model----------------------
+		model.addAttribute("np",np);
+		model.addAttribute("sp",sp);
+		model.addAttribute("ep",ep);
+		model.addAttribute("pi1",pi1);
+		model.addAttribute("pi2",pi2);
+		model.addAttribute("pi3",pi3);
+		model.addAttribute("newProjectList",newProjectList);
+		model.addAttribute("startProjectList",startProjectList);
+		model.addAttribute("endProjectList",endProjectList);
+		
 		return "admin/adminProject";
 	}
 	// 문의 사항
@@ -329,4 +379,27 @@ public class AdminController {
 		
 	    return 1;
 	}
+//	// delete Board
+//	@ResponseBody
+//	@PostMapping("/deleteProject.do")
+//	public int deleteProject(@RequestParam("") int no,
+//			@RequestParam("status") String status){
+//		if(status.equals("infoComment")) {
+//			status = "INFO_COMMENT";
+//		}else if(status.equals("info")) {
+//			status = "INFO";
+//		}else if(status.equals("freeComment")) {
+//			status = "FREE_COMMENT";
+//		}else if(status.equals("free")) {
+//			status = "FREE";
+//		}
+//		Map<String, Object>param = new HashMap<>();
+//		param.put("no", no);
+//		param.put("status", status);
+//		System.out.println(param.get("no"));
+//		System.out.println(param.get("status"));
+//		int result = adminService.deleteBoard(param);
+//		
+//	    return 1;
+//	}
 }

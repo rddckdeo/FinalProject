@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.model.dao.AdminDAO;
 import kr.co.coco.board.model.dto.InfoDTO;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
 
 @Service
@@ -147,8 +148,7 @@ public class AdminServiceImpl implements AdminService{
 //		return adminDao.searchMember(sqlSession, searchMember);
 //	}
 
-// -----------------------------------------------------
-// Admin Board Page
+// --------------------------Admin Board Page---------------------------
 //	-------------------------Summay----------------------------
 	public int infoTodayCount() {
 		return adminDao.infoTodayCount(sqlSession);
@@ -199,4 +199,37 @@ public class AdminServiceImpl implements AdminService{
 	public int deleteBoard(Map<String,Object>param){
 		return adminDao.deleteBoard(sqlSession, param);
 	}
+// --------------------------Admin Project Page---------------------------
+	// Summay Count
+	public int newProject() {
+		return adminDao.newProject(sqlSession);
+	}
+	public int startProject() {
+		return adminDao.startProject(sqlSession);
+	}
+	public int endProject() {
+		return adminDao.endProject(sqlSession);
+	}
+	// paging
+	public int newProjectListCount() {
+		return adminDao.newProjectListCount(sqlSession);
+	}
+	
+	public int startProjectListCount() {
+		return adminDao.startProjectListCount(sqlSession);
+	}
+	
+	public int endProjectListCount() {
+		return adminDao.endProjectListCount(sqlSession);
+	}
+	// List
+	public List<ColaboDTO> newProjectList(ColaboDTO colabo, AdminPageInfo pi1){
+		return adminDao.newProjectList(sqlSession, colabo, pi1);
+	}
+	public List<ColaboDTO> startProjectList(ColaboDTO colabo, AdminPageInfo pi1){
+		return adminDao.startProjectList(sqlSession, colabo, pi1);
+	}	
+	public List<ColaboDTO> endProjectList(ColaboDTO colabo, AdminPageInfo pi1){
+		return adminDao.endProjectList(sqlSession, colabo, pi1);
+	}	
 }

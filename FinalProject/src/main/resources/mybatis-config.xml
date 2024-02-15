@@ -33,6 +33,7 @@
 		<mapper resource="/mappers/admin/visit/admin-visit-mapper.xml"/>
 		<mapper resource="/mappers/admin/member/admin-member-mapper.xml"/>
 		<mapper resource="/mappers/admin/board/admin-board-mapper.xml"/>
+		<mapper resource="/mappers/admin/project/admin-project-mapper.xml"/>
 	</mappers>
 
 

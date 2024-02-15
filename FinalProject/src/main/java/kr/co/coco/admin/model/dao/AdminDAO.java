@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.board.model.dto.InfoDTO;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
 
 @Repository
@@ -200,5 +201,43 @@ public class AdminDAO {
 	public int deleteBoard(SqlSessionTemplate sqlSession, Map<String,Object>param) {
 		return sqlSession.update("admin-boardMapper.deleteBoard", param);
 	}
+// --------------------------Admin Project Page---------------------------
+	// Summary
+	public int newProject(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-projectMapper.newProject");
+	}
+	public int startProject(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-projectMapper.startProject");
+	}
+	public int endProject(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-projectMapper.endProject");
+	}	
+	// paging
+	public int newProjectListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-projectMapper.newProjectListCount");
+	}
 	
+	public int startProjectListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-projectMapper.startProjectListCount");	
+	}
+	
+	public int endProjectListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-projectMapper.endProjectListCount");
+	}
+	// List
+	public List<ColaboDTO> newProjectList(SqlSessionTemplate sqlSession, ColaboDTO colabo, AdminPageInfo pi1){
+		int offset = (pi1.getCpage() - 1) * pi1.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi1.getBoardLimit());
+		return sqlSession.selectList("admin-projectMapper.newProjectList",colabo, rb);
+	}
+	public List<ColaboDTO> startProjectList(SqlSessionTemplate sqlSession, ColaboDTO colabo, AdminPageInfo pi2){
+		int offset = (pi2.getCpage() - 1) * pi2.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi2.getBoardLimit());
+		return sqlSession.selectList("admin-projectMapper.startProjectList",colabo, rb);
+	}
+	public List<ColaboDTO> endProjectList(SqlSessionTemplate sqlSession, ColaboDTO colabo, AdminPageInfo pi3){
+		int offset = (pi3.getCpage() - 1) * pi3.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi3.getBoardLimit());
+		return sqlSession.selectList("admin-projectMapper.endProjectList",colabo, rb);
+	}
 }
