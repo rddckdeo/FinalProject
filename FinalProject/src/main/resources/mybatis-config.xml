@@ -17,11 +17,11 @@
 		<typeAlias type="kr.co.coco.colabo.model.dto.SkillChartDTO" alias="skillChart"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO" alias="projectMember"/>
 		<typeAlias type="kr.co.coco.member.model.dto.MemberDTO" alias="member"/>
-
+		<typeAlias type="kr.co.coco.admin.model.dto.AdminDTO" alias="admin"/>
+		
 	</typeAliases>
 	
 	<mappers>
-
 		<mapper resource="/mappers/board/info-mapper.xml"/>
 		<mapper resource="/mappers/board/info-comment-mapper.xml"/>
 		<mapper resource="/mappers/board/free-mapper.xml"/>
@@ -32,6 +32,8 @@
 		<mapper resource="/mappers/admin/total/admin-total-mapper.xml"/>
 		<mapper resource="/mappers/admin/visit/admin-visit-mapper.xml"/>
 		<mapper resource="/mappers/admin/member/admin-member-mapper.xml"/>
+		<mapper resource="/mappers/admin/board/admin-board-mapper.xml"/>
+		<mapper resource="/mappers/admin/project/admin-project-mapper.xml"/>
 	</mappers>
 
 

@@ -32,10 +32,10 @@
 						<div class="card mb-0 height600">
 							<div class="direction2 logoutDiv">
 								<div class="logoutDiv">
-									<a class="logoutAtag" href="adminForm.do">admin</a>
+									<a class="logoutAtag" href="adminForm.do" onclick="return checkLogin()">admin</a>
 								</div>
 								<div class="logoutDiv">
-									<a class="logoutAtag" href="mypage.do">myPage</a>
+									<a class="logoutAtag" href="mypage.do" onclick="return checkLogin()">myPage</a>
 								</div>
 								<c:choose>
 									<c:when test="${!empty no}">
@@ -65,7 +65,7 @@
 
 								<div class="direction2">
 									<div class="direction1 alignCenter justifyCenter">
-										<a class="totalBtn Margin20 borderRadiusd backBlue2 direction1 sortCenter" href="#"> 협업 홈페이지<br> <small class="small15">협업으로 바로가기~</small>
+										<a class="totalBtn Margin20 borderRadiusd backBlue2 direction1 sortCenter" href="/colabo/" onclick="return checkLogin()"> 협업 홈페이지<br> <small class="small15">협업으로 바로가기~</small>
 										</a>
 									</div>
 									<div class="direction1 alignCenter justifyCenter">
@@ -83,5 +83,16 @@
 	</div>
 </body>
 </html>
-
+<script>
+    function checkLogin() {
+        // 세션에 no가 없을때(비로그인)
+        <% if (session.getAttribute("no") == null) { %>
+            alert('로그인 후 이용해주세요.');
+            location.href = '/member/loginForm.do'; // 로그인 페이지로 리다이렉트
+            return false;
+        <% } else { %>
+            return true;
+        <% } %>
+    }
+</script>
 
