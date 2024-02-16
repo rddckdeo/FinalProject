@@ -79,4 +79,9 @@
 		AND P_STATE = 'y'
 		ORDER BY P_END_DATE DESC
 	</select>
+	<!-- delete -->
+	<delete id="deleteProject">
+		DELETE FROM COLABO
+		WHERE P_NO = ${no}
+	</delete>
 </mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="admin-adminBoardMapper">
+	
+	<resultMap type="adminBoard" id="adminBoardResultSet">
+		<result column="a_board_no" property="no"></result>
+		<result column="a_board_title" property="title"></result>
+		<result column="a_board_content" property="content"></result>
+		<result column="a_board_view" property="view"></result>
+		<result column="a_board_in_date" property="inDate"></result>
+		<result column="a_board_edit_date" property="updateDate"></result>
+		<result column="a_board_delete_date" property="deleteDate"></result>
+		<result column="a_board_answer" property="answer"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="a_board_answer_content" property="answerContent"></result>
+		<result column="a_board_answer_date" property="answerDate"></result>
+		<result column="m_name" property="name"></result>
+	</resultMap>
+
+	<select id="incomCount" resultType="_int">
+		SELECT COUNT(*) FROM ADMIN_BOARD
+		WHERE A_BOARD_ANSWER = 'N'
+		AND A_BOARD_DELETE_DATE IS NULL
+		ORDER BY A_BOARD_IN_DATE DESC
+	</select>
+	<select id="comCount" resultType="_int">
+		SELECT COUNT(*) FROM ADMIN_BOARD
+		WHERE A_BOARD_ANSWER = 'Y'
+		AND A_BOARD_DELETE_DATE IS NULL
+		ORDER BY A_BOARD_IN_DATE DESC
+	</select>
+	<select id="totalCount" resultType="_int">
+		SELECT COUNT(*) FROM ADMIN_BOARD
+		WHERE A_BOARD_DELETE_DATE IS NULL
+		ORDER BY A_BOARD_IN_DATE DESC
+	</select>
+
+	<select id="incomList" resultMap="adminBoardResultSet">
+	    SELECT AB.*, M.M_NAME
+	    FROM ADMIN_BOARD AB
+	    JOIN MEMBER M ON AB.M_NO = M.M_NO
+	    WHERE AB.A_BOARD_ANSWER = 'N'
+	    AND AB.A_BOARD_DELETE_DATE IS NULL
+	    ORDER BY AB.A_BOARD_IN_DATE DESC
+	</select>
+	
+	<select id="comList" resultMap="adminBoardResultSet">
+	    SELECT AB.*, M.M_NAME
+	    FROM ADMIN_BOARD AB
+	    JOIN MEMBER M ON AB.M_NO = M.M_NO
+	    WHERE AB.A_BOARD_ANSWER = 'Y'
+	    AND AB.A_BOARD_DELETE_DATE IS NULL
+	    ORDER BY AB.A_BOARD_IN_DATE DESC
+	</select>
+	
+	<select id="AdminBoardTotalList" resultMap="adminBoardResultSet">
+	    SELECT ab.*, M.M_NAME
+	    FROM ADMIN_BOARD ab
+	    JOIN MEMBER m ON ab.M_NO = m.M_NO
+	    WHERE ab.A_BOARD_DELETE_DATE IS NULL
+	    ORDER BY ab.A_BOARD_IN_DATE DESC
+	</select>
+	
+	<update id="adminBoardEnroll">
+	    UPDATE ADMIN_BOARD SET A_BOARD_ANSWER = 'Y',
+	    A_BOARD_ANSWER_CONTENT = #{content},
+	    A_BOARD_ANSWER_DATE = SYSDATE
+	    WHERE A_BOARD_NO = #{no}
+	</update>
+	
+	<update id="adminBoardDelete">
+		UPDATE ADMIN_BOARD SET A_BOARD_DELETE_DATE = SYSDATE
+		WHERE A_BOARD_NO = #{no}
+	</update>
+	
+	</mapper>
