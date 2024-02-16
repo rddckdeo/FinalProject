@@ -1,5 +1,6 @@
 package kr.co.coco.admin.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.co.coco.admin.common.paging.AdminPageInfo;
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
@@ -197,7 +199,7 @@ public class AdminDAO {
 	public int freeCommentListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("admin-boardMapper.freeCommentListCount");
 	}
-//	--------------------board delete---------------------
+	//board delete
 	public int deleteBoard(SqlSessionTemplate sqlSession, Map<String,Object>param) {
 		return sqlSession.update("admin-boardMapper.deleteBoard", param);
 	}
@@ -239,5 +241,47 @@ public class AdminDAO {
 		int offset = (pi3.getCpage() - 1) * pi3.getBoardLimit();
 		RowBounds rb = new RowBounds(offset, pi3.getBoardLimit());
 		return sqlSession.selectList("admin-projectMapper.endProjectList",colabo, rb);
+	}
+	// project delete
+	public int deleteProject(SqlSessionTemplate sqlSession, Map<String, Object> param) {
+		return sqlSession.delete("admin-projectMapper.deleteProject", param);
+	}
+	// --------------------------Admin AdminBoard Page---------------------------
+	// Summary Count
+	public int incomCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-adminBoardMapper.incomCount");
+	}
+	public int comCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-adminBoardMapper.comCount");
+	}
+	public int totalCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-adminBoardMapper.totalCount");
+	}
+	// List
+	public List<AdminBoardDTO> incomList(SqlSessionTemplate sqlSession,AdminBoardDTO admin, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-adminBoardMapper.incomList",admin, rb);
+	}
+	public List<AdminBoardDTO> comList(SqlSessionTemplate sqlSession,AdminBoardDTO admin, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-adminBoardMapper.comList",admin, rb);
+	}
+	public List<AdminBoardDTO> AdminBoardTotalList(SqlSessionTemplate sqlSession,AdminBoardDTO admin, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-adminBoardMapper.AdminBoardTotalList",admin, rb);
+	}
+	// admin board answer Enroll
+	public int adminBoardEnroll(SqlSessionTemplate sqlSession, int no, String content) {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("no", no);
+	    params.put("content", content);
+		return sqlSession.update("admin-adminBoardMapper.adminBoardEnroll",params);
+	}
+	// admiin board delete
+	public int adminBoardDelete(SqlSessionTemplate sqlSession, int no) {
+		return sqlSession.update("admin-adminBoardMapper.adminBoardDelete",no);
 	}
 }

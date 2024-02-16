@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.model.dao.AdminDAO;
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
@@ -231,5 +232,38 @@ public class AdminServiceImpl implements AdminService{
 	}	
 	public List<ColaboDTO> endProjectList(ColaboDTO colabo, AdminPageInfo pi1){
 		return adminDao.endProjectList(sqlSession, colabo, pi1);
-	}	
+	}
+	// project delete
+	public int deleteProject(Map<String,Object> param) {
+		return adminDao.deleteProject(sqlSession,param);
+	}
+	// --------------------------Admin AdminBoard Page---------------------------
+	// Summary Count, List Count
+		public int incomCount() {
+			return adminDao.incomCount(sqlSession);
+		}
+		public int comCount() {
+			return adminDao.comCount(sqlSession);
+		}
+		public int totalCount() {
+			return adminDao.totalCount(sqlSession);
+		}
+	// List
+		public List<AdminBoardDTO> incomList(AdminBoardDTO admin, AdminPageInfo pi){
+			return adminDao.incomList(sqlSession,admin,pi);
+		}
+		public List<AdminBoardDTO> comList(AdminBoardDTO admin, AdminPageInfo pi){
+			return adminDao.comList(sqlSession,admin,pi);
+		}
+		public List<AdminBoardDTO> AdminBoardTotalList(AdminBoardDTO admin, AdminPageInfo pi){
+			return adminDao.AdminBoardTotalList(sqlSession,admin,pi);
+		}
+	// admin Board answer Enroll
+		public int adminBoardEnroll(int no, String content) {
+			return adminDao.adminBoardEnroll(sqlSession, no, content);
+		}
+	// admin Board answer Enroll
+		public int adminBoardDelete(int no) {
+			return adminDao.adminBoardDelete(sqlSession, no);
+		}
 }
