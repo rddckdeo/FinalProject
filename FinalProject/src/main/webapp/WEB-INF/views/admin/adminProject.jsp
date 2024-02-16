@@ -23,7 +23,6 @@
 							<!-- 제목 -->
 							<p class="font30px bottomMargin20 topMargin20">Project</p>
 							<!-- 시작 -->
-							<input type="hidden" value="${status}" id="status">
 							<div class="direction1 justifyAround width100 bottomMargin20">
 								<div class="direction2 justifyAround width100 bottomMargin20">
 									<span class="direction1">
@@ -53,18 +52,18 @@
 											<span class="li2">삭제</span>
 										</ul>
 										<ul class="visitUlSize">
-											<li class="borderDefault visitPadding justifyAround boardLiSize">
-												<c:forEach var="item" items="${newProjectList}">
+											<c:forEach var="item" items="${newProjectList}">
+												<li class="borderDefault visitPadding justifyAround boardLiSize">
 													<span class="li1">${item.no}</span> 
 													<span class="li3">${item.name}</span> 
-													<span class="li2">${item.personCount}</span> 
-													<span class="li2">${item.startDate}</span> 
+													<span class="li2">${item.personCount}</span>
+													<span class="li2">${item.startDate}</span>
 													<span class="li2">${item.period}</span> 
 													<span class="li2">
-														<button value="${item.no}" class="deleteBtn" onclick="projectDeleteBtn(this.value)">삭제</button>
+														<button value='{"no": "${item.no}", "status": "n"}' class="deleteBtn" onclick="projectDeleteBtn(this.value)">삭제</button>
 													</span>
-												</c:forEach>
-											</li>
+												</li>
+											</c:forEach>
 										</ul>
 											<div class="pagination">
 												<c:choose>
@@ -105,18 +104,18 @@
 											<span class="li2">삭제</span>
 										</ul>
 										<ul class="visitUlSize">
-											<li class="borderDefault visitPadding justifyAround boardLiSize">
-												<c:forEach var="item" items="${startProjectList}">
+											<c:forEach var="item" items="${startProjectList}">
+												<li class="borderDefault visitPadding justifyAround boardLiSize">
 													<span class="li1">${item.no}</span> 
 													<span class="li3">${item.name}</span> 
 													<span class="li2">${item.personCount}</span> 
 													<span class="li2">${item.startDate}</span> 
 													<span class="li2">${item.period}</span> 
 													<span class="li2">
-														<button class="deleteBtn">삭제</button>
+														<button value='{"no": "${item.no}", "status": "c"}' class="deleteBtn" onclick="projectDeleteBtn(this.value)">삭제</button>
 													</span>
-												</c:forEach>
-											</li>
+												</li>
+											</c:forEach>
 										</ul>
 										<div class="pagination">
 											<c:choose>
@@ -124,18 +123,18 @@
 													<a href="#" class="Margin5 borderRadius3 paginationBtn">&lt;</a>
 												</c:when>
 												<c:otherwise>
-													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=c&cpage=${pi2.cpage-1}">&lt;</a>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=s&cpage=${pi2.cpage-1}">&lt;</a>
 												</c:otherwise>
 											</c:choose>
 											<c:forEach var="page" begin="${pi2.startPage}" end="${pi2.endPage}">
-												<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=c&cpage=${page}" class="active">${page}</a>
+												<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=s&cpage=${page}" class="active">${page}</a>
 											</c:forEach>
 											<c:choose>
 												<c:when test="${pi2.cpage eq pi2.maxPage}">
 													<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
 												</c:when>
 												<c:otherwise>
-													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=c&cpage=${pi2.cpage + 1}">&gt;</a>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=s&cpage=${pi2.cpage + 1}">&gt;</a>
 												</c:otherwise>
 											</c:choose>
 										</div>
@@ -157,18 +156,18 @@
 											<span class="li2">삭제</span>
 										</ul>
 										<ul class="visitUlSize">
-											<li class="borderDefault visitPadding justifyAround boardLiSize">
-												<c:forEach var="item" items="${endProjectList}">
+											<c:forEach var="item" items="${endProjectList}">
+												<li class="borderDefault visitPadding justifyAround boardLiSize">
 													<span class="li1">${item.no}</span>
 													<span class="li3">${item.name}</span>
 													<span class="li2">${item.personCount}</span>
 													<span class="li2">${item.startDate}</span>
 													<span class="li2">${item.period}</span>
 													<span class="li2">
-														<button class="deleteBtn">삭제</button>
+														<button value='{"no": "${item.no}", "status": "y"}' class="deleteBtn" onclick="projectDeleteBtn(this.value)">삭제</button>
 													</span>
-												</c:forEach>
-											</li>
+												</li>
+											</c:forEach>
 										</ul>
 										<div class="pagination">
 											<c:choose>
@@ -176,18 +175,18 @@
 													<a href="#" class="Margin5 borderRadius3 paginationBtn">&lt;</a>
 												</c:when>
 												<c:otherwise>
-													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=y&cpage=${pi3.cpage-1}">&lt;</a>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=e&cpage=${pi3.cpage-1}">&lt;</a>
 												</c:otherwise>
 											</c:choose>
 											<c:forEach var="page" begin="${pi3.startPage}" end="${pi3.endPage}">
-												<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=y&cpage=${page}" class="active">${page}</a>
+												<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=e&cpage=${page}" class="active">${page}</a>
 											</c:forEach>
 											<c:choose>
 												<c:when test="${pi3.cpage eq pi3.maxPage}">
 													<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
 												</c:when>
 												<c:otherwise>
-													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=y&cpage=${pi3.cpage + 1}">&gt;</a>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=e&cpage=${pi3.cpage + 1}">&gt;</a>
 												</c:otherwise>
 											</c:choose>
 										</div>

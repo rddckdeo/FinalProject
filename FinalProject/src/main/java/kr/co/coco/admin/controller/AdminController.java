@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.common.paging.AdminPagination;
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.admin.model.service.AdminServiceImpl;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
@@ -236,7 +237,6 @@ public class AdminController {
 			pi2 = AdminPagination.getPageInfo(startProjectListCount,1, pageLimit, boardLimit);
 			pi3 = AdminPagination.getPageInfo(endProjectListCount,cpage, pageLimit, boardLimit);
 		}
-		System.out.println();
 		// ----------------------List----------------------
 		List<ColaboDTO> newProjectList = adminService.newProjectList(colabo, pi1);
 		List<ColaboDTO> startProjectList = adminService.startProjectList(colabo, pi2);
@@ -256,7 +256,61 @@ public class AdminController {
 	}
 	// 문의 사항
 	@GetMapping("/adminInquiry.do")
-	public String adminInquiry() {
+	public String adminInquiry(AdminBoardDTO admin, Model model,
+			@RequestParam(value="cpage", defaultValue="1")int cpage,
+			@RequestParam(value="status",defaultValue="incom")String status){
+		// ----------------------summary----------------------
+		int incomCount = adminService.incomCount();
+		int comCount = adminService.comCount();
+		int totalCount = adminService.totalCount();
+		
+		model.addAttribute("incomCount",incomCount);
+		model.addAttribute("comCount",comCount);
+		model.addAttribute("totalCount",totalCount);
+		// ----------------------paging----------------------
+		int boardLimit = 6;
+		int pageLimit = 5;
+		AdminPageInfo pi = new AdminPageInfo();
+		if(status.equals("incom")) {
+			pi = AdminPagination.getPageInfo(incomCount, cpage, pageLimit, boardLimit);
+			List<AdminBoardDTO> list = adminService.incomList(admin, pi);
+			for (AdminBoardDTO item : list) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getInDate().substring(11, 19);
+				item.setInDate(indate);
+			}
+			model.addAttribute("list",list); // List
+			model.addAttribute("pi",pi); // 페이징
+			model.addAttribute("title","미완료 문의"); // title 제목
+			model.addAttribute("status","incom"); // status
+			return "admin/adminInquiry";
+		}else if(status.equals("com")) {
+			pi = AdminPagination.getPageInfo(comCount, cpage, pageLimit, boardLimit);
+			List<AdminBoardDTO> list = adminService.comList(admin, pi);
+			for (AdminBoardDTO item : list) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getInDate().substring(11, 19);
+				item.setInDate(indate);
+			}
+			model.addAttribute("list",list); // List
+			model.addAttribute("pi",pi); // 페이징
+			model.addAttribute("title","완료 문의"); // title 제목
+			model.addAttribute("status","com"); // status
+			return "admin/adminInquiry";
+		}else if(status.equals("total")) {
+			pi = AdminPagination.getPageInfo(totalCount, cpage, pageLimit, boardLimit);
+			List<AdminBoardDTO> list = adminService.AdminBoardTotalList(admin, pi);
+			for (AdminBoardDTO item : list) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getInDate().substring(11, 19);
+				item.setInDate(indate);
+			}
+			model.addAttribute("list",list); // List
+			model.addAttribute("pi",pi); // 페이징
+			model.addAttribute("title","전체 문의"); // title 제목
+			model.addAttribute("status","total"); // status
+			return "admin/adminInquiry";
+		}
 		return "admin/adminInquiry";
 	}
 	// 게시판 현황
@@ -377,29 +431,53 @@ public class AdminController {
 		System.out.println(param.get("status"));
 		int result = adminService.deleteBoard(param);
 		
-	    return 1;
+	    return result;
 	}
-//	// delete Board
-//	@ResponseBody
-//	@PostMapping("/deleteProject.do")
-//	public int deleteProject(@RequestParam("") int no,
-//			@RequestParam("status") String status){
-//		if(status.equals("infoComment")) {
-//			status = "INFO_COMMENT";
-//		}else if(status.equals("info")) {
-//			status = "INFO";
-//		}else if(status.equals("freeComment")) {
-//			status = "FREE_COMMENT";
-//		}else if(status.equals("free")) {
-//			status = "FREE";
-//		}
-//		Map<String, Object>param = new HashMap<>();
-//		param.put("no", no);
-//		param.put("status", status);
-//		System.out.println(param.get("no"));
-//		System.out.println(param.get("status"));
-//		int result = adminService.deleteBoard(param);
-//		
-//	    return 1;
-//	}
+	// delete Board
+	@ResponseBody
+	@PostMapping("/deleteProject.do")
+	public int deleteProject(@RequestParam("projectNo") int no,
+			@RequestParam("status") String status){
+		if(status.equals("n")) {
+			status = "n";
+		}else if(status.equals("c")) {
+			status = "c";
+		}else if(status.equals("y")) {
+			status = "y";
+		}
+		Map<String, Object>param = new HashMap<>();
+		param.put("no", no);
+		param.put("status", status);
+		int result = adminService.deleteProject(param);
+		
+	    return result;
+	}
+	
+	// adminBoard submit
+	@ResponseBody
+	@PostMapping("/adminBoardEnroll.do")
+	public int adminBoardEnroll(
+					@RequestParam(value="no") int no,
+					@RequestParam(value="content") String content) {
+		int result = adminService.adminBoardEnroll(no, content);
+		if(result == 1) {
+			return result;
+		}else {
+			return 0;
+		}
+	}
+	
+	// adminBoard delete
+	@ResponseBody
+	@PostMapping("/adminBoardDelete.do")
+	public int adminBoardDelete(
+					@RequestParam(value="no") int no){
+		int result = adminService.adminBoardDelete(no);
+		if(result == 1) {
+			return result;
+		}else {
+			return 0;
+		}
+	}
+	
 }
