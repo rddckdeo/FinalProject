@@ -5,9 +5,11 @@
     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
       <div class="scroll-sidebar" data-simplebar>
+         	<a class="btn btn-primary" href="/member/mainForm.do" style="margin-bottom:10px; padding-left:50px; padding-right:50px">로그인홈 이동</a>
+         	<a class="btn btn-primary" href="/board/" style="margin-bottom:10px; padding-left:50px; padding-right:50px">커뮤니티 이동</a>
         <div class="d-flex mb-4 align-items-center justify-content-between">
-         	<a class="btn btn-primary" href="/colabo">협업홈으로 바로가기</a>
-         	 <a class="btn btn-primary" href="/chat/room">채팅방으로 바로가기</a>
+         	<a class="btn btn-primary" href="/colabo" style="margin-right:10px">협업홈 이동</a>
+         	 <a class="btn btn-primary" href="/chat/room">채팅방 이동</a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             </div>
         </div>

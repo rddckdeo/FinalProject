@@ -45,7 +45,7 @@
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-10">
                   <div class="">
-                    <h5 class="card-title fw-semibold">작업 진행도</h5>
+                    <h5 class="card-title fw-semibold">${colabo.name} 팀 프로젝트 입니다.</h5>
                   </div>
                   <div class="dropdown">
                     <button
@@ -54,7 +54,7 @@
                       aria-expanded="false"
                       class="rounded-circle btn-transparent rounded-circle btn-sm px-1 btn shadow-none"
                     >
-                      <i class="ti ti-dots-vertical fs-7 d-block">ㅁㄴㅇㅁㄴㅇㅁㄴㅇ</i>
+                      <i class="ti ti-dots-vertical fs-7 d-block">현재 프로젝트의 상태는 ${sendType}</i>
                     </button>
                     <ul
                       class="dropdown-menu dropdown-menu-end"
@@ -113,36 +113,6 @@
           <div class="col-lg-8 d-flex align-items-stretch">
             <div class="card w-100">
               <div class="card-body p-4">
-                <div
-                  class="d-flex mb-4 justify-content-between align-items-center"
-                >
-                  <h5 class="mb-0 fw-bold">팀원정보</h5>
-
-                  <div class="dropdown">
-                    <button
-                      id="dropdownMenuButton1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                      class="rounded-circle btn-transparent rounded-circle btn-sm px-1 btn shadow-none"
-                    >
-                      <i class="ti ti-dots-vertical fs-7 d-block"></i>
-                    </button>
-                    <ul
-                      class="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li>
-                        <a class="dropdown-item" href="#">Another action</a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#"
-                          >Something else here</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
 
                 <div class="table-responsive" data-simplebar>
                   <table
@@ -160,7 +130,7 @@
                     		<c:when test="${empty list}">
                     			<tr>
 				           			<td colspan="3">
-				           				<h3 class="text-center">등록된 글이 없습니다.</h3>
+				           				<h3 class="text-center">등록된 팀원이 없습니다.</h3>
 				           			</td>
 				           		</tr>
                     		</c:when>
@@ -184,6 +154,11 @@
             		<ul id="inviteListUl">
             		
             		</ul>
+            		<br><br>
+            		<h5 class="mb-0 fw-bold">프로젝트 진행여부/완료 버튼</h5>
+                	<br>
+            		<button class="btn btn-outline-primary" onclick="projectTypeBtn('프로젝트진행',${sessionScope.getProjectNo})">프로젝트진행</button>
+            		<button class="btn btn-outline-primary" onclick="projectTypeBtn('프로젝트완료',${sessionScope.getProjectNo})">프로젝트완료</button>
             
               </div>
             </div>

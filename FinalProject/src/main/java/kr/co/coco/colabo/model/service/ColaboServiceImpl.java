@@ -16,6 +16,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.model.dao.ColaboDAO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
+import kr.co.coco.colabo.model.dto.InviteProjectDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -236,6 +237,26 @@ public class ColaboServiceImpl implements ColaboService{
 
 	public ColaboDTO getMemberInfo(int memberNo) {
 		return colaboDAO.getMemberInfo(sqlSession, memberNo);
+	}
+
+
+	public int changeProjectType(ColaboDTO colabo) {
+		return colaboDAO.changeProjectType(sqlSession, colabo);
+	}
+
+
+	public ColaboDTO getProjectType(int getProjectNo) {
+		return colaboDAO.getProjectType(sqlSession, getProjectNo);
+	}
+
+
+	public List<ColaboDTO> getProjectProfile(int memberNo) {
+		return colaboDAO.getProjectProfile(sqlSession, memberNo);
+	}
+
+
+	public int inviteProject(InviteProjectDTO invite) {
+		return colaboDAO.inviteProject(sqlSession, invite);
 	}
 
 	
