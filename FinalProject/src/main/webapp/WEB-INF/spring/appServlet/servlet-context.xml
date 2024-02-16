@@ -42,6 +42,7 @@
 			class="kr.co.coco.colabo.common.interceptor.colaboMemberNoCheckInterceptor">
 	</beans:bean>
 	
+	
 	<interceptors>
 		<!-- 프로젝트를 선택안하고 게시판,일정등 들어갔을때 인터셉터 -->
 		<interceptor>
@@ -62,6 +63,7 @@
 			<exclude-mapping path="/**/*.js"/>
 			<beans:ref bean="colaboMemberNoCheckInterceptor"/>
 		</interceptor>
+		
 		
 	</interceptors>
 	

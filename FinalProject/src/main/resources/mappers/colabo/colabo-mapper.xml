@@ -57,6 +57,47 @@
 		<result column="TEAM_ENROLL_DATE" property="teamEnrollDate"></result>
 	</resultMap>
 	
+	<resultMap type="InviteProject" id="InviteProjectResultSet">
+		<result column="P_NO" property="projectNo"></result>
+		<result column="M_NO" property="memberNo"></result>
+		<result column="INVITE_M_NO" property="inviteMNo"></result>
+		<result column="INVITE_PROJECT_DATE" property="inviteProjectDate"></result>
+	</resultMap>
+	
+	<insert id="inviteProject" parameterType="InviteProject">
+		INSERT INTO COLABO_INVITE_PROJECT VALUES(
+				#{projectNo}, #{memberNo}, #{inviteMNo}, SYSDATE)
+	</insert>
+	
+	
+	<select id="getProjectProfile" parameterType="int" resultMap="colaboResultSet">
+		SELECT C.P_NO , C.P_SUBJECT , C.P_NAME, C.P_DETAIL ,
+		C.P_STACK , C.P_PERSON_COUNT , C.P_PERIOD ,
+		C.P_UPLOAD_PATH , C.P_UPLOAD_NAME , C.P_UPLOAD_ORIGIN_NAME ,
+		C.P_STATE , C.M_NO , C.P_START_DATE  FROM COLABO_PERSON cp 
+		JOIN COLABO c 
+		ON C.P_NO = CP.P_NO 
+		WHERE CP.M_NO = #{memberNo}
+	</select>
+	
+	<select id="getProjectType" parameterType="int" resultMap="colaboResultSet">
+		SELECT P_NAME, P_STATE FROM COLABO 
+		WHERE P_NO = #{getProjectNo}
+	</select>
+	
+	<update id="changeProjectType" parameterType="colabo">
+		UPDATE COLABO SET P_STATE = 
+		<choose>
+			<when test="stateKor.equals('프로젝트진행')">
+				'C'
+			</when>
+			<when test="stateKor.equals('프로젝트완료')">
+				'Y'
+			</when>
+		</choose>
+		WHERE P_NO = #{no}
+	</update>
+	
 	<select id="getMemberInfo" parameterType="int" resultMap="colaboResultSet">
 		SELECT M_NO, M_NAME, M_EMAIL FROM MEMBER
 		WHERE M_NO = #{memberNo}
@@ -69,8 +110,10 @@
 	</select>
 	
 	<select id="getProjectNameNumberList" parameterType="int" resultMap="colaboResultSet">
-		SELECT P_NO, P_NAME FROM COLABO
-		WHERE M_NO = #{memberNo}
+		SELECT cp.P_NO, c.P_NAME FROM COLABO_PERSON cp 
+		JOIN COLABO c 
+		ON cp.P_NO  = c.P_NO 
+		WHERE cp.M_NO = #{memberNo}
 	</select>
 	
 	

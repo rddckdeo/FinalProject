@@ -36,32 +36,32 @@
 			<div class="container-fluid">
 	<br>
     <!-- 색조정 버튼들 -->
-    <button id="black" class="changeColor" value="black" style="background-color:black">검정</button>
-    <button id="redBtn" class="changeColor" value="red" style="background-color:red">빨강</button>
-    <button id="orangeBtn" class="changeColor" value="orange" style="background-color:orange">주황</button>
-    <button id="yellowBtn" class="changeColor" value="yellow" style="background-color:yellow">노랑</button>
-    <button id="greenBtn" class="changeColor" value="green" style="background-color:green">초록</button>
-    <button id="blueBtn" class="changeColor" value="blue" style="background-color:blue">파랑</button>
-	<button id="deleteDraw" class="changeColor" value="#f5f8fb">지우개</button>
-	
-	브러쉬 크기
-	<button class="changeSize" value="1">기본크기</button>
-	<button class="changeSize" value="5">중간크기</button>
-	<button class="changeSize" value="10">큰크기</button>
-	
+    <button id="black" class="changeColor btn btn-outline-primary" value="black" style="background-color:black">검정</button>
+    <button id="redBtn" class="changeColor btn btn-outline-primary" value="red" style="background-color:red">빨강</button>
+    <button id="orangeBtn" class="changeColor btn btn-outline-primary" value="orange" style="background-color:orange">주황</button>
+    <button id="yellowBtn" class="changeColor btn btn-outline-primary" value="yellow" style="background-color:yellow">노랑</button>
+    <button id="greenBtn" class="changeColor btn btn-outline-primary" value="green" style="background-color:green">초록</button>
+    <button id="blueBtn" class="changeColor btn btn-outline-primary" value="blue" style="background-color:blue">파랑</button>
+	<button id="deleteDraw" class="changeColor btn btn-outline-primary" value="#f5f8fb">지우개</button>
     <!-- 전체 지우기 버튼 -->
-    <button id="clearBtn">전체 지우기</button>
-    
-    <!-- 이미지 저장 버튼 -->
-    <button id="saveBtn">내 PC에 이미지 저장</button>
-    
-	<button>파일채팅으로 전송하기</button>
+    <button id="clearBtn" class="btn btn-outline-primary">전체 지우기</button>
 	<br>
-						<!-- 캔버스 요소 -->
+	<button class="changeSize btn btn-outline-primary" value="1">기본크기</button>
+	<button class="changeSize btn btn-outline-primary" value="5">중간크기</button>
+	<button class="changeSize btn btn-outline-primary" value="10">큰크기</button>
+	<button class="changeSize btn btn-outline-primary" value="50">거대한크기</button>
 	
-    <canvas id="myCanvas" width="800" height="600"></canvas>
-
-
+    
+						<!-- 캔버스 요소 -->
+	<div>
+	    <canvas id="myCanvas" width="800" height="600" style="float: left;"></canvas>
+	
+		<br>
+	    <!-- 이미지 저장 버튼 -->
+	    <button id="saveBtn" class="btn btn-outline-primary" >내 PC에 이미지 저장</button>
+	    
+		<button class="btn btn-outline-primary" >파일채팅으로 전송하기</button>
+	</div>
 			</div>
 		</div>
 	</div>

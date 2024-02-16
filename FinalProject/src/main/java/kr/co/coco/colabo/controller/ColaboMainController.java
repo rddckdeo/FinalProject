@@ -27,6 +27,7 @@ import kr.co.coco.colabo.common.paging.Pagination;
 import kr.co.coco.colabo.common.upload.UploadFile;
 import kr.co.coco.colabo.common.validation.DataValidation;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
+import kr.co.coco.colabo.model.dto.InviteProjectDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -46,7 +47,7 @@ public class ColaboMainController {
 		// 최초에 colabo 페이지 들어왔을대 default 값으로 getProjectNo 을 0으로 넣어놈
 		session.setAttribute("getProjectNo", 0);
 //		System.out.println(session.getAttribute("getProjectNo"));
-		session.setAttribute("no", 1); // 나중에 멤버넘버 로그인했을때 생긴 세션으로 처리하기
+//		session.setAttribute("no", 1); // 나중에 멤버넘버 로그인했을때 생긴 세션으로 처리하기
 		int memberNo =  (int)session.getAttribute("no");
 		
 //		if(memberNo == 0) {
@@ -341,10 +342,27 @@ public class ColaboMainController {
 	
 	
 	// 기본개요 페이지로 이동 하면서 DB에 있는 팀원 리스트를 가져와서 넘겨줌과 동기적으로 나타나게 함 
+	// 현재 프로젝트의 진행 Type 가져오기 추가
 	@GetMapping("/colaboBasicPage")
 	public String BasicPage(Model model,HttpSession session) {
 		
+		// DB 에서 Char형으로 저장되어있는 값을가지고 jsp 단에 해당하는내용으로 변경후 보내기위한 변수
+		String sendType = "";
 		int getProjectNo = (int)session.getAttribute("getProjectNo");
+		
+		// 현재의 프로젝트 타입을 가져오기 
+		ColaboDTO colabo = colaboService.getProjectType(getProjectNo);
+		
+		if(colabo.getState() == 'N') {
+			sendType = "진행 전 입니다.";
+		}else if(colabo.getState() == 'C') {
+			sendType = "진행 중 입니다.";
+		}else if(colabo.getState() == 'Y') {
+			sendType = "완료 입니다.";
+		}
+		
+		
+//		System.out.println("colabo Type 은 : "+ colabo.getState());
 		
 		TeamProjectPerSonDTO teamProject = new TeamProjectPerSonDTO();
 		teamProject.setProjectNo(getProjectNo);   //  프로젝트 넘버 세션으로 가져와서 수정
@@ -357,9 +375,9 @@ public class ColaboMainController {
 			item.setTeamEnrollDate(enrollDate);
 		}
 		
-		
+		model.addAttribute("colabo", colabo);
 		model.addAttribute("list", list);
-		
+		model.addAttribute("sendType", sendType);
 		
 		return "colabo/colaboBasic";
 	}
@@ -880,6 +898,112 @@ public class ColaboMainController {
 		System.out.println(colabo);
 		return list;  
 	}
+	
+	
+	@PostMapping("/changeProjectType.do")
+	@ResponseBody
+	public String changeProjectType(ColaboDTO colabo, HttpSession session) {
+//		System.out.println(colabo.getNo());
+//		System.out.println(colabo.getStateKor());
+		
+		// 수정하는 멤버와  프로젝트를 생성한 멤버가 같은지 확인을위해  기존에 프로젝트넘버로
+		// 생성한 멤버를 가져오는 코드를 진행후 Session 에 저장된 memberNo 와 비교후 같으면 진행
+		int creatMemberNo = colaboService.getProjectCreateMember(colabo.getNo());
+		
+//		System.out.println("생성멤버는 : " + creatMemberNo);
+//		System.out.println("세션멤버는 : " + (int)session.getAttribute("no"));
+		
+		if(creatMemberNo == (int)session.getAttribute("no")) {
+			
+			if(colabo.getStateKor().equals("프로젝트진행") || colabo.getStateKor().equals("프로젝트완료")) {
+				int result = colaboService.changeProjectType(colabo);
+				
+				if(result == 1) {
+					return "success";
+				}
+			}
+		}
+		
+		
+		return "failed";
+	}
+	
+	
+	
+	// 마이페이지에서 진행전,중,완료 프로젝트 나타내게 하기
+	@GetMapping("/myProjectProfile")
+	public String getProjectProfile(HttpSession session, Model model) {
+		
+		int memberNo = (int)session.getAttribute("no");
+		
+		// 리스트 세개로 나눠서  해당되는 리스트에 넣을생각
+		List<ColaboDTO> NList = new ArrayList<>();
+		List<ColaboDTO> CList = new ArrayList<>();
+		List<ColaboDTO> YList = new ArrayList<>();
+		
+		
+		// 내가 속한 프로젝트 전체리스트 가져오기
+		List<ColaboDTO> allList = colaboService.getProjectProfile(memberNo);
+		
+		// 전체리스트에서 State 를 조회해서 해당되는 리스트에 넣기
+		for(int i =0; i< allList.size(); i++) {
+//			System.out.println(allList.get(i).getUploadName());
+//			System.out.println(allList.get(i).getState());
+			if(allList.get(i).getState() == 'N') {
+				NList.add(allList.get(i));
+			}else if(allList.get(i).getState() == 'C') {
+				CList.add(allList.get(i));
+			}else if(allList.get(i).getState() == 'Y') {
+				YList.add(allList.get(i));
+			}
+			
+		}
+		
+		model.addAttribute("NList", NList);
+		model.addAttribute("CList", CList);
+		model.addAttribute("YList", YList);
+		
+		
+		
+		return "myPage/myProject";
+	}
+	
+	@PostMapping("/inviteProject.do")
+	public String inviteProject(InviteProjectDTO inviteValue ,HttpSession session) {
+		int projectNo = (int)session.getAttribute("getProjectNo");
+		int memberNo = (int)session.getAttribute("no");
+		
+		InviteProjectDTO invite = new InviteProjectDTO();
+		
+		invite.setMemberNo(inviteValue.getMemberNo());
+		invite.setProjectNo(projectNo);
+		invite.setInviteMNo(memberNo);
+			
+		int result = colaboService.inviteProject(invite);
+		
+		System.out.println(result);
+		if(result == 1) {
+			return "success";
+		}else {
+			return "failed";
+		}
+		
+	}
+	
+	
+	@GetMapping("/inviteApplyProject")
+	public String inviteApplyProject() {
+		
+		return "";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
