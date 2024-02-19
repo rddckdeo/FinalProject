@@ -12,8 +12,15 @@
 	href="../../../../resources/css/board/common/template.css" />
 <link rel="stylesheet"
 	href="../../../../resources/css/board/main/main.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
 		data-navbarbg="skin6" data-sidebartype="full"
@@ -61,86 +68,63 @@
 								<div class="card-body">
 									<button id="project-prevBtn"><</button>
 									<div class="card-container" id="cards">
-										<div class="card-item">
-											<img src="" class="card-img-top" alt="...">
-											<div class="card-content">
-												<h5 class="project-card-title">프로젝트 명 길이ㅣ 테스트 입니다.</h5>
-												<div class="card-content-text">
-													<p class="projecct-info-text">모집인원 |</p>
-													<p class="projecct-info-text">주제 | 주제 길이 테스트
-														입니다.주제주제주제주제주제</p>
-													<p class="projecct-info-text">기술 스택 | 길이 테스트
-														입니다.아아아아아아아아앙</p>
-												</div>
-												<a href="#" class="btn btn-primary" id="project-detail-btn">프로젝트
-													상세보기</a>
-											</div>
+							<c:set var="NProjectCount" value="0"></c:set>
+							<c:forEach var="item" items="${NProjectList}">
+								<div class="card-item">
+									<c:choose>
+										<c:when test="${!empty item.uploadName}">
+											<img src="/resources/uploads/colabo/project/${item.uploadName}" style= height:180px class="card-img-top" alt="...">
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/uploads/colabo/project/기본이미지.jpg" style= height:180px class="card-img-top" alt="...">
+										</c:otherwise>
+									</c:choose>
+									<div class="card-content">
+										<h5 class="project-card-title">프로젝트 명 | ${item.name}</h5>
+										<div class="card-content-text">
+											<p class="projecct-info-text">모집인원 | ${item.personCount}</p>
+											<p class="projecct-info-text">주제 | ${item.subject}</p>
+											<p class="projecct-info-text">기술 스택 | ${item.stack}</p>
 										</div>
-										<div class="card-item">
-											<img src="" class="card-img-top" alt="...">
-											<div class="card-content">
-												<h5 class="project-card-title">프로젝트 명</h5>
-												<div class="card-content-text">
-													<p class="projecct-info-text">모집인원 |</p>
-													<p class="projecct-info-text">주제 |</p>
-													<p class="projecct-info-text">기술 스택 |</p>
-												</div>
-												<a href="#" class="btn btn-primary" id="project-detail-btn">프로젝트
-													상세보기</a>
-											</div>
-										</div>
-										<div class="card-item">
-											<img src="" class="card-img-top" alt="...">
-											<div class="card-content">
-												<h5 class="project-card-title">프로젝트 명</h5>
-												<div class="card-content-text">
-													<p class="projecct-info-text">모집인원 |</p>
-													<p class="projecct-info-text">주제 |</p>
-													<p class="projecct-info-text">기술 스택 |</p>
-												</div>
-												<a href="#" class="btn btn-primary" id="project-detail-btn">프로젝트
-													상세보기</a>
-											</div>
-										</div>
-										<div class="card-item">
-											<img src="" class="card-img-top" alt="...">
-											<div class="card-content">
-												<h5 class="project-card-title">프로젝트 명</h5>
-												<div class="card-content-text">
-													<p class="projecct-info-text">모집인원 |</p>
-													<p class="projecct-info-text">주제 |</p>
-													<p class="projecct-info-text">기술 스택 |</p>
-												</div>
-												<a href="#" class="btn btn-primary" id="project-detail-btn">프로젝트
-													상세보기</a>
-											</div>
-										</div>
-										<div class="card-item">
-											<img src="" class="card-img-top" alt="...">
-											<div class="card-content">
-												<h5 class="project-card-title">프로젝트 명</h5>
-												<div class="card-content-text">
-													<p class="projecct-info-text">모집인원 |</p>
-													<p class="projecct-info-text">주제 |</p>
-													<p class="projecct-info-text">기술 스택 |</p>
-												</div>
-												<a href="#" class="btn btn-primary" id="project-detail-btn">프로젝트
-													상세보기</a>
-											</div>
-										</div>
-										<div class="card-item">
-											<img src="" class="card-img-top" alt="...">
-											<div class="card-content">
-												<h5 class="project-card-title">프로젝트 명</h5>
-												<div class="card-content-text">
-													<p class="projecct-info-text">모집인원 |</p>
-													<p class="projecct-info-text">주제 |</p>
-													<p class="projecct-info-text">기술 스택 |</p>
-												</div>
-												<a href="#" class="btn btn-primary" id="project-detail-btn">프로젝트
-													상세보기</a>
-											</div>
-										</div>
+										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#project${NProjectCount}">상세보기/참여신청</button>
+									</div>
+								</div>
+<!-- 프로젝트정보 Modal -->   
+<div class="modal fade" id="project${NProjectCount}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">프로젝트 상세 정보</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+	      <div class="modal-body">
+	      
+	      <h3><strong>1. 프로젝트 주제</strong></h3>
+	      <h5>${item.subject}</h5>
+	      <br>
+	      <h3><strong>2. 프로젝트 이름</strong></h3>
+	      <h5>${item.name}</h5>
+	      <br>
+	      <h3><strong>3. 프로젝트 설명</strong></h3>
+	      <h5>${item.detail}</h5>
+	      <br>
+	      <h3><strong>4. 프로젝트 기술스택</strong></h3>
+	      <h5>${item.stack}</h5>
+	      <br>
+	      <h3><strong>5. 프로젝트 시작일</strong></h3>
+	      <h5>${item.startDate}</h5>
+	      
+	      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" onclick="projectApply(${item.no},${item.memberNo})">신청하기</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+		<c:set var="NProjectCount" value="${NProjectCount+1}"></c:set>
+							</c:forEach>
+							
 									</div>
 									<button id="project-nextBtn">></button>
 								</div>
@@ -253,6 +237,7 @@
 
 		</div>
 	</div>
+<script src="../../../../resources/js/colabo/myInviteApplyProject.js" ></script>
 
 </body>
 </html>

@@ -122,6 +122,12 @@ public interface ColaboService {
 	
 	// 신청받은 프로젝트 리스트 가져오기
 	public List<ColaboDTO> receiveApplyProject(int memberNo);
+	
+	// 게시판 메인페이지 추천프로젝트에 뿌려줄 N타입프로젝트리스트
+	public List<ColaboDTO> getNProjectList();
+	
+	// 추천프로젝트에서 참가신청 눌렀을때  신청테이블로 데이터넣기
+	public int enrollApplyProject(InviteProjectDTO apply);
 }
 
 
