@@ -21,6 +21,7 @@
 		<result column="m_stop" property="stop"></result>
 		<result column="m_stop_date" property="stopDate"></result>
 		<result column="m_number" property="number"></result>
+		<result column="m_name" property="searchInput"></result>
 	</resultMap>
 	<!-- member Page List -->
 	<select id="totalList" resultMap="memberResultSet">
@@ -71,4 +72,12 @@
 	<update id="deleteCancel">
 		UPDATE MEMBER SET M_DELETE_DATE = NULL WHERE M_NO = #{no}
 	</update>
+	<select id="memberSearchListCount" resultType="_int">
+		SELECT COUNT(M_IN_DATE) FROM MEMBER WHERE M_DELETE_DATE IS NULL
+		AND M_NAME = #{searchInput}
+	</select>
+	<select id="searchList" resultMap="memberResultSet">
+		SELECT * FROM MEMBER WHERE M_DELETE_DATE IS NULL
+		AND M_NAME = #{searchInput}
+	</select>
 </mapper>

@@ -17,10 +17,8 @@
 <!-- sweet alert CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
-
 <body>
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
-
 		<div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
 			<!-- align-items : center -->
 			<div class="d-flex align-items-center justify-content-center w-100">
@@ -32,7 +30,8 @@
 						<div class="card mb-0">
 
 							<div class="card-body">
-								<form action="/member/login.do" method="post"  id="formTag"><!-- onsubmit="return false" -->
+								<form action="/member/login.do" method="post" id="formTag">
+									<!-- onsubmit="return false" -->
 									<div class="alignCenter direction1">
 										<h1 class="defaultColor cursorPointer" onclick="home()">CoCo</h1>
 										<h3 class="defaultColor small15">Collaboration Code</h3>
@@ -50,7 +49,10 @@
 										<div class="form-check"></div>
 										<a class="text-primary fw-bold" href="#">비밀번호를 잊었나요?</a>
 									</div>
-									<button type="submit" class="btn btn-primary w-100 fs-4 mb-4 rounded-2" id="loginBtn"> <!-- onclick="formAble()" -->로그인</button>
+									<button type="submit" class="btn btn-primary w-100 fs-4 mb-4 rounded-2" id="loginBtn">
+										<!-- onclick="formAble()" -->
+										로그인
+									</button>
 									<div class="d-flex align-items-center justify-content-center">
 										<p class="fs-4 mb-0 fw-bold">아직 회원이 아니신가요?</p>
 										<a class="text-primary fw-bold ms-2" href="registerForm.do">회원가입</a>

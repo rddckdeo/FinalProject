@@ -19,6 +19,7 @@ import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.common.paging.AdminPagination;
 import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.admin.model.service.AdminServiceImpl;
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
@@ -44,12 +45,20 @@ public class AdminController {
 		int deCount = adminService.deCount(); // 전체 신고수
 		
 		int totalBoard = freeCount + infoCount; // 자유게시판 + 정보게시판
+		// 통계 그래프
+		int day = adminService.dayVisit();
+		int week = adminService.weekVisit();
+		int month = adminService.monthVisit();
 		
 		model.addAttribute("visitCount",visitCount);
 		model.addAttribute("totalBoard",totalBoard);
 		model.addAttribute("projectCount",projectCount);
 		model.addAttribute("boardCount",boardCount);
 		model.addAttribute("deCount",deCount);
+		
+		model.addAttribute("day",day);
+		model.addAttribute("week",week);
+		model.addAttribute("month",month);
 		
 // --------------------------PAGE------------------------------ //
 		int pageLimit = 5;
@@ -144,7 +153,8 @@ public class AdminController {
 	@GetMapping("/adminMember.do")
 	public String adminMember(MemberDTO member, Model model, 
 			@RequestParam(value="cpage",defaultValue="1") int cpage,
-			@RequestParam(value="status",defaultValue="total") String status
+			@RequestParam(value="status",defaultValue="total") String status,
+			@RequestParam (defaultValue = "")String searchInput
 			) {
 		//Summary
 		int newUserDay = adminService.newUserDay();
@@ -160,7 +170,12 @@ public class AdminController {
 		int pageLimit = 5;
 		int newBoardLimit = 5;
 		
-		int memberListCount = adminService.memberListCount(); // total paging
+		int memberListCount = 0;
+		if(searchInput.isEmpty()) {
+			memberListCount = adminService.memberListCount(); // total paging
+		}else{
+			memberListCount = adminService.memberSearchListCount(searchInput); // total paging (검색)	
+		}
 		int newMemberCount = adminService.newMemberCount(); // newMember paging
 		int deleteMemberCount = adminService.deleteCount(); // deleteMember paging
 		// 객체 생성(pi1, pi2, pi3)
@@ -180,16 +195,29 @@ public class AdminController {
 			pi2 = AdminPagination.getPageInfo(newMemberCount,1, pageLimit, newBoardLimit);
 			pi3 = AdminPagination.getPageInfo(deleteMemberCount,cpage, pageLimit, newBoardLimit);
 		}
-		
 		// Total Member
-		List<MemberDTO> totalList = adminService.totalList(member, pi1);
-		// 일반 회원 또는 관리자 구분
-		for (MemberDTO item : totalList) {
-			String type = item.getType();
-			if("1".equals(type)) {
-				item.setType("일반");
-			}else {
-				item.setType("관리자");
+		List<MemberDTO> totalList = null;
+		if(searchInput.isEmpty()) {
+			// 일반 회원 또는 관리자 구분
+			totalList = adminService.totalList(member, pi1);
+			for (MemberDTO item : totalList) {
+				String type = item.getType();
+				if("1".equals(type)) {
+					item.setType("일반");
+				}else {
+					item.setType("관리자");
+				}
+			}
+		}else{
+			// 일반 회원 또는 관리자 구분
+			totalList = adminService.searchList(member, pi1, searchInput); // search
+			for (MemberDTO item : totalList) {
+				String type = item.getType();
+				if("1".equals(type)) {
+					item.setType("일반");
+				}else {
+					item.setType("관리자");
+				}
 			}
 		}
 		List<MemberDTO> newUserList = adminService.newUserList(member, pi2);
@@ -317,7 +345,7 @@ public class AdminController {
 	@GetMapping("/adminBoard.do")
 	public String adminBoard(InfoDTO info, Model model,
 			@RequestParam(value="cpage",defaultValue="1") int cpage,
-			@RequestParam(value="status",defaultValue="null") String status) {
+			@RequestParam(value="status",defaultValue="info") String status) {
 		int infoTodayCount = adminService.infoTodayCount();
 		int infoCommentTodayCount = adminService.infoCommentTodayCount();
 		int freeTodayCount = adminService.freeTodayCount();
@@ -372,7 +400,91 @@ public class AdminController {
 	}
 	// 신고 현황
 	@GetMapping("/adminDeclaration.do")
-	public String adminDeclaration() {
+	public String adminDeclaration(Model model, DeclarationDTO dec,
+						@RequestParam(value="cpage", defaultValue= "1") int cpage,
+						@RequestParam(value="status", defaultValue="total") String status) {
+		int deTodayCount = adminService.deTodayCount();
+		int noneBlindCount = adminService.noneBlindCount();
+		int blindCount = adminService.blindCount();
+		int deTotalCount = adminService.deTotalCount();
+		model.addAttribute("deTodayCount",deTodayCount);
+		model.addAttribute("noneBlindCount",noneBlindCount);
+		model.addAttribute("blindCount",blindCount);
+		model.addAttribute("deTotalCount",deTotalCount);
+		// paging
+		int boardLimit = 6;
+		int pageLimit = 5;
+		AdminPageInfo pi = new AdminPageInfo();
+		if(status.equals("today")) {
+			pi = AdminPagination.getPageInfo(deTodayCount, cpage, pageLimit, boardLimit);
+			List<DeclarationDTO> list = adminService.deTodayList(dec, pi);
+			for (DeclarationDTO item : list) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getDeclarationDate().substring(11, 19);
+				item.setDeclarationDate(indate);
+			}
+			for(DeclarationDTO item : list) {
+				if(item.getDeclarationWithdrawal() == null) {
+					item.setDeclarationWithdrawal("미처리");
+				}
+			}
+			model.addAttribute("list",list); // List
+			model.addAttribute("pi",pi); // 페이징
+			model.addAttribute("title","금일 신고"); // title 제목
+			return "admin/adminDeclaration";
+		}else if(status.equals("noneBlind")) {
+			pi = AdminPagination.getPageInfo(noneBlindCount, cpage, pageLimit, boardLimit);
+			List<DeclarationDTO> list = adminService.noneBlindList(dec, pi);
+			for (DeclarationDTO item : list) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getDeclarationDate().substring(11, 19);
+				item.setDeclarationDate(indate);
+			}
+			for(DeclarationDTO item : list) {
+				if(item.getDeclarationWithdrawal() == null) {
+					item.setDeclarationWithdrawal("미처리");
+				}
+			}
+			model.addAttribute("list",list); // List
+			model.addAttribute("pi",pi); // 페이징
+			model.addAttribute("title","금일 신고"); // title 제목
+			return "admin/adminDeclaration";
+		}else if(status.equals("blind")) {
+			pi = AdminPagination.getPageInfo(blindCount, cpage, pageLimit, boardLimit);
+			List<DeclarationDTO> list = adminService.blindList(dec, pi);
+			for (DeclarationDTO item : list) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getDeclarationDate().substring(11, 19);
+				item.setDeclarationDate(indate);
+			}
+			for(DeclarationDTO item : list) {
+				if(item.getDeclarationWithdrawal() == null) {
+					item.setDeclarationWithdrawal("미처리");
+				}
+			}
+			model.addAttribute("list",list); // List
+			model.addAttribute("pi",pi); // 페이징
+			model.addAttribute("title","금일 신고"); // title 제목
+			return "admin/adminDeclaration";
+		}else if(status.equals("total")) {
+			pi = AdminPagination.getPageInfo(deTotalCount, cpage, pageLimit, boardLimit);
+			List<DeclarationDTO> list = adminService.deTotalList(dec, pi);
+			for (DeclarationDTO item : list) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getDeclarationDate().substring(11, 19);
+				item.setDeclarationDate(indate);
+			}
+			for(DeclarationDTO item : list) {
+				if(item.getDeclarationWithdrawal() == null) {
+					item.setDeclarationWithdrawal("미처리");
+				}
+			}
+			model.addAttribute("list",list); // List
+			model.addAttribute("pi",pi); // 페이징
+			model.addAttribute("title","금일 신고"); // title 제목
+			return "admin/adminDeclaration";
+		}
+		
 		return "admin/adminDeclaration";
 	}
 	// mainPage 이동
@@ -480,4 +592,27 @@ public class AdminController {
 		}
 	}
 	
+	// declaration blind
+	@ResponseBody
+	@PostMapping("/declarationBlind.do")
+	public int declarationBlind(@RequestParam(value="no")int no) {
+		int result = adminService.declarationBlind(no);
+		if(result == 1) {
+			return result;
+		}else {
+			return 0;
+		}
+	}
+	// declaration None blind
+	@ResponseBody
+	@PostMapping("/declarationNoneBlind.do")
+	public int declarationNoneBlind(@RequestParam(value="no")int no) {
+		int result = adminService.declarationNoneBlind(no);
+		if(result == 1) {
+			return result;
+		}else {
+			return 0;
+		}
+	}
+
 }

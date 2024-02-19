@@ -48,7 +48,12 @@
 									<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
 										<div class="direction2 justifyBet">
 											<p>전체 멤버</p>
-											<span>멤버 이름 : <input type="text" class="searchInput" id="searchMember"><button onclick="searchMember.do">검색</button></span>
+											<form action="adminMember.do" method="GET">
+												<span>멤버 이름 : 
+													<input type="text" class="searchInput" id="searchInput" name="searchInput">
+													<Button type="submit" class="defaultBtn">검색</button>
+												</span>
+											</form>
 										</div>
 										<ul class="direction2 noMargin justifyAround visitPadding borderDefault">
 											<span class="li1">No</span>
@@ -85,7 +90,6 @@
 													<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${pi1.cpage-1}">&lt;</a> 
 												</c:otherwise>
 											</c:choose>
-												
 											<c:forEach var="page" begin="${pi1.startPage}" end="${pi1.endPage}">
 												<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${page}">${page}</a>
 											</c:forEach>
@@ -137,6 +141,9 @@
 														<a href="adminMember.do?status=newUser&cpage=${pi2.cpage-1}">&lt;</a>
 													</c:otherwise>
 												</c:choose>
+												<c:if test="${empty page2}">
+													<a href="adminMember.do?status=newUser&cpage=1">1</a>
+												</c:if>
 												<c:forEach var="page2" begin="${pi2.startPage}" end="${pi2.endPage}">
 													<a href="adminMember.do?status=newUser&cpage=${page2}">${page2}</a>
 												</c:forEach>

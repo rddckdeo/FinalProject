@@ -32,51 +32,51 @@
 	<select id="newProject" resultType="_int">
 		SELECT COUNT(*) FROM COLABO
 		WHERE P_END_DATE IS NULL
-		AND P_STATE = 'n'
+		AND P_STATE = 'N'
 	</select>
 	<select id="startProject" resultType="_int">
 		SELECT COUNT(*) FROM COLABO
 		WHERE P_END_DATE IS NULL
-		AND P_STATE = 'c'
+		AND P_STATE = 'C'
 	</select>
 		<select id="endProject" resultType="_int">
 		SELECT COUNT(*) FROM COLABO
 		WHERE P_END_DATE IS NOT NULL
-		AND P_STATE = 'y'
+		AND P_STATE = 'Y'
 	</select>
 	<!-- List Count-->
 	<select id="newProjectListCount" resultType="_int">
 		SELECT COUNT(*) FROM COLABO
 		WHERE P_END_DATE IS NULL
-		AND P_STATE = 'n'
+		AND P_STATE = 'N'
 	</select>
 	<select id="startProjectListCount" resultType="_int">
 		SELECT COUNT(*) FROM COLABO
 		WHERE P_END_DATE IS NULL
-		AND P_STATE = 'c'
+		AND P_STATE = 'C'
 	</select>
 	<select id="endProjectListCount" resultType="_int">
 		SELECT COUNT(*) FROM COLABO
 		WHERE P_END_DATE IS NOT NULL
-		AND P_STATE = 'y'
+		AND P_STATE = 'Y'
 	</select>
 	<!-- List -->
 	<select id="newProjectList" resultMap="colaboResultSet">
 		SELECT * FROM COLABO
 		WHERE P_END_DATE IS NULL
-		AND P_STATE = 'n'
+		AND P_STATE = 'N'
 		ORDER BY P_START_DATE DESC
 	</select>
 	<select id="startProjectList" resultMap="colaboResultSet">
 		SELECT * FROM COLABO
 		WHERE P_END_DATE IS NULL
-		AND P_STATE = 'c'
+		AND P_STATE = 'C'
 		ORDER BY P_START_DATE DESC
 	</select>
 	<select id="endProjectList" resultMap="colaboResultSet">
 		SELECT * FROM COLABO
 		WHERE P_END_DATE IS NOT NULL
-		AND P_STATE = 'y'
+		AND P_STATE = 'Y'
 		ORDER BY P_END_DATE DESC
 	</select>
 	<!-- delete -->
