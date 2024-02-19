@@ -1,5 +1,7 @@
 package kr.co.coco.board.controller;
 
+import java.text.SimpleDateFormat;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.coco.board.model.dto.FreeCommentDTO;
@@ -111,4 +114,7 @@ public class FreeCommentController {
     private int getFreeNoFromComment(int freeCommentNo) {
         return freeCommentService.getFreeNoFromComment(freeCommentNo);
     }
+    
+
+	
 }

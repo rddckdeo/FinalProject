@@ -32,25 +32,30 @@ public class InfoDTO {
     private String nickname; // 작성자 닉네임
     private int commentCount; // 댓글 수
     
+    private String imageFileName;  
+    private String imageFilePath;
+    
     
     @Override
     public String toString() {
         return "InfoDTO [infoNo=" + infoNo +
-                ", infoTitle=" + infoTitle +
-                ", infoContent=" + infoContent +
-                ", infoDate=" + infoDate +
-                ", infoUpdateDate=" + infoUpdateDate +
-                ", infoDeleteDate=" + infoDeleteDate +
-                ", infoViews=" + infoViews +
-                ", infoTag1=" + infoTag1 +
-                ", infoTag2=" + infoTag2 +
-                ", infoTag3=" + infoTag3 +
-                ", infoCategory=" + infoCategory +
-                ", infoBlind=" + infoBlind +
-                ", infoCommentCount=" + infoCommentCount +
-                ", mNo=" + mNo +
+//                ", infoTitle=" + infoTitle +
+//                ", infoContent=" + infoContent +
+//                ", infoDate=" + infoDate +
+//                ", infoUpdateDate=" + infoUpdateDate +
+//                ", infoDeleteDate=" + infoDeleteDate +
+//                ", infoViews=" + infoViews +
+//                ", infoTag1=" + infoTag1 +
+//                ", infoTag2=" + infoTag2 +
+//                ", infoTag3=" + infoTag3 +
+//                ", infoCategory=" + infoCategory +
+//                ", infoBlind=" + infoBlind +
+//                ", infoCommentCount=" + infoCommentCount +
+//                ", mNo=" + mNo +
                 ", nickname=" + nickname +
-                ", commentCount=" + commentCount +
+//                ", commentCount=" + commentCount +
+                ", imageFileName=" + imageFileName +
+                ", imageFilePath=" + imageFilePath +
                 "]";
     }
  

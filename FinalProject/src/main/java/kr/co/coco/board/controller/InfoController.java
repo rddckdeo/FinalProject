@@ -1,6 +1,7 @@
 package kr.co.coco.board.controller;
 
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +30,8 @@ import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.board.model.service.InfoCommentServiceImpl;
-import kr.co.coco.board.model.service.InfoService;
 import kr.co.coco.board.model.service.InfoServiceImpl;
+import kr.co.coco.member.model.Service.MemberServiceImpl;
 
 @Controller
 @RequestMapping("/info")
@@ -47,7 +50,10 @@ public class InfoController {
 	public String infoCategoryBoard(@RequestParam(value = "name", required = false) String categoryName,
 			@RequestParam(value = "sortType", required = false, defaultValue = "date") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int currentPage,
-			@RequestParam(value = "size", defaultValue = "5") int pageSize, Model model) {
+			@RequestParam(value = "size", defaultValue = "5") int pageSize, Model model, HttpSession session) {
+
+		// 세션에서 넘버 가져오기
+		Integer mNo = (Integer) session.getAttribute("no");
 
 		// 게시글 총 개수
 		int totalPosts = infoService.countPostsByCategory(categoryName);
@@ -68,15 +74,6 @@ public class InfoController {
 		model.addAttribute("categoryName", categoryName);
 		model.addAttribute("sortType", sortType);
 
-	    System.out.println("Model attributes:");
-	    Map<String, Object> modelMap = model.asMap();
-	    System.out.println("posts: " + modelMap.get("posts"));
-	    System.out.println("totalPosts: " + modelMap.get("totalPosts"));
-	    System.out.println("totalPages: " + modelMap.get("totalPages"));
-	    System.out.println("currentPage: " + modelMap.get("currentPage"));
-	    System.out.println("categoryName: " + modelMap.get("categoryName"));
-	    System.out.println("sortType: " + modelMap.get("sortType"));
-	    
 		return "board/info/infoBoard";
 	}
 
@@ -99,7 +96,7 @@ public class InfoController {
 
 		// 세션에서 사용자 번호 가져오기
 		Integer no = (Integer) session.getAttribute("no");
-
+       	    
 		return "board/info/infoBoardDtail";
 	}
 
@@ -141,7 +138,7 @@ public class InfoController {
 
 		return "board/info/infoBoardEdit";
 	}
-
+	
 	// 게시글 수정
 	@PostMapping("/updatePost")
 	public String updatePost(InfoDTO post, HttpSession session, RedirectAttributes redirectAttributes)
@@ -184,31 +181,31 @@ public class InfoController {
 		return ResponseEntity.ok(response);
 	}
 
-	//신고하기 
+	// 게시글 신고하기
 	@PostMapping("/report")
 	public ResponseEntity<?> reportInfo(@RequestBody DeclarationDTO declarationDto, HttpSession session) {
-	    try {
-	    	
-	    	Integer mNo = (Integer) session.getAttribute("no");
-	    	
-	    	// 사용자 번호 세팅
-	        declarationDto.setMNo(mNo);
-	        
-	        // 신고 처리 로직 수행
-	        boolean isSuccessful = infoService.processDeclaration(declarationDto);
-	        
-	        // 신고 처리 결과에 따른 응답
-	        if (isSuccessful) {
-	            // 신고 처리 성공 시 응답
-	            return ResponseEntity.ok().build();
-	        } else {
-	            // 신고 처리 실패 시 응답
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Declaration processing failed.");
-	        }
-	    } catch (Exception e) {
-	        // 에러 발생 시 응답
-	        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+		try {
+
+			Integer mNo = (Integer) session.getAttribute("no");
+
+			// 사용자 번호 세팅
+			declarationDto.setMNo(mNo);
+
+			// 신고 처리 로직 수행
+			boolean isSuccessful = infoService.processDeclaration(declarationDto);
+
+			// 신고 처리 결과에 따른 응답
+			if (isSuccessful) {
+				// 신고 처리 성공 시 응답
+				return ResponseEntity.ok().build();
+			} else {
+				// 신고 처리 실패 시 응답
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Declaration processing failed.");
+			}
+		} catch (Exception e) {
+			// 에러 발생 시 응답
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 

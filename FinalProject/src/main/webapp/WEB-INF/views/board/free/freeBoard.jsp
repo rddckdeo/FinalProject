@@ -47,12 +47,12 @@ a.disabled {
                                 <div class="categoryNavigation">
                                     <a href="">자유게시판 </a>
                                     <c:if test="${not empty categoryName}">
-                                        <p>/</p>
+                                        <p>|</p>
                                         <a href="">${categoryName}</a>
                                     </c:if>
                                 </div>
                                 <div class="button-wrapper">
-                                    <a href="/free/registr" class="board-update-btn">작성하기</a>
+                                    <a href="/free/registr" class="board-update-btn" onclick="return checkLogin()">작성하기</a>
 
                                     <form id="sortForm" action="/free/category" method="get">
                                         <li class="nav-item dropdown">
@@ -100,8 +100,7 @@ a.disabled {
                                             <div class="main-boardList">
                                                 <div class="main-boardList-info">
                                                     <div>
-                                                        <a href="#"><img
-                                                            src="${sessionScope.path}${sessionScope.picture}"
+                                                        <a href="#"><img src="../../../..${post.imageFileName}${post.imageFilePath}"
                                                             alt="프로필" width="30" height="30"
                                                             class="main-boardList-user-img"></a>
                                                         <p class="main-boardList-info-text">${post.nickname}</p>
@@ -192,6 +191,19 @@ a.disabled {
 </body>
 <script>
     $(document).ready(function() {
+    	
+		//정렬 클릭 막기 
+		$('#dropdownMenuButton').click(function(e) {
+			  e.preventDefault();
+			  e.stopPropagation();
+			});
+
+			$('.dropdown-menu a').click(function() {
+			  var type = $(this).data('type');
+			  $('#sortType').val(type);
+			});
+
+			
         // URL에서 정렬 옵션 가져오기
         var urlParams = new URLSearchParams(window.location.search);
         var sortType = urlParams.get('sortType') || 'views'; // 첫 페이지 로드시 기본 정렬 옵션은 조회순
@@ -245,5 +257,17 @@ a.disabled {
             window.location.search = urlParams.toString();
         });
     });
+</script>
+<script>
+function checkLogin() {
+    // 세션에 no가 없을때(비로그인)
+    <% if (session.getAttribute("no") == null) { %>
+        alert('로그인 후 이용해주세요.');
+        location.href = '/member/loginForm.do'; // 로그인 페이지로 리다이렉트
+        return false;
+    <% } else { %>
+        return true;
+    <% } %>
+}
 </script>
 </html>

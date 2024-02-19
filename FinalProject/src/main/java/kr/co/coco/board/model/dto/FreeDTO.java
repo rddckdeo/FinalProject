@@ -31,7 +31,9 @@ public class FreeDTO {
 	private String nickname; // 작성자 닉네임
 	private int commentCount; // 댓글 수
 
-	
+	private String imageFileName;
+	private String imageFilePath;
+
 	@Override
 	public String toString() {
 		return "FreeDTO [freeNo=" + freeNo + ", freeTitle=" + freeTitle + ", freeContent=" + freeContent + ", freeDate="

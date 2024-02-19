@@ -40,7 +40,6 @@
 						        <th>프로젝트 이름</th>
 						        <th>작성자이름</th>
 						        <th>게시글 제목</th>
-						        <th>게시글 내용</th>
 						        <th>게시글 작성일</th>
 						      </tr>
 						    </thead>
@@ -48,7 +47,7 @@
 						    <c:choose>
 						    	<c:when test="${empty list}">
 						    		<tr>
-					           			<td colspan="6">
+					           			<td colspan="5">
 					           				<h3>등록된 글이 없습니다.</h3>
 					           			</td>
 					           		</tr>
@@ -60,7 +59,6 @@
 								        <td>${item.name}</td>
 								        <td>${item.memberName}</td>
 								        <td>${item.noticeTitle}</td>
-								        <td>${item.noticeContent}</td>
 								        <td>${item.noticeDate}</td>
 								      </tr>
 								      <c:set var="row" value="${row-1}"></c:set>

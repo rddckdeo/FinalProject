@@ -65,14 +65,14 @@ public class FreeController {
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("sortType", sortType);
 
-        System.out.println("Model attributes:");
-        Map<String, Object> modelMap = model.asMap();
-        System.out.println("posts: " + modelMap.get("posts"));
-        System.out.println("totalPosts: " + modelMap.get("totalPosts"));
-        System.out.println("totalPages: " + modelMap.get("totalPages"));
-        System.out.println("currentPage: " + modelMap.get("currentPage"));
-        System.out.println("categoryName: " + modelMap.get("categoryName"));
-        System.out.println("sortType: " + modelMap.get("sortType"));
+//        System.out.println("Model attributes:");
+//        Map<String, Object> modelMap = model.asMap();
+//        System.out.println("posts: " + modelMap.get("posts"));
+//        System.out.println("totalPosts: " + modelMap.get("totalPosts"));
+//        System.out.println("totalPages: " + modelMap.get("totalPages"));
+//        System.out.println("currentPage: " + modelMap.get("currentPage"));
+//        System.out.println("categoryName: " + modelMap.get("categoryName"));
+//        System.out.println("sortType: " + modelMap.get("sortType"));
 
         return "board/free/freeBoard";  
     }
@@ -119,7 +119,7 @@ public class FreeController {
     public String freeEnroll(FreeDTO free, HttpSession session) throws IllegalStateException, IOException {
         Integer mNo = (Integer) session.getAttribute("no");
         free.setMNo(mNo);
-
+        
         freeService.enrollBoard(free);
         return "redirect:/free/category?name=" + free.getFreeCategory() + "&page=1";  
     }

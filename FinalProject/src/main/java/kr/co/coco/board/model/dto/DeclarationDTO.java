@@ -1,11 +1,8 @@
 package kr.co.coco.board.model.dto;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import oracle.sql.DATE;
 
 @Getter // 게터
 @Setter // 세터

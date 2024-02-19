@@ -55,9 +55,10 @@ a.disabled {
 								</c:if>
 
 								<div class="button-wrapper">
-									<a href="/info/registr" class="board-update-btn">작성하기</a>
+									<a href="/info/registr" class="board-update-btn"
+										onclick="return checkLogin()">게시글 작성</a>
 
-									<ul class="nav-item dropdown">
+									<!-- <ul class="nav-item dropdown">
 										<button class="nav-link dropdown-toggle toggle-btn" href="#"
 											id="dropdownMenuButton" role="button"
 											data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,7 +71,7 @@ a.disabled {
 											<li><a class="dropdown-item" href="#">댓글순</a></li>
 											<li><a class="dropdown-item" href="#">조회순</a></li>
 										</ul>
-									</ul>
+									</ul> -->
 								</div>
 
 							</div>
@@ -102,7 +103,7 @@ a.disabled {
 												<div class="main-boardList-info">
 													<div>
 														<a href="#"><img
-															src="../../../../resources/uploads/member/기본프로필.png"
+															src="../../../..${post.imageFilePath}${post.imageFileName}"
 															alt="프로필" width="30" height="30"
 															class="main-boardList-user-img"></a>
 														<p class="main-boardList-info-text">${post.nickname}</p>
@@ -158,6 +159,7 @@ a.disabled {
 								<!-- 페이지네이션 -->
 								<div class="pagination" id="pagination">
 									<div>
+									<c:if test="${totalFreePages > 0}">
 										<a
 											href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage - 1 < 1 ? 1 : infoPage - 1}&pageSize=${pageSize}"
 											class="${infoPage == 1 ? 'disabled' : ''}">&lt;</a>
@@ -177,6 +179,7 @@ a.disabled {
 										<a
 											href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage + 1 > totalInfoPages ? totalInfoPages : infoPage + 1}&pageSize=${pageSize}"
 											class="${infoPage == totalInfoPages ? 'disabled' : ''}">&gt;</a>
+										</c:if>
 									</div>
 								</div>
 
@@ -198,22 +201,9 @@ a.disabled {
 								</c:if>
 
 								<div class="button-wrapper">
-									<a href="/free/registr" class="board-update-btn">작성하기</a>
+									<a href="/free/registr" class="board-update-btn"
+										onclick="return checkLogin()">게시글 작성</a>
 
-									<ul class="nav-item dropdown">
-										<button class="nav-link dropdown-toggle toggle-btn" href="#"
-											id="dropdownMenuButton" role="button"
-											data-bs-toggle="dropdown" aria-expanded="false">
-											<img class="sort-img"
-												src="../../../../resources/uploads/icon/Sort.png" alt="">
-											정렬
-										</button>
-										<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-											<li><a class="dropdown-item" href="#">최신순</a></li>
-											<li><a class="dropdown-item" href="#">댓글순</a></li>
-											<li><a class="dropdown-item" href="#">조회순</a></li>
-										</ul>
-									</ul>
 								</div>
 
 							</div>
@@ -245,7 +235,7 @@ a.disabled {
 												<div class="main-boardList-info">
 													<div>
 														<a href="#"><img
-															src="../../../../resources/uploads/member/기본프로필.png"
+															src="../../../..${post.imageFilePath}${post.imageFileName}"
 															alt="프로필" width="30" height="30"
 															class="main-boardList-user-img"></a>
 														<p class="main-boardList-info-text">${post.nickname}</p>
@@ -300,27 +290,30 @@ a.disabled {
 								<!-- 페이지네이션 -->
 								<div class="pagination" id="pagination">
 									<div>
-										<a
-											href="/board/search?query=${query}&freePage=${freePage - 1 < 1 ? 1 : freePage - 1}&infoPage=${infoPage}&pageSize=${pageSize}"
-											class="${freePage == 1 ? 'disabled' : ''}">&lt;</a>
-										<c:forEach var="i" begin="1" end="${totalFreePages}">
-											<c:choose>
-												<c:when test="${i == freePage}">
-													<a
-														href="/board/search?query=${query}&freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}"
-														class="active">${i}</a>
-												</c:when>
-												<c:otherwise>
-													<a
-														href="/board/search?query=${query}&freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}">${i}</a>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-										<a
-											href="/board/search?query=${query}&freePage=${freePage + 1 > totalFreePages ? totalFreePages : freePage + 1}&infoPage=${infoPage}&pageSize=${pageSize}"
-											class="${freePage == totalFreePages ? 'disabled' : ''}">&gt;</a>
+										<c:if test="${totalFreePages > 0}">
+											<a
+												href="/board/search?query=${query}&freePage=${freePage - 1 < 1 ? 1 : freePage - 1}&infoPage=${infoPage}&pageSize=${pageSize}"
+												class="${freePage == 1 ? 'disabled' : ''}">&lt;</a>
+											<c:forEach var="i" begin="1" end="${totalFreePages}">
+												<c:choose>
+													<c:when test="${i == freePage}">
+														<a
+															href="/board/search?query=${query}&freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}"
+															class="active">${i}</a>
+													</c:when>
+													<c:otherwise>
+														<a
+															href="/board/search?query=${query}&freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}">${i}</a>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+											<a
+												href="/board/search?query=${query}&freePage=${freePage + 1 > totalFreePages ? totalFreePages : freePage + 1}&infoPage=${infoPage}&pageSize=${pageSize}"
+												class="${freePage == totalFreePages ? 'disabled' : ''}">&gt;</a>
+										</c:if>
 									</div>
 								</div>
+
 
 
 							</div>
@@ -338,3 +331,15 @@ a.disabled {
 
 </body>
 </html>
+<script>
+	function checkLogin() {
+		// 세션에 no가 없을때(비로그인)
+<%if (session.getAttribute("no") == null) {%>
+	alert('로그인 후 이용해주세요.');
+		location.href = '/member/loginForm.do'; // 로그인 페이지로 리다이렉트
+		return false;
+<%} else {%>
+	return true;
+<%}%>
+	}
+</script>

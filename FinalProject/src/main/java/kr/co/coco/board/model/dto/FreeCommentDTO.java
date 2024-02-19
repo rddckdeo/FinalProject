@@ -25,4 +25,7 @@ public class FreeCommentDTO {
     private String freeCommentWriter; // 댓글 작성자 (닉네임)
     
     private String nickname; // 작성자 닉네임
+    
+    private String imageFileName;  
+    private String imageFilePath;
 }

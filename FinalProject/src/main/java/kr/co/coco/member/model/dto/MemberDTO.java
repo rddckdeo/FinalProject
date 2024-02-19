@@ -1,6 +1,5 @@
 package kr.co.coco.member.model.dto;
 
-import java.sql.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,9 +25,9 @@ public class MemberDTO {
 	private String loginDate;
 	private String stop;
 	private String stopDate;
-	private String number;
-	
+	private String number;	
 	private String loginDay;
 	
 	private String searchInput;
 }
+

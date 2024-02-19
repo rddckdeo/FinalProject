@@ -1,8 +1,6 @@
 package kr.co.coco.board.model.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,6 +84,7 @@ public class FreeServiceImpl implements FreeService {
     public List<FreeDTO> searchFreePosts(String query, int freePage, int pageSize) {
 	    int startIndex = (freePage - 1) * pageSize;
 	    int endIndex = startIndex + pageSize;
+	   
         return freeDao.searchPosts(query, startIndex, endIndex);
     }
     
