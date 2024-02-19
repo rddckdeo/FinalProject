@@ -22,7 +22,7 @@ public class InfoCommentDAO {
 
 	// 댓글 저장
 	public InfoCommentDTO save(InfoCommentDTO commentDTO) {
-		sqlSession.insert("InfoCommentMapper.insertComment", commentDTO);
+		sqlSession.insert("infoCommentMapper.insertComment", commentDTO);
 		return getCommentById(commentDTO.getInfoCommentNo());
 	}
 	
