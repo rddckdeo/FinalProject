@@ -46,6 +46,28 @@
 								<div class="button-wrapper">
 									<a href="/free/edit/${post.freeNo}" class="board-update-btn">수정하기</a>
 									<a href="#" data-info-no="${post.freeNo}" class="delete-link">삭제</a>
+									
+									<!-- 신고하기 버튼 -->
+									<button id="reportButton" class="board-update-btn">신고하기</button>
+
+									<!-- 신고하기 모달 -->
+									<div id="reportModal" class="modal">
+										<div class="modal-content">
+											<span class="close">&times;</span>
+											<h2>신고하기</h2>
+											<form id="reportForm">
+												<label for="reportType">신고 종류:</label><br> <select
+													id="reportType">
+													<option value="spam">스팸</option>
+													<option value="abuse">욕설</option>
+													<option value="falseInfo">허위 정보</option>
+												</select><br> <br> <input id="reportSubmitButton"
+													type="submit" value="신고하기">
+											</form>
+										</div>
+									</div>
+									
+									
 								</div>
 							</div>
 						</div>
@@ -60,7 +82,7 @@
 								<div class="main-boardList">
 									<div class="main-boardList-info">
 										<a href="#"><img
-											src="../../../../resources/uploads/member/기본프로필.png"
+											src="../../../..${post.imageFilePath}${post.imageFileName}"
 											alt="프로필" width="30" height="30"
 											class="main-boardList-user-img"></a> <a href="#"
 											class="main-boardList-info-text">${post.nickname}</a>
@@ -129,15 +151,59 @@
 										<c:forEach items="${comments}" var="comment">
 											<div class="comment-row">
 												<a href="#"><img
-													src="../../../../resources/uploads/member/기본프로필.png"
+													src="../../../..${post.imageFilePath}${post.imageFileName}"
 													alt="프로필" width="30" height="30"
 													class="main-boardList-user-img"></a> <a href="#"
 													class="main-boardList-info-text">${comment.nickname}</a>
 												<p class="main-boardList-info-text">${comment.freeCommentDate}</p>
 												<div>
-													<a href="#">수정</a>
+													<a href="JavaScript:void(0);"class="edit-button"
+														data-id="${comment.freeCommentNo}" data-infoNo="${post.freeNo}" data-toggle="modal"
+														data-target="#editModal_${comment.freeCommentNo}">수정</a>
+
+													<!-- 수정하기 모달 -->
+													<div class="editModal"
+														id="editModal_${comment.freeCommentNo}">
+														<div class="modal-content">
+															<span class="close">&times;</span>
+															<h2>댓글 수정하기</h2>
+															<form class="editForm">
+																<label for="author">작성자:</label> <input type="text"
+																	id="author" value="${comment.nickname}" disabled><br>
+
+																<label for="date">작성일:</label> <input type="text"
+																	id="date" value="${comment.freeCommentDate}" disabled><br>
+																<label for="editComment">내용:</label>
+																<textarea id="editComment">${comment.freeCommentContent}</textarea>
+																<br> <input type="submit" value="수정하기"> 
+															</form>
+														</div>
+													</div>
 													<p>|</p>
 													<a class="delete-button" data-id="${comment.freeCommentNo}">삭제</a>
+													<!-- 신고하기 버튼 -->
+													<button class="reportButton"
+														data-id="${comment.freeCommentNo}">신고하기</button>
+
+													<!-- 신고하기 모달 -->
+													<div class="reportModal"
+														id="reportModal_${comment.freeCommentNo}"
+														data-id="${comment.freeCommentNo}">
+														<div class="modal-content">
+															<span class="close">&times;</span>
+															<h2>신고하기</h2>
+															<form class="reportForm">
+																<label for="reportType">신고 종류:</label><br> <select
+																	class="reportType">
+																	<option value="spam">스팸</option>
+																	<option value="abuse">욕설</option>
+																	<option value="falseInfo">허위 정보</option>
+																</select><br> <br> <input class="reportSubmitButton"
+																	type="submit" value="신고하기">
+															</form>
+														</div>
+													</div>
+													
 												</div>
 											</div>
 											<div>
@@ -334,5 +400,159 @@
 			});
 		});
 	</script>
+	<script>
+    var modal = document.getElementById("reportModal");
+    var btn = document.getElementById("reportButton");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    document.getElementById('reportForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var reportType = document.getElementById('reportType').value;
+        var infoNo = document.body.dataset.infoNo;
+        var mNo = document.body.dataset.mNo;
+
+        var data = {
+            declarationType: 'info',
+            boardNo: infoNo,
+            mNo: mNo,
+            declarationContent: reportType
+        };
+
+        if (confirm("신고하시겠습니까?")) {
+            fetch('/info/report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        modal.style.display = "none";
+                        alert("성공적으로 전송되었습니다.");
+                        console.log('Success:', data);
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+
+    //댓글 수정하기 
+    document.addEventListener('DOMContentLoaded', function () {
+        var editButtons = document.querySelectorAll('.edit-button');
+
+        editButtons.forEach(function (editButton) {
+            editButton.addEventListener('click', function () {
+                event.preventDefault();
+
+                var commentId = this.getAttribute('data-id');
+                var modal = document.querySelector('#editModal_' + commentId);
+                var infoNo = this.getAttribute('data-infoNo');
+
+                modal.style.display = "block";
+
+                var closeButton = modal.querySelector('.close');
+                closeButton.addEventListener('click', function () {
+                    modal.style.display = "none";
+                });
+
+                modal.querySelector('.editForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    var commentContent = modal.querySelector('#editComment').value;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/comment/updateComment', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            location.reload();
+                        } else {
+                            alert('댓글 수정에 실패하였습니다.');
+                        }
+                    };
+                    xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&infoNo=' + infoNo);
+                });
+
+            });
+        });
+    });
+</script>
+	<script>
+    window.onload = function() {
+        var reportButtons = document.querySelectorAll('.reportButton');
+        var closeButtons = document.querySelectorAll('.close');
+        var reportForms = document.querySelectorAll('.reportForm');
+
+        reportButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var commentId = this.dataset.id;
+                var modal = document.querySelector('#reportModal_' + commentId);
+                modal.style.display = "block";
+            });
+        });
+
+        closeButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var modal = this.closest('.reportModal');
+                modal.style.display = "none";
+            });
+        });
+
+        reportForms.forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                var commentId = this.closest('.reportModal').dataset.id;
+                var reportType = this.querySelector('.reportType').value;
+                var data = {
+                    declarationType: 'comment',
+                    commentNo: commentId,
+                    reportType: reportType
+                };
+
+                if(confirm("신고하시겠습니까?")) {
+                    fetch('/info/report', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    })
+                    .then(response => {
+                        if(response.ok) {
+                            this.closest('.reportModal').style.display = "none";  // 팝업 닫기
+                            alert("성공적으로 전송되었습니다.");
+                            console.log('Success:', data);
+                        } else {
+                            throw new Error('Network response was not ok');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                }
+            });
+        });
+    }
+</script>
 </body>
 </html>

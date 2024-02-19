@@ -3,6 +3,31 @@
 
 <mapper namespace="infoMapper">
 
+	<resultMap id="InfoResultMap" type="info">
+
+		<id property="infoNo" column="info_no" />
+		<result property="infoTitle" column="info_title" />
+		<result property="infoContent" column="info_content" />
+		<result property="infoDate" column="info_date" />
+		<result property="infoUpdateDate" column="info_update_date" />
+		<result property="infoDeleteDate" column="info_delete_date" />
+		<result property="infoViews" column="info_views" />
+		<result property="infoTag1" column="info_tag1" />
+		<result property="infoTag2" column="info_tag2" />
+		<result property="infoTag3" column="info_tag3" />
+		<result property="infoCategory" column="info_category" />
+		<result property="infoBlind" column="info_blind" />
+		<result property="infoCommentCount" column="info_comment_count" />
+
+		<result property="mNo" column="m_no" />
+		<result property="nickname" column="nickname" />
+		<result property="commentCount" column="comment_count" />
+
+		<result property="imageFileName" column="m_picture" />
+		<result property="imageFilePath" column="m_path" />
+
+	</resultMap>
+
 	<!-- 게시물 등록 -->
 	<insert id="enrollBoard" parameterType="info">
 
@@ -39,31 +64,26 @@
 
 
 	<!-- 게시글 상세 보기 진입 -->
-	<select id="getPostById" parameterType="int" resultType="info">
-		SELECT
-		i.info_no AS infoNo,
-		i.info_title AS infoTitle,
-		m.m_nickname AS
-		nickname,
-		i.info_content AS infoContent,
-		i.info_date AS
-		infoDate,
-		i.info_views AS infoViews,
-		i.info_tag1 AS infoTag1,
-		i.info_tag2 AS
-		infoTag2,
-		i.info_tag3 AS infoTag3,
-		(SELECT COUNT(*) FROM
-		info_comment
-		WHERE info_no = i.info_no) AS commentCount
-		FROM
-		info i
-		JOIN
-		member m ON
-		i.m_no = m.m_no
-		WHERE
-		i.info_no = #{infoNo}
-	</select>
+	<select id="getPostById" resultType="info">
+    SELECT
+        i.info_no AS infoNo,
+        i.info_title AS infoTitle,
+        m.m_nickname AS nickname,
+        m.m_picture AS imageFileName,
+        m.m_path AS imageFilePath,
+        i.info_content AS infoContent,
+        i.info_date AS infoDate,
+        i.info_views AS infoViews,
+        i.info_tag1 AS infoTag1,
+        i.info_tag2 AS infoTag2,
+        i.info_tag3 AS infoTag3,
+        (SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no) AS commentCount
+    FROM info i
+        JOIN member m ON i.m_no = m.m_no
+    WHERE i.info_no = #{infoNo}
+</select>
+
+
 
 	<!-- 게시글 수정 -->
 	<update id="updatePost" parameterType="info">
@@ -101,15 +121,20 @@
 		WHERE INFO_CATEGORY =
 		#{categoryName}
 	</select>
+	
 
 	<!-- 카테고리별 게시글 조회 (페이징 처리) -->
 	<select id="getPostsByCategory" parameterType="map"
 		resultType="info">
 		SELECT * FROM (
-		SELECT a.*, member.m_nickname AS nickname,
-		COUNT(info_comment.info_comment_no) OVER (PARTITION BY a.info_no) AS
+		SELECT a.*, member.m_nickname,
+		member.m_picture,
+		member.m_path,
+		COUNT(info_comment.info_comment_no)
+		OVER (PARTITION BY a.info_no) AS
 		commentCount,
-		row_number() over (order by a.INFO_DATE DESC) rnum
+		row_number() over (order
+		by a.INFO_DATE DESC) rnum
 		FROM
 		INFO a
 		JOIN member ON a.m_no = member.m_no
@@ -119,24 +144,27 @@
 		WHERE
 		a.INFO_CATEGORY = #{categoryName}
 		)
-		WHERE rnum between #{startIndex} + 1
+		WHERE rnum
+		between #{startIndex} + 1
 		and #{startIndex} + #{pageSize}
 	</select>
 
 
-<!-- 검색 결과 게시물 조회 -->
+	<!-- 검색 결과 게시물 조회 -->
 <select id="searchPosts" parameterType="map" resultType="info">
-    SELECT * FROM (
-    SELECT i.*, m.m_nickname, NVL((SELECT COUNT(*) FROM info_comment WHERE
-    info_no = i.info_no), 0) AS commentCount,
-    row_number() over (order by i.INFO_DATE DESC) rnum
-    FROM info i
-    JOIN member m ON i.m_no = m.m_no
-    WHERE i.info_title LIKE '%' || #{query} || '%'
-    OR i.info_content LIKE '%' || #{query} || '%'
+    SELECT *
+    FROM (
+		SELECT i.*, m.m_nickname AS nickname, m.m_picture AS imageFileName, m.m_path AS imageFilePath,
+        NVL((SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no), 0) AS commentCount,
+        row_number() over (order by i.INFO_DATE DESC) rnum
+		FROM info i
+		JOIN member m ON i.m_no = m.m_no
+		WHERE i.info_title LIKE '%' || #{query} || '%'
+        OR i.info_content LIKE '%' || #{query} || '%'
     )
     WHERE rnum BETWEEN #{startIndex} AND #{endIndex}
 </select>
+
 
 
 
@@ -145,7 +173,8 @@
 		resultType="int">
 		SELECT COUNT(*)
 		FROM INFO
-		WHERE INFO_TITLE LIKE '%'||#{query}||'%' OR INFO_CONTENT LIKE
+		WHERE INFO_TITLE LIKE
+		'%'||#{query}||'%' OR INFO_CONTENT LIKE
 		'%'||#{query}||'%'
 	</select>
 
@@ -171,22 +200,28 @@
 	<!-- 게시글 정렬: 최신순 -->
 	<select id="selectPostsOrderByDate" resultType="info">
 		SELECT * FROM (
-		SELECT a.*, member.m_nickname AS nickname,
+		SELECT a.*, member.m_nickname AS nickname,member.m_picture AS
+		imageFilePath, member.m_path AS imageFileName,
 		COALESCE(ic.commentCount, 0)
 		AS commentCount,
-		row_number() over (order by a.INFO_DATE DESC) rnum
+		row_number() over (order
+		by a.INFO_DATE DESC) rnum
 		FROM INFO a
-		JOIN member ON a.m_no = member.m_no
+		JOIN member ON a.m_no =
+		member.m_no
 		LEFT JOIN (
 		SELECT
 		info_no, COUNT(*) as commentCount
-		FROM info_comment
+		FROM
+		info_comment
 		GROUP BY info_no
 		) ic
 		ON a.info_no = ic.info_no
-		WHERE a.INFO_CATEGORY = #{categoryName}
+		WHERE
+		a.INFO_CATEGORY = #{categoryName}
 		)
-		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+		WHERE rnum between #{startIndex} + 1
+		and #{startIndex} + #{pageSize}
 	</select>
 
 
@@ -194,7 +229,8 @@
 	<select id="selectPostsOrderByComments" resultType="info">
 		SELECT * FROM
 		(
-		SELECT a.*, member.m_nickname AS nickname,
+		SELECT a.*, member.m_nickname AS nickname,member.m_picture AS
+		imageFilePath, member.m_path AS imageFileName,
 		COALESCE(ic.commentCount,
 		0) AS commentCount,
 		row_number() over (order by
@@ -237,10 +273,24 @@
 	</select>
 
 
+	<!-- 마이페이지 no로 게시글 가져오기 -->
+	<select id="fetchPostsByMemberNo" resultType="info">
+		SELECT
+		f.*
+		FROM
+		info f
+		WHERE
+		f.m_no = #{mNo}
+		<if test="start != null and limit != null">
+			OFFSET #{start} ROWS FETCH NEXT #{limit} ROWS ONLY
+		</if>
+	</select>
 
-
-
-
+	<!--마이페이지 총 게시글 수 가져오기 -->
+	<select id="allInfoBoardPostsNo" parameterType="int"
+		resultType="int">
+		SELECT COUNT(*) FROM info WHERE m_no = #{mNo}
+	</select>
 
 
 

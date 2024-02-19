@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
-	<settings>
-		<setting name="jdbcTypeForNull" value="NULL" />
-		<setting name="mapUnderscoreToCamelCase" value="true" />
-	</settings>
+   <settings>
+      <setting name="jdbcTypeForNull" value="NULL" />
+      <setting name="mapUnderscoreToCamelCase" value="true" />
+   </settings>
+
 
 	<typeAliases>
 		<typeAlias type="kr.co.coco.board.model.dto.InfoDTO" alias="info"/>
@@ -20,6 +21,7 @@
 		<typeAlias type="kr.co.coco.member.model.dto.MemberDTO" alias="member"/>
 		<typeAlias type="kr.co.coco.admin.model.dto.AdminDTO" alias="admin"/>
 		<typeAlias type="kr.co.coco.admin.model.dto.AdminBoardDTO" alias="adminBoard"/>
+		 <typeAlias type="kr.co.coco.mypage.model.dto.MyPageDTO" alias="mypage"/>
 		
 	</typeAliases>
 	
@@ -31,6 +33,7 @@
 		<mapper resource="/mappers/board/declaration-mapper.xml"/>
 		<mapper resource="/mappers/colabo/colabo-mapper.xml"/>
 		<mapper resource="/mappers/member/member-mapper.xml"/>
+		<mapper resource="/mappers/mypage/mypage-mapper.xml"/>
 		<mapper resource="/mappers/admin/total/admin-total-mapper.xml"/>
 		<mapper resource="/mappers/admin/visit/admin-visit-mapper.xml"/>
 		<mapper resource="/mappers/admin/member/admin-member-mapper.xml"/>

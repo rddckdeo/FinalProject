@@ -3,7 +3,7 @@
 
 <mapper namespace="FreeCommentMapper">
 
-    <!-- 댓글 저장 -->
+	    <!-- 댓글 저장 -->
     <insert id="insertComment" parameterType="freeComment">
         <selectKey keyProperty="freeCommentNo" resultType="int" order="BEFORE">
             SELECT free_comment_no_seq.NEXTVAL FROM dual
@@ -77,5 +77,20 @@
     <select id="getFreeNoFromComment" resultType="int" parameterType="int">
         SELECT free_no FROM free_comment WHERE free_comment_no = #{freeCommentNo}
     </select>
+    
+	<!-- 자유게시판 댓글 가져오기 --> 
+<!-- 	<select id="fetchFreeCommentNo" parameterType="int"
+		resultType="freeComment">
+		SELECT
+		fc.*,
+		f.free_title AS post_title,
+		f.free_category AS post_category
+		FROM
+		free_comment fc
+		JOIN
+		free f ON fc.free_no = f.free_no
+		WHERE
+		fc.m_no = #{mNo}
+	</select> -->
 
 </mapper>

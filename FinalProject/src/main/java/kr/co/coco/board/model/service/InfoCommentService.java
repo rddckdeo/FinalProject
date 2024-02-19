@@ -22,5 +22,8 @@ public interface InfoCommentService {
 	// 해당 게시글에 연결된 모든 댓글 삭제
 	void deleteCommentsByPostId(int infoNo);
 
+	// 댓글 수정
+	InfoCommentDTO updateComment(int infoCommentNo, String commentContent);
+
 
 }
