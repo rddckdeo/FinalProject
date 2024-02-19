@@ -54,18 +54,12 @@
 								</div></li>
 
 
-
-
-
-
-
-
 							<a href="#" target="_blank" id="header-chat"><img
 								src="../../../../resources/uploads/icon/message.png" alt=""
 								width="31" height="31"></a>
 							<li class="nav-item dropdown"><a
 								class="nav-link nav-icon-hover" href="#" id="drop2"
-								data-bs-toggle="dropdown" aria-expanded="false"> <img src=""
+								data-bs-toggle="dropdown" aria-expanded="false"> <img src="${sessionScope.path}${sessionScope.picture}"
 									alt="" width="35" height="35" class="rounded-circle">
 							</a>
 								<div

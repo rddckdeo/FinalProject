@@ -233,6 +233,11 @@ public class ColaboServiceImpl implements ColaboService{
 		return colaboDAO.selectEmailMember(sqlSession, selectText);
 	}
 
+
+	public ColaboDTO getMemberInfo(int memberNo) {
+		return colaboDAO.getMemberInfo(sqlSession, memberNo);
+	}
+
 	
 	
 	

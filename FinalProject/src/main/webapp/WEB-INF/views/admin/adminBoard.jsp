@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -17,217 +16,94 @@
 	<!-- header 영역 -->
 	<%@ include file="/WEB-INF/views/admin/common/header.jsp"%>
 	<!-- 카드 영역  -->
-	<div class="cardSize mainCard">
+	<div class="cardSize2 mainCard">
 		<div class="row">
 			<div class="main-section">
 				<div class="container-fluid">
 					<div class="container-fluid">
 						<!-- Card 안쪽 -->
-						<div class="card cardSize alignCenter">
+						<div class="card cardSize2 alignCenter">
 							<!-- 제목 -->
 							<p class="font30px bottomMargin20 topMargin20">Board</p>
 							<!-- 시작 -->
-							<div class="direction1 justifyAround width100 bottomMargin20">
-								<!-- 구분 문자 -->
-								<span class="alignCenter leftMargin40">
-									<h1 class="font20px ">정보게시판</h1>
-								</span>
-								<div class="direction2 justifyAround width100 bottomMargin20">
-									<span class="direction1">
-										<h3 class="iconFont">Day</h3>
-										<h3 class="iconFont">10</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Week</h3>
-										<h3 class="iconFont">30</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Month</h3>
-										<h3 class="iconFont">40</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Total</h3>
-										<h3 class="iconFont">50</h3>
-									</span>
-								</div>
-								<span class="alignCenter leftMargin40">
-									<h1 class="font20px">자유게시판</h1>
-								</span>
-								<div class="direction2 justifyAround width100 bottomMargin20">
-									<span class="direction1">
-										<h3 class="iconFont">Day</h3>
-										<h3 class="iconFont">10</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Week</h3>
-										<h3 class="iconFont">30</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Month</h3>
-										<h3 class="iconFont">40</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Total</h3>
-										<h3 class="iconFont">50</h3>
-									</span>
-								</div>
+							<div class="direction2 justifyEve width100">
+								<a href="/admin/adminBoard.do?status=info&cpage=1" class="card1 backColor1 direction1">
+									<h1 class="fontTitle">정보게시판</h1>
+									<h3 class="fontContent">금일 작성 : 00</h3>
+								</a>
+								<a href="/admin/adminBoard.do?status=infoComment&cpage=1" class="card1 backColor2 direction1">
+									<h1 class="fontTitle">정보게시판 댓글</h1>
+									<h3 class="fontContent">금일 작성 : 00</h3>
+								</a>
+								<a href="/admin/adminBoard.do?status=free&cpage=1" class="card1 backColor3 direction1">
+									<h1 class="fontTitle">자유게시판</h1>
+									<h3 class="fontContent">금일 작성 : 00</h3>
+								</a>
+								<a href="/admin/adminBoard.do?status=freeComment&cpage=1" class="card1 backColor4 direction1">
+									<h1 class="fontTitle">자유게시판 댓글</h1>
+									<h3 class="fontContent">금일 작성 : 00</h3>
+								</a>
 							</div>
-
-							<div
-								class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
-								<p class="font20px subP whiteColor">정보게시판</p>
+							<!-- 게시판 시작 -->
+							<div class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
+								<p class="font20px subP whiteColor">List</p>
 								<div class="direction2 justifyAround alignCenter height80per">
-									<div
-										class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
-										<p>최신 정보게시판</p>
-										<ul
-											class="direction2 noMargin justifyAround visitPadding borderDefault">
-											<span class="li1">No</span>
-											<span class="li3">문의 제목</span>
-											<span class="li4">작성자</span>
-											<span class="li2">작성 시간</span>
-											<span class="li2">삭제</span>
+									<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
+										<div class="direction2 justifyBet">
+											<p>게시판</p>
+										</div>
+										<ul class="direction2 noMargin justifyAround visitPadding borderDefault">
+											<li class="li1">No</li>
+											<li class="li1">작성자</li>
+											<li class="li3">제목</li>
+											<li class="li1">ID</li>
+											<li class="li2">작성 날짜</li>
+											<li class="li1">삭제</li>
 										</ul>
-										<ul>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-
-
-											<div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-													href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
-													href="#">5</a> <a href="#">&gt;</a>
-											</div>
+										<ul class="visitUlSize">
+											<c:forEach var="item" items="${totalList}">
+												<li class="borderDefault visitPadding justifyAround">
+	                                                <span class="li1">${item.no}</span>
+	                                                <span class="li1">${item.name}</span>
+	                                                <span class="li3">${item.title}</span>
+	                                                <span class="li1">${item.id}</span>
+	                                                <span class="li2">${item.inDate}</span>
+	                                                <span class="li1"><button value="${item.no}" class="deleteBtn" onclick="deleteBtn(this.value)">삭제</button></span>
+	                                            </li>
+                                            </c:forEach>
 										</ul>
+										<div class="pagination">
+											<c:choose>
+												<c:when test="${pi1.cpage eq 1}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a> 
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${pi1.cpage-1}">&lt;</a> 
+												</c:otherwise>
+											</c:choose>
+												
+											<c:forEach var="page" begin="${pi1.startPage}" end="${pi1.endPage}">
+												<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${page}">${page}</a>
+											</c:forEach>
+												
+											<c:choose>
+												<c:when test="${pi1.cpage eq pi1.maxPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminMember.do?status=total&cpage=${pi1.cpage + 1}">&gt;</a>
+												</c:otherwise>
+											</c:choose>
+										</div>
 									</div>
 								</div>
-
-
-
-								<!-- Card End -->
 							</div>
-							<div
-								class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
-								<p class="font20px subP whiteColor">자유게시판</p>
-								<div class="direction2 justifyAround alignCenter height80per">
-									<div
-										class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
-										<p>최신 자유게시판</p>
-										<ul
-											class="direction2 noMargin justifyAround visitPadding borderDefault">
-											<span class="li1">No</span>
-											<span class="li3">문의 제목</span>
-											<span class="li4">작성자</span>
-											<span class="li2">작성 시간</span>
-											<span class="li2">삭제</span>
-										</ul>
-										<ul>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">게시글
-													어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span
-												class="li2">16:17:52</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span>
-											</li>
-
-
-											<div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-													href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
-													href="#">5</a> <a href="#">&gt;</a>
-											</div>
-										</ul>
-									</div>
-								</div>
-								<!-- Card End -->
-							</div>
+							<!-- 게시판 끝 -->
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

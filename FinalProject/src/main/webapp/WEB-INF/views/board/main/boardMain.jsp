@@ -203,37 +203,48 @@
 								<!-- 자유 게시판 게시글 -->
 								<div class="board-card-row">
 									<div>
-										<h1 class="card-project-name">자유 게시판</h1>
-										<c:forEach var="post" items="${freePosts}">
-											<div class="main-boardList">
-												<div class="main-boardList-info">
-													<div>
-														<a href="#"><img src="../dog-4390885_1280.jpg" alt=""
-															width="30" height="30" class="main-boardList-user-img"></a>
-														<a href="#" class="main-boardList-info-text"><c:out
-																value="${post.nickname}" /></a>
-														<p class="main-boardList-info-text">
-															<c:out value="${post.freeDate}" />
-														</p>
+										<h1 class="card-project-name">자유  게시판</h1>
+										<c:choose>
+											<c:when test="${not empty freePosts}">
+												<c:forEach var="post" items="${freePosts}">
+													<div class="main-boardList">
+														<div class="main-boardList-info">
+															<div>
+																<a href="#"><img src="../../../../resources/uploads/member/기본프로필.png"
+																	alt="" width="30" height="30"
+																	class="main-boardList-user-img"></a> <a href="#"
+																	class="main-boardList-info-text"><c:out
+																		value="${post.nickname}" /> </a>
+																<p class="main-boardList-info-text">
+																	 | <c:out value="" />
+																</p>
+															</div>
+															<div class="main-project-comment">
+																<img src="../../../../resources/uploads/icon/message.png" alt="" width="20"
+																	height="20" class="main-project-comment-text">
+																<p class="main-project-comment-text">
+																	<c:out value="${post.freeCommentCount}" />
+																</p>
+															</div>
+														</div>
+														<div class="main-boardList-title">
+															<a href="/info/infoDtail/${post.freeNo}">${post.freeTitle}</a>
+														</div>
 													</div>
-													<div class="main-project-comment">
-														<img src="../../../../resources/uploads/icon/message.png" alt="" width="20"
-															height="20" class="main-project-comment-text">
-														<p class="main-project-comment-text">
-															<c:out value="${post.commentCount}" />
-														</p>
+													<div class="card-project-hr-div">
+														<hr class="card-project-hr">
 													</div>
-												</div>
-												<div class="main-boardList-title">
-													<c:out value="${post.freeTitle}" />
-												</div>
-											</div>
-											<div class="card-project-hr-div">
-												<hr class="card-project-hr">
-											</div>
-										</c:forEach>
+												</c:forEach>
+											</c:when>
+											<c:otherwise>
+												<p
+													style="text-align: center; font-size: 18px; margin: 10px 0px 10px 0px;">등록된
+													게시물이 없습니다.</p>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</div>
+
 							</div>
 						</div>
 					</div>

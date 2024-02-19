@@ -6,6 +6,19 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<style>
+.footer_li {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    width: 100%; /* 전체 넓이를 채우도록 설정 */
+    text-align: center; /* 가운데 정렬 */
+}
+.footer_li > p{
+	margin-left:5px;
+	margin-right:5px;
+}
+
+</style>
 <body>
 	<aside class="left-sidebar">
 		<!-- 사이드바 스크롤-->
@@ -13,7 +26,7 @@
 			<!-- 로고 -->
 			<div class="d-flex mb-4 align-items-center justify-content-between">
 				<a href="#" class="text-nowrap logo-img ms-0 ms-md-1"> <img
-					src="../dog-4390885_1280.jpg" width="180" alt="">
+					src="" width="180" alt="">
 				</a>
 				<div
 					class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
@@ -54,7 +67,7 @@
 							href="myinfo.do" aria-expanded="false"> <span
 								class="aside-icon p-2 bg-light-warning rounded-3"> <i
 									class="ti ti-article fs-7 text-warning"></i>
-							</span> <span class="hide-menu ms-2 ps-1">내 정보</span>
+							</span> <span class="hide-menu ms-2 ps-1">내 정보 수정</span>
 						</a></li>
 						<li class="sidebar-item bottomMargin10"><a
 							class="alignEnd sidebar-link sidebar-link danger-hover-bg"
@@ -76,8 +89,12 @@
 								class="aside-icon p-2 bg-light-primary rounded-3"> <i
 									class="ti ti-file-description fs-7 text-primary"></i>
 							</span> <span class="hide-menu ms-2 ps-1">내가 작성한 댓글</span>
-						</a></li>
+						</a>
+						</li>
 					</ul>
+					<li class="footer_li">
+						<a>개인정보처리방침</a> <p> | </p><a>이용약관</a>
+					</li>
 				</nav>
 				<!-- End Sidebar navigation -->
 			</div>

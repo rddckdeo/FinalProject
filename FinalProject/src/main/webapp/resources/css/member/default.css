@@ -29,6 +29,11 @@
     justify-content:space-between;
     
 }
+.justifyEve{
+    display: flex;
+    justify-content:space-evenly;
+    
+}
 .alignCenter{
     display: flex;
     align-items: center;

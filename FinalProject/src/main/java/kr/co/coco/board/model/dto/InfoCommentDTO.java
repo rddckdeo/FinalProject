@@ -24,4 +24,7 @@ public class InfoCommentDTO {
     private String infoCommentWriter; // 댓글 작성자 (닉네임)
     
     private String nickname; //작성 시, 닉네임 사용
+    
+    private String imageFileName;  
+    private String imageFilePath;
 }

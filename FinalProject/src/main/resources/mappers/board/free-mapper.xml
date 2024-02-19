@@ -3,6 +3,32 @@
 
 <mapper namespace="freeMapper">
 
+<resultMap id="freeResultMap" type="free">
+
+    <id property="freeNo" column="free_no" />
+    <result property="freeTitle" column="free_title" />
+    <result property="freeContent" column="free_content" />
+    <result property="freeDate" column="free_date" />
+    <result property="freeUpdateDate" column="free_update_date" />
+    <result property="freeDeleteDate" column="free_delete_date" />
+    <result property="freeViews" column="free_views" />
+    <result property="freeTag1" column="free_tag1" />
+    <result property="freeTag2" column="free_tag2" />
+    <result property="freeTag3" column="free_tag3" />
+    <result property="freeCategory" column="free_category" />
+    <result property="freeBlind" column="free_blind" />
+    <result property="freeCommentCount" column="free_comment_count" />
+
+    <result property="mNo" column="m_no" />
+    <result property="nickname" column="nickname" />
+    <result property="commentCount" column="comment_count" />
+
+    <result property="imageFileName" column="m_picture" />
+    <result property="imageFilePath" column="m_path" />
+
+</resultMap>
+
+
 	<!-- 게시물 등록 -->
 	<insert id="enrollBoard" parameterType="free">
 		INSERT INTO FREE (
@@ -116,33 +142,31 @@
 	</select>
 
 
-	<!-- 검색 결과 게시물 조회 --> 
-	<select id="searchPosts" parameterType="map" resultType="free">
-		SELECT *
-		FROM (
-		SELECT f.*, m.m_nickname, NVL((SELECT COUNT(*) FROM free_comment
-		WHERE
-		free_no = f.free_no), 0) AS commentCount,
-		row_number() over (order
-		by f.FREE_DATE DESC) rnum
-		FROM FREE f
-		JOIN member m ON f.m_no = m.m_no
-		WHERE f.free_title LIKE '%' || #{query} || '%'
-		OR f.free_content LIKE
-		'%' || #{query} || '%'
-		) temp
-		WHERE rnum BETWEEN #{startIndex} AND
-		#{endIndex}
-	</select>
+	<!-- 검색 결과 게시물 조회 -->
+<select id="searchPosts" parameterType="map" resultType="free">
+    SELECT *
+    FROM (
+        SELECT
+        i.*, m.m_nickname AS nickname, m.m_picture AS imageFileName, m.m_path AS imageFilePath,
+        NVL((SELECT COUNT(*) FROM free_comment WHERE free_no = i.free_no), 0) AS freeCommentCount,
+        row_number() OVER (ORDER BY i.FREE_DATE DESC) rnum
+        FROM free i
+        JOIN member m ON i.m_no = m.m_no
+        WHERE i.free_title LIKE '%'
+        || #{query} || '%' OR i.free_content LIKE '%'
+        || #{query} || '%'
+    )
+    WHERE
+    rnum BETWEEN #{startIndex} AND #{endIndex}
+</select>
 
-	<!-- 검색 게시글 개수 조회 -->
-	<select id="searchCountPosts" parameterType="string"
+
+	<select id="searchCountPosts" parameterType="map"
 		resultType="int">
 		SELECT COUNT(*)
-		FROM FREE
-		WHERE FREE_TITLE LIKE
-		'%'||#{query}||'%' OR FREE_CONTENT LIKE
-		'%'||#{query}||'%'
+		FROM free
+		WHERE free_title LIKE '%' || #{query} || '%'
+		OR free_content LIKE '%' || #{query} || '%'
 	</select>
 
 
@@ -167,84 +191,77 @@
 	<!-- 게시글 정렬: 최신순 -->
 	<select id="selectPostsOrderByDate" resultType="free">
 		SELECT * FROM (
-		SELECT f.*, member.m_nickname AS nickname,
-		COALESCE(fc.commentCount, 0)
+		SELECT a.*, member.m_nickname AS nickname,member.m_picture AS
+		imageFilePath, member.m_path AS imageFileName,
+		COALESCE(ic.commentCount, 0)
 		AS commentCount,
-		row_number() over (order by f.FREE_DATE DESC) rnum
-		FROM FREE f
-		JOIN member ON f.m_no = member.m_no
+		row_number() over (order
+		by a.FREE_DATE DESC) rnum
+		FROM FREE a
+		JOIN member ON a.m_no =
+		member.m_no
 		LEFT JOIN (
 		SELECT
 		free_no, COUNT(*) as commentCount
-		FROM free_comment
+		FROM
+		free_comment
 		GROUP BY free_no
-		) fc
-		ON f.free_no = fc.free_no
-		WHERE f.FREE_CATEGORY = #{categoryName}
+		) ic
+		ON a.free_no = ic.free_no
+		WHERE
+		a.FREE_CATEGORY = #{categoryName}
 		)
-		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+		WHERE rnum between #{startIndex} + 1
+		and #{startIndex} + #{pageSize}
 	</select>
 
 
 	<!-- 게시글 정렬: 댓글 수별 -->
 	<select id="selectPostsOrderByComments" resultType="free">
 		SELECT * FROM
-		(
-		SELECT f.*, member.m_nickname AS nickname,
-		COALESCE(fc.commentCount,
-		0) AS commentCount,
-		row_number() over (order by
-		COALESCE(fc.commentCount, 0) DESC) rnum
-		FROM FREE f
-		JOIN member ON
-		f.m_no = member.m_no
-		LEFT JOIN (
-		SELECT free_no, COUNT(*) as
-		commentCount
-		FROM free_comment
-		GROUP BY free_no
-		) fc ON f.free_no =
-		fc.free_no
-		WHERE f.FREE_CATEGORY = #{categoryName}
-		) WHERE rnum between
-		#{startIndex} + 1 and #{startIndex} + #{pageSize}
+		( SELECT a.*, member.m_nickname AS nickname, member.m_picture AS
+		imageFilePath, member.m_path AS imageFileName,
+		COALESCE(icmt.commentCount, 0) AS commentCount, row_number() over
+		(order by COALESCE(icmt.commentCount, 0) DESC) rnum FROM FREE a JOIN
+		member ON a.m_no = member.m_no LEFT JOIN (SELECT free_no, COUNT(*) AS
+		commentCount FROM free_comment GROUP BY free_no) icmt ON a.free_no =
+		icmt.free_no WHERE a.FREE_CATEGORY = #{categoryName} ) WHERE rnum
+		between #{startIndex} + 1 and #{startIndex} + #{pageSize}
 	</select>
 
 
 	<!-- 게시글 정렬: 조회 수별 -->
 	<select id="selectPostsOrderByViews" resultType="free">
-		SELECT * FROM (
-		SELECT f.*, member.m_nickname AS nickname,
-		COALESCE(fc.commentCount, 0)
-		AS commentCount,
-		row_number() over (order by f.FREE_VIEWS DESC) rnum
-		FROM FREE f
-		JOIN member ON f.m_no = member.m_no
-		LEFT JOIN (
+		SELECT * FROM
+		(SELECT a.*, member.m_nickname AS nickname, member.m_picture
+		AS
+		imageFilePath, member.m_path AS imageFileName,
+		COALESCE(icnt.commentCount, 0) AS commentCount, row_number() over
+		(order by a.FREE_VIEWS DESC) rnum FROM FREE a JOIN member ON a.m_no =
+		member.m_no LEFT JOIN (SELECT free_no, COUNT(*) as commentCount FROM
+		free_comment GROUP BY free_no) icnt ON a.free_no = icnt.free_no WHERE
+		a.FREE_CATEGORY = #{categoryName} ) WHERE rnum between #{startIndex} +
+		1 and #{startIndex} + #{pageSize}
+	</select>
+
+	<!-- 마이페이지 no로 게시글 가져오기 -->
+	<select id="fetchPostsByMemberNo" resultType="free">
 		SELECT
-		free_no, COUNT(*) as commentCount
-		FROM free_comment
-		GROUP BY free_no
-		) fc
-		ON f.free_no = fc.free_no
-		WHERE f.FREE_CATEGORY = #{categoryName}
-		)
-		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+		f.*
+		FROM
+		free f
+		WHERE
+		f.m_no = #{mNo}
+		<if test="start != null and limit != null">
+			OFFSET #{start} ROWS FETCH NEXT #{limit} ROWS ONLY
+		</if>
 	</select>
-	
-		<!-- 마이페이지 no로 게시글 가져오기 -->
-	<select id="fetchInfoBoardPostsByMemberNo" resultType="free">
-		SELECT * FROM FREE
-		WHERE m_no = #{mNo}
-		ORDER BY info_no DESC
-		OFFSET #{start} ROWS FETCH NEXT #{size} ROWS ONLY
-	</select>
-	
+
 	<!--마이페이지 총 게시글 수 가져오기 -->
-	    <select id="allInfoBoardPostsNo" resultType="int">
-        SELECT COUNT(*) FROM FREE
-        WHERE m_no = #{mNo}
-    </select>
+	<select id="allFreeBoardPostsNo" parameterType="int"
+		resultType="int">
+		SELECT COUNT(*) FROM free WHERE m_no = #{mNo}
+	</select>
 
 
 </mapper>

@@ -28,7 +28,7 @@
         <!-- 사이드바 협업툴 바로가기-->
         <li class="sidebar-item"><span
             class="aside-icon p-2 bg-light-primary rounded-3"> <a
-                href="" id="cooperation-btn" class="btn btn-primary">협업툴
+                href="/colabo" id="cooperation-btn" class="btn btn-primary" onclick="return checkLogin()">협업툴
                     바로가기</a>
         </span></li>
         <!-- 사이드바 정보게시판 -->
@@ -143,3 +143,15 @@
 	</aside>
 </body>
 </html>
+<script>
+	function checkLogin() {
+		// 세션에 no가 없을때(비로그인)
+<%if (session.getAttribute("no") == null) {%>
+	alert('로그인 후 이용해주세요.');
+		location.href = '/member/loginForm.do'; // 로그인 페이지로 리다이렉트
+		return false;
+<%} else {%>
+	return true;
+<%}%>
+	}
+</script>

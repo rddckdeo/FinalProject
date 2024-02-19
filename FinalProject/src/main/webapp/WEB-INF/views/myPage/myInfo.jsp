@@ -40,13 +40,13 @@
 										<div class="myInfo direction2 alignCenter bottomMargin20">
 											<p class="leftMargin20">소개글 :</p>
 											<c:choose>
-											<c:when test="${!empty intro}">
-												<p class="leftMargin20">${intro}</p>
-											</c:when>
-											<c:otherwise>
-												<p class="leftMargin20">소개글이 없습니다. 소개글을 작성해주세요.</p>
-											</c:otherwise>
-										</c:choose>
+												<c:when test="${!empty intro}">
+													<p class="leftMargin20">${intro}</p>
+												</c:when>
+												<c:otherwise>
+													<p class="leftMargin20">소개글이 없습니다. 소개글을 작성해주세요.</p>
+												</c:otherwise>
+											</c:choose>
 										</div>
 										<!-- id -->
 										<div class="myInfo direction2 alignCenter bottomMargin20">
@@ -75,20 +75,21 @@
 										</div>
 										<h1 class="font20px bottomMargin20">희망직무 및 기술스택</h1>
 										<div class="myInfo bottomMargin20 padding30">
-											<div class="direction2">
-												<p class="infoStack defaultMargin">예제</p>
-												<p class="infoStack defaultMargin">예제</p>
-												<p class="infoStack defaultMargin">예제</p>
-												<p class="infoStack defaultMargin">예제</p>
-											</div>
-											<div class="direction2">
-												<p class="infoStack defaultMargin">예제</p>
-												<p class="infoStack defaultMargin">예제</p>
-												<p class="infoStack defaultMargin">예제</p>
-												<p class="infoStack defaultMargin">예제</p>
-											</div>
+											<c:forEach var="hopeItem" items="${hopeList}">
+												<div class="direction2">
+													<p class="infoStack defaultMargin">${hopeItem}</p>
+												</div>
+											</c:forEach>
+											<c:forEach var="stackItem" items="${stackList}">
+												<div class="direction2">
+													<p class="infoStack defaultMargin">${stackItem}</p>
+												</div>
+											</c:forEach>
 										</div>
-										<button class="btn btn-outline-secondary">수정하기</button>
+										<a class="btn btn-outline-secondary"
+											href="/mypage/editProfile.do">수정하기</a>
+
+
 									</div>
 								</div>
 							</div>

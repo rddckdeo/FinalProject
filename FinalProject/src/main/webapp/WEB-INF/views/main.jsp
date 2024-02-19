@@ -65,7 +65,7 @@
 
 								<div class="direction2">
 									<div class="direction1 alignCenter justifyCenter">
-										<a class="totalBtn Margin20 borderRadiusd backBlue2 direction1 sortCenter" href="#" onclick="return checkLogin()"> 협업 홈페이지<br> <small class="small15">협업으로 바로가기~</small>
+										<a class="totalBtn Margin20 borderRadiusd backBlue2 direction1 sortCenter" href="/colabo/" onclick="return checkLogin()"> 협업 홈페이지<br> <small class="small15">협업으로 바로가기~</small>
 										</a>
 									</div>
 									<div class="direction1 alignCenter justifyCenter">

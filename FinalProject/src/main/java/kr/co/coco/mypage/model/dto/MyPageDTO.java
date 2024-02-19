@@ -35,6 +35,11 @@ public class MyPageDTO {
 	private Date stopDate;
 	private String number;
 	
+	private String imageFileName;
+	private String imageFilePath;
+	
+	private String freeTitle;
+	
 	
 	@Override
 	public String toString() {
