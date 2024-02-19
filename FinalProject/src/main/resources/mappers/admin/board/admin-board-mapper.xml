@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="admin-boardMapper">
+	<resultMap type="admin" id="infoResultSet">
+		<result column="info_no" property="boardNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="info_title" property="title"></result>
+		<result column="info_content" property="content"></result>
+		<result column="info_date" property="date"></result>
+		<result column="info_update_date" property="updateDate"></result>
+		<result column="info_delete_date" property="deleteDate"></result>
+		<result column="info_views" property="views"></result>
+		<result column="info_tag1" property="tag1"></result>
+		<result column="info_tag2" property="tag2"></result>
+		<result column="info_tag3" property="tag3"></result>
+		<result column="info_category" property="category"></result>
+		<result column="info_blind" property="blind"></result>
+		<result column="info_comment_count" property="commentCount"></result>
+		<result column="M_NAME" property="name"></result>
+		<result column="M_ID" property="id"></result>
+	</resultMap>
+	<!-- info comment -->
+	<resultMap type="admin" id="infoCommentResultSet">
+		<result column="info_comment_no" property="commentNo"></result>
+		<result column="info_no" property="boardNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="info_comment_content" property="content"></result>
+		<result column="info_comment_date" property="date"></result>
+		<result column="info_comment_update_date" property="updateDate"></result>
+		<result column="info_comment_delete_date" property="deleteDate"></result>
+		<result column="info_comment_blind" property="blind"></result>
+		<result column="M_NAME" property="name"></result>
+		<result column="M_ID" property="id"></result>
+	</resultMap>
+		<!-- free List -->
+	<resultMap type="admin" id="freeResultSet">
+		<result column="free_no" property="boardNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="free_title" property="title"></result>
+		<result column="free_content" property="content"></result>
+		<result column="free_date" property="date"></result>
+		<result column="free_update_date" property="updateDate"></result>
+		<result column="free_delete_date" property="deleteDate"></result>
+		<result column="free_views" property="views"></result>
+		<result column="free_tag1" property="tag1"></result>
+		<result column="free_tag2" property="tag2"></result>
+		<result column="free_tag3" property="tag3"></result>
+		<result column="free_blind" property="blind"></result>
+		<result column="free_comment_count" property="commentCount"></result>
+		<result column="M_NAME" property="name"></result>
+		<result column="M_ID" property="id"></result>
+	</resultMap>
+		<!-- free Comment -->
+	<resultMap type="admin" id="freeCommentResultSet">
+		<result column="free_comment_no" property="commentNo"></result>
+		<result column="free_no" property="boardNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="free_comment_content" property="content"></result>
+		<result column="free_comment_date" property="date"></result>
+		<result column="free_comment_update_date" property="updateDate"></result>
+		<result column="free_comment_delete_date" property="deleteDate"></result>
+		<result column="free_comment_writer" property="writer"></result>
+		<result column="free_comment_blind" property="blind"></result>
+		<result column="M_NAME" property="name"></result>
+		<result column="M_ID" property="id"></result>
+	</resultMap>
+	<!-- Summay -->
+	<select id="infoTodayCount" resultType="int">
+		SELECT COUNT(*) FROM INFO
+		WHERE INFO_DELETE_DATE IS NULL
+		AND INFO_DATE BETWEEN TRUNC(SYSDATE) AND
+		TRUNC(SYSDATE) + 1
+	</select>
+	<select id="infoCommentTodayCount" resultType="int">
+	    SELECT COUNT(*) FROM INFO_COMMENT
+	    WHERE INFO_COMMENT_DELETE_DATE IS NULL
+	    AND INFO_COMMENT_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE) + 1
+	</select>
+	<select id="freeTodayCount" resultType="int">
+		SELECT COUNT(*) FROM FREE
+		WHERE FREE_DELETE_DATE IS NULL
+		AND FREE_DATE BETWEEN TRUNC(SYSDATE) AND
+		TRUNC(SYSDATE) + 1
+	</select>
+	<select id="freeCommentTodayCount" resultType="int">
+		SELECT COUNT(*) FROM FREE_COMMENT
+		WHERE FREE_COMMENT_DELETE_DATE IS NULL
+		AND FREE_COMMENT_DATE BETWEEN TRUNC(SYSDATE) AND
+		TRUNC(SYSDATE) + 1
+	</select>
+	<!-- info List -->
+	<select id="infoListCount" resultType="int">
+		SELECT COUNT(*) FROM INFO
+		WHERE INFO_DELETE_DATE IS NULL
+	</select>
+	<select id="infoList" resultMap="infoResultSet">
+		SELECT i.*, m.M_NAME, m.M_ID
+		FROM INFO i
+		JOIN Member m ON i.M_NO = m.M_NO
+		WHERE i.INFO_DELETE_DATE IS
+		NULL
+		ORDER BY i.INFO_DATE DESC
+	</select>
+		<!--info comment List -->
+	<select id="infoCommentListCount" resultType="int">
+		SELECT COUNT(*) FROM INFO_COMMENT
+		WHERE INFO_COMMENT_DELETE_DATE IS NULL
+	</select>
+	<select id="infoCommentList" resultMap="infoCommentResultSet">
+	    SELECT i.*, m.M_NAME, m.M_ID
+	    FROM INFO_COMMENT i
+	    JOIN Member m ON i.M_NO = m.M_NO
+	    WHERE i.INFO_COMMENT_DELETE_DATE IS NULL
+	    ORDER BY i.INFO_COMMENT_DATE DESC
+	</select>
+		<!-- free List -->
+	<select id="freeListCount" resultType="int">
+		SELECT COUNT(*) FROM FREE
+		WHERE FREE_DELETE_DATE IS NULL
+	</select>
+	<select id="freeList" resultMap="freeResultSet">
+	    SELECT f.*, m.M_NAME, m.M_ID
+	    FROM FREE f
+	    JOIN Member m ON f.M_NO = m.M_NO
+	    WHERE f.FREE_DELETE_DATE IS NULL
+	    ORDER BY f.FREE_DATE DESC
+	</select>
+			<!-- free Comment List -->
+	<select id="freeCommentListCount" resultType="int">
+		SELECT COUNT(*) FROM FREE_COMMENT
+		WHERE FREE_COMMENT_DELETE_DATE IS NULL
+	</select>
+	<select id="freeCommentList" resultMap="freeCommentResultSet">
+	    SELECT f.*, m.M_NAME, m.M_ID
+	    FROM FREE_COMMENT f
+	    JOIN Member m ON f.M_NO = m.M_NO
+	    WHERE f.FREE_COMMENT_DELETE_DATE IS NULL
+	    ORDER BY f.FREE_COMMENT_DATE DESC
+	</select>
+
+	<update id="deleteBoard">
+		UPDATE ${status} SET ${status}_DELETE_DATE = SYSDATE
+		WHERE ${status}_NO = ${no}
+	</update>
+
+</mapper>

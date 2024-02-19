@@ -5,10 +5,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>admin Visit</title>
-<link href="/resources/css/member/default.css" rel="stylesheet">
-<link href="/resources/css/common/styles.min.css" rel="stylesheet">
-<link href="/resources/css/admin/admin.css" rel="stylesheet">
+<%@ include file="/WEB-INF/views/admin/common/head.jsp"%>
 </head>
 
 <body class="bodyBackColor">

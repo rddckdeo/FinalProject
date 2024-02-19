@@ -6,9 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>admin</title>
-<link href="/resources/css/member/default.css" rel="stylesheet">
-<link href="/resources/css/common/styles.min.css" rel="stylesheet">
-<link href="/resources/css/admin/admin.css" rel="stylesheet">
+<%@ include file="/WEB-INF/views/admin/common/head.jsp"%>
 </head>
 
 <body class="bodyBackColor">
@@ -29,13 +27,13 @@
 								<div class="direction2 justifyAround width100 bottomMargin20">
 									<span class="direction1">
 										<h3 class="iconFont">Create Project</h3>
-										<h3 class="iconFont">10</h3>
+										<h3 class="iconFont">${np}</h3>
 									</span> <span class="direction1">
 										<h3 class="iconFont">Start Project</h3>
-										<h3 class="iconFont">30</h3>
+										<h3 class="iconFont">${sp}</h3>
 									</span> <span class="direction1">
 										<h3 class="iconFont">Complete Project</h3>
-										<h3 class="iconFont">40</h3>
+										<h3 class="iconFont">${ep}</h3>
 									</span>
 								</div>
 							</div>
@@ -53,37 +51,43 @@
 											<span class="li2">프로젝트 기간</span>
 											<span class="li2">삭제</span>
 										</ul>
-										<ul>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">Colaboration Code</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-
-
-
-											<div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">&gt;</a>
-											</div>
+										<ul class="visitUlSize">
+											<c:forEach var="item" items="${newProjectList}">
+												<li class="borderDefault visitPadding justifyAround boardLiSize">
+													<span class="li1">${item.no}</span> 
+													<span class="li3">${item.name}</span> 
+													<span class="li2">${item.personCount}</span>
+													<span class="li2">${item.startDate}</span>
+													<span class="li2">${item.period}</span> 
+													<span class="li2">
+														<button value='{"no": "${item.no}", "status": "n"}' class="deleteBtn" onclick="projectDeleteBtn(this.value)">삭제</button>
+													</span>
+												</li>
+											</c:forEach>
 										</ul>
+											<div class="pagination">
+												<c:choose>
+													<c:when test ="${pi1.cpage eq 1}">
+														<a href="#" class="Margin5 borderRadius3 paginationBtn">&lt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=n&cpage=${pi1.cpage-1}">&lt;</a>
+													</c:otherwise>
+												</c:choose>
+												<c:forEach var="page" begin="${pi1.startPage}" end="${pi1.endPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=n&cpage=${page}" class="active">${page}</a>
+												</c:forEach>
+												<c:choose>
+													<c:when test="${pi1.cpage eq pi1.maxPage}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=n&cpage=${pi1.cpage + 1}">&gt;</a>
+													</c:otherwise>
+												</c:choose>
+											</div>
+										</div>
 									</div>
-								</div>
-
-
-
 								<!-- Card End -->
 							</div>
 							<div class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
@@ -94,42 +98,49 @@
 										<ul class="direction2 noMargin justifyAround visitPadding borderDefault">
 											<span class="li1">No</span>
 											<span class="li3">프로젝트 이름</span>
-											<span class="li4">팀장</span>
 											<span class="li2">참가 인원</span>
 											<span class="li2">생성 날짜</span>
 											<span class="li2">프로젝트 기간</span>
 											<span class="li2">삭제</span>
 										</ul>
-										<ul>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">Colaboration Code</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-
-
-
-											<div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">&gt;</a>
-											</div>
+										<ul class="visitUlSize">
+											<c:forEach var="item" items="${startProjectList}">
+												<li class="borderDefault visitPadding justifyAround boardLiSize">
+													<span class="li1">${item.no}</span> 
+													<span class="li3">${item.name}</span> 
+													<span class="li2">${item.personCount}</span> 
+													<span class="li2">${item.startDate}</span> 
+													<span class="li2">${item.period}</span> 
+													<span class="li2">
+														<button value='{"no": "${item.no}", "status": "c"}' class="deleteBtn" onclick="projectDeleteBtn(this.value)">삭제</button>
+													</span>
+												</li>
+											</c:forEach>
 										</ul>
+										<div class="pagination">
+											<c:choose>
+												<c:when test ="${pi2.cpage eq 1}">
+													<a href="#" class="Margin5 borderRadius3 paginationBtn">&lt;</a>
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=s&cpage=${pi2.cpage-1}">&lt;</a>
+												</c:otherwise>
+											</c:choose>
+											<c:forEach var="page" begin="${pi2.startPage}" end="${pi2.endPage}">
+												<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=s&cpage=${page}" class="active">${page}</a>
+											</c:forEach>
+											<c:choose>
+												<c:when test="${pi2.cpage eq pi2.maxPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=s&cpage=${pi2.cpage + 1}">&gt;</a>
+												</c:otherwise>
+											</c:choose>
+										</div>
 									</div>
 									<!-- Card End -->
 								</div>
-
 							</div>
 							<div class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
 								<p class="font20px subP whiteColor">완료된 프로젝트</p>
@@ -139,38 +150,46 @@
 										<ul class="direction2 noMargin justifyAround visitPadding borderDefault">
 											<span class="li1">No</span>
 											<span class="li3">프로젝트 이름</span>
-											<span class="li4">팀장</span>
 											<span class="li2">참가 인원</span>
 											<span class="li2">생성 날짜</span>
 											<span class="li2">프로젝트 기간</span>
 											<span class="li2">삭제</span>
 										</ul>
-										<ul>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">Colaboration Code</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-											<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">5</span> <span class="li3">게시글 어쩌구저쩌구 이것저것 적어보자 으아아앙</span> <span class="li4">김창대</span> <span class="li2">4명</span> <span class="li2">24.01.25</span> <span class="li2">1 Month</span> <span class="li2">
-													<button class="deleteBtn">삭제</button>
-											</span></li>
-
-
-
-											<div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">&gt;</a>
-											</div>
+										<ul class="visitUlSize">
+											<c:forEach var="item" items="${endProjectList}">
+												<li class="borderDefault visitPadding justifyAround boardLiSize">
+													<span class="li1">${item.no}</span>
+													<span class="li3">${item.name}</span>
+													<span class="li2">${item.personCount}</span>
+													<span class="li2">${item.startDate}</span>
+													<span class="li2">${item.period}</span>
+													<span class="li2">
+														<button value='{"no": "${item.no}", "status": "y"}' class="deleteBtn" onclick="projectDeleteBtn(this.value)">삭제</button>
+													</span>
+												</li>
+											</c:forEach>
 										</ul>
+										<div class="pagination">
+											<c:choose>
+												<c:when test ="${pi3.cpage eq 1}">
+													<a href="#" class="Margin5 borderRadius3 paginationBtn">&lt;</a>
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=e&cpage=${pi3.cpage-1}">&lt;</a>
+												</c:otherwise>
+											</c:choose>
+											<c:forEach var="page" begin="${pi3.startPage}" end="${pi3.endPage}">
+												<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=e&cpage=${page}" class="active">${page}</a>
+											</c:forEach>
+											<c:choose>
+												<c:when test="${pi3.cpage eq pi3.maxPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminProject.do?status=e&cpage=${pi3.cpage + 1}">&gt;</a>
+												</c:otherwise>
+											</c:choose>
+										</div>
 									</div>
 									<!-- Card End -->
 								</div>

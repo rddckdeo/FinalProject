@@ -1,6 +1,7 @@
 package kr.co.coco.admin.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.model.dao.AdminDAO;
-import kr.co.coco.admin.model.dto.AdminDTO;
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
+import kr.co.coco.board.model.dto.InfoDTO;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
 
 @Service
@@ -48,8 +51,7 @@ public class AdminServiceImpl implements AdminService{
 	public int deCount(){
 		return adminDao.deCount(sqlSession);
 	}
-//	-----------------------------------------------------------------------
-//	List 모음
+//	---------------------------------main page List--------------------------------------
 	//visitList
 	public List<MemberDTO> selectListToday(MemberDTO member, AdminPageInfo piVisit) {
 		return adminDao.selectListToday(sqlSession,member,piVisit);
@@ -66,7 +68,25 @@ public class AdminServiceImpl implements AdminService{
 	public int selectVisitListAll(MemberDTO member) {
 		return adminDao.selectVistListAll(sqlSession, member);
 	}
-//	-----------------------------------------------------------------------
+	
+	// free List Count
+	public int freeListCountToday() {
+		return adminDao.freeListCountToday(sqlSession);
+	}
+	// info list count
+	public int infoListCountToday() {
+		return adminDao.infoListCountToday(sqlSession);
+	}
+	// free List
+	public List<InfoDTO> freeListToday(InfoDTO info, AdminPageInfo pi){
+		return adminDao.freeListToday(sqlSession, info, pi);
+	}
+	// info List
+	public List<InfoDTO> infoListToday(InfoDTO info, AdminPageInfo pi){
+		return adminDao.infoListToday(sqlSession, info, pi);
+	}
+	
+//	-------------------------------member page----------------------------------------
 	//memberList
 	public List<MemberDTO> totalList(MemberDTO member, AdminPageInfo piMember){
 		return adminDao.totalList(sqlSession, member,piMember);
@@ -129,15 +149,121 @@ public class AdminServiceImpl implements AdminService{
 //		return adminDao.searchMember(sqlSession, searchMember);
 //	}
 
-// -----------------------------------------------------
-// Admin Board Page
-
+// --------------------------Admin Board Page---------------------------
+//	-------------------------Summay----------------------------
+	public int infoTodayCount() {
+		return adminDao.infoTodayCount(sqlSession);
+	}
+	public int infoCommentTodayCount() {
+		return adminDao.infoCommentTodayCount(sqlSession);
+	}
+	public int freeTodayCount() {
+		return adminDao.freeTodayCount(sqlSession);
+	}
+	public int freeCommentTodayCount() {
+		return adminDao.freeCommentTodayCount(sqlSession);
+	}
+//	-------------------------List----------------------------
 	// info
-	public List<AdminDTO> infoList(AdminDTO admin){
-		return adminDao.infoList(sqlSession, admin);
+	public List<InfoDTO> infoList(InfoDTO info, AdminPageInfo pi){
+		return adminDao.infoList(sqlSession, info, pi);
 	}
 	//info List Count
-//	public int infoListCount() {
-//		return adminDao.infoListCount();
-//	}
+	public int infoListCount() {
+		return adminDao.infoListCount(sqlSession);
+	}
+	// info Comment
+	public List<InfoDTO> infoCommentList(InfoDTO info, AdminPageInfo pi){
+		return adminDao.infoCommentList(sqlSession, info, pi);
+	}
+	//info Comment List Count
+	public int infoCommentListCount() {
+		return adminDao.infoCommentListCount(sqlSession);
+	}
+	// free
+	public List<InfoDTO> freeList(InfoDTO info, AdminPageInfo pi){
+		return adminDao.freeList(sqlSession, info, pi);
+	}
+	// free List Count
+	public int freeListCount() {
+		return adminDao.freeListCount(sqlSession);
+	}
+	// free Comment
+	public List<InfoDTO> freeCommentList(InfoDTO info, AdminPageInfo pi){
+		return adminDao.freeCommentList(sqlSession, info, pi);
+	}
+	// free Comment List Count
+	public int freeCommentListCount() {
+		return adminDao.freeCommentListCount(sqlSession);
+	}
+//	---------------------admin delete 기능-------------------
+	public int deleteBoard(Map<String,Object>param){
+		return adminDao.deleteBoard(sqlSession, param);
+	}
+// --------------------------Admin Project Page---------------------------
+	// Summay Count
+	public int newProject() {
+		return adminDao.newProject(sqlSession);
+	}
+	public int startProject() {
+		return adminDao.startProject(sqlSession);
+	}
+	public int endProject() {
+		return adminDao.endProject(sqlSession);
+	}
+	// paging
+	public int newProjectListCount() {
+		return adminDao.newProjectListCount(sqlSession);
+	}
+	
+	public int startProjectListCount() {
+		return adminDao.startProjectListCount(sqlSession);
+	}
+	
+	public int endProjectListCount() {
+		return adminDao.endProjectListCount(sqlSession);
+	}
+	// List
+	public List<ColaboDTO> newProjectList(ColaboDTO colabo, AdminPageInfo pi1){
+		return adminDao.newProjectList(sqlSession, colabo, pi1);
+	}
+	public List<ColaboDTO> startProjectList(ColaboDTO colabo, AdminPageInfo pi1){
+		return adminDao.startProjectList(sqlSession, colabo, pi1);
+	}	
+	public List<ColaboDTO> endProjectList(ColaboDTO colabo, AdminPageInfo pi1){
+		return adminDao.endProjectList(sqlSession, colabo, pi1);
+	}
+	// project delete
+	public int deleteProject(Map<String,Object> param) {
+		return adminDao.deleteProject(sqlSession,param);
+	}
+	// --------------------------Admin AdminBoard Page---------------------------
+	// Summary Count, List Count
+		public int incomCount() {
+			return adminDao.incomCount(sqlSession);
+		}
+		public int comCount() {
+			return adminDao.comCount(sqlSession);
+		}
+		public int totalCount() {
+			return adminDao.totalCount(sqlSession);
+		}
+	// List
+		public List<AdminBoardDTO> incomList(AdminBoardDTO admin, AdminPageInfo pi){
+			return adminDao.incomList(sqlSession,admin,pi);
+		}
+		public List<AdminBoardDTO> comList(AdminBoardDTO admin, AdminPageInfo pi){
+			return adminDao.comList(sqlSession,admin,pi);
+		}
+		public List<AdminBoardDTO> AdminBoardTotalList(AdminBoardDTO admin, AdminPageInfo pi){
+			return adminDao.AdminBoardTotalList(sqlSession,admin,pi);
+		}
+	// admin Board answer Enroll
+		public int adminBoardEnroll(int no, String content) {
+			return adminDao.adminBoardEnroll(sqlSession, no, content);
+		}
+	// admin Board answer Enroll
+		public int adminBoardDelete(int no) {
+			return adminDao.adminBoardDelete(sqlSession, no);
+		}
 }

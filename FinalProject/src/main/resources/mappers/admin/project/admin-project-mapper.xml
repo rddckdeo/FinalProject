@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="admin-projectMapper">
+	<resultMap type="colabo" id="colaboResultSet">
+		<result column="P_NO" property="no"></result>
+		<result column="P_SUBJECT" property="subject"></result>
+		<result column="P_NAME" property="name"></result>
+		<result column="P_DETAIL" property="detail"></result>
+		<result column="P_STACK" property="stack"></result>
+		<result column="P_PERSON_COUNT" property="personCount"></result>
+		<result column="P_PERIOD" property="period"></result>
+		<result column="P_UPLOAD_PATH" property="uploadPath"></result>
+		<result column="P_UPLOAD_NAME" property="uploadName"></result>
+		<result column="P_UPLOAD_ORIGIN_NAME" property="uploadOriginName"></result>
+		<result column="P_STATE" property="state"></result>
+		<result column="P_START_DATE" property="startDate"></result>
+		<result column="P_END_DATE" property="endDate"></result>
+		<result column="P_NOTICE_NO" property="noticeNo"></result>
+		<result column="P_NOTICE_TITLE" property="noticeTitle"></result>
+		<result column="P_NOTICE_CONTENT" property="noticeContent"></result>
+		<result column="P_NOTICE_UPLOAD_PATH" property="uploadPath"></result>
+		<result column="P_NOTICE_UPLOAD_NAME" property="uploadName"></result>
+		<result column="P_NOTICE_UPLOAD_ORIGIN_NAME" property="uploadOriginName"></result>
+		<result column="P_NOTICE_DATE" property="noticeDate"></result>
+		<result column="P_NOTICE_VIEWS" property="noticeViews"></result>
+		<result column="M_NO" property="memberNo"></result>
+		<result column="M_NAME" property="memberName"></result>
+		<result column="M_EMAIL" property="memberEmail"></result>
+	</resultMap>
+	<!-- Summary Count -->
+	<select id="newProject" resultType="_int">
+		SELECT COUNT(*) FROM COLABO
+		WHERE P_END_DATE IS NULL
+		AND P_STATE = 'n'
+	</select>
+	<select id="startProject" resultType="_int">
+		SELECT COUNT(*) FROM COLABO
+		WHERE P_END_DATE IS NULL
+		AND P_STATE = 'c'
+	</select>
+		<select id="endProject" resultType="_int">
+		SELECT COUNT(*) FROM COLABO
+		WHERE P_END_DATE IS NOT NULL
+		AND P_STATE = 'y'
+	</select>
+	<!-- List Count-->
+	<select id="newProjectListCount" resultType="_int">
+		SELECT COUNT(*) FROM COLABO
+		WHERE P_END_DATE IS NULL
+		AND P_STATE = 'n'
+	</select>
+	<select id="startProjectListCount" resultType="_int">
+		SELECT COUNT(*) FROM COLABO
+		WHERE P_END_DATE IS NULL
+		AND P_STATE = 'c'
+	</select>
+	<select id="endProjectListCount" resultType="_int">
+		SELECT COUNT(*) FROM COLABO
+		WHERE P_END_DATE IS NOT NULL
+		AND P_STATE = 'y'
+	</select>
+	<!-- List -->
+	<select id="newProjectList" resultMap="colaboResultSet">
+		SELECT * FROM COLABO
+		WHERE P_END_DATE IS NULL
+		AND P_STATE = 'n'
+		ORDER BY P_START_DATE DESC
+	</select>
+	<select id="startProjectList" resultMap="colaboResultSet">
+		SELECT * FROM COLABO
+		WHERE P_END_DATE IS NULL
+		AND P_STATE = 'c'
+		ORDER BY P_START_DATE DESC
+	</select>
+	<select id="endProjectList" resultMap="colaboResultSet">
+		SELECT * FROM COLABO
+		WHERE P_END_DATE IS NOT NULL
+		AND P_STATE = 'y'
+		ORDER BY P_END_DATE DESC
+	</select>
+	<!-- delete -->
+	<delete id="deleteProject">
+		DELETE FROM COLABO
+		WHERE P_NO = ${no}
+	</delete>
+</mapper>

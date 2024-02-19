@@ -5,12 +5,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>admin</title>
-<link href="/resources/css/member/default.css" rel="stylesheet">
-<link href="/resources/css/common/styles.min.css" rel="stylesheet">
-<link href="/resources/css/admin/admin.css" rel="stylesheet">
-<script src="/resources/js/admin/admin.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<%@ include file="/WEB-INF/views/admin/common/head.jsp"%>
 
 </head>
 

@@ -29,84 +29,93 @@
 									<!-- card body -->
 									<div class="card-body height500 direction1" style="padding-top: 0;">
 
-										<!-- 참여한 프로젝트 -->
-										<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-											<h1 class="bottomMargin20">참여한 프로젝트</h1>
-											<div class="direction2 scrollbar">
-												<!-- 개별 Card -->
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
+							<!-- 참여한 프로젝트 -->
+							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
+								<h1 class="bottomMargin20">참여한 프로젝트</h1>
+								<div class="direction2 scrollbar">
+									
+									<!-- 개별 Card -->
+									<c:if test="${!empty NList}">
+										<c:forEach var="item" items="${NList}">
+										<div class="card-item">
+											<c:choose>
+												<c:when test="${!empty item.uploadName}">
+													<img src="/resources/uploads/colabo/project/${item.uploadName}" style= height:180px class="card-img-top" alt="...">
+												</c:when>
+												<c:otherwise>
+													<img src="/resources/uploads/colabo/project/기본이미지.jpg" style= height:180px class="card-img-top" alt="...">
+												</c:otherwise>
+											</c:choose>
+											<div class="card-content">
+												<h5 class="card-title">${item.name} 프로젝트</h5>
+												<p class="card-text height100">${item.detail}</p>
+												<a href="#" class="btn btn-primary">세부사항</a>
 											</div>
 										</div>
-										<!-- 진행중인 프로젝트 -->
-										<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-											<h1 class="bottomMargin20">진행중인 프로젝트</h1>
-											<div class="direction2 scrollbar">
-												<!-- 개별 Card -->
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
-												<div class="card-item">
-													<img src="../../image/profile/포메.jpg" class="card-img-top" alt="...">
-													<div class="card-content">
-														<h5 class="card-title">프로젝트 이름</h5>
-														<p class="card-text height100">프로젝트 설명이 들어갈 자리</p>
-														<a href="#" class="btn btn-primary">세부사항</a>
-													</div>
-												</div>
+										</c:forEach>
+									</c:if>
+									
+									
+								</div>
+							</div>
+							<!-- 진행중인 프로젝트 -->
+							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
+								<h1 class="bottomMargin20">진행중인 프로젝트</h1>
+								<div class="direction2 scrollbar">
+								
+									<!-- 개별 Card -->
+									<c:if test="${!empty CList}">
+										<c:forEach var="item" items="${CList}">
+										<div class="card-item">
+											<c:choose>
+												<c:when test="${!empty item.uploadName}">
+													<img src="/resources/uploads/colabo/project/${item.uploadName}" style= height:180px class="card-img-top" alt="...">
+												</c:when>
+												<c:otherwise>
+													<img src="/resources/uploads/colabo/project/기본이미지.jpg" style= height:180px class="card-img-top" alt="...">
+												</c:otherwise>
+											</c:choose>
+											<div class="card-content">
+												<h5 class="card-title">${item.name} 프로젝트</h5>
+												<p class="card-text height100">${item.detail}</p>
+												<a href="#" class="btn btn-primary">세부사항</a>
 											</div>
 										</div>
+										</c:forEach>
+									</c:if>
+									
+									
+								</div>
+							</div>
+							<!-- 완료된 프로젝트 -->
+							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
+								<h1 class="bottomMargin20">완료된 프로젝트</h1>
+								<div class="direction2 scrollbar">
+								
+									<!-- 개별 Card -->
+									<c:if test="${!empty YList}">
+										<c:forEach var="item" items="${YList}">
+										<div class="card-item">
+											<c:choose>
+												<c:when test="${!empty item.uploadName}">
+													<img src="/resources/uploads/colabo/project/${item.uploadName}" style= height:180px class="card-img-top" alt="...">
+												</c:when>
+												<c:otherwise>
+													<img src="/resources/uploads/colabo/project/기본이미지.jpg" style= height:180px class="card-img-top" alt="...">
+												</c:otherwise>
+											</c:choose>
+											<div class="card-content">
+												<h5 class="card-title">${item.name} 프로젝트</h5>
+												<p class="card-text height100">${item.detail}</p>
+												<a href="#" class="btn btn-primary">세부사항</a>
+											</div>
+										</div>
+										</c:forEach>
+									</c:if>
+									
+									
+								</div>
+							</div>
 									</div>
 								</div>
 							</div>

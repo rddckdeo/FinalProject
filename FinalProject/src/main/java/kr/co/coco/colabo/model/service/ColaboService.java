@@ -7,6 +7,7 @@ import java.util.Map;
 
 import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
+import kr.co.coco.colabo.model.dto.InviteProjectDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -89,6 +90,15 @@ public interface ColaboService {
 	
 	// 채팅에서 보내는사람 이름 가져오기, 이메일도 넣음
 	public ColaboDTO getMemberInfo(int memberNo);
+	
+	// colabo 베이직 페이지에서 프로젝트타입 진행중,완료 선택버튼
+	public int changeProjectType(ColaboDTO colabo);
+	
+	// 프로젝트 타입 가져오기
+	public ColaboDTO getProjectType(int getProjectNo);
+	
+	// 프로젝트에서 인원초대
+	public int inviteProject(InviteProjectDTO invite);
 }
 
 

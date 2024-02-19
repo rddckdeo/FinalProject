@@ -19,10 +19,10 @@
 				<ul id="sidebarnav" class="mb-4 pb-2">
 					<li class="nav-small-cap"><i class="ti ti-dots nav-small-cap-icon fs-5"></i> <span class="hide-menu">Home</span></li>
 					<li class="sidebar-item bottomMargin20"><a class="sidebar-link sidebar-link primary-hover-bg whiteColor" href="adminForm.do" aria-expanded="false"> 
-						<span class="hide-menu ms-2 ps-1">Home</span>
+						<span class="hide-menu ms-2 ps-1">Admin Home</span>
 					</a></li>
 					<li class="sidebar-item bottomMargin20"><a class="sidebar-link sidebar-link primary-hover-bg whiteColor" href="mainForm.do" aria-expanded="false"> 
-						<span class="hide-menu ms-2 ps-1">메인페이지</span>
+						<span class="hide-menu ms-2 ps-1">Total Home</span>
 					</a></li>
 					<li class="nav-small-cap"><i class="ti ti-dots nav-small-cap-icon fs-5"></i> <span class="hide-menu">기능</span></li>
 					<li class="sidebar-item bottomMargin20"><a class="sidebar-link sidebar-link warning-hover-bg" href="adminVisit.do" aria-expanded="false">
