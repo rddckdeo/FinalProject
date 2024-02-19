@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.coco.board.model.dao.DeclarationDAO;
 import kr.co.coco.board.model.dao.FreeCommentDAO; // InfoCommentDAO 대신 FreeCommentDAO로 수정
 import kr.co.coco.board.model.dao.FreeDAO; // InfoDAO 대신 FreeDAO로 수정
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO; // InfoCommentDTO 대신 FreeCommentDTO로 수정
 import kr.co.coco.board.model.dto.FreeDTO; // InfoDTO 대신 FreeDTO로 수정
 
@@ -18,6 +20,9 @@ public class FreeServiceImpl implements FreeService {
 
     @Autowired
     private FreeCommentDAO freeCommentDAO;
+    
+	 @Autowired
+		private DeclarationDAO declarationDao;
 
     // 게시글 등록
     @Override
@@ -119,6 +124,11 @@ public class FreeServiceImpl implements FreeService {
 
         return posts;
     }
+
+    //게시글 신고하기 
+	public boolean report(DeclarationDTO declarationDto) {
+		return declarationDao.report(declarationDto);
+	}
 
 
 

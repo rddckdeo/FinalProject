@@ -15,6 +15,10 @@
 		<result column="a_board_answer_content" property="answerContent"></result>
 		<result column="a_board_answer_date" property="answerDate"></result>
 		<result column="m_name" property="name"></result>
+		
+		<result column="m_path" property="imageFilePath"></result>
+		<result column="m_picture" property="imageFileName"></result>
+			
 	</resultMap>
 
 	<select id="incomCount" resultType="_int">
@@ -72,5 +76,21 @@
 		UPDATE ADMIN_BOARD SET A_BOARD_DELETE_DATE = SYSDATE
 		WHERE A_BOARD_NO = #{no}
 	</update>
+	
+		<!-- 마이페이지 문의사항 가져오기 -->
+	<select id="getInquiries" resultMap="adminBoardResultSet">
+    SELECT
+    mem.m_name,
+    mem.m_path AS imageFilePath,
+    mem.m_picture AS imageFileName,
+    ad.*
+    FROM
+    ADMIN_BOARD ad
+    JOIN member mem ON ad.m_no = mem.m_no
+    WHERE
+    ad.m_no = #{mNo}
+    AND ad.a_board_delete_date IS NULL
+	</select>
+	
 	
 	</mapper>

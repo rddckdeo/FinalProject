@@ -19,7 +19,6 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <style>
-
 </style>
 <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}">
 	<!-- 전체 구조 -->
@@ -48,7 +47,7 @@
 								</div>
 								<div class="button-wrapper">
 									<a href="/info/edit/${post.infoNo}" class="board-update-btn">수정하기</a>
-									<a href="#" data-info-no="${post.infoNo}" class="delete-link">삭제</a>
+									<a href="javascript:void(0)" data-info-no="${post.infoNo}" class="delete-link">삭제</a>
 									<!-- 신고하기 버튼 -->
 									<button id="reportButton" class="board-update-btn">신고하기</button>
 
@@ -158,8 +157,9 @@
 													class="main-boardList-info-text">${comment.nickname}</a>
 												<p class="main-boardList-info-text">${comment.infoCommentDate}</p>
 												<div>
-													<a href="JavaScript:void(0);"class="edit-button"
-														data-id="${comment.infoCommentNo}" data-infoNo="${post.infoNo}" data-toggle="modal"
+													<a href="JavaScript:void(0);" class="edit-button"
+														data-id="${comment.infoCommentNo}"
+														data-infoNo="${post.infoNo}" data-toggle="modal"
 														data-target="#editModal_${comment.infoCommentNo}">수정</a>
 
 													<!-- 수정하기 모달 -->
@@ -176,7 +176,7 @@
 																	id="date" value="${comment.infoCommentDate}" disabled><br>
 																<label for="editComment">내용:</label>
 																<textarea id="editComment">${comment.infoCommentContent}</textarea>
-																<br> <input type="submit" value="수정하기"> 
+																<br> <input type="submit" value="수정하기">
 															</form>
 														</div>
 													</div>
@@ -246,40 +246,49 @@
 					});
 				});
 
-		// 댓글 등록
-		$("#submitComment").click(function (event) {
-        var commentContent = $('#commentContent').val();
-        var mNo = $('body').data('mno');
-        var infoNo = $('body').data('info-no');
+// 댓글 등록
+$("#submitComment").click(function (event) {
+    var commentContent = $('#commentContent').val();
+    var mNo = $('body').data('mno');
+    var infoNo = $('body').data('info-no');
 
-        if (!commentContent) {
-            alert('댓글 내용을 입력해주세요.');
-            return;
+    if (!commentContent) {
+        alert('댓글 내용을 입력해주세요.');
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/comment/SubmitRegistr',
+        dataType: 'json',
+        data: JSON.stringify({
+            infoCommentContent: commentContent,
+            mNo: mNo,
+            infoNo: infoNo
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            appendComment(response);
+            updateCommentCount(infoNo);
+            // 댓글이 없다는 메시지 숨기기
+            $('#no-comment-message').hide();
+
+            // 댓글 등록 후 모달 트리거
+            var commentId = response.infoCommentNo;
+            triggerEditModal(commentId);
+        },
+        error: function (err) {
+            console.error('댓글 저장에 실패하였습니다: ', err.status, err.statusText);
         }
-
-        $.ajax({
-            type: 'POST',
-            url: '/comment/SubmitRegistr',
-            dataType: 'json',
-            data: JSON.stringify({
-                infoCommentContent: commentContent,
-                mNo: mNo,
-                infoNo: infoNo
-            }),
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
-                appendComment(response);
-                updateCommentCount(infoNo);
-                // 댓글이 없다는 메시지 숨기기
-                $('#no-comment-message').hide();
-               
-            },
-            error: function (err) {
-                console.error('댓글 저장에 실패하였습니다: ', err.status, err.statusText);
-            }
-
-        });
     });
+});
+
+// Bootstrap 모달 초기화
+$('.modal').modal({
+    backdrop: 'static',
+    keyboard: false
+});
+
 
 		
 		// 서버에서 받아온 날짜 형식 변환
@@ -311,42 +320,26 @@
 		}
 
 		function appendComment(comment) {
-		    var formattedDate = formatDate(comment.infoCommentDate);
+	        var formattedDate = formatDate(comment.infoCommentDate);
 
-		    var modalHTML = '<div class="editModal" id="editModal_' + comment.infoCommentNo + '">'
-		        + '<div class="modal-content">'
-		        + '<span class="close">&times;</span>'
-		        + '<h2>댓글 수정하기</h2>'
-		        + '<form class="editForm">'
-		        + '<label for="author">작성자:</label> <input type="text" id="author" value="' + comment.nickname + '" disabled><br>'
-		        + '<label for="date">작성일:</label> <input type="text" id="date" value="' + comment.infoCommentDate + '" disabled><br>'
-		        + '<label for="editComment">내용:</label>'
-		        + '<textarea id="editComment">' + comment.infoCommentContent + '</textarea>'
-		        + '<br> <input type="submit" value="수정하기">'
-		        + '</form>'
-		        + '</div>'
-		        + '</div>';
+	        var commentRow = '<div class="comment-row">'
+	            + '<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}" alt="프로필" width="30" height="30" class="main-boardList-user-img"></a>'
+	            + '<a href="#" class="main-boardList-info-text">' + comment.infoCommentWriter + '</a>'
+	            + '<p class="main-boardList-info-text">' + formattedDate + '</p>'
+	            + '<div>'
+	            + '<a href="#">수정</a><p>|</p> <a class="delete-button" data-id="' + comment.infoCommentNo + '">삭제</a>'
+	            + '</div>'
+	            + '</div>'
+	            + '<div>'
+	            + '<p>' + comment.infoCommentContent + '</p>'
+	            + '</div>'
+	            + '<div class="card-project-hr-div">'
+	            + '<hr class="card-project-hr">'
+	            + '</div>';
 
-		    var commentRow = '<div class="comment-row">'
-		        + '<a href="#"><img src="../../../..' + post.imageFilePath + post.imageFileName + '" alt="프로필" width="30" height="30" class="main-boardList-user-img"></a>'
-		        + '<a href="#" class="main-boardList-info-text">' + comment.infoCommentWriter + '</a>'
-		        + '<p class="main-boardList-info-text">' + formattedDate + '</p>'
-		        + '<div>'
-		        + '<a href="JavaScript:void(0);" class="edit-button" data-id="' + comment.infoCommentNo + '" data-infoNo="' + post.infoNo + '" data-toggle="modal" data-target="#editModal_' + comment.infoCommentNo + '">수정</a>'
-		        + '<p>|</p> <a class="delete-button" data-id="' + comment.infoCommentNo + '">삭제</a>'
-		        + '</div>'
-		        + '</div>'
-		        + '<div>'
-		        + '<p>' + comment.infoCommentContent + '</p>'
-		        + '</div>'
-		        + '<div class="card-project-hr-div">'
-		        + '<hr class="card-project-hr">'
-		        + '</div>';
-
-		    $(".comment-list").append(commentRow + modalHTML); // 댓글과 모달을 목록의 맨 아래에 추가
-		    $('#commentContent').val(''); //댓글 등록하고 나면 input에 작성한거 지움 
-		}
-
+	        $(".comment-list").append(commentRow); // 댓글 목록의 맨 아래에 추가
+	        $('#commentContent').val(''); //댓글 등록하고 나면 input에 작성한거 지움 
+	    }
 
 		// 댓글 수 업데이트
 		function updateCommentCount(infoNo) {
@@ -408,6 +401,7 @@
 		});
 	</script>
 	<script>
+	//게시글 신고하기 
     var modal = document.getElementById("reportModal");
     var btn = document.getElementById("reportButton");
     var span = document.getElementsByClassName("close")[0];
@@ -464,50 +458,48 @@
     });
 
     //댓글 수정하기 
-document.addEventListener('DOMContentLoaded', function () {
-    var commentList = document.querySelector('.comment-list');
+    document.addEventListener('DOMContentLoaded', function () {
+        var editButtons = document.querySelectorAll('.edit-button');
 
-    commentList.addEventListener('click', function (event) {
-        var editButton = event.target;
-        if (!editButton.classList.contains('edit-button')) return;
+        editButtons.forEach(function (editButton) {
+            editButton.addEventListener('click', function () {
+                event.preventDefault();
 
-        event.preventDefault();
+                var commentId = this.getAttribute('data-id');
+                var modal = document.querySelector('#editModal_' + commentId);
+                var infoNo = this.getAttribute('data-infoNo');
 
-        var commentId = editButton.getAttribute('data-id');
-        var modal = document.querySelector('#editModal_' + commentId);
-        var infoNo = editButton.getAttribute('data-infoNo');
+                modal.style.display = "block";
 
-        modal.style.display = "block";
+                var closeButton = modal.querySelector('.close');
+                closeButton.addEventListener('click', function () {
+                    modal.style.display = "none";
+                });
 
-        var closeButton = modal.querySelector('.close');
-        closeButton.addEventListener('click', function () {
-            modal.style.display = "none";
+                modal.querySelector('.editForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    var commentContent = modal.querySelector('#editComment').value;
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/comment/updateComment', true);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            location.reload();
+                        } else {
+                            alert('댓글 수정에 실패하였습니다.');
+                        }
+                    };
+                    xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&infoNo=' + infoNo);
+                });
+
+            });
         });
-
-        modal.querySelector('.editForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            var commentContent = modal.querySelector('#editComment').value;
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/comment/updateComment', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    location.reload();
-                } else {
-                    alert('댓글 수정에 실패하였습니다.');
-                }
-            };
-            xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&infoNo=' + infoNo);
-        });
-
     });
-});
-});
+    
 
-</script>
-	<script>
     window.onload = function() {
+        // 댓글 신고하기
         var reportButtons = document.querySelectorAll('.reportButton');
         var closeButtons = document.querySelectorAll('.close');
         var reportForms = document.querySelectorAll('.reportForm');
@@ -533,14 +525,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 var commentId = this.closest('.reportModal').dataset.id;
                 var reportType = this.querySelector('.reportType').value;
+                var mNo = document.body.dataset.mNo;
+                
                 var data = {
-                    declarationType: 'comment',
+                    declarationType: 'infoComment',
                     commentNo: commentId,
-                    reportType: reportType
+                    boardNo: infoNo, 
+                    mNo: mNo,
+                    declarationContent: reportType
                 };
 
                 if(confirm("신고하시겠습니까?")) {
-                    fetch('/info/report', {
+                    fetch('/comment/reportComment', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -563,6 +559,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
 </script>
 
 

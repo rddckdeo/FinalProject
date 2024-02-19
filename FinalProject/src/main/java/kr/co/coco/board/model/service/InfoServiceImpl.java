@@ -129,8 +129,8 @@ public class InfoServiceImpl implements InfoService {
 
 	//신고하기 
 	@Override
-    public boolean processDeclaration(DeclarationDTO declarationDto) {
-        return declarationDao.insertDeclaration(declarationDto);
+    public boolean report(DeclarationDTO declarationDto) {
+        return declarationDao.report(declarationDto);
     }
 
 	

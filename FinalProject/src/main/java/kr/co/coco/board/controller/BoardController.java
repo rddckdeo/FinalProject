@@ -98,12 +98,6 @@ public class BoardController {
 	    
 	    return "board/main/boardSearch";
 	}
-	@ExceptionHandler
-	public String handleException(Exception e, RedirectAttributes redirectAttributes) {
-
-	  redirectAttributes.addFlashAttribute("error", e.getMessage());
-	  return "redirect:/board/search";
-	}
 	
 
 

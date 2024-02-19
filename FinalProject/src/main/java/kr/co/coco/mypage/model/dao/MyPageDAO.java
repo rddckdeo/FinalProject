@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
@@ -82,6 +83,22 @@ public class MyPageDAO {
 
 	    return sqlSession.update("mypageMapper.updateProfile", param);  
 	}
+
+	// 문의사항 등록
+	public int registerInquiry(Integer mNo, String infoTitle, String infoContent) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("mNo", mNo);
+	    params.put("infoTitle", infoTitle);
+	    params.put("infoContent", infoContent);
+	    
+	    return sqlSession.insert("mypageMapper.registerInquiry", params);
+	}
+
+	//문의사항 진입 
+	public List<AdminBoardDTO> getInquiries(Integer mNo) {
+	    return sqlSession.selectList("admin-adminBoardMapper.getInquiries", mNo);
+	}
+
 	
 
 }

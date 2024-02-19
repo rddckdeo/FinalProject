@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 
 @Repository
@@ -80,6 +81,12 @@ public class InfoCommentDAO {
         params.put("commentContent", commentContent);
         sqlSession.update("infoCommentMapper.updateComment", params);
     }
+
+    //댓글 신고하기 
+	public boolean reportComment(DeclarationDTO declarationDto) {
+	
+		return false;
+	}
 
 
 

@@ -28,4 +28,10 @@ public class FreeCommentDTO {
     
     private String imageFileName;  
     private String imageFilePath;
+    
+    private String infoTitle;
+    private String freeTitle;
+    
+    private String additionalField1;
+    private String additionalField2;
 }

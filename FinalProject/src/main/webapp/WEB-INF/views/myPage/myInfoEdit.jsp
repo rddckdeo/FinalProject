@@ -31,8 +31,9 @@
 									<div class="card-body height500 direction1"
 										style="padding-top: 0;">
 										<!-- Form -->
-										<form action="/editProfile.do" method="post"
-											enctype="multipart/form-data">
+										<!-- 										<form action="/mypage/editProfile" method="post"
+											enctype="multipart/form-data"> -->
+										<form>
 											<!-- Profile picture -->
 											<div>
 												<img src="${sessionScope.path}${sessionScope.picture}"
@@ -116,131 +117,176 @@
 </body>
 </html>
 <script>
-window.onload = function() {
-    Array.from(document.getElementsByClassName("deleteButton")).forEach(
-        function(deleteButton) {
-            deleteButton.addEventListener("click", function() {
-                deleteButton.parentElement.parentElement.remove();
-            });
-        });
+	window.onload = function() {
+		Array.from(document.getElementsByClassName("deleteButton")).forEach(
+				function(deleteButton) {
+					deleteButton.addEventListener("click", function() {
+						var itemValue = deleteButton.getAttribute('data-item');
+						Array.from(profileForm.elements).forEach(
+								function(element) {
+									if (element.name === 'hope[]'
+											&& element.value === itemValue) {
+										element.remove();
+									}
+								});
+						deleteButton.parentElement.parentElement.remove();
+					});
+				});
 
-    const profileForm = document.querySelector("form");
+		const profileForm = document.querySelector("form");
 
-    profileForm
-        .querySelector('input[type="file"]')
-        .addEventListener("change", function() {
-            profileForm.querySelector('.profileImg').src = URL.createObjectURL(this.files[0]);
-        });
+		profileForm.querySelector('input[type="file"]').addEventListener(
+				"change",
+				function() {
+					profileForm.querySelector('.profileImg').src = URL
+							.createObjectURL(this.files[0]);
+				});
 
-    document
-        .getElementById("addHopeItemButton")
-        .addEventListener(
-            "click",
-            function(event) {
-                event.preventDefault();
-                var newHopeItem = document
-                    .getElementById("newHopeItem").value;
-                if (newHopeItem) {
-                    var direction2Div = document
-                        .createElement("div");
-                    var pTag = document.createElement("p");
-                    var deleteButton = document
-                        .createElement("button");
+		document
+				.getElementById("addHopeItemButton")
+				.addEventListener(
+						"click",
+						function(event) {
+							event.preventDefault();
+							var newHopeItem = document
+									.getElementById("newHopeItem").value;
+							if (newHopeItem) {
+								var direction2Div = document
+										.createElement("div");
+								var pTag = document.createElement("p");
+								var deleteButton = document
+										.createElement("button");
 
-                    direction2Div.classList.add("direction2");
+								direction2Div.classList.add("direction2");
 
-                    pTag.textContent = newHopeItem;
-                    pTag.classList
-                        .add("infoStack", "defaultMargin");
+								pTag.textContent = newHopeItem;
+								pTag.classList
+										.add("infoStack", "defaultMargin");
 
-                    deleteButton.textContent = "X";
-                    deleteButton.classList.add("deleteButton");
-                    deleteButton.addEventListener("click",
-                        function() {
-                            direction2Div.remove();
-                        });
+								deleteButton.textContent = "X";
+								deleteButton.classList.add("deleteButton");
+								deleteButton.setAttribute('data-item',
+										newHopeItem);
+								deleteButton
+										.addEventListener(
+												"click",
+												function() {
+													var itemValue = deleteButton
+															.getAttribute('data-item');
+													Array
+															.from(
+																	profileForm.elements)
+															.forEach(
+																	function(
+																			element) {
+																		if (element.name === 'hope[]'
+																				&& element.value === itemValue) {
+																			element
+																					.remove();
+																		}
+																	});
+													direction2Div.remove();
+												});
 
-                    pTag.appendChild(deleteButton);
-                    direction2Div.appendChild(pTag);
+								pTag.appendChild(deleteButton);
+								direction2Div.appendChild(pTag);
 
-                    document.getElementsByClassName("hopeItems")[0]
-                        .appendChild(direction2Div);
+								document.getElementsByClassName("hopeItems")[0]
+										.appendChild(direction2Div);
 
-                    var hiddenInput = document
-                        .createElement("input");
-                    hiddenInput.type = "hidden";
-                    hiddenInput.name = "hope[]";
-                    hiddenInput.value = newHopeItem;
-                    profileForm.appendChild(
-                        hiddenInput);
+								var hiddenInput = document
+										.createElement("input");
+								hiddenInput.type = "hidden";
+								hiddenInput.name = "hope[]";
+								hiddenInput.value = newHopeItem;
+								profileForm.appendChild(hiddenInput);
 
-                    document.getElementById("newHopeItem").value = "";
-                }
-            });
+								document.getElementById("newHopeItem").value = "";
+							}
+						});
 
-    document
-        .getElementById("addStackItemButton")
-        .addEventListener(
-            "click",
-            function(event) {
-                event.preventDefault();
-                var newStackItem = document
-                    .getElementById("newStackItem").value;
-                if (newStackItem) {
-                    var direction2Div = document
-                        .createElement("div");
-                    var pTag = document.createElement("p");
-                    var deleteButton = document
-                        .createElement("button");
+		document
+				.getElementById("addStackItemButton")
+				.addEventListener(
+						"click",
+						function(event) {
+							event.preventDefault();
+							var newStackItem = document
+									.getElementById("newStackItem").value;
+							if (newStackItem) {
+								var direction2Div = document
+										.createElement("div");
+								var pTag = document.createElement("p");
+								var deleteButton = document
+										.createElement("button");
 
-                    direction2Div.classList.add("direction2");
+								direction2Div.classList.add("direction2");
 
-                    pTag.textContent = newStackItem;
-                    pTag.classList
-                        .add("infoStack", "defaultMargin");
+								pTag.textContent = newStackItem;
+								pTag.classList
+										.add("infoStack", "defaultMargin");
 
-                    deleteButton.textContent = "X";
-                    deleteButton.classList.add("deleteButton");
-                    deleteButton.addEventListener("click",
-                        function() {
-                            direction2Div.remove();
-                        });
+								deleteButton.textContent = "X";
+								deleteButton.classList.add("deleteButton");
+								deleteButton.setAttribute('data-item',
+										newStackItem);
+								deleteButton
+										.addEventListener(
+												"click",
+												function() {
+													var itemValue = deleteButton
+															.getAttribute('data-item');
+													Array
+															.from(
+																	profileForm.elements)
+															.forEach(
+																	function(
+																			element) {
+																		if (element.name === 'stack[]'
+																				&& element.value === itemValue) {
+																			element
+																					.remove();
+																		}
+																	});
+													direction2Div.remove();
+												});
 
-                    pTag.appendChild(deleteButton);
-                    direction2Div.appendChild(pTag);
+								pTag.appendChild(deleteButton);
+								direction2Div.appendChild(pTag);
 
-                    document.getElementsByClassName("stackItems")[0]
-                        .appendChild(direction2Div);
+								document.getElementsByClassName("stackItems")[0]
+										.appendChild(direction2Div);
 
-                    var hiddenInput = document
-                        .createElement("input");
-                    hiddenInput.type = "hidden";
-                    hiddenInput.name = "stack[]";
-                    hiddenInput.value = newStackItem;
-                    profileForm.appendChild(
-                        hiddenInput);
+								var hiddenInput = document
+										.createElement("input");
+								hiddenInput.type = "hidden";
+								hiddenInput.name = "stack[]";
+								hiddenInput.value = newStackItem;
+								profileForm.appendChild(hiddenInput);
 
-                    document.getElementById("newStackItem").value = "";
-                }
-            });
+								document.getElementById("newStackItem").value = "";
+							}
+						});
 
-    profileForm.addEventListener("submit", function(event) {
-        event.preventDefault();
+		profileForm.addEventListener("submit", function(event) {
+			event.preventDefault();
 
-        if (confirm('수정하시겠습니까?')) {
-            const formData = new FormData(profileForm);
-            fetch('/mypage/editProfile.do', {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    alert('수정되었습니다.');
-                    window.location.href = '/mypage/mypage.do';
-                } else {
-                    alert('수정에 실패하였습니다. 다시 시도해주세요.');
-                }
-            });
-        }
-    });
+			if (confirm('수정하시겠습니까?')) {
+				var formData = new FormData(profileForm);
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '/mypage/editProfile', true);
 
+				xhr.onload = function() {
+					if (xhr.status === 200) {
+						alert('수정되었습니다.');
+						window.location.href = '/mypage/mypage.do';
+					} else {
+						alert('수정에 실패하였습니다. 다시 시도해주세요.');
+					}
+				};
+
+				xhr.send(formData);
+			}
+		});
+	}
 </script>

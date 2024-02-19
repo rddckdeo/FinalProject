@@ -38,6 +38,8 @@ public class MyPageDTO {
 	private String imageFileName;
 	private String imageFilePath;
 	
+    private String infoCommentWriter;  
+    private String infoTitle; 
 	private String freeTitle;
 	
 	

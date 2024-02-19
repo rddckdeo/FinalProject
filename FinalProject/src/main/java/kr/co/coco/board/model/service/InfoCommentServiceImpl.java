@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.coco.board.controller.CommentController;
+import kr.co.coco.board.model.dao.DeclarationDAO;
 import kr.co.coco.board.model.dao.InfoCommentDAO;
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 
 import org.slf4j.Logger;
@@ -14,7 +16,11 @@ import org.slf4j.LoggerFactory;
 @Service
 public class InfoCommentServiceImpl implements InfoCommentService {
 
+	@Autowired
 	private InfoCommentDAO infoCommentDAO;
+	
+	 @Autowired
+		private DeclarationDAO declarationDao;
 	
 	@Autowired
 	public InfoCommentServiceImpl(InfoCommentDAO infoCommentDAO) {
@@ -62,6 +68,12 @@ public class InfoCommentServiceImpl implements InfoCommentService {
 	public InfoCommentDTO updateComment(int infoCommentNo, String commentContent) {
 	    infoCommentDAO.updateComment(infoCommentNo, commentContent);
 	    return infoCommentDAO.getCommentById(infoCommentNo);
+	}
+
+	//댓글 신고하기 
+	@Override
+	public boolean reportComment(DeclarationDTO declarationDto) {
+		return declarationDao.report(declarationDto);
 	}
 
 

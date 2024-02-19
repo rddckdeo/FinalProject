@@ -13,12 +13,10 @@ public class DeclarationDAO {
     private SqlSessionTemplate sqlSession;
     
     //신고하기 
-    public boolean insertDeclaration(DeclarationDTO declarationDto) {
+    public boolean report(DeclarationDTO declarationDto) {
         try {
             String declarationType = declarationDto.getDeclarationType();
             int result;
-            
-            System.out.println(declarationType);
 
             switch (declarationType) {
                 case "info":
@@ -39,6 +37,7 @@ public class DeclarationDAO {
             return false;
         }
     }
+
 
 
 }

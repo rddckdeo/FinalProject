@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title> 
+<title>Insert title here</title>
 <!-- jQuery 로딩 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
@@ -45,8 +45,8 @@
 								</div>
 								<div class="button-wrapper">
 									<a href="/free/edit/${post.freeNo}" class="board-update-btn">수정하기</a>
-									<a href="#" data-info-no="${post.freeNo}" class="delete-link">삭제</a>
-									
+									<a href="#" data-free-no="${post.freeNo}" class="delete-link">삭제</a>
+
 									<!-- 신고하기 버튼 -->
 									<button id="reportButton" class="board-update-btn">신고하기</button>
 
@@ -66,8 +66,8 @@
 											</form>
 										</div>
 									</div>
-									
-									
+
+
 								</div>
 							</div>
 						</div>
@@ -157,8 +157,9 @@
 													class="main-boardList-info-text">${comment.nickname}</a>
 												<p class="main-boardList-info-text">${comment.freeCommentDate}</p>
 												<div>
-													<a href="JavaScript:void(0);"class="edit-button"
-														data-id="${comment.freeCommentNo}" data-infoNo="${post.freeNo}" data-toggle="modal"
+													<a href="JavaScript:void(0);" class="edit-button"
+														data-id="${comment.freeCommentNo}"
+														data-freeNo="${post.freeNo}" data-toggle="modal"
 														data-target="#editModal_${comment.freeCommentNo}">수정</a>
 
 													<!-- 수정하기 모달 -->
@@ -175,7 +176,7 @@
 																	id="date" value="${comment.freeCommentDate}" disabled><br>
 																<label for="editComment">내용:</label>
 																<textarea id="editComment">${comment.freeCommentContent}</textarea>
-																<br> <input type="submit" value="수정하기"> 
+																<br> <input type="submit" value="수정하기">
 															</form>
 														</div>
 													</div>
@@ -203,7 +204,7 @@
 															</form>
 														</div>
 													</div>
-													
+
 												</div>
 											</div>
 											<div>
@@ -247,42 +248,47 @@
 				});
 
 		// 댓글 등록
-		$("#submitComment").click(function(event) {
-			var commentContent = $('#commentContent').val();
-			var mNo = $('body').data('mno');
-			var freeNo = $('body').data('free-no');
+		$("#submitComment").click(function (event) {
+    var commentContent = $('#commentContent').val();
+    var mNo = $('body').data('mno');
+    var infoNo = $('body').data('free-no');
 
-			console.log('commentContent:', commentContent);
-			console.log('mNo:', mNo);
-			console.log('freeNo:', freeNo);
+    if (!commentContent) {
+        alert('댓글 내용을 입력해주세요.');
+        return;
+    }
 
-			if (!commentContent) {
-				alert('댓글 내용을 입력해주세요.');
-				return;
-			}
+    $.ajax({
+        type: 'POST',
+        url: '/freeComment/SubmitRegistr',
+        dataType: 'json',
+        data: JSON.stringify({
+            freeCommentContent: commentContent,
+            mNo: mNo,
+            freeNo: freeNo
+        }),
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            appendComment(response);
+            updateCommentCount(infoNo);
+            // 댓글이 없다는 메시지 숨기기
+            $('#no-comment-message').hide();
 
-			$.ajax({
-				type : 'POST',
-				url : '/freeComment/SubmitRegistr',
-				dataType : 'json',
-				data : JSON.stringify({
-					freeCommentContent : commentContent,
-					mNo : mNo,
-					freeNo : freeNo
-				}),
-				contentType : 'application/json; charset=utf-8',
-				success : function(response) {
-					appendComment(response);
-					updateCommentCount(freeNo);
+            // 댓글 등록 후 모달 트리거
+            var commentId = response.freeCommentNo;
+            triggerEditModal(commentId);
+        },
+        error: function (err) {
+            console.error('댓글 저장에 실패하였습니다: ', err.status, err.statusText);
+        }
+    });
+});
 
-					// 댓글이 없다는 메시지 숨기기
-					$('#no-comment-message').hide();
-				},
-				error : function(err) {
-					console.log('댓글 저장에 실패하였습니다: ', err);
-				}
-			});
-		});
+// Bootstrap 모달 초기화
+$('.modal').modal({
+    backdrop: 'static',
+    keyboard: false
+});
 
 		// 서버에서 받아온 날짜 형식 변환
 		function formatDate(dateString) {
@@ -401,6 +407,7 @@
 		});
 	</script>
 	<script>
+	//게시글 신고하기 
     var modal = document.getElementById("reportModal");
     var btn = document.getElementById("reportButton");
     var span = document.getElementsByClassName("close")[0];
@@ -423,18 +430,18 @@
         e.preventDefault();
 
         var reportType = document.getElementById('reportType').value;
-        var infoNo = document.body.dataset.infoNo;
+        var freeNo = document.body.dataset.freeNo;
         var mNo = document.body.dataset.mNo;
 
         var data = {
-            declarationType: 'info',
-            boardNo: infoNo,
+            declarationType: 'free',
+            boardNo: freeNo,
             mNo: mNo,
             declarationContent: reportType
         };
 
         if (confirm("신고하시겠습니까?")) {
-            fetch('/info/report', {
+            fetch('/free/report', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -466,7 +473,7 @@
 
                 var commentId = this.getAttribute('data-id');
                 var modal = document.querySelector('#editModal_' + commentId);
-                var infoNo = this.getAttribute('data-infoNo');
+                var freeNo = this.getAttribute('data-freeNo');
 
                 modal.style.display = "block";
 
@@ -480,7 +487,7 @@
                     var commentContent = modal.querySelector('#editComment').value;
 
                     var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/comment/updateComment', true);
+                    xhr.open('POST', '/freeComment/updateComment', true);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     xhr.onload = function () {
                         if (xhr.status === 200) {
@@ -489,14 +496,13 @@
                             alert('댓글 수정에 실패하였습니다.');
                         }
                     };
-                    xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&infoNo=' + infoNo);
+                    xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&freeNo=' + freeNo);
                 });
 
             });
         });
     });
-</script>
-	<script>
+
     window.onload = function() {
         var reportButtons = document.querySelectorAll('.reportButton');
         var closeButtons = document.querySelectorAll('.close');
@@ -524,13 +530,13 @@
                 var commentId = this.closest('.reportModal').dataset.id;
                 var reportType = this.querySelector('.reportType').value;
                 var data = {
-                    declarationType: 'comment',
+                    declarationType: 'freeComment',
                     commentNo: commentId,
                     reportType: reportType
                 };
 
                 if(confirm("신고하시겠습니까?")) {
-                    fetch('/info/report', {
+                    fetch('/free/reportComment', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -92,5 +92,13 @@
 		WHERE
 		fc.m_no = #{mNo}
 	</select> -->
+	
+		<!-- 댓글 업데이트 -->
+	<update id="updateComment" parameterType="freeComment">
+    UPDATE free_comment
+    SET free_comment_content = #{commentContent},
+        free_comment_update_date = SYSDATE
+    WHERE free_comment_no = #{freeCommentNo}
+	</update>
 
 </mapper>

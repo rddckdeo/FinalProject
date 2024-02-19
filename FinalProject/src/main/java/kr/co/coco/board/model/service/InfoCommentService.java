@@ -1,5 +1,6 @@
 package kr.co.coco.board.model.service;
 
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 
 public interface InfoCommentService {
@@ -24,6 +25,9 @@ public interface InfoCommentService {
 
 	// 댓글 수정
 	InfoCommentDTO updateComment(int infoCommentNo, String commentContent);
+
+	//댓글 신고하기 
+	boolean reportComment(DeclarationDTO declarationDto);
 
 
 }

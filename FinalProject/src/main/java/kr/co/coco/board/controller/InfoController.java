@@ -192,7 +192,7 @@ public class InfoController {
 			declarationDto.setMNo(mNo);
 
 			// 신고 처리 로직 수행
-			boolean isSuccessful = infoService.processDeclaration(declarationDto);
+			boolean isSuccessful = infoService.report(declarationDto);
 
 			// 신고 처리 결과에 따른 응답
 			if (isSuccessful) {

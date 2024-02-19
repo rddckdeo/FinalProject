@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
@@ -65,14 +66,25 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public boolean updateProfile(Integer mNo, String[] hope, String[] stack, String intro, String nickname, String email,
             String number, String saveFileName, String savePath) {
-        // 'hope'와 'stack' 배열을 문자열로 변환
+        
         String hopeString = String.join(",", hope);
         String stackString = String.join(",", stack);
 
-        // 프로필 정보 업데이트
         int updatedRows = mypageDao.updateProfile(mNo, hopeString, stackString, intro, nickname, email, number, saveFileName, savePath);
 
         return updatedRows > 0; 
+    }
+
+    //문의사항 등록
+    @Override
+	public void registerInquiry(Integer mNo, String infoTitle, String infoContent) {
+		mypageDao.registerInquiry(mNo, infoTitle, infoContent);
+	}
+
+	//문의사항 진입 
+    @Override
+    public List<AdminBoardDTO> getInquiries(Integer mNo){
+        return mypageDao.getInquiries(mNo);
     }
 
 

@@ -165,7 +165,7 @@
 													<div class="main-boardList">
 														<div class="main-boardList-info">
 															<div>
-																<a href="#"><img src="../../../../resources/uploads/member/기본프로필.png"
+																<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}"
 																	alt="" width="30" height="30"
 																	class="main-boardList-user-img"></a> <a href="#"
 																	class="main-boardList-info-text"><c:out
@@ -210,7 +210,7 @@
 													<div class="main-boardList">
 														<div class="main-boardList-info">
 															<div>
-																<a href="#"><img src="../../../../resources/uploads/member/기본프로필.png"
+																<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}"
 																	alt="" width="30" height="30"
 																	class="main-boardList-user-img"></a> <a href="#"
 																	class="main-boardList-info-text"><c:out

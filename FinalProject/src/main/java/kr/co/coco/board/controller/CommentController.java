@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.service.InfoCommentService;
 
@@ -36,9 +37,6 @@ public class CommentController {
 	   
 	        Integer mNo = (Integer) session.getAttribute("no");
 	        String mNick = (String) session.getAttribute("nickname");
-
-	        System.out.println("mNo: " + mNo);
-	        System.out.println("mNick: " + mNick);
 
 	        if (mNo == null || mNick == null) {
 	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
@@ -115,6 +113,32 @@ public class CommentController {
 
 	
 	//댓글 신고하기
+	@PostMapping("/reportComment")
+	public ResponseEntity<?> reportComment(@RequestBody DeclarationDTO declarationDto, HttpSession session) {
+		try {
+
+			Integer mNo = (Integer) session.getAttribute("no");
+
+			// 사용자 번호 세팅
+			declarationDto.setMNo(mNo);
+
+			// 신고 처리 로직 수행
+			boolean isSuccessful = infoCommentService.reportComment(declarationDto);
+
+			// 신고 처리 결과에 따른 응답
+			if (isSuccessful) {
+				// 신고 처리 성공 시 응답
+				return ResponseEntity.ok().build();
+			} else {
+				// 신고 처리 실패 시 응답
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Declaration processing failed.");
+			}
+		} catch (Exception e) {
+			// 에러 발생 시 응답
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	
 	//댓글 수정하기 
 	@PostMapping("/updateComment")
