@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin-declarationMapper">
+		
+	<resultMap type="declaration" id="declarationResultSet">
+		<result column="declaration_no" property="declarationNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="declaration_type" property="declarationType"></result>
+		<result column="board_no" property="boardNo"></result>
+		<result column="declaration_content" property="declarationContent"></result>
+		<result column="declaration_date" property="declarationDate"></result>
+		<result column="declaration_withdrawal" property="declarationWithdrawal"></result>
+		<result column="M_NAME" property="declarationWriter"></result>
+		
+	</resultMap>
+	
+	<select id="deTodayCount" resultType="_int">
+		SELECT COUNT(*) FROM DECLARATION
+		WHERE DECLARATION_DATE >= TRUNC(SYSDATE)
+	</select>
+	<select id="noneBlindCount" resultType="_int">
+		SELECT COUNT(*) FROM DECLARATION
+		WHERE DECLARATION_WITHDRAWAL IS NULL
+	</select>
+	<select id="blindCount" resultType="_int">
+	    SELECT COUNT(*) FROM DECLARATION
+	    WHERE DECLARATION_WITHDRAWAL IS NOT NULL
+	</select>
+	<select id="deTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM DECLARATION
+	</select>
+	<!-- selectList -->
+	<select id="deTodayList" resultMap="declarationResultSet">
+	    SELECT D.*, M.M_NAME
+	    FROM DECLARATION D
+	    JOIN MEMBER M ON D.M_NO = M.M_NO
+	    WHERE D.DECLARATION_DATE >= TRUNC(SYSDATE)
+	</select>
+	<select id="noneBlindList" resultMap="declarationResultSet">
+	    SELECT D.*, M.M_NAME
+	    FROM DECLARATION D
+	    JOIN MEMBER M ON D.M_NO = M.M_NO
+	    WHERE D.DECLARATION_WITHDRAWAL IS NULL
+	</select>
+	<select id="blindList" resultMap="declarationResultSet">
+	    SELECT D.*, M.M_NAME
+	    FROM DECLARATION D
+	    JOIN MEMBER M ON D.M_NO = M.M_NO
+	    WHERE D.DECLARATION_WITHDRAWAL IS NOT NULL
+	</select>
+
+	<select id="deTotalList" resultMap="declarationResultSet">
+	    SELECT D.*, M.M_NAME
+	    FROM DECLARATION D
+	    JOIN MEMBER M ON D.M_NO = M.M_NO
+	</select>
+	
+	<update id="declarationBlind">
+		UPDATE DECLARATION SET DECLARATION_WITHDRAWAL = 'Y'
+		WHERE DECLARATION_NO = #{no}
+	</update>
+	<update id="declarationNoneBlind">
+		UPDATE DECLARATION SET DECLARATION_WITHDRAWAL = 'N'
+		WHERE DECLARATION_NO = #{no}
+	</update>
+</mapper>

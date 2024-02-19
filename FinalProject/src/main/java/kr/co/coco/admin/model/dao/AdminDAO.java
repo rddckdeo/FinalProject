@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.model.dto.AdminBoardDTO;
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
@@ -130,6 +131,16 @@ public class AdminDAO {
 	}
 	public int deleteCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("admin-memberMapper.deleteCount");
+	}
+	public int memberSearchListCount(SqlSessionTemplate sqlSession, String searchInput) {
+		return sqlSession.selectOne("admin-memberMapper.memberSearchListCount",searchInput);
+	}
+	//memberList
+	public List<MemberDTO> searchList(SqlSessionTemplate sqlSession, MemberDTO member, AdminPageInfo piMember, String searchInput){
+		int offset = (piMember.getCpage() - 1) * piMember.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, piMember.getBoardLimit());
+		member.setSearchInput(searchInput);
+		return sqlSession.selectList("admin-memberMapper.searchList",member,rb);
 	}
 //	-------------admin member 기능------------------
 //	admin Member Delete
@@ -283,5 +294,47 @@ public class AdminDAO {
 	// admiin board delete
 	public int adminBoardDelete(SqlSessionTemplate sqlSession, int no) {
 		return sqlSession.update("admin-adminBoardMapper.adminBoardDelete",no);
+	}
+	// --------------------------Admin Declaration Page---------------------------
+	// summary
+	public int deTodayCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-declarationMapper.deTodayCount");
+	}
+	public int noneBlindCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-declarationMapper.noneBlindCount");
+	}
+	public int blindCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-declarationMapper.blindCount");
+	}
+	public int deTotalCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("admin-declarationMapper.deTotalCount");
+	}
+	// List
+	public List<DeclarationDTO> deTodayList(SqlSessionTemplate sqlSession, DeclarationDTO dec, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-declarationMapper.deTodayList",dec, rb);
+	}
+	public List<DeclarationDTO> noneBlindList(SqlSessionTemplate sqlSession, DeclarationDTO dec, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-declarationMapper.noneBlindList",dec, rb);
+	}
+	public List<DeclarationDTO> blindList(SqlSessionTemplate sqlSession, DeclarationDTO dec, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-declarationMapper.blindList",dec, rb);
+	}
+	public List<DeclarationDTO> deTotalList(SqlSessionTemplate sqlSession, DeclarationDTO dec, AdminPageInfo pi){
+		int offset = (pi.getCpage() - 1) * pi.getBoardLimit();
+		RowBounds rb = new RowBounds(offset, pi.getBoardLimit());
+		return sqlSession.selectList("admin-declarationMapper.deTotalList",dec, rb);
+	}
+	// blind 처리
+	public int declarationBlind(SqlSessionTemplate sqlSession, int no) {
+		return sqlSession.update("admin-declarationMapper.declarationBlind",no);
+	}
+	public int declarationNoneBlind(SqlSessionTemplate sqlSession, int no) {
+		return sqlSession.update("admin-declarationMapper.declarationNoneBlind",no);
 	}
 }

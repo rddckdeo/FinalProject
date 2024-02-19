@@ -15,35 +15,6 @@
 	<!-- 카드 영역  -->
 	<div class="cardSize mainCard">
 		<div class="row">
-			<!-- modal 창 시작 -->
-			<!-- <div class="adminBoardModal direction1" id="modal">
-				<button class="exitBtn" onclick="modalExit()">X</button>
-				<div class="modalCard">
-					<div class="direction2 justifyAround">
-						<h1 class="font1">작성 날짜 : </h1>
-						<h1 class="font1">답변 여부 : </h1>
-						<h1 class="font1">작성자 : </h1>
-					</div>
-					<div class="width100 direction1 alignCenter">
-						<div class="width100">
-							<h1 class="font2">Title</h1>						
-						</div>
-						<div class="textTitle">title 내용</div>
-						<div class="width100">
-							<h1 class="font3">Content</h1>
-						</div>
-						<div class="textContent">content 내용</div>
-					</div>
-						<div class="width100 justifyCenter">
-							<textarea type="text" class="answerInput"></textarea>
-						</div>
-					<div class="justifyEnd">
-						<button class="defaultBtn btnMargin2">제출</button>
-						<button class="defaultBtn btnMargin1">삭제</button>
-					</div>
-				</div>
-			</div> -->
-			<!-- modal 창 종료 -->
 			<div class="main-section">
 				<div class="container-fluid">
 					<div class="container-fluid">
