@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class InfoCommentServiceImpl implements InfoCommentService {
 
 	private InfoCommentDAO infoCommentDAO;
-
+	
 	@Autowired
 	public InfoCommentServiceImpl(InfoCommentDAO infoCommentDAO) {
 		this.infoCommentDAO = infoCommentDAO;
@@ -56,5 +56,15 @@ public class InfoCommentServiceImpl implements InfoCommentService {
 	public void deleteCommentsByPostId(int infoNo) {
 		infoCommentDAO.deleteCommentsByPostId(infoNo);
 	}
+
+    // 댓글 수정
+	@Override
+	public InfoCommentDTO updateComment(int infoCommentNo, String commentContent) {
+	    infoCommentDAO.updateComment(infoCommentNo, commentContent);
+	    return infoCommentDAO.getCommentById(infoCommentNo);
+	}
+
+
+
 
 }

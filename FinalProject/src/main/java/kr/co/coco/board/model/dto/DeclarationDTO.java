@@ -1,7 +1,5 @@
 package kr.co.coco.board.model.dto;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +16,7 @@ public class DeclarationDTO {
     private String declarationType;
     private int boardNo;
     private String declarationContent;
-    private DATE declarationDate;
+    private String declarationDate;
     private char declarationWithdrawal;
 
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mypageMapper">
+
+	<!-- resultMap 추가 -->
+	<resultMap id="mypagerResultSet" type="mypage">
+		<result column="m_no" property="no"></result>
+		<result column="m_name" property="name"></result>
+		<result column="m_id" property="id"></result>
+		<result column="m_pwd" property="pwd"></result>
+		<result column="m_email" property="email"></result>
+		<result column="m_type" property="type"></result>
+		<result column="m_nickname" property="nickname"></result>
+		<result column="m_picture" property="picture"></result>
+		<result column="m_path" property="path"></result>
+		<result column="m_hope" property="hope"></result>
+		<result column="m_stack" property="stack"></result>
+		<result column="m_intro" property="intro"></result>
+		<result column="m_in_date" property="inDate"></result>
+		<result column="m_delete_date" property="deleteDate"></result>
+		<result column="m_login_date" property="loginDate"></result>
+		<result column="m_stop" property="stop"></result>
+		<result column="m_stop_date" property="stopDate"></result>
+		<result column="m_number" property="number"></result>
+
+		<result property="imageFileName" column="m_picture" />
+		<result property="imageFilePath" column="m_path" />
+		
+		 <result property="freeTitle" column="free_title" />
+		  <result property="infoTitle" column="info_title" />
+	</resultMap>
+
+
+	<!-- no로 특정회원 정보 가져오기 -->
+	<select id="findMemberByNo"
+		resultMap="mypageMapper.mypagerResultSet">
+		SELECT * FROM MEMBER WHERE M_NO = #{mNo}
+	</select>
+
+	<!-- 프로필 수정 -->
+	<update id="updateProfile">
+		UPDATE MEMBER
+		SET
+		M_HOPE = #{hope},
+		M_STACK = #{stack},
+		M_INTRO = #{intro},
+		M_NICKNAME = #{nickname},
+		M_EMAIL = #{email},
+		M_NUMBER = #{number},
+		M_PICTURE = #{saveFileName},
+		M_PATH = #{savePath}
+		WHERE M_NO = #{mNo}
+	</update>
+
+<!-- 정보게시판 댓글 가져오기 -->
+<select id="fetchInfoCommentNo" parameterType="int" resultType="infoComment">
+    SELECT info.*, mem.m_nickname, mem.m_path as imageFilePath, mem.m_picture as imageFileName, inf.info_title as infoTitle
+    FROM info_comment info
+    JOIN member mem ON info.m_no = mem.m_no
+    JOIN info inf ON info.info_no = inf.info_no
+    WHERE info.m_no = #{mNo}
+</select>
+
+<!-- 자유게시판 댓글 가져오기 -->
+<select id="fetchFreeCommentNo" parameterType="int" resultType="freeComment">
+    SELECT free.*, mem.m_nickname, mem.m_path as imageFilePath, mem.m_picture as imageFileName, fre.free_title as freeTitle
+    FROM free_comment free
+    JOIN member mem ON free.m_no = mem.m_no
+    JOIN free fre ON free.free_no = fre.free_no
+    WHERE free.m_no = #{mNo}
+</select>
+
+
+
+
+
+</mapper>  
