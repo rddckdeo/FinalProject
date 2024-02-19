@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/views/admin/common/head.jsp"%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js">></script>
+
 </head>
 
 <body class="bodyBackColor">
@@ -40,7 +42,31 @@
 							<div class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
 								<p class="font20px subP whiteColor">방문자 통계</p>
 								<div class="direction2 justifyAround alignCenter height80per">
-									<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">그래프 들어갈 자리</div>
+									<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
+										<canvas id="bar-chart-horizontal" width="600" height="200"></canvas>
+										<script>
+											new Chart(document.getElementById("bar-chart-horizontal"), {
+										    type: 'horizontalBar',
+										    data: {
+										      labels: ["","today", "week", "month", "total"],
+										      datasets: [
+										        {
+										          label: "Population (millions)",
+										          backgroundColor: ["#3e95cd","#3e95cd","#c45850","#3cba9f","#8e5ea2"],
+										          data: [0,${day},${week},${month},${total}]
+										        }
+										      ]
+										    },
+										    options: {
+										      legend: { display: false },
+										      title: {
+										        display: true,
+										        text: '방문자 통계'
+										      }
+										    }
+										});
+										</script>
+									</div>
 								</div>
 
 

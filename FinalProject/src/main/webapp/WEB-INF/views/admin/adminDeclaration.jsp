@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -23,218 +22,108 @@
 							<!-- 제목 -->
 							<p class="font30px bottomMargin20 topMargin20">Declaration</p>
 							<!-- 시작 -->
-							<div class="direction1 justifyAround width100 bottomMargin20">
-								<div class="direction2 justifyAround width100 bottomMargin20">
-									<span class="direction1">
-										<h3 class="iconFont">Total</h3>
-										<h3 class="iconFont">40</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Declaration (Day)</h3>
-										<h3 class="iconFont">10</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Declaration (Month)</h3>
-										<h3 class="iconFont">30</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Blind</h3>
-										<h3 class="iconFont">30</h3>
-									</span> <span class="direction1">
-										<h3 class="iconFont">Complete</h3>
-										<h3 class="iconFont">30</h3>
-									</span>
-
-								</div>
+							<div class="direction1 justifyAround width100 bottomMargin20 alignCenter">
+								<div class="direction2 justifyEve width100">
+								<a href="/admin/adminDeclaration.do?status=today&cpage=1" class="card1 backColor1 direction1">
+									<h1 class="fontTitle">금일 신고</h1>
+									<h3 class="fontContent">${deTodayCount}</h3>
+								</a>
+								<a href="/admin/adminDeclaration.do?status=noneBlind&cpage=1" class="card1 backColor2 direction1">
+									<h1 class="fontTitle">미처리 신고</h1>
+									<h3 class="fontContent">${noneBlindCount}</h3>
+								</a>
+								<a href="/admin/adminDeclaration.do?status=blind&cpage=1" class="card1 backColor3 direction1">
+									<h1 class="fontTitle">처리 신고</h1>
+									<h3 class="fontContent">${blindCount}</h3>
+								</a>
+								<a href="/admin/adminDeclaration.do?status=total&cpage=1" class="card1 backColor4 direction1">
+									<h1 class="fontTitle">Total</h1>
+									<h3 class="fontContent">${deTotalCount}</h3>
+								</a>
 							</div>
-
-							<div
-								class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
+							<input type="hidden" value="${status}" id="status">
+							<div class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
 								<p class="font20px subP whiteColor">게시판 신고</p>
 								<div class="direction2 justifyAround alignCenter height80per">
-									<div
-										class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
+									<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
 										<p>게시판 신고</p>
-										<ul
-											class="direction2 noMargin justifyAround visitPadding borderDefault">
+										<ul class="direction2 noMargin justifyAround visitPadding borderDefault">
 											<span class="li1">No</span>
-											<span class="li3">게시판 이름</span>
-											<span class="li4">작성자</span>
+											<span class="li3">신고 내용</span>
+											<span class="li4">Type</span>
 											<span class="li4">신고자</span>
 											<span class="li2">신고 날짜</span>
 											<span class="li2">처리 여부</span>
-											<span class="li2"> <span class="Margin10">삭제</span> <span
-												class="Margin10">정지</span>
-											</span>
+<!-- 											<span class="li2"> <span class="li2">처리</span></span> -->
 										</ul>
-										<ul>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">나는 문어당~</span>
-												<span class="li4">김창대</span> <span class="li4">이희수</span> <span
-												class="li2">24.01.25</span> <span class="li2">N</span> <span
-												class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">나는 문어당~</span>
-												<span class="li4">김창대</span> <span class="li4">이희수</span> <span
-												class="li2">24.01.25</span> <span class="li2">N</span> <span
-												class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">나는 문어당~</span>
-												<span class="li4">김창대</span> <span class="li4">이희수</span> <span
-												class="li2">24.01.25</span> <span class="li2">N</span> <span
-												class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">나는 문어당~</span>
-												<span class="li4">김창대</span> <span class="li4">이희수</span> <span
-												class="li2">24.01.25</span> <span class="li2">N</span> <span
-												class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">나는 문어당~</span>
-												<span class="li4">김창대</span> <span class="li4">이희수</span> <span
-												class="li2">24.01.25</span> <span class="li2">N</span> <span
-												class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">나는 문어당~</span>
-												<span class="li4">김창대</span> <span class="li4">이희수</span> <span
-												class="li2">24.01.25</span> <span class="li2">N</span> <span
-												class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-
-
-
+										<ul class="visitUlSize">
+											<c:forEach var="item" items="${list}">
+												<li class="borderDefault visitPadding justifyAround boardLiSize" onclick="declarationModal(${item.declarationNo})">
+													<span class="li1">${item.declarationNo}</span>
+													<span class="li3">${item.declarationContent}</span>
+													<span class="li4">${item.declarationType}</span>
+													<span class="li4">${item.declarationWriter}</span>
+													<span class="li2">${item.declarationDate}</span>
+													<span class="li2">${item.declarationWithdrawal}</span>
+													
+													<!-- modal 창 -->
+													<div class="adminDeclarationModal direction1" id="declarationModal${item.declarationNo}">
+											            <button class="exitBtn" onclick="declarationCloseModal()">X</button>
+														<div class="modalCard">
+															<div class="direction2 justifyAround">
+																<h1 class="font1">작성 날짜 : ${item.declarationDate}</h1>
+																<h1 class="font1">블라인드 여부 : ${item.declarationWithdrawal}</h1>
+																<h1 class="font1">작성자 : ${item.declarationWriter}</h1>
+															</div>
+															<div class="width100 direction1 alignCenter">
+																<div class="width100">
+																	<h1 class="font3">Content</h1>
+																</div>
+																<div class="textContent">${item.declarationContent}</div>
+															</div>
+															<div class="justifyEnd">
+																<span class="li2 ">
+																	<button class="deleteBtn rightMargin10" onclick="declarationBlind('${item.declarationNo}')">블라인드</button>
+																	<button class="deleteNoneBtn" onclick="declarationNoneBlind('${item.declarationNo}')">철회</button>
+																</span>
+															</div>
+														</div>
+													</div>
+												</li>
+											</c:forEach>
 											<div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-													href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
-													href="#">5</a> <a href="#">&gt;</a>
+												<c:choose>
+													<c:when test="${pi.cpage eq 1}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminDeclaration.do?status=${status}&cpage=${pi.cpage-1}">&lt;</a>
+													</c:otherwise>
+												</c:choose>
+
+												<c:forEach var="page" begin="${pi.startPage}" end="${pi.endPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminDeclaration.do?status=${status}&cpage=${page}">${page}</a>
+												</c:forEach>
+
+												<c:choose>
+													<c:when test="${pi.cpage eq pi.maxPage}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminDeclaration.do?status=${status}&cpage=${pi.cpage + 1}">&gt;</a>
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</ul>
 									</div>
 								</div>
-
-
-
 								<!-- Card End -->
-							</div>
-							<div
-								class="subCard boxShadow borderDefault direction1 backGray borderRadiusd bottomMargin20">
-								<p class="font20px subP whiteColor">User 신고</p>
-								<div class="direction2 justifyAround alignCenter height80per">
-									<div
-										class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
-										<p>User 신고</p>
-										<ul
-											class="direction2 noMargin justifyAround visitPadding borderDefault">
-											<span class="li1">No</span>
-											<span class="li3">신고 제목</span>
-											<span class="li4">피신고자</span>
-											<span class="li4">신고자</span>
-											<span class="li2">신고 날짜</span>
-											<span class="li2">처리 여부</span>
-											<span class="li2"> <span class="Margin10">삭제</span> <span
-												class="Margin10">정지</span>
-											</span>
-										</ul>
-										<ul>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">불법 유저
-													신고합니다.</span> <span class="li4">박창대</span> <span class="li4">강나영</span>
-												<span class="li2">24.01.25</span> <span class="li2">N</span>
-												<span class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">불법 유저
-													신고합니다.</span> <span class="li4">박창대</span> <span class="li4">강나영</span>
-												<span class="li2">24.01.25</span> <span class="li2">N</span>
-												<span class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">불법 유저
-													신고합니다.</span> <span class="li4">박창대</span> <span class="li4">강나영</span>
-												<span class="li2">24.01.25</span> <span class="li2">N</span>
-												<span class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">불법 유저
-													신고합니다.</span> <span class="li4">박창대</span> <span class="li4">강나영</span>
-												<span class="li2">24.01.25</span> <span class="li2">N</span>
-												<span class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">불법 유저
-													신고합니다.</span> <span class="li4">박창대</span> <span class="li4">강나영</span>
-												<span class="li2">24.01.25</span> <span class="li2">N</span>
-												<span class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<li
-												class="borderDefault visitPadding justifyAround boardLiSize">
-												<span class="li1">5</span> <span class="li3">불법 유저
-													신고합니다.</span> <span class="li4">박창대</span> <span class="li4">강나영</span>
-												<span class="li2">24.01.25</span> <span class="li2">N</span>
-												<span class="li2 ">
-													<button class="deleteBtn rightMargin10">삭제</button>
-													<button class="deleteBtn">정지</button>
-											</span>
-											</li>
-											<div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-													href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
-													href="#">5</a> <a href="#">&gt;</a>
-											</div>
-										</ul>
-									</div>
-									<!-- Card End -->
-								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 </body>
 </html>

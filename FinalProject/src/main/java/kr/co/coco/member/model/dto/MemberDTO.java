@@ -29,4 +29,6 @@ public class MemberDTO {
 	private String number;
 	
 	private String loginDay;
+	
+	private String searchInput;
 }

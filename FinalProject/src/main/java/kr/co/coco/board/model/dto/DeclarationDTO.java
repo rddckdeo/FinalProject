@@ -18,10 +18,12 @@ public class DeclarationDTO {
     private String declarationType;
     private int boardNo;
     private String declarationContent;
-    private DATE declarationDate;
-    private char declarationWithdrawal;
-
-
+    private String declarationDate;
+    private String declarationWithdrawal;
+    
+    // admin declaration
+    private String declarationWriter;
+    
     @Override
     public String toString() {
         return "DeclarationDTO [declarationNo=" + declarationNo + ", mNo=" + mNo + ", declarationType="
