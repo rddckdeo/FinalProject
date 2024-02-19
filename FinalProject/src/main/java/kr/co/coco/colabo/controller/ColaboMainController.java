@@ -1093,7 +1093,55 @@ public class ColaboMainController {
 		return "failed";
 	}
 	
-	
+	@PostMapping("/applyConfirm.do")
+	@ResponseBody
+	public String applyConfirm(InviteProjectDTO sendApply) {
+		
+		// 신청한 인원의 no 로 데이터 가져오기
+		ColaboDTO colabo = colaboService.getMemberInfo(sendApply.getMemberNo());
+		
+		colabo.setNo(sendApply.getProjectNo());
+		
+		// invite 테이블과 동일한 체크
+		// 전에 클라이언트단에서 프로젝트넘버를 매개변수로 넣어보냈기때문에
+		// 수정할 가능성이있어서 받은 프로젝트넘버와 세션멤버넘버로 
+		// 초대테이블에서 해당하는값이 있는지 파악후 있을때만 로직실행
+		
+		InviteProjectDTO applyListCheck = new InviteProjectDTO();
+		applyListCheck.setMemberNo(colabo.getMemberNo());
+		applyListCheck.setProjectNo(colabo.getNo());
+		
+		
+		
+		
+		int checkList = colaboService.applyListCheck(applyListCheck);
+//				System.out.println(checkList);
+		
+		
+		if(checkList > 0) {
+			
+			if(sendApply.getConfirmText().equals("승인")) {
+				int result = colaboService.enrollApplyProjectTeam(colabo);
+				
+				if(result > 0) {
+					return "success";
+				}else {
+					return "failed";
+				}
+			}else if(sendApply.getConfirmText().equals("거절")) {
+				int result = colaboService.deleteApplyList(colabo);
+				
+				if(result > 0) {
+					return "success";
+				}else {
+					return "failed";
+				}
+			}
+			
+		}
+		
+		return "failed";
+	}
 	
 	
 	

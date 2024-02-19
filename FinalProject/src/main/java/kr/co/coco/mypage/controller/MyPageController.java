@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -32,6 +33,8 @@ import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
+import kr.co.coco.colabo.model.service.ColaboServiceImpl;
 import kr.co.coco.mypage.model.dto.MyPageDTO;
 import kr.co.coco.mypage.model.service.MyPageServiceImpl;
 
@@ -47,6 +50,9 @@ public class MyPageController {
 
 	@Autowired
 	private FreeServiceImpl freeService;
+	
+	@Autowired
+	private ColaboServiceImpl colaboService;
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
@@ -69,6 +75,34 @@ public class MyPageController {
 //			System.out.println("name: " + member.getName());
 //			System.out.println("hope: " + member.getHope());
 //			System.out.println("stack: " + member.getStack());
+			
+			// 리스트 세개로 나눠서  해당되는 리스트에 넣을생각
+			List<ColaboDTO> NList = new ArrayList<>();
+			List<ColaboDTO> CList = new ArrayList<>();
+			List<ColaboDTO> YList = new ArrayList<>();
+			
+			
+			// 내가 속한 프로젝트 전체리스트 가져오기
+			List<ColaboDTO> allList = colaboService.getProjectProfile(mNo);
+			
+			// 전체리스트에서 State 를 조회해서 해당되는 리스트에 넣기
+			for(int i =0; i< allList.size(); i++) {
+//				System.out.println(allList.get(i).getUploadName());
+//				System.out.println(allList.get(i).getState());
+				if(allList.get(i).getState() == 'N') {
+					NList.add(allList.get(i));
+				}else if(allList.get(i).getState() == 'C') {
+					CList.add(allList.get(i));
+				}else if(allList.get(i).getState() == 'Y') {
+					YList.add(allList.get(i));
+				}
+				
+			}
+			
+			model.addAttribute("NList", NList);
+			model.addAttribute("CList", CList);
+			model.addAttribute("YList", YList);
+			
 
 			model.addAttribute("hope", member.getHope());
 			model.addAttribute("stack", member.getStack());

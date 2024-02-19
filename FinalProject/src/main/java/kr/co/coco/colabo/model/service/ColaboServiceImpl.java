@@ -279,27 +279,38 @@ public class ColaboServiceImpl implements ColaboService{
 		
 		TransactionStatus status = transactionManager.getTransaction(transactionDefinition);
 		
-		// 승인일때 이미 프로젝트 팀원에 들어가있으면 다시 넣으면안되기때문에 
-		// 확인후 없으면 로직실행
-		int projectTeamCheck = projectTeamCheck(colabo);
-		
-		if(projectTeamCheck == 0) {
+		try {
+			// 승인일때 이미 프로젝트 팀원에 들어가있으면 다시 넣으면안되기때문에 
+			// 확인후 없으면 로직실행
+			int projectTeamCheck = projectTeamCheck(colabo);
 			
-			int enrollResult = colaboDAO.enrollProjectTeam(sqlSession, colabo);
-			
-			if(enrollResult == 1) {
-				int deleteResult = colaboDAO.deleteInviteList(sqlSession, colabo);
+			if(projectTeamCheck == 0) {
 				
-				if(deleteResult > 0) {
-					transactionManager.commit(status);
-					return deleteResult;
-				}else {
-					transactionManager.rollback(status);
+				int enrollResult = colaboDAO.enrollProjectTeam(sqlSession, colabo);
+				
+				if(enrollResult == 1) {
+					int deleteResult = colaboDAO.deleteInviteList(sqlSession, colabo);
+					
+					if(deleteResult > 0) {
+						// 이미 팀에 가입완료되었으니 신청리스트에 같은데이터있는지
+						// 확인하고 Apply 테이블에서도 삭제
+						deleteApplyList(colabo);
+						transactionManager.commit(status);
+						return deleteResult;
+					}else {
+						transactionManager.rollback(status);
+					}
+					
 				}
 				
 			}
 			
+		}catch(Exception e) {
+//			System.out.println("에러발생 롤백됨 ");
+			transactionManager.rollback(status);
+			throw e;
 		}
+		
 		
 		transactionManager.rollback(status);
 		
@@ -310,6 +321,10 @@ public class ColaboServiceImpl implements ColaboService{
 
 	public int deleteInviteList(ColaboDTO colabo) {
 		return colaboDAO.deleteInviteList(sqlSession, colabo);
+	}
+	
+	public int deleteApplyList(ColaboDTO colabo) {
+		return colaboDAO.deleteApplyList(sqlSession, colabo);
 	}
 
 	public int projectTeamCheck(ColaboDTO colabo) {
@@ -334,6 +349,58 @@ public class ColaboServiceImpl implements ColaboService{
 
 	public int enrollApplyProject(InviteProjectDTO apply) {
 		return colaboDAO.enrollApplyProject(sqlSession, apply);
+	}
+
+
+	// 신청 승인을 눌렀을때 신청한 인원을 프로젝트 팀원 리스트에 넣고
+	// 기존에 신청테이블에 있던데이터는 삭제해야하기때문에 트랜잭션사용
+	@Transactional
+	public int enrollApplyProjectTeam(ColaboDTO colabo) {
+		
+		DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
+		
+		TransactionStatus status = transactionManager.getTransaction(transactionDefinition);
+		
+		try {
+			
+			// 이미 팀에 들어있는지 체크
+			int projectTeamCheck = projectTeamCheck(colabo);
+			
+			if(projectTeamCheck == 0) {
+				
+				// 프로젝트  팀원리스트에 넣기
+				int enrollResult = colaboDAO.enrollProjectTeam(sqlSession, colabo);
+				
+				if(enrollResult == 1) {
+					
+					// 팀에 들어갔으니 기존 apply 테이블에서 데이터삭제
+					int deleteResult = deleteApplyList(colabo);
+					
+					if(deleteResult > 0) {
+						// 이미 팀에 가입완료되었으니 초대리스트에 같은데이터있는지
+						// 확인하고 invite 테이블에서도 삭제
+						deleteInviteList(colabo);
+						transactionManager.commit(status);
+						return deleteResult;
+					}
+				}
+			}
+		}catch(Exception e) {
+//			System.out.println("에러발생 롤백됨 ");
+			transactionManager.rollback(status);
+			throw e;
+		}
+		
+		
+		
+		transactionManager.rollback(status);
+		
+		return 0;
+	}
+
+
+	public int applyListCheck(InviteProjectDTO applyListCheck) {
+		return colaboDAO.applyListCheck(sqlSession, applyListCheck);
 	}
 	
 	
