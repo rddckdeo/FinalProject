@@ -15,6 +15,10 @@ public class InviteProjectDTO {
 	private int memberNo;
 	private int inviteMNo;
 	private String inviteProjectDate;
+	private String confirmText;
+	private int applyMNo;
+	private String applyProjectDate;
+
 	
 	
 }

@@ -97,8 +97,31 @@ public interface ColaboService {
 	// 프로젝트 타입 가져오기
 	public ColaboDTO getProjectType(int getProjectNo);
 	
+	// ------------------- 프로젝트 초대, 신청중관련 
+	
 	// 프로젝트에서 인원초대
 	public int inviteProject(InviteProjectDTO invite);
+	
+	// 초대받은 프로젝트 리스트 가져오기
+	public List<ColaboDTO> inviteApplyProject(int memberNo);
+	
+	// 초대 승인 거절누를때 수정가능성에 대비해 초대리스트에 해당값이있는지 확인
+	public int inviteListCheck(InviteProjectDTO inviteListCheck);
+	
+	// 인원 초대 승인눌렀을시 팀원리스트로 넣기
+	public int enrollProjectTeam(ColaboDTO colabo);
+	
+	// 초대 거절시 초대테이블 리스트에서 삭제 
+	public int deleteInviteList(ColaboDTO colabo);
+	
+	// 프로젝트 팀원 이미 있는지 조회
+	public int projectTeamCheck(ColaboDTO colabo);
+	
+	// 신청중인 프로젝트 리스트 가져오기
+	public List<ColaboDTO> applyProject(int memberNo);
+	
+	// 신청받은 프로젝트 리스트 가져오기
+	public List<ColaboDTO> receiveApplyProject(int memberNo);
 }
 
 

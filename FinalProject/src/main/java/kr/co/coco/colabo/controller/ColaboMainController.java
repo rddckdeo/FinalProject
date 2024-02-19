@@ -992,9 +992,86 @@ public class ColaboMainController {
 	
 	
 	@GetMapping("/inviteApplyProject")
-	public String inviteApplyProject() {
+	public String inviteApplyProject(HttpSession session, Model model) {
 		
-		return "";
+		int memberNo = (int)session.getAttribute("no");
+		
+		// 초대받은것 가져오기
+		List<ColaboDTO> InviteList = colaboService.inviteApplyProject(memberNo);
+		
+		// 신청관련 같은경우 같은테이블에 신청한 멤버와  신청받은 프로젝트 대표가 있는데
+		// 두가지를 따로 가져와야함 먼저 신청중인것을 가져오기.  
+		List<ColaboDTO> ApplyList = colaboService.applyProject(memberNo);
+		
+		// 신청 받은 리스트 가져오기 : 이부분에선 기존 신청한 인원인 M_NO 로 가져오는게아니라 
+		// apply_No 로 가져와야함
+		List<ColaboDTO> receiveApplyList = colaboService.receiveApplyProject(memberNo);
+		
+		
+		model.addAttribute("InviteList", InviteList);
+		model.addAttribute("ApplyList", ApplyList);
+		model.addAttribute("receiveApplyList", receiveApplyList);
+		
+		return "colabo/myInviteApplyProject";
+	}
+	
+	@PostMapping("/inviteConfirm.do")
+	@ResponseBody
+	public String inviteConfirm(HttpSession session, InviteProjectDTO sendInvite) {
+		
+		int memberNo = (int)session.getAttribute("no");
+		// 프로젝트에 팀원으로 데이터를넣을때  멤버의 이름, 이메일을 가져와야함
+		// 만들어논 메서드 사용 넘버,이름,이메일 들어있음
+		ColaboDTO colabo = colaboService.getMemberInfo(memberNo);
+		
+		// 전에 클라이언트단에서 프로젝트넘버를 매개변수로 넣어보냈기때문에
+		// 수정할 가능성이있어서 받은 프로젝트넘버와 세션멤버넘버로 
+		// 초대테이블에서 해당하는값이 있는지 파악후 있을때만 로직실행
+		
+		InviteProjectDTO inviteListCheck = new InviteProjectDTO();
+		inviteListCheck.setMemberNo(memberNo);
+		inviteListCheck.setProjectNo(sendInvite.getProjectNo());
+		
+		int checkList = colaboService.inviteListCheck(inviteListCheck);
+//		System.out.println(checkList);
+		
+		
+		// 트랜젝션처리 Service 에서 해야함
+		// 참가눌렀을때  팀원리스트에 넣고 기존에있던 초대테이블에서 삭제
+		InviteProjectDTO invite = new InviteProjectDTO();
+		
+		invite.setConfirmText(sendInvite.getConfirmText());
+//		// 참가, 거절
+//		System.out.println(invite.getConfirmText());
+		
+		colabo.setNo(inviteListCheck.getProjectNo());
+
+		if(checkList > 0) {
+			
+				if(invite.getConfirmText().equals("참가")) {
+					
+					int result = colaboService.enrollProjectTeam(colabo);
+					
+					if(result >0) {
+						return "success";
+					}else {
+						return "failed";
+					}
+					
+				}else if(invite.getConfirmText().equals("거절")) {
+					int result = colaboService.deleteInviteList(colabo);
+					
+					if(result >0) {
+						return "success";
+					}else {
+						return "failed";
+					}
+					
+				}
+		}
+		
+		
+		return "failed";
 	}
 	
 	

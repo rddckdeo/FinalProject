@@ -259,7 +259,72 @@ public class ColaboServiceImpl implements ColaboService{
 		return colaboDAO.inviteProject(sqlSession, invite);
 	}
 
-	
+
+	public List<ColaboDTO> inviteApplyProject(int memberNo) {
+		return colaboDAO.inviteApplyProject(sqlSession, memberNo);
+	}
+
+
+	public int inviteListCheck(InviteProjectDTO inviteListCheck) {
+		return colaboDAO.inviteListCheck(sqlSession, inviteListCheck);
+	}
+
+	// 초대 승인눌렀을때 해당하는 프로젝트 팀원리스트에 넣고 
+	// 넣음과동시에 초대테이블에서 해당하는데이터를 삭제해야하기때문에
+	// 트랜잭션 사용
+	@Transactional
+	public int enrollProjectTeam(ColaboDTO colabo) {
+
+		DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
+		
+		TransactionStatus status = transactionManager.getTransaction(transactionDefinition);
+		
+		// 승인일때 이미 프로젝트 팀원에 들어가있으면 다시 넣으면안되기때문에 
+		// 확인후 없으면 로직실행
+		int projectTeamCheck = projectTeamCheck(colabo);
+		
+		if(projectTeamCheck == 0) {
+			
+			int enrollResult = colaboDAO.enrollProjectTeam(sqlSession, colabo);
+			
+			if(enrollResult == 1) {
+				int deleteResult = colaboDAO.deleteInviteList(sqlSession, colabo);
+				
+				if(deleteResult > 0) {
+					transactionManager.commit(status);
+					return deleteResult;
+				}else {
+					transactionManager.rollback(status);
+				}
+				
+			}
+			
+		}
+		
+		transactionManager.rollback(status);
+		
+		
+		return 0;
+	}
+
+
+	public int deleteInviteList(ColaboDTO colabo) {
+		return colaboDAO.deleteInviteList(sqlSession, colabo);
+	}
+
+	public int projectTeamCheck(ColaboDTO colabo) {
+		return colaboDAO.projectTeamCheck(sqlSession, colabo);
+	}
+
+
+	public List<ColaboDTO> applyProject(int memberNo) {
+		return colaboDAO.applyProject(sqlSession, memberNo);
+	}
+
+
+	public List<ColaboDTO> receiveApplyProject(int memberNo) {
+		return colaboDAO.receiveApplyProject(sqlSession, memberNo);
+	}
 	
 	
 	
