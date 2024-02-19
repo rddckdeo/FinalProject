@@ -74,6 +74,16 @@
 		<result column="APPLY_PROJECT_DATE" property="applyProjectDate"></result>
 	</resultMap>
 	
+	<insert id="enrollApplyProject">
+		INSERT INTO COLABO_APPLY_PROJECT VALUES(
+				#{projectNo},#{memberNo},#{applyMNo},SYSDATE)
+	</insert>
+	
+	<select id="getNProjectList" resultMap="colaboResultSet">
+		SELECT * FROM COLABO c 
+		WHERE P_STATE = 'N'
+	</select>
+	
 	<select id="receiveApplyProject" parameterType="int" resultMap="colaboResultSet">
 		SELECT * FROM COLABO_APPLY_PROJECT cap
 		JOIN COLABO c 

@@ -213,6 +213,14 @@ public class ColaboDAO {
 		return sqlSession.selectList("colaboMapper.receiveApplyProject", memberNo);
 	}
 
+	public List<ColaboDTO> getNProjectList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("colaboMapper.getNProjectList");
+	}
+
+	public int enrollApplyProject(SqlSessionTemplate sqlSession, InviteProjectDTO apply) {
+		return sqlSession.insert("colaboMapper.enrollApplyProject", apply);
+	}
+
 }
 
 

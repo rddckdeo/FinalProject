@@ -990,6 +990,25 @@ public class ColaboMainController {
 		
 	}
 	
+	@PostMapping("/applyProject.do")
+	@ResponseBody
+	public String applyProject(HttpSession session, InviteProjectDTO sendApply) {
+		int memberNo = (int)session.getAttribute("no");
+		
+		InviteProjectDTO apply = new InviteProjectDTO();
+		apply.setProjectNo(sendApply.getProjectNo());
+		apply.setMemberNo(memberNo);
+		apply.setApplyMNo(sendApply.getApplyMNo());
+		
+		int result = colaboService.enrollApplyProject(apply);
+		
+		if(result >0) {
+			return "success";
+		}
+		
+		return "failed";
+	}
+	
 	
 	@GetMapping("/inviteApplyProject")
 	public String inviteApplyProject(HttpSession session, Model model) {

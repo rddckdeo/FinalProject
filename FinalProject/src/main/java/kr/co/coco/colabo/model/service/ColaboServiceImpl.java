@@ -325,6 +325,16 @@ public class ColaboServiceImpl implements ColaboService{
 	public List<ColaboDTO> receiveApplyProject(int memberNo) {
 		return colaboDAO.receiveApplyProject(sqlSession, memberNo);
 	}
+
+
+	public List<ColaboDTO> getNProjectList() {
+		return colaboDAO.getNProjectList(sqlSession);
+	}
+
+
+	public int enrollApplyProject(InviteProjectDTO apply) {
+		return colaboDAO.enrollApplyProject(sqlSession, apply);
+	}
 	
 	
 	

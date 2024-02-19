@@ -144,7 +144,7 @@
 	      <h3><strong>4. 프로젝트 기술스택</strong></h3>
 	      <h5>${item.stack}</h5>
 	      <br>
-	      <h3><strong>4. 프로젝트 시작일</strong></h3>
+	      <h3><strong>5. 프로젝트 시작일</strong></h3>
 	      <h5>${item.startDate}</h5>
 	      
 	      </div>
@@ -182,7 +182,7 @@
 											<div class="card-content">
 												<h5 class="card-title">${item.name} 프로젝트</h5>
 												<p class="card-text height100">${item.detail}</p>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectReceive${receiveCount}">상세보기</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectReceive${receiveCount}">신청인원 상세 정보</button>
 <!-- 프로젝트정보 Modal -->   
 <div class="modal fade" id="projectReceive${receiveCount}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
