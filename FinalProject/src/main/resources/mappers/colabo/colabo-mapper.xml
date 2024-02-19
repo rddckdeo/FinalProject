@@ -74,6 +74,18 @@
 		<result column="APPLY_PROJECT_DATE" property="applyProjectDate"></result>
 	</resultMap>
 	
+	<select id="applyListCheck" parameterType="InviteProject" resultType="_int">
+		SELECT count(*) FROM COLABO_APPLY_PROJECT cap 
+		WHERE M_NO = #{memberNo}
+		AND P_NO = #{projectNo}
+	</select>
+	
+	<delete id="deleteApplyList" parameterType="colabo">
+		DELETE FROM COLABO_APPLY_PROJECT cap 
+		WHERE P_NO = #{no}
+		AND M_NO = #{memberNo}
+	</delete>
+	
 	<insert id="enrollApplyProject">
 		INSERT INTO COLABO_APPLY_PROJECT VALUES(
 				#{projectNo},#{memberNo},#{applyMNo},SYSDATE)

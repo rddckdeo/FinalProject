@@ -221,6 +221,14 @@ public class ColaboDAO {
 		return sqlSession.insert("colaboMapper.enrollApplyProject", apply);
 	}
 
+	public int deleteApplyList(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.delete("colaboMapper.deleteApplyList", colabo);
+	}
+
+	public int applyListCheck(SqlSessionTemplate sqlSession, InviteProjectDTO applyListCheck) {
+		return sqlSession.selectOne("colaboMapper.applyListCheck", applyListCheck);
+	}
+
 }
 
 

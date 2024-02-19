@@ -111,8 +111,11 @@ public interface ColaboService {
 	// 인원 초대 승인눌렀을시 팀원리스트로 넣기
 	public int enrollProjectTeam(ColaboDTO colabo);
 	
-	// 초대 거절시 초대테이블 리스트에서 삭제 
+	// 초대테이블에서 리스트 삭제 
 	public int deleteInviteList(ColaboDTO colabo);
+	
+	// 신청테이블에서 리스트 삭제 
+	public int deleteApplyList(ColaboDTO colabo);
 	
 	// 프로젝트 팀원 이미 있는지 조회
 	public int projectTeamCheck(ColaboDTO colabo);
@@ -128,6 +131,13 @@ public interface ColaboService {
 	
 	// 추천프로젝트에서 참가신청 눌렀을때  신청테이블로 데이터넣기
 	public int enrollApplyProject(InviteProjectDTO apply);
+	
+	// 프로젝트 생성자가 신청 승인했을때 로직
+	public int enrollApplyProjectTeam(ColaboDTO colabo);
+	
+	// 신청 승인테이블에 해당 데이터가 있는지 검증 
+	// 클라이언트단에서 매개변수로 데이터값을 넘기기때문에 수정에 대비한 검증임
+	public int applyListCheck(InviteProjectDTO applyListCheck);
 }
 
 
