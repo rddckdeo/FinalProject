@@ -129,6 +129,9 @@ public class MyPageController {
 		MyPageDTO member = mypageService.findMemberByNo(mNo);
 		String saveFileName = member.getImageFileName();
 		String savePath = member.getImageFilePath();
+		
+	    System.out.println("Initial saveFileName: " + saveFileName);  // 초기 saveFileName 출력
+	    System.out.println("Initial savePath: " + savePath);  // 초기 savePath 출력
 
 		if (!imageFile.isEmpty()) {
 			String originName = imageFile.getOriginalFilename();
@@ -148,12 +151,16 @@ public class MyPageController {
 			saveFileName = output + "_" + randomString + extension;
 			savePath = "/Users/kangnayoung/git/FinalProject/FinalProject/src/main/webapp/resources/uploads/member/";
 
+	        System.out.println("Final saveFileName: " + saveFileName);  // 최종 saveFileName 출력
+	        System.out.println("Final savePath: " + savePath);  // 최종 savePath 출력
+	        
 			Path path = Paths.get(savePath + saveFileName);
 
 			try {
 				// 서버에 파일 저장
 				imageFile.transferTo(path.toFile());
 			} catch (IOException e) {
+				 System.out.println("File save error: " + e.getMessage());  // 파일 저장 오류 메시지 출력
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장에 실패하였습니다. 다시 시도해주세요.");
 			}
 		}

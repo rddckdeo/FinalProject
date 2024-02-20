@@ -22,13 +22,14 @@ import org.slf4j.LoggerFactory;
 import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.service.InfoCommentService;
+import kr.co.coco.board.model.service.InfoCommentServiceImpl;
 
 @Controller
 @RequestMapping("/comment")
 public class CommentController {
 
 	@Autowired
-	private InfoCommentService infoCommentService;
+	private InfoCommentServiceImpl infoCommentService;
 
 	// 댓글 등록
 	@PostMapping("/SubmitRegistr")
@@ -131,7 +132,7 @@ public class CommentController {
 				return ResponseEntity.ok().build();
 			} else {
 				// 신고 처리 실패 시 응답
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Declaration processing failed.");
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("실패했음.");
 			}
 		} catch (Exception e) {
 			// 에러 발생 시 응답
@@ -140,15 +141,22 @@ public class CommentController {
 	}
 	
 	
-	//댓글 수정하기 
+	// 댓글 수정하기
 	@PostMapping("/updateComment")
-	public String updateComment(
-	    @RequestParam("commentId") int commentId, 
-	    @RequestParam("commentContent") String commentContent, 
+	public ResponseEntity<?> updateComment(
+	    @RequestParam("infoCommentNo") int infoCommentNo,
+	    @RequestParam("commentContent") String commentContent,
 	    @RequestParam("infoNo") int infoNo) {
-	    infoCommentService.updateComment(commentId, commentContent);
-	    return "redirect:/info/infoDtail/" + infoNo;
+	    
+		InfoCommentDTO isUpdated = infoCommentService.updateComment(infoCommentNo, commentContent);
+
+	    if (isUpdated  != null) {
+	        return ResponseEntity.ok().build();
+	    } else {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정에 실패하였습니다.");
+	    }
 	}
+
 
 
 	// 댓글 번호로 게시글 번호 가져오기

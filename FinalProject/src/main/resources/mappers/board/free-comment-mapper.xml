@@ -49,6 +49,7 @@
     member m ON fc.m_no = m.m_no
     WHERE
     fc.free_no = #{freeNo}
+    AND fc.free_comment_delete_date IS NULL
     </select>
 
     <!-- 사용자 닉네임 불러오기 -->

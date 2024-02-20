@@ -61,31 +61,6 @@
 		)
 	</insert>
 
-
-	<!-- 게시글 상세 보기 진입 -->
-<!-- 	<select id="getPostById" parameterType="int" resultType="free">
-		SELECT
-		f.free_no AS freeNo,
-		f.free_title AS freeTitle,
-		m.m_nickname AS
-		nickname,
-		f.free_content AS freeContent,
-		f.free_date AS freeDate,
-		f.free_views AS freeViews,
-		f.free_tag1 AS freeTag1,
-		f.free_tag2 AS
-		freeTag2,
-		f.free_tag3 AS freeTag3,
-		(SELECT COUNT(*) FROM free_comment
-		WHERE free_no = f.free_no) AS commentCount
-		FROM
-		FREE f
-		JOIN
-		member m ON
-		f.m_no = m.m_no
-		WHERE
-		f.free_no = #{freeNo}
-	</select> -->
 	
 <!-- 게시글 상세 보기 진입 -->
 <select id="getPostById" resultType="free">
@@ -125,8 +100,10 @@
 		#{freeNo}
 	</update>
 
+<!-- 게시글 삭제 -->
 	<delete id="deletePost" parameterType="int">
-		DELETE FROM FREE
+	 UPDATE FROM FREE
+	 SET free_delete_date = SYSDATE
 		WHERE
 		free_no = #{freeNo}
 	</delete>
@@ -155,7 +132,7 @@
 		member ON f.m_no = member.m_no
 		LEFT JOIN free_comment ON f.free_no =
 		free_comment.free_no
-		WHERE f.FREE_CATEGORY = #{categoryName}
+		WHERE f.FREE_CATEGORY = #{categoryName} AND f.free_delete_date IS NULL
 		GROUP BY
 		f.free_no
 		HAVING row_number() over (order by f.FREE_DATE DESC) between
@@ -177,6 +154,7 @@
         WHERE i.free_title LIKE '%'
         || #{query} || '%' OR i.free_content LIKE '%'
         || #{query} || '%'
+        AND i.free_delete_date IS NULL
     )
     WHERE
     rnum BETWEEN #{startIndex} AND #{endIndex}
@@ -189,6 +167,7 @@
 		FROM free
 		WHERE free_title LIKE '%' || #{query} || '%'
 		OR free_content LIKE '%' || #{query} || '%'
+		AND free_delete_date IS NULL
 	</select>
 
 
@@ -207,6 +186,7 @@
 		f.FREE_DATE DESC) rnum
 		FROM FREE f
 		JOIN MEMBER m ON f.M_NO = m.M_NO
+		WHERE f.free_delete_date IS NULL
 		)
 		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
 	</select>
@@ -232,7 +212,7 @@
 		) ic
 		ON a.free_no = ic.free_no
 		WHERE
-		a.FREE_CATEGORY = #{categoryName}
+		a.FREE_CATEGORY = #{categoryName} AND a.free_delete_date IS NULL
 		)
 		WHERE rnum between #{startIndex} + 1
 		and #{startIndex} + #{pageSize}
@@ -248,7 +228,7 @@
 		(order by COALESCE(icmt.commentCount, 0) DESC) rnum FROM FREE a JOIN
 		member ON a.m_no = member.m_no LEFT JOIN (SELECT free_no, COUNT(*) AS
 		commentCount FROM free_comment GROUP BY free_no) icmt ON a.free_no =
-		icmt.free_no WHERE a.FREE_CATEGORY = #{categoryName} ) WHERE rnum
+		icmt.free_no WHERE a.FREE_CATEGORY = #{categoryName} AND a.free_delete_date IS NULL ) WHERE rnum
 		between #{startIndex} + 1 and #{startIndex} + #{pageSize}
 	</select>
 
@@ -263,7 +243,7 @@
 		(order by a.FREE_VIEWS DESC) rnum FROM FREE a JOIN member ON a.m_no =
 		member.m_no LEFT JOIN (SELECT free_no, COUNT(*) as commentCount FROM
 		free_comment GROUP BY free_no) icnt ON a.free_no = icnt.free_no WHERE
-		a.FREE_CATEGORY = #{categoryName} ) WHERE rnum between #{startIndex} +
+		a.FREE_CATEGORY = #{categoryName} AND a.free_delete_date IS NULL ) WHERE rnum between #{startIndex} +
 		1 and #{startIndex} + #{pageSize}
 	</select>
 
@@ -274,7 +254,7 @@
 		FROM
 		free f
 		WHERE
-		f.m_no = #{mNo}
+		f.m_no = #{mNo} AND f.free_delete_date IS NULL
 		<if test="start != null and limit != null">
 			OFFSET #{start} ROWS FETCH NEXT #{limit} ROWS ONLY
 		</if>
@@ -283,7 +263,7 @@
 	<!--마이페이지 총 게시글 수 가져오기 -->
 	<select id="allFreeBoardPostsNo" parameterType="int"
 		resultType="int">
-		SELECT COUNT(*) FROM free WHERE m_no = #{mNo}
+		SELECT COUNT(*) FROM free WHERE m_no = #{mNo} AND free_delete_date IS NULL
 	</select>
 
 

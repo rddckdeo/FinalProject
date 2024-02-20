@@ -40,6 +40,7 @@
 
 											<!-- infoComment 모음 -->
 											<div class="main-commentList bottomBorder bottomPadding10">
+											<p>정보 게시판 댓글</p>
 												<c:if test="${not empty infoComment}">
 													<c:forEach var="infoCommentItem" items="${infoComment}">
 														<div class="main-boardList-info">
@@ -72,6 +73,7 @@
 
 											<!-- freeComment 모음 -->
 											<div class="main-commentList bottomBorder bottomPadding10">
+											<p>정보 게시판 댓글</p>
 												<c:if test="${not empty freeComment}">
 													<c:forEach var="freeCommentItem" items="${freeComment}">
 														<div class="main-boardList-info">

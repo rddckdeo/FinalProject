@@ -71,17 +71,19 @@
 																</div>
 																<div class="main-comment-section">
 																	<div class="main-project-comment">
-																		<img src="../../../../resources/uploads/icon/views.png" alt=""
-																			width="20" height="20"
+																		<img
+																			src="../../../../resources/uploads/icon/views.png"
+																			alt="" width="20" height="20"
 																			class="main-project-comment-text">
 																		<p class="main-project-comment-text">${freePost.freeViews}
-																			</p>
+																		</p>
 																	</div>
 																	<div class="main-project-comment">
-																		<img src="../../../../resources/uploads/icon/message.png" alt=""
-																			width="20" height="20"
+																		<img
+																			src="../../../../resources/uploads/icon/message.png"
+																			alt="" width="20" height="20"
 																			class="main-project-comment-text">
-																		<p class="main-project-comment-text">댓글 수</p>
+																		<p class="main-project-comment-text"></p>
 																	</div>
 																</div>
 															</div>
@@ -125,106 +127,106 @@
 														</div>
 													</div>
 												</c:if>
-	</div>
+											</div>
+										</div>
 
 
+										<div
+											class="direction1 width100 boxShadow borderDefault borderRadiusd2">
+											<h1 class="titleText1">정보 게시판</h1>
 
-												<div
-													class="direction1 width100 boxShadow borderDefault borderRadiusd2">
-													<h1 class="titleText1">정보 게시판</h1>
-
-													<!-- board -->
-													<div class="main-boardList bottomBorder">
+											<!-- board -->
+											<div class="main-boardList bottomBorder">
 
 
-														<c:choose>
-															<c:when test="${not empty infoPosts}">
-																<c:forEach var="infoPost" items="${infoPosts}">
-																	<div class="main-boardList-info">
-																		<div>
-																			<a href="#"> <img
-																				src="${sessionScope.path}${sessionScope.picture}"
-																				alt="" width="30" height="30"
-																				class="main-boardList-user-img"></a> <a href="#"
-																				class="main-boardList-info-text">aa</a>
-																			<p class="main-boardList-info-text">${infoPost.infoDate}</p>
-																		</div>
-																	</div>
-																	<div class="main-boardList-title">
-																		<a href="#">${infoPost.infoTitle}</a>
-																	</div>
-																	<div class="main-boardList-bottm-div">
-																		<div class="main-boardList-tag">
-																			<!-- 태그 출력 -->
-																			<c:if test="${not empty infoPost.infoTag1}">
-																				<p>#${infoPost.infoTag1}</p>
-																			</c:if>
-																			<c:if test="${not empty infoPost.infoTag2}">
-																				<p>#${infoPost.infoTag2}</p>
-																			</c:if>
-																			<c:if test="${not empty infoPost.infoTag3}">
-																				<p>#${infoPost.infoTag3}</p>
-																			</c:if>
-																		</div>
-																		<div class="main-comment-section">
-																			<div class="main-project-comment">
-																				<img src="../../../../resources/uploads/icon/views.png" alt=""
-																					width="20" height="20"
-																					class="main-project-comment-text">
-																				<p class="main-project-comment-text">${infoPost.infoViews}
-																					</p>
-																			</div>
-																			<div class="main-project-comment">
-																				<img src="../../../../resources/uploads/icon/message.png" alt=""
-																					width="20" height="20"
-																					class="main-project-comment-text">
-																				<p class="main-project-comment-text">${infoPost.infoCommentCount}
-																					댓글 수</p>
-																			</div>
-																		</div>
-																	</div>
-																</c:forEach>
-															</c:when>
-															<c:otherwise>
-																<div class="no-posts-message">
-																	<p>등록된 게시글이 없습니다.</p>
-																</div>
-															</c:otherwise>
-														</c:choose>
-
-														<!-- 정보게시판 페이지 네이션 -->
-														<c:if test="${totalInfoPages > 1}">
-															<div class="pagination" id="infoPagination">
+												<c:choose>
+													<c:when test="${not empty infoPosts}">
+														<c:forEach var="infoPost" items="${infoPosts}">
+															<div class="main-boardList-info">
 																<div>
-																	<c:set var="prevInfoPage"
-																		value="${infoPage - 1 < 1 ? 1 : infoPage - 1}" />
-																	<a
-																		href="/myPage/myBoard?freePage=${freePage}&infoPage=${prevInfoPage}&pageSize=${pageSize}"
-																		class="${infoPage == 1 ? 'disabled' : ''}">&lt;</a>
-																	<c:forEach var="i" begin="1" end="${totalInfoPages}">
-																		<c:choose>
-																			<c:when test="${i == infoPage}">
-																				<a
-																					href="/myPage/myBoard?freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}"
-																					class="active">${i}</a>
-																			</c:when>
-																			<c:otherwise>
-																				<a
-																					href="/myPage/myBoard?freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}">${i}</a>
-																			</c:otherwise>
-																		</c:choose>
-																	</c:forEach>
-																	<c:set var="nextInfoPage"
-																		value="${infoPage + 1 > totalInfoPages ? totalInfoPages : infoPage + 1}" />
-																	<a
-																		href="/myPage/myBoard?freePage=${freePage}&infoPage=${nextInfoPage}&pageSize=${pageSize}"
-																		class="${infoPage == totalInfoPages ? 'disabled' : ''}">&gt;</a>
+																	<a href="#"> <img
+																		src="${sessionScope.path}${sessionScope.picture}"
+																		alt="" width="30" height="30"
+																		class="main-boardList-user-img"></a> <a href="#"
+																		class="main-boardList-info-text">${infoPost.infoDate}</a>
+																	<p class="main-boardList-info-text">${infoPost.infoDate}</p>
 																</div>
 															</div>
-														</c:if>
+															<div class="main-boardList-title">
+																<a href="#">${infoPost.infoTitle}</a>
+															</div>
+															<div class="main-boardList-bottm-div">
+																<div class="main-boardList-tag">
+																	<!-- 태그 출력 -->
+																	<c:if test="${not empty infoPost.infoTag1}">
+																		<p>#${infoPost.infoTag1}</p>
+																	</c:if>
+																	<c:if test="${not empty infoPost.infoTag2}">
+																		<p>#${infoPost.infoTag2}</p>
+																	</c:if>
+																	<c:if test="${not empty infoPost.infoTag3}">
+																		<p>#${infoPost.infoTag3}</p>
+																	</c:if>
+																</div>
+																<div class="main-comment-section">
+																	<div class="main-project-comment">
+																		<img
+																			src="../../../../resources/uploads/icon/views.png"
+																			alt="" width="20" height="20"
+																			class="main-project-comment-text">
+																		<p class="main-project-comment-text">${infoPost.infoViews}
+																		</p>
+																	</div>
+																	<div class="main-project-comment">
+																		<img
+																			src="../../../../resources/uploads/icon/message.png"
+																			alt="" width="20" height="20"
+																			class="main-project-comment-text">
+																		<p class="main-project-comment-text">${infoPost.infoCommentCount}
+																			</p>
+																	</div>
+																</div>
+															</div>
+														</c:forEach>
+													</c:when>
+													<c:otherwise>
+														<div class="no-posts-message">
+															<p>등록된 게시글이 없습니다.</p>
+														</div>
+													</c:otherwise>
+												</c:choose>
 
+												<!-- 정보게시판 페이지 네이션 -->
+												<c:if test="${totalInfoPages > 1}">
+													<div class="pagination" id="infoPagination">
+														<div>
+															<c:set var="prevInfoPage"
+																value="${infoPage - 1 < 1 ? 1 : infoPage - 1}" />
+															<a
+																href="/myPage/myBoard?freePage=${freePage}&infoPage=${prevInfoPage}&pageSize=${pageSize}"
+																class="${infoPage == 1 ? 'disabled' : ''}">&lt;</a>
+															<c:forEach var="i" begin="1" end="${totalInfoPages}">
+																<c:choose>
+																	<c:when test="${i == infoPage}">
+																		<a
+																			href="/myPage/myBoard?freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}"
+																			class="active">${i}</a>
+																	</c:when>
+																	<c:otherwise>
+																		<a
+																			href="/myPage/myBoard?freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}">${i}</a>
+																	</c:otherwise>
+																</c:choose>
+															</c:forEach>
+															<c:set var="nextInfoPage"
+																value="${infoPage + 1 > totalInfoPages ? totalInfoPages : infoPage + 1}" />
+															<a
+																href="/myPage/myBoard?freePage=${freePage}&infoPage=${nextInfoPage}&pageSize=${pageSize}"
+																class="${infoPage == totalInfoPages ? 'disabled' : ''}">&gt;</a>
+														</div>
+													</div>
+												</c:if>
 
-												</div>
 											</div>
 										</div>
 									</div>
@@ -233,5 +235,8 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

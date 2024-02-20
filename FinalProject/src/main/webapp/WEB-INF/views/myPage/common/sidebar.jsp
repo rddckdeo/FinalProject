@@ -25,9 +25,9 @@
 		<div class="scroll-sidebar alignCenter" data-simplebar>
 			<!-- 로고 -->
 			<div class="d-flex mb-4 align-items-center justify-content-between">
-				<a href="/member/mainForm.do" class="text-nowrap logo-img ms-0 ms-md-1"> <img
+<!-- 				<a href="/member/mainForm.do" class="text-nowrap logo-img ms-0 ms-md-1"> <img
 					src="../../../resources/uploads/icon/cocoLogo.png" width="180" alt="logo">
-				</a>
+				</a> -->
 				<div
 					class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
 					id="sidebarCollapse">

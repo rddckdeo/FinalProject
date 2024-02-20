@@ -101,6 +101,7 @@
 		#{infoNo}
 	</update>
 
+<!--게시글 삭제  -->
 	<delete id="deletePost" parameterType="int">
 		UPDATE INFO
 		SET info_delete_date = SYSDATE
@@ -143,7 +144,7 @@
 		a.info_no = info_comment.info_no AND a.m_no =
 		info_comment.m_no
 		WHERE
-		a.INFO_CATEGORY = #{categoryName}
+		a.INFO_CATEGORY = #{categoryName} AND a.info_delete_date IS NULL
 		)
 		WHERE rnum
 		between #{startIndex} + 1
@@ -165,6 +166,7 @@
 		i.m_no = m.m_no
 		WHERE i.info_title LIKE '%' || #{query} || '%'
 		OR i.info_content LIKE '%' || #{query} || '%'
+		AND i.info_delete_date IS NULL
 		)
 		WHERE rnum BETWEEN #{startIndex} AND #{endIndex}
 	</select>
@@ -180,6 +182,7 @@
 		WHERE INFO_TITLE LIKE
 		'%'||#{query}||'%' OR INFO_CONTENT LIKE
 		'%'||#{query}||'%'
+		AND info_delete_date IS NULL
 	</select>
 
 
@@ -198,6 +201,7 @@
 		a.INFO_DATE DESC) rnum
 		FROM INFO a
 		JOIN MEMBER m ON a.M_NO = m.M_NO
+		WHERE a.info_delete_date IS NULL
 		)
 		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
 	</select>
@@ -224,7 +228,7 @@
 		) ic
 		ON a.info_no = ic.info_no
 		WHERE
-		a.INFO_CATEGORY = #{categoryName}
+		a.INFO_CATEGORY = #{categoryName} AND a.info_delete_date IS NULL
 		)
 		WHERE rnum between #{startIndex} + 1
 		and #{startIndex} + #{pageSize}
@@ -252,7 +256,7 @@
 		GROUP BY info_no
 		) ic ON a.info_no =
 		ic.info_no
-		WHERE a.INFO_CATEGORY = #{categoryName}
+		WHERE a.INFO_CATEGORY = #{categoryName} AND ic.info_delete_date IS NULL
 		) WHERE rnum between
 		#{startIndex} + 1 and #{startIndex} + #{pageSize}
 	</select>
@@ -274,7 +278,7 @@
 		GROUP BY info_no
 		) ic
 		ON a.info_no = ic.info_no
-		WHERE a.INFO_CATEGORY = #{categoryName}
+		WHERE a.INFO_CATEGORY = #{categoryName} AND a.info_delete_date IS NULL
 		)
 		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
 	</select>
@@ -287,7 +291,7 @@
 		FROM
 		info f
 		WHERE
-		f.m_no = #{mNo}
+		f.m_no = #{mNo} AND info_delete_date IS NULL
 		<if test="start != null and limit != null">
 			OFFSET #{start} ROWS FETCH NEXT #{limit} ROWS ONLY
 		</if>
@@ -296,7 +300,7 @@
 	<!--마이페이지 총 게시글 수 가져오기 -->
 	<select id="allInfoBoardPostsNo" parameterType="int"
 		resultType="int">
-		SELECT COUNT(*) FROM info WHERE m_no = #{mNo}
+		SELECT COUNT(*) FROM info WHERE m_no = #{mNo}  AND info_delete_date IS NULL
 	</select>
 
 

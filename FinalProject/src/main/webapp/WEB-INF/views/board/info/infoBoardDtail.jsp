@@ -47,7 +47,9 @@
 								</div>
 								<div class="button-wrapper">
 									<a href="/info/edit/${post.infoNo}" class="board-update-btn">수정하기</a>
-									<a href="javascript:void(0)" data-info-no="${post.infoNo}" class="delete-link">삭제</a>
+									<a data-info-no="${post.infoNo}" id="delete-link" class="board-update-btn" onclick="deletePost(event)">삭제</a>
+
+
 									<!-- 신고하기 버튼 -->
 									<button id="reportButton" class="board-update-btn">신고하기</button>
 
@@ -246,48 +248,49 @@
 					});
 				});
 
-// 댓글 등록
-$("#submitComment").click(function (event) {
-    var commentContent = $('#commentContent').val();
-    var mNo = $('body').data('mno');
-    var infoNo = $('body').data('info-no');
-
-    if (!commentContent) {
-        alert('댓글 내용을 입력해주세요.');
-        return;
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: '/comment/SubmitRegistr',
-        dataType: 'json',
-        data: JSON.stringify({
-            infoCommentContent: commentContent,
-            mNo: mNo,
-            infoNo: infoNo
-        }),
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            appendComment(response);
-            updateCommentCount(infoNo);
-            // 댓글이 없다는 메시지 숨기기
-            $('#no-comment-message').hide();
-
-            // 댓글 등록 후 모달 트리거
-            var commentId = response.infoCommentNo;
-            triggerEditModal(commentId);
-        },
-        error: function (err) {
-            console.error('댓글 저장에 실패하였습니다: ', err.status, err.statusText);
-        }
-    });
-});
-
-// Bootstrap 모달 초기화
-$('.modal').modal({
-    backdrop: 'static',
-    keyboard: false
-});
+			// 댓글 등록
+			$("#submitComment").click(function (event) {
+			    var commentContent = $('#commentContent').val();
+			    var mNo = $('body').data('mno');
+			    var infoNo = $('body').data('info-no');
+			
+			    if (!commentContent) {
+			        alert('댓글 내용을 입력해주세요.');
+			        return;
+			    }
+			
+			    $.ajax({
+			        type: 'POST',
+			        url: '/comment/SubmitRegistr',
+			        dataType: 'json',
+			        data: JSON.stringify({
+			            infoCommentContent: commentContent,
+			            mNo: mNo,
+			            infoNo: infoNo
+			        }),
+			        contentType: 'application/json; charset=utf-8',
+			        success: function (response) {
+			        	console.log('새로 등록된 댓글 번호: ', response.infoCommentNo);
+			            appendComment(response);
+			            updateCommentCount(infoNo);
+			            // 댓글이 없다는 메시지 숨기기
+			            $('#no-comment-message').hide();
+			
+			            // 댓글 등록 후 모달 트리거
+			            var commentId = response.infoCommentNo;
+			            triggerEditModal(commentId);
+			        },
+			        error: function (err) {
+			            console.error('댓글 저장에 실패하였습니다: ', err.status, err.statusText);
+			        }
+			    });
+			});
+			
+			// Bootstrap 모달 초기화
+			$('.modal').modal({
+			    backdrop: 'static',
+			    keyboard: false
+			});
 
 
 		
@@ -369,36 +372,35 @@ $('.modal').modal({
 			var views = $('#viewCount_' + infoNo).text();
 			console.log('조회수: ', views);
 
-
-		//게시글 삭제 
-
-			$('.delete-link').click(function(e) {
-				e.preventDefault();
-				var infoNo = $(this).data('infoNo');
-
-				var confirmDelete = confirm('정말로 삭제하시겠습니까?');
-				if (confirmDelete) {
-					$.ajax({
-						url : '/info/deletePost',
-						type : 'POST',
-						data : {
-							'infoNo' : infoNo
-						},
-						success : function(response) {
-							if (response.success) {
-								alert(response.message);
-								window.location.href = response.redirectUrl;
-							} else {
-								alert(response.message);
-							}
-						},
-						error : function(xhr, status, error) {
-							alert('게시글 삭제에 실패하였습니다: ' + error);
-						}
-					});
-				}
-			});
 		});
+			function deletePost(event) {
+		        event.preventDefault();
+
+		        var infoNo = event.target.dataset.infoNo;
+
+		        var confirmDelete = confirm('정말로 삭제하시겠습니까?');
+		        if (confirmDelete) {
+		            $.ajax({
+		                url: '/info/deletePost',
+		                type: 'POST',
+		                data: {
+		                    'infoNo': infoNo
+		                },
+		                success: function (response) {
+		                    if (response.success) {
+		                        alert(response.message);
+		                        window.location.href = response.redirectUrl;
+		                    } else {
+		                        alert(response.message);
+		                    }
+		                },
+		                error: function (xhr, status, error) {
+		                    alert('게시글 삭제에 실패하였습니다: ' + error);
+		                }
+		            });
+		        }
+		    }
+	
 	</script>
 	<script>
 	//게시글 신고하기 
@@ -448,7 +450,7 @@ $('.modal').modal({
                         alert("성공적으로 전송되었습니다.");
                         console.log('Success:', data);
                     } else {
-                        throw new Error('Network response was not ok');
+                        throw new Error('오류났음');
                     }
                 })
                 .catch((error) => {
@@ -457,16 +459,16 @@ $('.modal').modal({
         }
     });
 
-    //댓글 수정하기 
+    <!-- 댓글 수정하기 -->
     document.addEventListener('DOMContentLoaded', function () {
         var editButtons = document.querySelectorAll('.edit-button');
 
         editButtons.forEach(function (editButton) {
-            editButton.addEventListener('click', function () {
+            editButton.addEventListener('click', function (event) {
                 event.preventDefault();
 
-                var commentId = this.getAttribute('data-id');
-                var modal = document.querySelector('#editModal_' + commentId);
+                var infoCommentNo = this.getAttribute('data-id');
+                var modal = document.querySelector('#editModal_' + infoCommentNo);
                 var infoNo = this.getAttribute('data-infoNo');
 
                 modal.style.display = "block";
@@ -480,24 +482,40 @@ $('.modal').modal({
                     e.preventDefault();
                     var commentContent = modal.querySelector('#editComment').value;
 
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/comment/updateComment', true);
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    xhr.onload = function () {
-                        if (xhr.status === 200) {
-                            location.reload();
-                        } else {
-                            alert('댓글 수정에 실패하였습니다.');
-                        }
-                    };
-                    xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&infoNo=' + infoNo);
+                    var confirmUpdate = confirm('댓글을 수정하시겠습니까?');
+                    if (confirmUpdate) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/comment/updateComment',
+                            data: {
+                                'infoCommentNo': infoCommentNo,
+                                'commentContent': commentContent,
+                                'infoNo': infoNo
+                            },
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (response) {
+                                alert(response);
+                                modal.style.display = "none";
+                                location.reload();
+                            },
+                            error: function (error) {
+                                if (error.responseJSON && error.responseJSON.error) {
+                                    alert('댓글 수정에 실패하였습니다. 오류: ' + error.responseJSON.error);
+                                } else {
+                                    alert('댓글 수정에 실패하였습니다.');
+                                }
+                            }
+                        });
+                    } else {
+                        modal.style.display = "none";
+                    }
                 });
-
             });
         });
     });
-    
 
+		    
+		    
     window.onload = function() {
         // 댓글 신고하기
         var reportButtons = document.querySelectorAll('.reportButton');
@@ -529,8 +547,7 @@ $('.modal').modal({
                 
                 var data = {
                     declarationType: 'infoComment',
-                    commentNo: commentId,
-                    boardNo: infoNo, 
+                    boardNo: commentId, 
                     mNo: mNo,
                     declarationContent: reportType
                 };
@@ -549,7 +566,7 @@ $('.modal').modal({
                             alert("성공적으로 전송되었습니다.");
                             console.log('Success:', data);
                         } else {
-                            throw new Error('Network response was not ok');
+                            throw new Error('오류 났으으음');
                         }
                     })
                     .catch((error) => {

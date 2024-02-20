@@ -163,8 +163,8 @@ public class InfoController {
 		Map<String, Object> response = new HashMap<>();
 
 		// 해당 게시글에 연결된 모든 댓글 삭제
-		infoCommentService.deleteCommentsByPostId(infoNo);
-
+		infoCommentService.deleteCommentsByPostId(infoNo);		
+	
 		// 게시글 삭제
 		int result = infoService.deletePost(infoNo);
 
@@ -193,6 +193,8 @@ public class InfoController {
 
 			// 신고 처리 로직 수행
 			boolean isSuccessful = infoService.report(declarationDto);
+			
+			System.out.println("댓글 넘버: " + declarationDto.getInfoCommentNo());
 
 			// 신고 처리 결과에 따른 응답
 			if (isSuccessful) {

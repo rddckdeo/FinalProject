@@ -18,6 +18,8 @@ public class DeclarationDTO {
     private String declarationContent;
     private String declarationDate;
     private char declarationWithdrawal;
+    
+    private int infoCommentNo; // 댓글 번호
 
 
     @Override

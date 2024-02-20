@@ -117,6 +117,7 @@
 </body>
 </html>
 <script>
+	//항목 삭제 
 	window.onload = function() {
 		Array.from(document.getElementsByClassName("deleteButton")).forEach(
 				function(deleteButton) {
@@ -133,15 +134,18 @@
 					});
 				});
 
+		//프로필 이미지 변경 
 		const profileForm = document.querySelector("form");
 
 		profileForm.querySelector('input[type="file"]').addEventListener(
 				"change",
 				function() {
+					console.log(this.files[0]); 
 					profileForm.querySelector('.profileImg').src = URL
 							.createObjectURL(this.files[0]);
 				});
 
+		//항목 추가 
 		document
 				.getElementById("addHopeItemButton")
 				.addEventListener(
@@ -205,9 +209,7 @@
 							}
 						});
 
-		document
-				.getElementById("addStackItemButton")
-				.addEventListener(
+		document.getElementById("addStackItemButton").addEventListener(
 						"click",
 						function(event) {
 							event.preventDefault();
@@ -268,6 +270,7 @@
 							}
 						});
 
+		//수정 얼럿 
 		profileForm.addEventListener("submit", function(event) {
 			event.preventDefault();
 
