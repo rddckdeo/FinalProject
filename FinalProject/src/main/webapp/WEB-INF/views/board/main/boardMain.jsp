@@ -12,33 +12,12 @@
 	href="../../../../resources/css/board/common/template.css" />
 <link rel="stylesheet"
 	href="../../../../resources/css/board/main/main.css" />
-<<<<<<< HEAD
-<link rel="stylesheet"
-	href="../../../../resources/css/board/info/infoBoard.css" />
-=======
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
->>>>>>> 5bdd7c16461e4a3a02c1e933d642dfb955fd58c8
 </head>
-<style>
-a.disabled {
-	pointer-events: none;
-	color: gray;
-}
-.board-card-row {
-    position: relative; 
-    min-height: 500px; 
-}
-
-#freePagination {
-    position: absolute; 
-    bottom: 0; 
-    width: 100%; 
-}
-</style>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
@@ -63,7 +42,8 @@ a.disabled {
 						<button id="swipe-category-prevBtn">&lt;</button>
 						<div id="main-swipe-category">
 							<div id="circles">
-								<a class="swipe-category" href="/member/mainForm.do">CoCo</a>
+								<a class="swipe-category"
+									href="/member/mainForm.do">CoCo</a>
 								<div class="swipe-category">QnA</div>
 								<div class="swipe-category">3</div>
 								<div class="swipe-category">4</div>
@@ -169,22 +149,18 @@ a.disabled {
 													<div class="main-boardList">
 														<div class="main-boardList-info">
 															<div>
-																<a href="#"><img
-																	src="../../../..${post.imageFileName}${post.imageFilePath}"
+																<a href="#"><img src="../../../../resources/uploads/member/기본프로필.png"
 																	alt="" width="30" height="30"
 																	class="main-boardList-user-img"></a> <a href="#"
 																	class="main-boardList-info-text"><c:out
 																		value="${post.nickname}" /> </a>
 																<p class="main-boardList-info-text">
-																	|
-																	<c:out value="${post.infoDate}" />
+																	 | <c:out value="${post.infoDate}" />
 																</p>
 															</div>
 															<div class="main-project-comment">
-																<img
-																	src="../../../../resources/uploads/icon/message.png"
-																	alt="" width="20" height="20"
-																	class="main-project-comment-text">
+																<img src="../../../../resources/uploads/icon/message.png" alt="" width="20"
+																	height="20" class="main-project-comment-text">
 																<p class="main-project-comment-text">
 																	<c:out value="${post.infoCommentCount}" />
 																</p>
@@ -205,66 +181,31 @@ a.disabled {
 													게시물이 없습니다.</p>
 											</c:otherwise>
 										</c:choose>
-
-
-										<!-- 페이지네이션 -->
-										<div class="pagination" id="infoPagination">
-											<a
-												href="/board/?freePage=${freePage}&infoPage=${infoPage - 1 < 1 ? 1 : infoPage - 1}&pageSize=${pageSize}"
-												class="${infoPage == 1 ? 'disabled' : ''}">&lt;</a>
-											<c:forEach var="i" begin="1" end="${infoPageInfo.maxPage}">
-												<c:choose>
-													<c:when test="${i == infoPage}">
-														<a
-															href="/board/?freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}"
-															class="active">${i}</a>
-													</c:when>
-													<c:otherwise>
-														<a
-															href="/board/?freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}">${i}</a>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
-											<a
-												href="/board/?freePage=${freePage}&infoPage=${infoPage + 1 > infoPageInfo.maxPage ? infoPageInfo.maxPage : infoPage + 1}&pageSize=${pageSize}"
-												class="${infoPage == infoPageInfo.maxPage ? 'disabled' : ''}">&gt;</a>
-										</div>
-
-
-
-
-
-
 									</div>
 								</div>
 
 								<!-- 자유 게시판 게시글 -->
 								<div class="board-card-row">
 									<div>
-										<h1 class="card-project-name">자유 게시판</h1>
+										<h1 class="card-project-name">자유  게시판</h1>
 										<c:choose>
 											<c:when test="${not empty freePosts}">
 												<c:forEach var="post" items="${freePosts}">
 													<div class="main-boardList">
 														<div class="main-boardList-info">
 															<div>
-																<a href="#"><img
-																	src="../../../..${post.imageFileName}${post.imageFilePath}"
+																<a href="#"><img src="../../../../resources/uploads/member/기본프로필.png"
 																	alt="" width="30" height="30"
 																	class="main-boardList-user-img"></a> <a href="#"
 																	class="main-boardList-info-text"><c:out
 																		value="${post.nickname}" /> </a>
 																<p class="main-boardList-info-text">
-																	|
-																	<c:out value="${post.freeDate}" />
+																	 | <c:out value="" />
 																</p>
-
 															</div>
 															<div class="main-project-comment">
-																<img
-																	src="../../../../resources/uploads/icon/message.png"
-																	alt="" width="20" height="20"
-																	class="main-project-comment-text">
+																<img src="../../../../resources/uploads/icon/message.png" alt="" width="20"
+																	height="20" class="main-project-comment-text">
 																<p class="main-project-comment-text">
 																	<c:out value="${post.freeCommentCount}" />
 																</p>
@@ -285,36 +226,9 @@ a.disabled {
 													게시물이 없습니다.</p>
 											</c:otherwise>
 										</c:choose>
-
-
-
-										<div class="pagination" id="freePagination">
-											<a
-												href="/board/?freePage=${freePage - 1 < 1 ? 1 : freePage - 1}&infoPage=${infoPage}&pageSize=${pageSize}"
-												class="${freePage == 1 ? 'disabled' : ''}">&lt;</a>
-											<c:forEach var="i" begin="1" end="${freePageInfo.maxPage}">
-												<c:choose>
-													<c:when test="${i == freePage}">
-														<a
-															href="/board/?freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}"
-															class="active">${i}</a>
-													</c:when>
-													<c:otherwise>
-														<a
-															href="/board/?freePage=${i}&infoPage=${infoPage}&pageSize=${pageSize}">${i}</a>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
-											<a
-												href="/board/?freePage=${freePage + 1 > freePageInfo.maxPage ? freePageInfo.maxPage : freePage + 1}&infoPage=${infoPage}&pageSize=${pageSize}"
-												class="${freePage == freePageInfo.maxPage ? 'disabled' : ''}">&gt;</a>
-										</div>
-										
-										
 									</div>
 								</div>
-								
-								
+
 							</div>
 						</div>
 					</div>

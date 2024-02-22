@@ -24,16 +24,11 @@
 				<!-- 사이드바 네비게이션-->
 <nav class="sidebar-nav">
     <ul id="sidebarnav" class="mb-4 pb-2">
-        <li><a href="/member/mainForm.do"><img src="../../../resources/uploads/icon/cocoLogo.png" alt="로고" style="widht:100%"></a></li>
+        <li><a href="/board/">로고</a></li>
         <!-- 사이드바 협업툴 바로가기-->
         <li class="sidebar-item"><span
             class="aside-icon p-2 bg-light-primary rounded-3"> <a
                 href="/colabo" id="cooperation-btn" class="btn btn-primary" onclick="return checkLogin()">협업툴
-                    바로가기</a>
-        </span></li>
-        <li class="sidebar-item"><span
-            class="aside-icon p-2 bg-light-primary rounded-3"> <a
-                href="/colabo" id="cooperation-btn" class="btn btn-primary" onclick="return checkLogin()">게시판
                     바로가기</a>
         </span></li>
         <!-- 사이드바 정보게시판 -->

@@ -26,12 +26,9 @@
 
 		<result property="imageFileName" column="m_picture" />
 		<result property="imageFilePath" column="m_path" />
-
-		<result property="freeTitle" column="free_title" />
-		<result property="infoTitle" column="info_title" />
-
-		<result property="infoCommentWriter"
-			column="info_comment_writer" />
+		
+		 <result property="freeTitle" column="free_title" />
+		  <result property="infoTitle" column="info_title" />
 	</resultMap>
 
 
@@ -56,44 +53,26 @@
 		WHERE M_NO = #{mNo}
 	</update>
 
-	<!-- 정보게시판 댓글 가져오기 -->
-	<select id="fetchInfoCommentNo" parameterType="int"
-		resultType="infoComment">
-		SELECT info.*, mem.m_nickname, mem.m_path as imageFilePath,
-		mem.m_picture as
-		imageFileName, inf.info_title as infoTitle
-		FROM
-		info_comment info
-		JOIN member mem ON info.m_no = mem.m_no
-		JOIN info inf
-		ON info.info_no = inf.info_no
-		WHERE info.m_no = #{mNo} AND info.info_comment_delete_date IS NULL
-	</select>
+<!-- 정보게시판 댓글 가져오기 -->
+<select id="fetchInfoCommentNo" parameterType="int" resultType="infoComment">
+    SELECT info.*, mem.m_nickname, mem.m_path as imageFilePath, mem.m_picture as imageFileName, inf.info_title as infoTitle
+    FROM info_comment info
+    JOIN member mem ON info.m_no = mem.m_no
+    JOIN info inf ON info.info_no = inf.info_no
+    WHERE info.m_no = #{mNo}
+</select>
 
-	<!-- 자유게시판 댓글 가져오기 -->
-	<select id="fetchFreeCommentNo" parameterType="int"
-		resultType="freeComment">
-		SELECT free.*, mem.m_nickname, mem.m_path as imageFilePath,
-		mem.m_picture as
-		imageFileName, fre.free_title as freeTitle
-		FROM
-		free_comment free
-		JOIN member mem ON free.m_no = mem.m_no
-		JOIN free fre
-		ON free.free_no = fre.free_no
-		WHERE free.m_no = #{mNo} AND free.free_comment_delete_date IS NULL
-	</select>
-
-	<!-- 문의사항 등록 -->
-	<insert id="registerInquiry">
-		INSERT INTO ADMIN_BOARD (A_BOARD_NO, M_NO, A_BOARD_TITLE, A_BOARD_CONTENT,
-		A_BOARD_VIEW, A_BOARD_IN_DATE, A_BOARD_ANSWER, A_BOARD_ANSWER_DATE)
-		VALUES (admin_board_seq.NEXTVAL, #{mNo}, #{infoTitle}, #{infoContent},
-		0, SYSDATE, 'N', NULL)
-	</insert>
-
-</mapper>
+<!-- 자유게시판 댓글 가져오기 -->
+<select id="fetchFreeCommentNo" parameterType="int" resultType="freeComment">
+    SELECT free.*, mem.m_nickname, mem.m_path as imageFilePath, mem.m_picture as imageFileName, fre.free_title as freeTitle
+    FROM free_comment free
+    JOIN member mem ON free.m_no = mem.m_no
+    JOIN free fre ON free.free_no = fre.free_no
+    WHERE free.m_no = #{mNo}
+</select>
 
 
 
 
+
+</mapper>  

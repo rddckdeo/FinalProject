@@ -138,11 +138,6 @@ public class MemberController {
 	public String profileForm() {
 		return "redirect:/mypage/mypage.do";
 	}
-	// FindIdForm
-	@GetMapping("loginFindId.do")
-	public String loginFindId() {
-		return "member/loginFindId";
-	}
 	
 	
 }

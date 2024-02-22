@@ -26,7 +26,6 @@ public class MyPageDTO {
 	private String picture;
 	private String path;
 	private String hope;
-	private String[] hopeList;
 	private String stack;
 	private String intro;
 	private Date inDate;
@@ -39,8 +38,6 @@ public class MyPageDTO {
 	private String imageFileName;
 	private String imageFilePath;
 	
-    private String infoCommentWriter;  
-    private String infoTitle; 
 	private String freeTitle;
 	
 	

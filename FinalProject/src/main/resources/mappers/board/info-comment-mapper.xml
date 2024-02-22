@@ -28,6 +28,9 @@
 		)
 	</insert>
 
+
+
+
 	<!-- 댓글 등록 시, info_comment_count 업데이트 -->
 	<update id="increaseCommentCount" parameterType="int">
 		UPDATE info
@@ -36,20 +39,6 @@
 		WHERE info_no = #{infoNo}
 	</update>
 
-	<!-- 댓글 삭제 -->
-	<update id="deleteComment" parameterType="int">
-		UPDATE info_comment
-		SET
-		info_comment_delete_date = SYSDATE
-		WHERE info_comment_no = #{id}
-	</update>
-
-	<!-- 댓글 수 감소 -->
-	<update id="decreaseCommentCount" parameterType="int">
-		UPDATE info
-		SET info_comment_count = info_comment_count - 1
-		WHERE info_no = #{infoNo}
-	</update>
 
 	<!-- 댓글 목록 불러오기 -->
 	<select id="selectCommentsByPostId" parameterType="int"
@@ -63,16 +52,15 @@
 		ic.info_comment_date AS infoCommentDate,
 		m.m_nickname AS nickname,
 		m.m_picture AS imageFileName,
-		m.m_path AS imageFilePath
+        m.m_path AS imageFilePath
 		FROM
 		info_comment ic
-
+		
 		JOIN
 		member m ON ic.m_no = m.m_no
 		WHERE
 		ic.info_no =
 		#{infoNo}
-		AND ic.info_comment_delete_date IS NULL
 	</select>
 
 
@@ -87,6 +75,11 @@
 		SELECT COUNT(*) FROM info_comment WHERE info_no = #{infoNo}
 	</select>
 
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM
+		info_comment WHERE info_comment_no = #{id}
+	</delete>
 
 	<!-- 댓글 번호로 댓글 정보 가져오기 -->
 	<select id="getCommentById" parameterType="int"
@@ -103,14 +96,32 @@
 		#{infoCommentNo}
 	</select>
 
+
+	<!-- 정보게시판 댓글 가져오기 -->
+<!-- 	<select id="fetchInfoCommentNo" parameterType="int"
+		resultType="infoComment">
+		SELECT
+		ic.info_comment_no AS infoCommentNo, 
+		ic.info_no AS
+		infoNo,
+		ic.m_no AS mNo,
+		ic.info_comment_content AS infoCommentContent,
+		ic.info_comment_date AS infoCommentDate,
+		m.m_nickname AS nickname
+		FROM
+		info_comment ic
+		JOIN
+		member m ON ic.m_no = m.m_no
+		WHERE
+		ic.m_no = #{mNo}
+	</select> -->
+
 	<!-- 댓글 업데이트 -->
 	<update id="updateComment" parameterType="infoComment">
-		UPDATE info_comment
-		SET
-		info_comment_content = #{commentContent},
-		info_comment_update_date =
-		SYSDATE
-		WHERE info_comment_no = #{infoCommentNo}
+    UPDATE info_comment
+    SET info_comment_content = #{commentContent},
+        info_comment_update_date = SYSDATE
+    WHERE info_comment_no = #{infoCommentNo}
 	</update>
 
 

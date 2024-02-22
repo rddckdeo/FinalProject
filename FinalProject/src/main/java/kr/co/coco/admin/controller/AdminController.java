@@ -21,8 +21,6 @@ import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.admin.model.service.AdminServiceImpl;
 import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
-import kr.co.coco.boardPush.model.dto.BoardPushDTO;
-import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
 
@@ -31,8 +29,6 @@ import kr.co.coco.member.model.dto.MemberDTO;
 public class AdminController {
 	@Autowired
 	private AdminServiceImpl adminService;
-	@Autowired
-	private BoardPushServiceImpl pushService;
 //	page 호출 모음
 	//main Page
 	@GetMapping("/adminForm.do")
@@ -573,22 +569,9 @@ public class AdminController {
 	@ResponseBody
 	@PostMapping("/adminBoardEnroll.do")
 	public int adminBoardEnroll(
-					HttpSession session,
 					@RequestParam(value="no") int no,
-					@RequestParam(value="content") String content){
-		// adminBoard Enroll
+					@RequestParam(value="content") String content) {
 		int result = adminService.adminBoardEnroll(no, content);
-		// board_push Enroll ( admin board )
-			// 게시글 작성자의 no를 가져와야함
-		int adminBoardWriter = adminService.adminBoardWriter(no);
-		System.out.println("Controller , adminBoardWriter = "+adminBoardWriter);
-		Map<String, Object>param = new HashMap<>();
-		param.put("boardNo", no);
-		param.put("mNo",adminBoardWriter);
-		param.put("content",content);
-		
-		int boardPush = pushService.adminBoardPushEnroll(param);
-		
 		if(result == 1) {
 			return result;
 		}else {
@@ -612,36 +595,8 @@ public class AdminController {
 	// declaration blind
 	@ResponseBody
 	@PostMapping("/declarationBlind.do")
-	public int declarationBlind(@RequestParam(value="no")int no) { // declaration No
+	public int declarationBlind(@RequestParam(value="no")int no) {
 		int result = adminService.declarationBlind(no);
-		// mNo ( 알림을 받아야하는 사람의 mNo ), boardNo, boardType 가져오는 메서드
-		List<BoardPushDTO> declarationList = pushService.declarationList(no);
-		// boardTitle 가져와야함
-		int mNo = 0;
-		int boardNo = 0;
-		String boardType = null;
-		for(BoardPushDTO dto : declarationList) {
-			mNo = dto.getMNo();
-			boardNo = dto.getBoardNo();
-			boardType = dto.getBoardType();
-		}
-		Map<String, Object> param = new HashMap<>();
-		System.out.println("adminController, HashMap Test = " + boardType);
-		param.put("mNo",mNo);
-		param.put("boardNo",boardNo);
-		// board_Tile값 가져오기 ( info와 free 테이블이 나눠져 있기에 구분
-		String getBoardTitle = null;
-		if(boardType.equals("info")) {
-			getBoardTitle = pushService.getBoardTitleInfo(param);
-
-		}else if(boardType.equals("free")) {
-			getBoardTitle = pushService.getBoardTitleFree(param);
-		}else {
-			System.out.println("getBoardTitle Error");
-		}
-		param.put("boardType", boardType);
-		param.put("title", getBoardTitle);
-		int boardPushBlind = pushService.boardPushBlind(param);
 		if(result == 1) {
 			return result;
 		}else {
