@@ -295,10 +295,6 @@ public class AdminDAO {
 	public int adminBoardDelete(SqlSessionTemplate sqlSession, int no) {
 		return sqlSession.update("admin-adminBoardMapper.adminBoardDelete",no);
 	}
-	// admin board push witer 정보 가져오기 (inquiry)
-	public int adminBoardWriter(SqlSessionTemplate sqlSession,int boardNo) {
-		return sqlSession.selectOne("admin-adminBoardMapper.adminBoardWriter",boardNo);
-	}
 	// --------------------------Admin Declaration Page---------------------------
 	// summary
 	public int deTodayCount(SqlSessionTemplate sqlSession) {

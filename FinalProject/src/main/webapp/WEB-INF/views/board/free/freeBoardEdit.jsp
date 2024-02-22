@@ -12,15 +12,15 @@
 	href="../../../../resources/css/board/common/template.css" />
 <link rel="stylesheet"
 	href="../../../../resources/css/board/info/infoBoardEdit.css" />
-<link rel="stylesheet"
+	<link rel="stylesheet"
 	href="../../../../resources/css/board/common/CkEditor5.css" />
 
 <script
 	src="https://cdn.ckeditor.com/ckeditor5/41.0.0/super-build/ckeditor.js"></script>
 </head>
 <body>
-	<form action="/free/updatePost" method="post">
-		<input type="hidden" name="freeNo" value="${post.freeNo}">
+	<form action="/info/updatePost" method="post">
+		<input type="hidden" name="infoNo" value="${post.infoNo}">
 		<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
 			data-navbarbg="skin6" data-sidebartype="full"
 			data-sidebar-position="fixed" data-header-position="fixed">
@@ -38,40 +38,53 @@
 									<div class="main-boardList">
 										<div>
 											<p class="form-lable">제목</p>
-											<input type="text" class="form-input" name="freeTitle"
-												value="${post.freeTitle}" placeholder="제목을 입력해주세요">
+											<input type="text" class="form-input" name="infoTitle"
+												value="${post.infoTitle}" placeholder="제목을 입력해주세요">
 										</div>
 										<div>
 											<p class="form-lable">카테고리</p>
-											<select id="category" name="freeCategory" class="form-input">
-												<option value="daily"
-													${'daily' == categoryName ? 'selected="selected"' : ''}>일상
-													이야기</option>
-												<option value="informationy"
-													${'informationy' == categoryName ? 'selected="selected"' : ''}>정보
-													공유</option>
-												<option value="hobby"
-													${'hobby' == categoryName ? 'selected="selected"' : ''}>취미
-													공유</option>
-												<option value="review"
-													${'review' == categoryName ? 'selected="selected"' : ''}>추천
-													& 리뷰</option>
+											<select id="category" name="infoCategory" class="form-input">
+												<option value="programming"
+													${'programming' == post.infoCategory ? 'selected="selected"' : ''}>프로그래밍
+													언어</option>
+												<option value="framework"
+													${'framework' == post.infoCategory ? 'selected="selected"' : ''}>프레임워크
+													및 라이브러리</option>
+												<option value="database"
+													${'database' == post.infoCategory ? 'selected="selected"' : ''}>데이터베이스</option>
+												<option value="webDev"
+													${'webDev' == post.infoCategory ? 'selected="selected"' : ''}>웹개발</option>
+												<option value="mobileDev"
+													${'mobileDev' == post.infoCategory ? 'selected="selected"' : ''}>모바일
+													개발</option>
+												<option value="machineLearning"
+													${'machineLearning' == post.infoCategory ? 'selected="selected"' : ''}>기계학습
+													/ 인공지능</option>
+												<option value="cloud"
+													${'cloud' == post.infoCategory ? 'selected="selected"' : ''}>클라우드
+													& 서버</option>
+												<option value="devTools"
+													${'devTools' == post.infoCategory ? 'selected="selected"' : ''}>개발
+													도구</option>
+												<option value="portfolio"
+													${'portfolio' == post.infoCategory ? 'selected="selected"' : ''}>프로젝트
+													& 포트폴리오</option>
 											</select>
-										</div>
 
+										</div>
 										<div>
 											<p class="form-lable">본문</p>
-											<textarea name="freeContent" id="editor">${post.freeContent}</textarea>
+											<textarea name="infoContent" id="editor">${post.infoContent}</textarea>
 										</div>
 										<div>
 											<!-- 숨겨진 필드로 에디터의 데이터를 전송 -->
-											<input type="hidden" name="freeContent" id="editorData">
+											<input type="hidden" name="infoContent" id="editorData">
 											<p class="form-lable">태그</p>
 											<div class="form-tag-div">
 												<c:forEach var="tag" items="${tags}" varStatus="loop">
 													<p class="form-input-tag-text">#</p>
 
-													<input type="text" name="freeTag${loop.index + 1}"
+													<input type="text" name="infoTag${loop.index + 1}"
 														class="form-input-tag" value="${tag}"
 														placeholder="태그를 입력해주세요">
 												</c:forEach>
@@ -97,7 +110,7 @@
 <script>
 
     window.onload = function() {
-        var saved = "${post.freeCategory}"; 
+        var saved = "${post.infoCategory}"; 
         var selectElement = document.getElementById("category"); 
 
         for (var i = 0; i < selectElement.options.length; i++) {

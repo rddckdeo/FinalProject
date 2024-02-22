@@ -45,10 +45,10 @@ a.disabled {
 						<div class="container-fluid">
 							<div class="categoryNavigation-div">
 								<div class="categoryNavigation">
-									<p>정보게시판 </p>
+									<a href="">정보게시판 </a>
 									<c:if test="${not empty categoryName}">
 										<p>|</p>
-										<p>${categoryName}</p>
+										<a href="">${categoryName}</a>
 									</c:if>
 								</div>
 								<div class="button-wrapper">

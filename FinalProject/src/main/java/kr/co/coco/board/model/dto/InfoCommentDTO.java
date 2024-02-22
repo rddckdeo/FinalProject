@@ -6,13 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter // 게터
 @Setter // 세터
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class InfoCommentDTO {
 
     private int infoCommentNo; // 댓글 번호
@@ -29,10 +27,4 @@ public class InfoCommentDTO {
     
     private String imageFileName;  
     private String imageFilePath;
-    
-    private String infoTitle;
-    private String freeTitle;
-    
-    private String additionalField1;
-    private String additionalField2;
 }

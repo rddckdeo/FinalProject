@@ -1,6 +1,5 @@
 package kr.co.coco.board.model.service;
 
-import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 
 
@@ -23,10 +22,4 @@ public interface FreeCommentService {
 
 	// 해당 게시글에 연결된 모든 댓글 삭제
 	void deleteCommentsByPostId(int freeNo);
-
-	//댓글 신고하기 
-	boolean reportComment(DeclarationDTO declarationDto);
-
-	//댓글 수정하기 
-	FreeCommentDTO updateComment(int commentId, String commentContent);
 }

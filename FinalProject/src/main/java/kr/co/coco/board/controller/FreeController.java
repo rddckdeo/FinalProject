@@ -17,13 +17,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;  
 import kr.co.coco.board.model.dto.FreeDTO;  
 import kr.co.coco.board.model.service.FreeCommentServiceImpl; 
@@ -66,6 +64,15 @@ public class FreeController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("sortType", sortType);
+
+//        System.out.println("Model attributes:");
+//        Map<String, Object> modelMap = model.asMap();
+//        System.out.println("posts: " + modelMap.get("posts"));
+//        System.out.println("totalPosts: " + modelMap.get("totalPosts"));
+//        System.out.println("totalPages: " + modelMap.get("totalPages"));
+//        System.out.println("currentPage: " + modelMap.get("currentPage"));
+//        System.out.println("categoryName: " + modelMap.get("categoryName"));
+//        System.out.println("sortType: " + modelMap.get("sortType"));
 
         return "board/free/freeBoard";  
     }
@@ -128,8 +135,6 @@ public class FreeController {
         model.addAttribute("post", post);
         model.addAttribute("category", category);
         model.addAttribute("tags", tags);
-        
-        System.out.println(freeNo);
 
         return "board/free/freeBoardEdit"; 
     }
@@ -175,34 +180,6 @@ public class FreeController {
 
         return ResponseEntity.ok(response);
     }
-    
-
-	// 게시글 신고하기
-	@PostMapping("/report")
-	public ResponseEntity<?> reportInfo(@RequestBody DeclarationDTO declarationDto, HttpSession session) {
-		try {
-
-			Integer mNo = (Integer) session.getAttribute("no");
-
-			// 사용자 번호 세팅
-			declarationDto.setMNo(mNo);
-
-			// 신고 처리 로직 수행
-			boolean isSuccessful = freeService.report(declarationDto);
-
-			// 신고 처리 결과에 따른 응답
-			if (isSuccessful) {
-				// 신고 처리 성공 시 응답
-				return ResponseEntity.ok().build();
-			} else {
-				// 신고 처리 실패 시 응답
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Declaration processing failed.");
-			}
-		} catch (Exception e) {
-			// 에러 발생 시 응답
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
 
 
 

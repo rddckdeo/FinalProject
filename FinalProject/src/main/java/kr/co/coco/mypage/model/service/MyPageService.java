@@ -2,7 +2,6 @@ package kr.co.coco.mypage.model.service;
 
 import java.util.List;
 
-import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
@@ -35,20 +34,6 @@ public interface MyPageService {
 	// 프로필 수정 
 	boolean updateProfile(Integer mNo, String[] hope, String[] stack, String intro, String nickname, String email,
 			String number, String saveFileName, String savePath);
-
-	//문의사항 등록 
-	void registerInquiry(Integer mNo, String infoTitle, String infoContent);
-
-	//문의사항 진입 
-	List<AdminBoardDTO> getInquiries(Integer mNo);
-
-	// 문의게시판 조회수 증가
-	void increaseViewCount(int no);
-
-	// 문의게시판 디테일(정보가져오기)
-	AdminBoardDTO inquiryDtail(int no);
-
-
 	
 	
 	

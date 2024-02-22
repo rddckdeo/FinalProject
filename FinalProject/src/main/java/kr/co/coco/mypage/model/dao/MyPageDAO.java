@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
@@ -44,16 +43,15 @@ public class MyPageDAO {
         return sqlSession.selectList("freeMapper.fetchPostsByMemberNo", params);
     }
 
- // 정보 게시판 총 게시글 조회 
-    public int allInfoBoardPostsNo(Integer mNo) {
-        return sqlSession.selectOne("infoMapper.allInfoBoardPostsNo", mNo);
-    }
-
-    // 자유게시판 총 게시글 조회
-    public int allFreeBoardPostsNo(Integer mNo) {
-        return sqlSession.selectOne("freeMapper.allFreeBoardPostsNo", mNo);
-    }
-
+    // 정보 게시판 총 게시글 조회 
+	public int allInfoBoardPostsNo(Integer mNo) {
+		return sqlSession.selectOne("infoMapper.allInfoBoardPostsNo");
+	}
+	
+//	자유게시판 총 게시글 조회
+	public int allFreeBoardPostsNo(Integer mNo) {
+		return sqlSession.selectOne("freeMapper.allFreeBoardPostsNo");
+	}
 
 	//정보게시판 댓글 가져오기 
 	public List<InfoCommentDTO> fetchInfoCommentNo(Integer mNo) {
@@ -84,34 +82,6 @@ public class MyPageDAO {
 
 	    return sqlSession.update("mypageMapper.updateProfile", param);  
 	}
-
-	// 문의사항 등록
-	public int registerInquiry(Integer mNo, String infoTitle, String infoContent) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("mNo", mNo);
-	    params.put("infoTitle", infoTitle);
-	    params.put("infoContent", infoContent);
-	    
-	    return sqlSession.insert("mypageMapper.registerInquiry", params);
-	}
-
-	//문의사항 진입 
-	public List<AdminBoardDTO> getInquiries(Integer mNo) {
-	    return sqlSession.selectList("admin-adminBoardMapper.getInquiries", mNo);
-	}
-
-	// 문의게시판 조회수 증가
-	public int increaseViewCount(int no) {
-		 return sqlSession.update("admin-adminBoardMapper.increaseViewCount", no);
-	}
-
-	// 문의게시판 디테일(정보가져오기)
-	public AdminBoardDTO inquiryDtail(int no) {
-	    return sqlSession.selectOne("admin-adminBoardMapper.inquiryDtail", no);
-	}
-
-
-
 	
 
 }

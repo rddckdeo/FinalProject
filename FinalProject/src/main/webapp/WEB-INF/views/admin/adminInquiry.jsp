@@ -66,7 +66,7 @@
 															</div>
 															<div class="width100 direction1 alignCenter">
 																<div class="width100">
-																	<h1 class="font2">Title</h1>
+																	<h1 class="font2">Title</h1>						
 																</div>
 																<div class="textTitle">${item.title}</div>
 																<div class="width100">

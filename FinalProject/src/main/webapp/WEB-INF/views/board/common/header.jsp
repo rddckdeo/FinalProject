@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<script src="/resources/js/common/boardPush.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="/resources/css/myPage/boardPush.css" rel="stylesheet">
-<link href="/resources/css/member/default.css" rel="stylesheet">
+
 <!DOCTYPE html>
 
 <header>
@@ -20,21 +17,31 @@
 								class="nav-link nav-icon-hover" href="#" id="header-bell"
 								data-bs-toggle="dropdown" aria-expanded="false"> <img
 									src="../../../../resources/uploads/icon/bell.png" alt=""
-									width="35" height="35" class="rounded-circle"> 
-									<span class="notification-counter" id="viewCountSpan"></span> <!-- 알림 카운트를 표시 -->
+									width="35" height="35" class="rounded-circle"> <span
+									class="notification-counter">3</span> <!-- 알림 카운트를 표시 -->
 							</a>
 								<div
-									class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up dropDownDiv"
+									class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
 									aria-labelledby="header-bell">
 									<div class="message-body">
 										<c:choose>
 											<c:when test="${sessionScope.no != null}">
 												<!-- 로그인한 사용자용 알림 -->
-												<div id="boardPushTitle" class="direction2 alignCenter justifyAround"></div>
-												<div class="width100 justifyCenter">
-													<a class="pushBtn" href="boardPush.do"> 알림으로 이동 </a>
-												</div>
-												<div id="boardPushDiv"></div>
+												<a href="javascript:void(0)"
+													class="d-flex align-items-center gap-2 dropdown-item">
+													<i class="ti ti-user fs-6"></i>
+													<p class="mb-0 fs-3">알림 1</p>
+												</a>
+												<a href="javascript:void(0)"
+													class="d-flex align-items-center gap-2 dropdown-item">
+													<i class="ti ti-mail fs-6"></i>
+													<p class="mb-0 fs-3">알림 2</p>
+												</a>
+												<a href="javascript:void(0)"
+													class="d-flex align-items-center gap-2 dropdown-item">
+													<i class="ti ti-list-check fs-6"></i>
+													<p class="mb-0 fs-3">알림 3</p>
+												</a>
 												<!-- 여기에 알림 목록을 추가 -->
 											</c:when>
 											<c:otherwise>
