@@ -100,9 +100,9 @@ function receiveProjectConfirm(confirmText,projectNo,memberNo){
 						alert("프로젝트 승인거절 실패.")
 					}
 
-					window.location.href = "/colabo/inviteApplyProject";
 					
 				}
+					window.location.href = "/colabo/inviteApplyProject";
 
 				},
 				error: function() {		 //요청 실패시 에러 확인을 위함

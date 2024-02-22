@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.InviteProjectDTO;
+import kr.co.coco.colabo.model.dto.ProjectPushDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -227,6 +228,26 @@ public class ColaboDAO {
 
 	public int applyListCheck(SqlSessionTemplate sqlSession, InviteProjectDTO applyListCheck) {
 		return sqlSession.selectOne("colaboMapper.applyListCheck", applyListCheck);
+	}
+
+	public int projectPush(SqlSessionTemplate sqlSession, ProjectPushDTO push) {
+		return sqlSession.insert("colaboMapper.projectPush", push);
+	}
+
+	public List<Integer> getprojectList(SqlSessionTemplate sqlSession, ProjectPushDTO projectPush) {
+		return sqlSession.selectList("colaboMapper.getprojectList", projectPush);
+	}
+
+	public List<ProjectPushDTO> getPushList(SqlSessionTemplate sqlSession, List<Integer> pushList) {
+		return sqlSession.selectList("colaboMapper.getPushList", pushList);
+	}
+
+	public int changePushType(SqlSessionTemplate sqlSession, ProjectPushDTO push) {
+		return sqlSession.update("colaboMapper.changePushType", push);
+	}
+
+	public int allChangePushType(SqlSessionTemplate sqlSession, ProjectPushDTO push) {
+		return sqlSession.update("colaboMapper.allChangePushType", push);
 	}
 
 }

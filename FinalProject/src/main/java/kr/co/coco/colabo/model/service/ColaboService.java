@@ -8,6 +8,7 @@ import java.util.Map;
 import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.InviteProjectDTO;
+import kr.co.coco.colabo.model.dto.ProjectPushDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -138,6 +139,24 @@ public interface ColaboService {
 	// 신청 승인테이블에 해당 데이터가 있는지 검증 
 	// 클라이언트단에서 매개변수로 데이터값을 넘기기때문에 수정에 대비한 검증임
 	public int applyListCheck(InviteProjectDTO applyListCheck);
+	
+	// 알림테이블에 데이터넣기  모두 공용
+	public int projectPush(ProjectPushDTO push);
+	
+	// 알림 테이블에서 해당되는 projectNo 를 조회하기위해
+	// 세션멤버넘버로 팀에 가입되어있는 projectNo 를 모두가져옴
+	public List<Integer> getprojectList(ProjectPushDTO projectPush);
+	
+	// 해당 멤버가 가입되어있는 프로젝트들의 알림 (push_no) 넘버 리스트가지고 
+	// 알람이 있는지 데이터 가져오기
+	public List<ProjectPushDTO> getPushList(List<Integer> pushList);
+	
+	// 알림 클릭시 확인타입으로 변경 ->   N 에서 Y 로 받는멤버가 0이면
+	// check_m_no 에 해당멤버 리스트추가
+	public int changePushType(ProjectPushDTO push);
+	
+	// 알림 전체삭제 클릭시 전체타입 변경 
+	public int allChangePushType(ProjectPushDTO push);
 }
 
 

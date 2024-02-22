@@ -17,6 +17,7 @@ import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.model.dao.ColaboDAO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.InviteProjectDTO;
+import kr.co.coco.colabo.model.dto.ProjectPushDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -401,6 +402,31 @@ public class ColaboServiceImpl implements ColaboService{
 
 	public int applyListCheck(InviteProjectDTO applyListCheck) {
 		return colaboDAO.applyListCheck(sqlSession, applyListCheck);
+	}
+
+
+	public int projectPush(ProjectPushDTO push) {
+		return colaboDAO.projectPush(sqlSession, push);
+	}
+
+
+	public List<Integer> getprojectList(ProjectPushDTO projectPush) {
+		return colaboDAO.getprojectList(sqlSession, projectPush);
+	}
+
+
+	public List<ProjectPushDTO> getPushList(List<Integer> pushList) {
+		return colaboDAO.getPushList(sqlSession, pushList);
+	}
+
+
+	public int changePushType(ProjectPushDTO push) {
+		return colaboDAO.changePushType(sqlSession, push);
+	}
+
+
+	public int allChangePushType(ProjectPushDTO push) {
+		return colaboDAO.allChangePushType(sqlSession, push);
 	}
 	
 	
