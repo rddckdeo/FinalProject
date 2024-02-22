@@ -6,12 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>my Invite/Apply Project</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
 
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
 
@@ -144,7 +144,7 @@
 	      <h3><strong>4. 프로젝트 기술스택</strong></h3>
 	      <h5>${item.stack}</h5>
 	      <br>
-	      <h3><strong>4. 프로젝트 시작일</strong></h3>
+	      <h3><strong>5. 프로젝트 시작일</strong></h3>
 	      <h5>${item.startDate}</h5>
 	      
 	      </div>
@@ -182,7 +182,7 @@
 											<div class="card-content">
 												<h5 class="card-title">${item.name} 프로젝트</h5>
 												<p class="card-text height100">${item.detail}</p>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectReceive${receiveCount}">상세보기</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectReceive${receiveCount}">신청인원 상세 정보</button>
 <!-- 프로젝트정보 Modal -->   
 <div class="modal fade" id="projectReceive${receiveCount}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">

@@ -19,6 +19,8 @@ import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
+import kr.co.coco.colabo.model.service.ColaboServiceImpl;
 
 @Controller
 @RequestMapping("/board")
@@ -29,6 +31,9 @@ public class BoardController {
 
 	@Autowired
 	private FreeServiceImpl freeService;
+	
+	@Autowired
+	private ColaboServiceImpl colaboService;
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
@@ -44,9 +49,14 @@ public class BoardController {
 
 	    // 자유 게시판 게시글 조회
 	    List<FreeDTO> freePosts = freeService.getAllPosts(0, 5);
-
+	    
+	    // 추천 프로젝트 리스트
+ 		List<ColaboDTO> NProjectList = colaboService.getNProjectList();
+	 		
+	    
 	    model.addAttribute("infoPosts", infoPosts);
 	    model.addAttribute("freePosts", freePosts);
+	    model.addAttribute("NProjectList", NProjectList);
 
 	    logger.info("infoPosts: {}", infoPosts);
 	    logger.info("freePosts: {}", freePosts);

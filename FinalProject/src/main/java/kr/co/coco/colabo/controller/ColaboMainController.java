@@ -28,6 +28,7 @@ import kr.co.coco.colabo.common.upload.UploadFile;
 import kr.co.coco.colabo.common.validation.DataValidation;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.InviteProjectDTO;
+import kr.co.coco.colabo.model.dto.ProjectPushDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -77,6 +78,17 @@ public class ColaboMainController {
 		session.setAttribute("getProjectNo", projectNo);
 		
 //		System.out.println("가져온 넘버는 : "+projectNo);
+		
+		return "";
+	}
+	
+	@PostMapping("/getPushProjectSession.do")
+	@ResponseBody
+	public String getPushProjectSession(@RequestParam(value="projectNo", defaultValue="0")int projectNo,HttpSession session) {
+		
+		// 포스트요청 들어옴
+		getProjectSession(projectNo,session);
+		
 		
 		return "";
 	}
@@ -906,7 +918,7 @@ public class ColaboMainController {
 //		System.out.println(colabo.getNo());
 //		System.out.println(colabo.getStateKor());
 		
-		// 수정하는 멤버와  프로젝트를 생성한 멤버가 같은지 확인을위해  기존에 프로젝트넘버로
+		// 타입변경하는 멤버와  프로젝트를 생성한 멤버가 같은지 확인을위해  기존에 프로젝트넘버로
 		// 생성한 멤버를 가져오는 코드를 진행후 Session 에 저장된 memberNo 와 비교후 같으면 진행
 		int creatMemberNo = colaboService.getProjectCreateMember(colabo.getNo());
 		
@@ -916,6 +928,27 @@ public class ColaboMainController {
 		if(creatMemberNo == (int)session.getAttribute("no")) {
 			
 			if(colabo.getStateKor().equals("프로젝트진행") || colabo.getStateKor().equals("프로젝트완료")) {
+				
+				ProjectPushDTO push = new ProjectPushDTO();
+				
+				push.setProjectNo((int)session.getAttribute("getProjectNo"));
+				push.setAddMNo((int)session.getAttribute("no"));
+				push.setReceiveMNo(0);
+				push.setPushContent("프로젝트");
+				push.setPushCheck('N');
+				
+				if(colabo.getStateKor().equals("프로젝트진행")) {
+					push.setPushType("진행");
+				}else if(colabo.getStateKor().equals("프로젝트완료")) {
+					push.setPushType("완료");
+				}
+				
+				int pushResult = colaboService.projectPush(push);
+				
+				System.out.println("프로젝트 신청 알람 결과값 : "+ pushResult);
+				
+				
+				
 				int result = colaboService.changeProjectType(colabo);
 				
 				if(result == 1) {
@@ -979,6 +1012,20 @@ public class ColaboMainController {
 		invite.setProjectNo(projectNo);
 		invite.setInviteMNo(memberNo);
 			
+		ProjectPushDTO push = new ProjectPushDTO();
+		
+		push.setProjectNo(invite.getProjectNo());
+		push.setAddMNo(invite.getInviteMNo());
+		push.setReceiveMNo(invite.getMemberNo());
+		push.setPushType("초대");
+		push.setPushContent("프로젝트");
+		push.setPushCheck('N');
+		
+		int pushResult = colaboService.projectPush(push);
+		
+		System.out.println("프로젝트 초대 알람 결과값 : "+ pushResult);
+		
+		
 		int result = colaboService.inviteProject(invite);
 		
 		System.out.println(result);
@@ -988,6 +1035,38 @@ public class ColaboMainController {
 			return "failed";
 		}
 		
+	}
+	
+	@PostMapping("/applyProject.do")
+	@ResponseBody
+	public String applyProject(HttpSession session, InviteProjectDTO sendApply) {
+		int memberNo = (int)session.getAttribute("no");
+		
+		InviteProjectDTO apply = new InviteProjectDTO();
+		apply.setProjectNo(sendApply.getProjectNo());
+		apply.setMemberNo(memberNo);
+		apply.setApplyMNo(sendApply.getApplyMNo());
+		
+		ProjectPushDTO push = new ProjectPushDTO();
+		
+		push.setProjectNo(apply.getProjectNo());
+		push.setAddMNo(apply.getMemberNo());
+		push.setReceiveMNo(apply.getApplyMNo());
+		push.setPushType("신청");
+		push.setPushContent("프로젝트");
+		push.setPushCheck('N');
+		
+		int pushResult = colaboService.projectPush(push);
+		
+		System.out.println("프로젝트 신청 알람 결과값 : "+ pushResult);
+		
+		int result = colaboService.enrollApplyProject(apply);
+		
+		if(result >0) {
+			return "success";
+		}
+		
+		return "failed";
 	}
 	
 	
@@ -1048,7 +1127,20 @@ public class ColaboMainController {
 
 		if(checkList > 0) {
 			
+			ProjectPushDTO push = new ProjectPushDTO();
 				if(invite.getConfirmText().equals("참가")) {
+					
+					
+					push.setProjectNo(inviteListCheck.getProjectNo());
+					push.setAddMNo(colabo.getMemberNo());
+					push.setReceiveMNo(0);
+					push.setPushType("초대"+invite.getConfirmText());
+					push.setPushContent("프로젝트");
+					push.setPushCheck('N');
+					
+					int pushResult = colaboService.projectPush(push);
+					
+					System.out.println("프로젝트 참가 알람 결과값 : "+ pushResult);
 					
 					int result = colaboService.enrollProjectTeam(colabo);
 					
@@ -1059,6 +1151,18 @@ public class ColaboMainController {
 					}
 					
 				}else if(invite.getConfirmText().equals("거절")) {
+					
+					push.setProjectNo(inviteListCheck.getProjectNo());
+					push.setAddMNo(colabo.getMemberNo());
+					push.setReceiveMNo(0);
+					push.setPushType("초대"+invite.getConfirmText());
+					push.setPushContent("프로젝트");
+					push.setPushCheck('N');
+					
+					int pushResult = colaboService.projectPush(push);
+					
+					System.out.println("프로젝트 거절 알람 결과값 : "+ pushResult);
+					
 					int result = colaboService.deleteInviteList(colabo);
 					
 					if(result >0) {
@@ -1074,8 +1178,211 @@ public class ColaboMainController {
 		return "failed";
 	}
 	
+	@PostMapping("/applyConfirm.do")
+	@ResponseBody
+	public String applyConfirm(HttpSession session, InviteProjectDTO sendApply) {
+		
+		// 신청한 인원의 no 로 데이터 가져오기
+		ColaboDTO colabo = colaboService.getMemberInfo(sendApply.getMemberNo());
+		
+		colabo.setNo(sendApply.getProjectNo());
+		
+		// invite 테이블과 동일한 체크
+		// 전에 클라이언트단에서 프로젝트넘버를 매개변수로 넣어보냈기때문에
+		// 수정할 가능성이있어서 받은 프로젝트넘버와 세션멤버넘버로 
+		// 초대테이블에서 해당하는값이 있는지 파악후 있을때만 로직실행
+		
+		InviteProjectDTO applyListCheck = new InviteProjectDTO();
+		applyListCheck.setMemberNo(colabo.getMemberNo());
+		applyListCheck.setProjectNo(colabo.getNo());
+		
+		
+		
+		
+		int checkList = colaboService.applyListCheck(applyListCheck);
+//				System.out.println(checkList);
+		
+		
+		if(checkList > 0) {
+			
+			ProjectPushDTO push = new ProjectPushDTO();
+			if(sendApply.getConfirmText().equals("승인")) {
+				
+				
+				push.setProjectNo(colabo.getNo());
+				push.setAddMNo((int)session.getAttribute("no"));
+				push.setReceiveMNo(colabo.getMemberNo());
+				push.setPushType("신청"+sendApply.getConfirmText());
+				push.setPushContent("프로젝트");
+				push.setPushCheck('N');
+				
+				int pushResult = colaboService.projectPush(push);
+				
+				System.out.println("프로젝트 신청승인 알람 결과값 : "+ pushResult);
+				
+				int result = colaboService.enrollApplyProjectTeam(colabo);
+				
+				if(result > 0) {
+					return "success";
+				}else {
+					return "failed";
+				}
+			}else if(sendApply.getConfirmText().equals("거절")) {
+				
+				push.setProjectNo(colabo.getNo());
+				push.setAddMNo((int)session.getAttribute("no"));
+				push.setReceiveMNo(colabo.getMemberNo());
+				push.setPushType("신청"+sendApply.getConfirmText());
+				push.setPushContent("프로젝트");
+				push.setPushCheck('N');
+				
+				int pushResult = colaboService.projectPush(push);
+				
+				System.out.println("프로젝트 신청거절 알람 결과값 : "+ pushResult);
+				
+				int result = colaboService.deleteApplyList(colabo);
+				
+				if(result > 0) {
+					return "success";
+				}else {
+					return "failed";
+				}
+			}
+			
+		}
+		
+		return "failed";
+	}
 	
 	
+	
+	@GetMapping("/projectPushReceive.do")
+	@ResponseBody
+	public List<ProjectPushDTO> projectPushReceive(HttpSession session) {
+		
+		int memberNo = (int)session.getAttribute("no");
+		
+		// 멤버넘버로 조회하는것에서 프로젝트 넘버들로 foreach 문작성으로 변경
+		// 넘버들 가져오기
+		List<ColaboDTO> enrollProjectList = colaboService.getProjectNameNumberList(memberNo); 
+		List<Integer> projectNoList = new ArrayList<>(); 
+		
+		// projectPushDTO 에 넣기위해 enrollProjectList 에서 가져온 p_no 만
+		// List<Integer> 에 넣기위한 반복문
+		for(int i =0; i<enrollProjectList.size(); i++) {
+			projectNoList.add(enrollProjectList.get(i).getNo());
+		}
+		
+		// 멤버로 프로젝트 가입되어있는것들 중에  push_no (알림넘버) 리스트들 가져오기
+		// 쿼리에 receive_m_no 가   0 과  자기자신멤버넘버  인것만 가져옴  
+		// 이유는 0이면 전체전송이기때문에 가져와야하고  0이아닐땐 받는인원이기때문에
+		// 가져올때 알림테이블에서 확인한 멤버 추가되는 컬럼인 check_m_no 에 가져오는 인원의 값이 없는지 확인후 가져옴
+		
+		// 위에서 가져온 enrollProjectList 를 pushDTO 에 List변수에 p_no 만 넣고
+		// 리스트를가져올때 객체를 보냄
+		
+		ProjectPushDTO projectPush = new ProjectPushDTO();
+		
+		projectPush.setMemberNo(memberNo);
+		projectPush.setProjectNoList(projectNoList);
+		
+		
+		
+		List<Integer> pushList = colaboService.getprojectList(projectPush);
+		
+		
+		
+//		for(int i=0; i<projectList.size(); i++) {
+//			System.out.println(projectList.get(i));
+//		}
+		
+		// 들어가있는 프로젝트가 있을때만 실행
+		if(!pushList.isEmpty()) {
+			List<ProjectPushDTO> getPushList = colaboService.getPushList(pushList);
+//			System.out.println("비어있지않음");
+//			System.out.println(getPushList);
+//			for(int i=0; i<getPushList.size(); i++) {
+//				System.out.println(getPushList.get(i).getPushType());
+//			}
+			
+			return getPushList;
+			
+			
+		}
+		
+		
+		return null;
+	}
+	
+	@PostMapping("/changePushType.do")
+	@ResponseBody
+	public String changePushType(ProjectPushDTO sendPush, HttpSession session) {
+		
+		
+		ProjectPushDTO push = new ProjectPushDTO();
+		
+			push.setPushNo(sendPush.getPushNo());
+			push.setMemberNo((int)session.getAttribute("no"));
+			
+			// 쿼리작성시 이미들어가있을때  ',' 구분자를 사용하기때문에  String 타입으로 변경후 
+			// 그부분에넣을 memberNo 변수값
+			push.setCheckMNo(String.valueOf(session.getAttribute("no")));
+			
+			int result = colaboService.changePushType(push);
+			
+//			System.out.println(result);
+			
+		
+		return "";
+	}
+	
+	@PostMapping("/allChangePushType.do")
+	@ResponseBody
+	public String allChangePushType(HttpSession session) {
+		
+		int memberNo = (int)session.getAttribute("no");
+		
+		List<ColaboDTO> enrollProjectList = colaboService.getProjectNameNumberList(memberNo); 
+		List<Integer> projectNoList = new ArrayList<>(); 
+		
+		// projectPushDTO 에 넣기위해 enrollProjectList 에서 가져온 p_no 만
+		// List<Integer> 에 넣기위한 반복문
+		for(int i =0; i<enrollProjectList.size(); i++) {
+			projectNoList.add(enrollProjectList.get(i).getNo());
+		}
+		
+		// 멤버로 프로젝트 가입되어있는것들 중에  push_no (알림넘버) 리스트들 가져오기
+		// 쿼리에 receive_m_no 가   0 과  자기자신멤버넘버  인것만 가져옴  
+		// 이유는 0이면 전체전송이기때문에 가져와야하고  0이아닐땐 받는인원이기때문에
+		// 가져올때 알림테이블에서 확인한 멤버 추가되는 컬럼인 check_m_no 에 가져오는 인원의 값이 없는지 확인후 가져옴
+		
+		// 위에서 가져온 enrollProjectList 를 pushDTO 에 List변수에 p_no 만 넣고
+		// 리스트를가져올때 객체를 보냄
+		
+		ProjectPushDTO projectPush = new ProjectPushDTO();
+		
+		projectPush.setMemberNo(memberNo);
+		projectPush.setProjectNoList(projectNoList);
+		
+		ProjectPushDTO push = new ProjectPushDTO();		
+		push.setMemberNo(memberNo);
+		
+		// 쿼리작성시 이미들어가있을때  ',' 구분자를 사용하기때문에  String 타입으로 변경후 
+		// 그부분에넣을 memberNo 변수값
+		push.setCheckMNo(String.valueOf(session.getAttribute("no")));
+		List<Integer> pushList = colaboService.getprojectList(projectPush);
+		
+		// 해당하는 알림에대해 전체 타입변경을 할 pushNo 가담긴 List
+		// 객체안에있는 변수에 담아서 넣을땐 mapper 에서 
+		// collection 에 해당하는 변수이름을 넣는다  
+		// 리스트 자체를넣을땐 collection 에 list 를넣는다
+		push.setPushNoList(pushList);
+		
+		int result = colaboService.allChangePushType(push);
+		
+		
+		return "";
+	}
 	
 	
 	
