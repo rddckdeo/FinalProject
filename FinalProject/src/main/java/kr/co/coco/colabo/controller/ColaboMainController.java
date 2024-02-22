@@ -233,7 +233,7 @@ public class ColaboMainController {
 					System.out.println("일정범위 넘어가는지 조회 : "+ validationResult);
 					
 //					System.out.println("업로드 올린 파일이 비어있는지 체크 : "+upload.isEmpty());
-//					System.out.println("업로드파일 보내는 이름이 비어있는지 체크 : "+colabo.getUploadName().isEmpty());
+//					System.out.println("업로드1파일 보내는 이름이 비어있는지 체크 : "+colabo.getUploadName().isEmpty());
 //					
 //					System.out.println("히든타입의 업로드이름 내용 : "+ colabo.getUploadName());
 					
