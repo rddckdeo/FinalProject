@@ -85,6 +85,12 @@ public class InfoServiceImpl implements InfoService {
 	public List<InfoDTO> getAllPosts(int startIndex, int pageSize) {
 	    return infoDao.getAllPosts(startIndex, pageSize);
 	}
+	
+	//전체 게시글 수 
+	@Override
+	public int countPosts() {
+		 return infoDao.countPosts();
+	}
 
 	//검색 로직 
 	@Override
@@ -129,9 +135,11 @@ public class InfoServiceImpl implements InfoService {
 
 	//신고하기 
 	@Override
-    public boolean processDeclaration(DeclarationDTO declarationDto) {
-        return declarationDao.insertDeclaration(declarationDto);
+    public boolean report(DeclarationDTO declarationDto) {
+        return declarationDao.report(declarationDto);
     }
+
+
 
 	
 

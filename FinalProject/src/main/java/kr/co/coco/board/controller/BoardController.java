@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +18,8 @@ import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
+import kr.co.coco.mypage.common.paging.mypagePageInfo;
+import kr.co.coco.mypage.common.paging.mypagePagination;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.service.ColaboServiceImpl;
 
@@ -39,15 +40,34 @@ public class BoardController {
 
 	//게시판 메인페이지 
 	@GetMapping("/")
-	public String infoBoard(Model model, HttpSession session) {
+	public String infoBoard(Model model, HttpSession session,
+	                        @RequestParam(value = "infoPage", defaultValue = "1") int infoPage,
+	                        @RequestParam(value = "freePage", defaultValue = "1") int freePage,
+	                        @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+
+	    session.setAttribute("infoPage", infoPage);
+	    session.setAttribute("freePage", freePage);
+
+	    infoPage = (Integer) session.getAttribute("infoPage");
+	    freePage = (Integer) session.getAttribute("freePage");
+	    
 	    Integer no = (Integer) session.getAttribute("no");
-	    String noString = String.valueOf(no);
-	    System.out.println("no: " + noString);
+//	    String noString = String.valueOf(no);
+//	    System.out.println("no: " + noString);
+
+	    int infoPostCount = infoService.countPosts(); 
+	    int freePostCount = freeService.countPosts(); 
+
+	    mypagePageInfo infoPageInfo = mypagePagination.getPageInfo(infoPostCount, infoPage, 10, pageSize); 
+	    mypagePageInfo freePageInfo = mypagePagination.getPageInfo(freePostCount, freePage, 10, pageSize); 
+
 
 	    // 정보 게시판 게시글 조회
-	    List<InfoDTO> infoPosts = infoService.getAllPosts(0, 5);
+	    List<InfoDTO> infoPosts = infoService.getAllPosts(infoPageInfo.getOffset(), pageSize);
 
 	    // 자유 게시판 게시글 조회
+	    model.addAttribute("infoPageInfo", infoPageInfo);
+	    model.addAttribute("freePageInfo", freePageInfo);
 	    List<FreeDTO> freePosts = freeService.getAllPosts(0, 5);
 	    
 	    // 추천 프로젝트 리스트
@@ -63,6 +83,7 @@ public class BoardController {
 
 	    return "board/main/boardMain";
 	}
+
 
 
 	// 검색
@@ -98,21 +119,8 @@ public class BoardController {
 	    
 	    logger.info("검색 infoPosts: {}", infoPosts);
 	    logger.info("검색 freePosts: {}", freePosts);
-
-//	    System.out.println("Current Info Page: " + infoPage);
-//	    System.out.println("Current Free Page: " + freePage);
-//	    System.out.println("Total Info Pages: " + totalInfoPages);
-//	    System.out.println("Total Free Pages: " + totalFreePages);
-//	    System.out.println("totalInfoPosts: " + totalInfoPosts);
-//	    System.out.println("totalFreePosts: " + totalFreePosts);
 	    
 	    return "board/main/boardSearch";
-	}
-	@ExceptionHandler
-	public String handleException(Exception e, RedirectAttributes redirectAttributes) {
-
-	  redirectAttributes.addFlashAttribute("error", e.getMessage());
-	  return "redirect:/board/search";
 	}
 	
 	@GetMapping("/boardPush.do")

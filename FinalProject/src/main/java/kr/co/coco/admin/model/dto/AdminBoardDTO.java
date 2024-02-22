@@ -19,4 +19,7 @@ public class AdminBoardDTO {
 	
 	private int mNo;
 	private String name;
+	
+	private String imageFilePath;
+	private String imageFileName;
 }

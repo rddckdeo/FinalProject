@@ -118,7 +118,7 @@ public class InfoController {
 	@PostMapping("/SubmitRegistr")
 	public String infoEnroll(InfoDTO info, HttpSession session) throws IllegalStateException, IOException {
 		Integer mNo = (Integer) session.getAttribute("no");
-		info.setMNo(mNo);
+		info.setMemberNo(mNo);
 
 		infoService.enrollBoard(info);
 		return "redirect:/info/category?name=" + info.getInfoCategory() + "&page=1";
@@ -144,7 +144,7 @@ public class InfoController {
 	public String updatePost(InfoDTO post, HttpSession session, RedirectAttributes redirectAttributes)
 			throws IllegalStateException, IOException {
 		Integer mNo = (Integer) session.getAttribute("no");
-		post.setMNo(mNo);
+		post.setMemberNo(mNo);
 
 		int result = infoService.updatePost(post.getInfoNo(), post);
 		if (result == 1) {
@@ -163,8 +163,8 @@ public class InfoController {
 		Map<String, Object> response = new HashMap<>();
 
 		// 해당 게시글에 연결된 모든 댓글 삭제
-		infoCommentService.deleteCommentsByPostId(infoNo);
-
+		infoCommentService.deleteCommentsByPostId(infoNo);		
+	
 		// 게시글 삭제
 		int result = infoService.deletePost(infoNo);
 
@@ -192,7 +192,9 @@ public class InfoController {
 			declarationDto.setMNo(mNo);
 
 			// 신고 처리 로직 수행
-			boolean isSuccessful = infoService.processDeclaration(declarationDto);
+			boolean isSuccessful = infoService.report(declarationDto);
+			
+			System.out.println("댓글 넘버: " + declarationDto.getInfoCommentNo());
 
 			// 신고 처리 결과에 따른 응답
 			if (isSuccessful) {

@@ -3,13 +3,20 @@ package kr.co.coco.board.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.coco.board.model.dao.DeclarationDAO;
 import kr.co.coco.board.model.dao.FreeCommentDAO;
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
+import kr.co.coco.board.model.dto.InfoCommentDTO;
 
 @Service
 public class FreeCommentServiceImpl implements FreeCommentService {
 
+	@Autowired
     private FreeCommentDAO freeCommentDAO;
+    
+	 @Autowired
+		private DeclarationDAO declarationDao;
 
     @Autowired
     public FreeCommentServiceImpl(FreeCommentDAO freeCommentDAO) {
@@ -51,5 +58,18 @@ public class FreeCommentServiceImpl implements FreeCommentService {
     public void deleteCommentsByPostId(int freeNo) {
         freeCommentDAO.deleteCommentsByPostId(freeNo);
     }
+    
+    // 댓글 수정
+	@Override
+	public FreeCommentDTO updateComment(int freeCommentNo, String commentContent) {
+	    freeCommentDAO.updateComment(freeCommentNo, commentContent);
+	    return freeCommentDAO.getCommentById(freeCommentNo);
+	}
+
+	//댓글 신고하기 
+	@Override
+	public boolean reportComment(DeclarationDTO declarationDto) {
+		return declarationDao.report(declarationDto);
+	}
 
 }

@@ -16,6 +16,10 @@ public class DeclarationDTO {
     private int boardNo;
     private String declarationContent;
     private String declarationDate;
+    
+    private int infoCommentNo; // 댓글 번호
+
+
     private String declarationWithdrawal;
     
     // admin declaration
