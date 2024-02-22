@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import kr.co.coco.board.controller.BoardController;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
@@ -32,6 +32,8 @@ import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
+import kr.co.coco.boardPush.model.dto.BoardPushDTO;
+import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 import kr.co.coco.mypage.model.dto.MyPageDTO;
 import kr.co.coco.mypage.model.service.MyPageServiceImpl;
 
@@ -47,7 +49,10 @@ public class MyPageController {
 
 	@Autowired
 	private FreeServiceImpl freeService;
-
+	
+	@Autowired
+	private BoardPushServiceImpl pushService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 //	Page 이동
@@ -259,7 +264,30 @@ public class MyPageController {
 	        	       
 	    return "myPage/myComment";
 	}
-
+	//BoardPush List
+	@GetMapping("/boardPush.do")
+	public String boardPush(Model model, HttpSession session) {
+		// session에 no값 가져오기
+		Integer mNo = (Integer)session.getAttribute("no");
+		if(mNo != null) {
+			// boardPush에 board_push_check있는 확인 컬럼 N에서 Y로 바꾸기
+			int pushCheck = pushService.pushCheck(mNo);
+			System.out.println("pushCheck"+pushCheck);
+			if(pushCheck > 0) {
+				// List 가져오기
+				List<BoardPushDTO> pushList = pushService.pushList(mNo);
+				for(BoardPushDTO push : pushList) {
+					String indate = push.getPushIndate().substring(2,10);
+					push.setPushIndate(indate);
+				}
+				model.addAttribute("pushList",pushList);
+			}
+		}else {
+			return "redirect:/member/loginForm.do";
+		}
+		return "myPage/myBoardPush";
+	}
+	
 	// mainForm
 	@GetMapping("/mainForm.do")
 	public String mainForm() {

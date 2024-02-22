@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardPush">
+	<resultMap id="boardPushResultSet" type="boardPush">
+		<result column="board_push_no" property="pushNo"></result>
+		<result column="m_no" property="mNo"></result>
+		<result column="board_push_type" property="pushType"></result>
+		<result column="board_push_contents" property="pushContent"></result>
+		<result column="board_push_check" property="pushCheck"></result>
+		<result column="board_push_indate" property="pushIndate"></result>
+		<result column="board_type" property="boardType"></result>
+		<result column="board_no" property="boardNo"></result>
+		<result column="board_push_writer" property="pushWriter"></result>
+	</resultMap>
+	
+	<resultMap id="declarationList" type="boardPush">
+		<result column="m_no" property="mNo"></result>
+		<result column="declaration_type" property="boardType"></result>
+		<result column="board_no" property="boardNo"></result>
+	</resultMap>
+	
+	<resultMap id="getInfoList" type="boardPush">
+		<result column="info_no" property="mNo"></result>
+		<result column="info_comment_no" property="comment_no"></result>
+		<result column="info_comment_content" property="pushContent"></result>
+	</resultMap>
+	
+	<resultMap id="getFreeList" type="boardPush">
+		<result column="free_no" property="mNo"></result>
+		<result column="free_comment_no" property="comment_no"></result>
+		<result column="free_comment_content" property="pushContent"></result>
+	</resultMap>
+	
+	<select id="pushListCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD_PUSH
+		WHERE M_NO = #{mNo}
+	</select>
+	
+	<select id="pushList" resultMap="boardPushResultSet">
+		SELECT p.*, M.M_NICKNAME
+		FROM BOARD_PUSH p
+		JOIN MEMBER M ON p.M_NO = m.M_NO
+		WHERE m.M_NO = #{mNo}
+	</select>
+	<update id="pushCheck">
+		UPDATE BOARD_PUSH SET BOARD_PUSH_CHECK = 'Y' WHERE M_NO = #{mNo}
+	</update>
+	<select id="pushNoneViewCount" resultType="_int">
+		SELECT COUNT(*) FROM BOARD_PUSH
+		WHERE M_NO = #{no}
+		AND BOARD_PUSH_CHECK = 'N'
+	</select>
+	<!-- push Enroll -->
+	<insert id="adminBoardPushEnroll">
+	    INSERT INTO BOARD_PUSH (
+	        BOARD_PUSH_NO,
+	        M_NO,
+	        BOARD_PUSH_TYPE,
+	        BOARD_PUSH_CONTENTS,
+	        BOARD_PUSH_CHECK,
+	        BOARD_PUSH_INDATE,
+	        BOARD_TYPE,
+	        BOARD_NO,
+	        BOARD_PUSH_WRITER
+	    ) VALUES (
+	        board_push_no_seq.nextval,
+	        #{mNo},
+	        'inquiry',
+	        #{content},
+	        'N',
+	        SYSDATE,
+	        NULL,
+	        #{boardNo},
+	        'admin'
+	    )
+	</insert>
+	<!-- 신고 테이블 내용 확인 -->
+	<select id="declarationList" resultMap = "declarationList">
+		SELECT M_NO, DECLARATION_TYPE, BOARD_NO FROM DECLARATION
+		WHERE DECLARATION_NO = #{no}
+	</select>
+	<!-- get Board Title -->
+	<select id="getBoardTitleInfo" resultType="String">
+		SELECT INFO_TITLE FROM INFO
+		WHERE INFO_NO = #{boardNo}
+		AND WHERE M_NO = #{mNo}
+	</select>
+	<select id="getBoardTitleFree" resultType="String">
+		SELECT FREE_TITLE FROM FREE
+		WHERE FREE_NO = #{boardNo}
+	</select>
+	<insert id="boardPushBlind">
+	    INSERT INTO BOARD_PUSH (
+	        BOARD_PUSH_NO,
+	        M_NO,
+	        BOARD_PUSH_TYPE,
+	        BOARD_PUSH_CONTENTS,
+	        BOARD_PUSH_CHECK,
+	        BOARD_PUSH_INDATE,
+	        BOARD_TYPE,
+	        BOARD_NO,
+	        BOARD_PUSH_WRITER
+	    ) VALUES (
+	        board_push_no_seq.nextval,
+	        #{mNo},
+	        'blind',
+	        #{title},
+	        'N',
+	        SYSDATE,
+	        #{boardType},
+	        #{boardNo},
+	        'admin'
+	    )
+	</insert>
+	
+	<select id="getInfoList" resultMap ="getInfoList">
+		SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
+		FROM (
+		    SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
+		    FROM INFO_COMMENT
+		    WHERE M_NO = #{mNo}
+		    ORDER BY INFO_COMMENT_DATE DESC
+		) 
+		WHERE ROWNUM = 1;
+	</select>
+	<select id="getPushInfoNo" resultType="_int">
+		SELECT M_NO FROM INFO
+		WHERE INFO_NO = #{infoBoardNo}
+	</select>
+	<insert id="infoPushEnroll">
+	    INSERT INTO BOARD_PUSH (
+	        BOARD_PUSH_NO,
+	        M_NO,
+	        BOARD_PUSH_TYPE,
+	        BOARD_PUSH_CONTENTS,
+	        BOARD_PUSH_CHECK,
+	        BOARD_PUSH_INDATE,
+	        BOARD_TYPE,
+	        BOARD_NO,
+	        BOARD_PUSH_WRITER
+	    ) VALUES (
+	        board_push_no_seq.nextval,
+	        #{mNo},
+	        'comment',
+	        #{boardContent},
+	        'N',
+	        SYSDATE,
+	        'info',
+	        #{boardNo},
+	        #{nickname}
+	    )
+	</insert>
+	<!-- free -->
+	<select id="getFreeList" resultMap ="getFreeList">
+		SELECT FREE_COMMENT_NO, FREE_NO, FREE_COMMENT_CONTENT 
+		FROM (
+		    SELECT FREE_COMMENT_NO, FREE_NO, FREE_COMMENT_CONTENT 
+		    FROM FREE_COMMENT
+		    WHERE M_NO = #{mNo}
+		    ORDER BY FREE_COMMENT_DATE DESC
+		) 
+		WHERE ROWNUM = 1;
+	</select>
+	<select id="getPushFreeNo" resultType="_int">
+		SELECT M_NO FROM FREE
+		WHERE FREE_NO = #{freeBoardNo}
+	</select>
+	<insert id="freePushEnroll">
+	    INSERT INTO BOARD_PUSH (
+	        BOARD_PUSH_NO,
+	        M_NO,
+	        BOARD_PUSH_TYPE,
+	        BOARD_PUSH_CONTENTS,
+	        BOARD_PUSH_CHECK,
+	        BOARD_PUSH_INDATE,
+	        BOARD_TYPE,
+	        BOARD_NO,
+	        BOARD_PUSH_WRITER
+	    ) VALUES (
+	        board_push_no_seq.nextval,
+	        #{mNo},
+	        'comment',
+	        #{boardContent},
+	        'N',
+	        SYSDATE,
+	        'free',
+	        #{boardNo},
+	        #{nickname}
+	    )
+	</insert>
+	
+</mapper>

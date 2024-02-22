@@ -73,4 +73,9 @@
 		WHERE A_BOARD_NO = #{no}
 	</update>
 	
+	<select id="adminBoardWriter" resultType="_int">
+		SELECT M_NO FROM ADMIN_BOARD
+		WHERE A_BOARD_NO = #{boardNo}
+	</select>
+	
 	</mapper>

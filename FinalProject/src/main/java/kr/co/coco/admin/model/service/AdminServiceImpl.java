@@ -275,6 +275,11 @@ public class AdminServiceImpl implements AdminService{
 		public int adminBoardDelete(int no) {
 			return adminDao.adminBoardDelete(sqlSession, no);
 		}
+	// admin board push witer 정보 가져오기
+		public int adminBoardWriter(int boardNo) {
+			return adminDao.adminBoardWriter(sqlSession, boardNo);
+		}
+
 	// --------------------------Admin Declaration Page---------------------------
 		public int deTodayCount() {
 			return adminDao.deTodayCount(sqlSession);

@@ -28,7 +28,6 @@
 					<div class="col-md-8 col-lg-6 col-xxl-3 minWidth500 topMargin50">
 						<!-- margin-bottom 0 설정 -->
 						<div class="card mb-0">
-
 							<div class="card-body">
 								<form action="/member/login.do" method="post" id="formTag">
 									<!-- onsubmit="return false" -->
@@ -38,14 +37,14 @@
 									</div>
 									<!-- id칸 -->
 									<div class="mb-3">
-										<label for="exampleInputEmail1" class="form-label">ID</label> <input type="text" class="form-control" id="exampleInputEmail1" name="id" aria-describedby="emailHelp" required>
+										<label for="exampleInputEmail1" class="form-label">Email</label> <input type="text" class="form-control" id="exampleInputEmail1" name="id" aria-describedby="emailHelp" required>
 									</div>
 									<!-- password 칸 -->
 									<div class="mb-4">
-										<label for="exampleInputPassword1" class="form-label">Password</label> <input type="password" class="form-control" id="exampleInputPassword1" name="pwd" required>
+										<label for="exampleInputPassword1" class="form-label">인증번호</label> <input type="password" class="form-control" id="exampleInputPassword1" name="pwd" required>
 									</div>
 									<div class="d-flex align-items-center justify-content-between mb-4">
-										<a class="text-primary fw-bold" href="/member/loginFindId.do">아이디를 잊었나요?</a>
+										<a class="text-primary fw-bold" href="/member/loginForm.do">로그인 화면으로 이동</a>
 										<a class="text-primary fw-bold" href="#">비밀번호를 잊었나요?</a>
 									</div>
 									<button type="submit" class="btn btn-primary w-100 fs-4 mb-4 rounded-2" id="loginBtn">
@@ -55,17 +54,6 @@
 									<div class="d-flex align-items-center justify-content-center">
 										<p class="fs-4 mb-0 fw-bold">아직 회원이 아니신가요?</p>
 										<a class="text-primary fw-bold ms-2" href="registerForm.do">회원가입</a>
-									</div>
-									<!-- <div class="justifyCenter direction1 alignCenter">
-										reCaptcha V2
-										<button class="recaptchaBtn" onclick="undisabled()">로봇이 아닙니다.</button>
-										<div class="g-recaptcha displayNone" data-sitekey="6LeL-mMpAAAAAOzM1jNrU5bWiwTKQpvGKx7zf5W7" id="recaptchaDiv"></div>
-									</div> -->
-									<div class="sortDiv">
-										<p class="snsLogin borderDefault borderRadiusd paddingDefault">SNS 로그인</p>
-										<div class="sortDiv2">
-											<img src="/resources/uploads/member/icon/kakaotalk.png" alt="" class="imageSize"> <img src="/resources/uploads/member/icon/google.png" alt="" class="imageSize"> <img src="/resources/uploads/member/icon/naver.png" alt="" class="imageSize">
-										</div>
 									</div>
 								</form>
 							</div>
