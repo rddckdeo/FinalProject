@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/views/admin/common/head.jsp"%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js">></script>
 </head>
 <body class="bodyBackColor">
 	<%@ include file="/WEB-INF/views/admin/common/sidebar.jsp"%>
@@ -52,51 +53,64 @@
 											<c:choose>
 												<c:when test="${!empty visitList}">
 													<c:forEach var="item" items="${visitList}">
-														<li class="borderDefault visitPadding justifyAround">
-															<span class="li1">${item.no}</span> 
-															<img src="${item.path}${item.picture}" alt="" class="visitImgSize"> 
-															<span class="li2">${item.name }</span> 
-															<span class="li2">${item.loginDate}</span>
-														</li>
+														<li class="borderDefault visitPadding justifyAround"><span class="li1">${item.no}</span> <img src="${item.path}${item.picture}" alt="" class="visitImgSize"> <span class="li2">${item.name }</span> <span class="li2">${item.loginDate}</span></li>
 													</c:forEach>
 												</c:when>
 												<c:otherwise>
-													<li class="borderDefault visitPadding justifyAround">
-														<span>게시글이 없습니다.</span>
-													</li>
+													<li class="borderDefault visitPadding justifyAround"><span>게시글이 없습니다.</span></li>
 												</c:otherwise>
 											</c:choose>
 										</ul>
-											<!-- pagination -->
-											<!-- 죄측 화살표 -->
-											<div class="pagination alignCenter">
-												<c:choose>
-													<c:when test="${pi1.cpage eq 1}">
-														<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a> 
-													</c:when>
-													<c:otherwise>
-														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=visit&cpage=${pi1.cpage-1}">&lt;</a> 
-													</c:otherwise>
-												</c:choose>
-													
-												<c:forEach var="page" begin="${pi1.startPage}" end="${pi1.endPage}">
-													<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=visit&cpage=${page}">${page}</a>
-												</c:forEach>
-													
-												<c:choose>
-													<c:when test="${pi1.cpage eq pi1.maxPage}">
-														<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
-													</c:when>
-													<c:otherwise>
-														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=visit&cpage=${pi1.cpage + 1}">&gt;</a>
-													</c:otherwise>
-												</c:choose>
-											</div>
-											<!-- paging 처리 -->
+										<!-- pagination -->
+										<!-- 죄측 화살표 -->
+										<div class="pagination alignCenter">
+											<c:choose>
+												<c:when test="${pi1.cpage eq 1}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a>
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=visit&cpage=${pi1.cpage-1}">&lt;</a>
+												</c:otherwise>
+											</c:choose>
+
+											<c:forEach var="page" begin="${pi1.startPage}" end="${pi1.endPage}">
+												<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=visit&cpage=${page}">${page}</a>
+											</c:forEach>
+
+											<c:choose>
+												<c:when test="${pi1.cpage eq pi1.maxPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+												</c:when>
+												<c:otherwise>
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=visit&cpage=${pi1.cpage + 1}">&gt;</a>
+												</c:otherwise>
+											</c:choose>
+										</div>
+										<!-- paging 처리 -->
 									</div>
 									<div class="subCard2 boxShadow borderDefault backWhite borderRadiusd2">
-										<p>방문자 통계</p>
-										<div>그래프 들어갈 자리</div>
+										<canvas id="doughnut-chart" width="250" height="140"></canvas>
+										<script>
+											new Chart(document.getElementById("doughnut-chart"), {
+											    type: 'doughnut',
+											    data: {
+											      labels: ["today", "week", "month", "total"],
+											      datasets: [
+											        {
+											          label: "Population (millions)",
+											          backgroundColor: ["#FFA07A", "#ADD8E6","#FFDAB9","#6A5ACD"],
+											          data: [${day},${week},${month},${visitCount}]
+											        }
+											      ]
+											    },
+											    options: {
+											      title: {
+											        display: true,
+											        text: '방문자 통계'
+											      }
+											    }
+											});
+										</script>
 									</div>
 								</div>
 							</div>
@@ -114,36 +128,32 @@
 											</ul>
 											<ul class="ulSize">
 												<c:forEach var="item2" items="${infotList}">
-													<li class="borderDefault visitPadding justifyAround boardLiSize">
-														<span class="li1">${item2.infoNo}</span> 
-														<span class="li3">${item2.infoTitle}</span> 
-														<span class="li2">${item2.infoDate}</span>
-													</li>
+													<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">${item2.infoNo}</span> <span class="li3">${item2.infoTitle}</span> <span class="li2">${item2.infoDate}</span></li>
 												</c:forEach>
 											</ul>
-												<div class="pagination">
-													<c:choose>
-														<c:when test="${pi2.cpage eq 1}">
-															<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a> 
-														</c:when>
-														<c:otherwise>
-															<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=info&cpage=${pi2.cpage-1}">&lt;</a> 
-														</c:otherwise>
-													</c:choose>
-														
-													<c:forEach var="page" begin="${pi2.startPage}" end="${pi2.endPage}">
-														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=info&cpage=${page}">${page}</a>
-													</c:forEach>
-														
-													<c:choose>
-														<c:when test="${pi2.cpage eq pi2.maxPage}">
-															<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
-														</c:when>
-														<c:otherwise>
-															<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=info&cpage=${pi2.cpage + 1}">&gt;</a>
-														</c:otherwise>
-													</c:choose>
-												</div>
+											<div class="pagination">
+												<c:choose>
+													<c:when test="${pi2.cpage eq 1}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=info&cpage=${pi2.cpage-1}">&lt;</a>
+													</c:otherwise>
+												</c:choose>
+
+												<c:forEach var="page" begin="${pi2.startPage}" end="${pi2.endPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=info&cpage=${page}">${page}</a>
+												</c:forEach>
+
+												<c:choose>
+													<c:when test="${pi2.cpage eq pi2.maxPage}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=info&cpage=${pi2.cpage + 1}">&gt;</a>
+													</c:otherwise>
+												</c:choose>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -159,36 +169,32 @@
 											</ul>
 											<ul class="ulSize">
 												<c:forEach var="item3" items="${freeList}">
-													<li class="borderDefault visitPadding justifyAround boardLiSize">
-														<span class="li1">${item3.infoNo}</span> 
-														<span class="li3">${item3.infoTitle}</span> 
-														<span class="li2">${item3.infoDate}</span>
-													</li>
+													<li class="borderDefault visitPadding justifyAround boardLiSize"><span class="li1">${item3.infoNo}</span> <span class="li3">${item3.infoTitle}</span> <span class="li2">${item3.infoDate}</span></li>
 												</c:forEach>
 											</ul>
 											<div class="pagination">
-													<c:choose>
-														<c:when test="${pi3.cpage eq 1}">
-															<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a> 
-														</c:when>
-														<c:otherwise>
-															<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=free&cpage=${pi3.cpage-1}">&lt;</a> 
-														</c:otherwise>
-													</c:choose>
-														
-													<c:forEach var="page" begin="${pi3.startPage}" end="${pi3.endPage}">
-														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=free&cpage=${page}">${page}</a>
-													</c:forEach>
-														
-													<c:choose>
-														<c:when test="${pi3.cpage eq pi3.maxPage}">
-															<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
-														</c:when>
-														<c:otherwise>
-															<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=free&cpage=${pi3.cpage + 1}">&gt;</a>
-														</c:otherwise>
-													</c:choose>
-												</div>
+												<c:choose>
+													<c:when test="${pi3.cpage eq 1}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="#">&lt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=free&cpage=${pi3.cpage-1}">&lt;</a>
+													</c:otherwise>
+												</c:choose>
+
+												<c:forEach var="page" begin="${pi3.startPage}" end="${pi3.endPage}">
+													<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=free&cpage=${page}">${page}</a>
+												</c:forEach>
+
+												<c:choose>
+													<c:when test="${pi3.cpage eq pi3.maxPage}">
+														<a class="Margin5 borderRadius3 paginationBtn" href="#">&gt;</a>
+													</c:when>
+													<c:otherwise>
+														<a class="Margin5 borderRadius3 paginationBtn" href="adminForm.do?status=free&cpage=${pi3.cpage + 1}">&gt;</a>
+													</c:otherwise>
+												</c:choose>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -200,7 +206,5 @@
 			</div>
 		</div>
 	</div>
-	</div>
-
 </body>
 </html>

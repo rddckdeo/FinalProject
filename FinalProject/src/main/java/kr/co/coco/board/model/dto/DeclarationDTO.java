@@ -3,7 +3,6 @@ package kr.co.coco.board.model.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import oracle.sql.DATE;
 
 @Getter // 게터
 @Setter // 세터
@@ -17,11 +16,15 @@ public class DeclarationDTO {
     private int boardNo;
     private String declarationContent;
     private String declarationDate;
-    private char declarationWithdrawal;
     
     private int infoCommentNo; // 댓글 번호
 
 
+    private String declarationWithdrawal;
+    
+    // admin declaration
+    private String declarationWriter;
+    
     @Override
     public String toString() {
         return "DeclarationDTO [declarationNo=" + declarationNo + ", mNo=" + mNo + ", declarationType="

@@ -8,7 +8,6 @@ window.addEventListener('load', function() {
 	}
 });
 function deleteBtn(no) {
-
 	$.ajax({
 		url: '/admin/deleteMember.do',
 		type: 'POST', // type의 값이 'post'가 아니라 'POST'여야 합니다.
@@ -147,6 +146,58 @@ function modaldelete(no){
 		success: function(response) {
 			if (response === 1) {
 				alert("삭제가 완료되었습니다.");
+				location.reload(true);
+			} else {
+				alert("Error");
+			}
+		},
+		error: function(error) {
+			console.log('Error:', error);
+		}
+	})
+}
+
+function declarationModal(no) {
+    let modalId = "declarationModal" + no; // 고유한 ID 생성
+    let modalStatus = document.getElementById(modalId);
+    modalStatus.style.display = 'flex';
+}
+
+function declarationCloseModal(){
+	location.reload(true);
+}
+
+function declarationBlind(no){
+	$.ajax({
+		url: '/admin/declarationBlind.do',
+		type: 'POST',
+		data: { 
+			no: no
+			},
+		success: function(response) {
+			if (response === 1) {
+				alert("블라인드 처리가 되었습니다.");
+				location.reload(true);
+			} else {
+				alert("Error");
+			}
+		},
+		error: function(error) {
+			console.log('Error:', error);
+		}
+	})
+}
+
+function declarationNoneBlind(no){
+	$.ajax({
+		url: '/admin/declarationNoneBlind.do',
+		type: 'POST',
+		data: { 
+			no: no
+			},
+		success: function(response) {
+			if (response === 1) {
+				alert("철회되었습니다.");
 				location.reload(true);
 			} else {
 				alert("Error");

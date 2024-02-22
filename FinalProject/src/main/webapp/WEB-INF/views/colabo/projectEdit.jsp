@@ -35,7 +35,14 @@
 							<legend>
 								<span class="number">1</span> 프로젝트 정보
 							</legend>
-							<img src="/resources/uploads/colabo/project/${list.uploadName}" alt="이미지" style="width: 200px; height:100px">
+							<c:choose>
+								<c:when test="${!empty list.uploadName}">
+									<img src="/resources/uploads/colabo/project/${list.uploadName}" style="width: 200px; height:100px" class="card-img-top" alt="이미지">
+								</c:when>
+								<c:otherwise>
+									<img src="/resources/uploads/colabo/project/기본이미지.jpg" style="width: 200px; height:100px" class="card-img-top" alt="이미지">
+								</c:otherwise>
+							</c:choose>
 							<div style="width:100px; height:100px;">
 								<input type="hidden" name="uploadName" value="${list.uploadName}">
 								<input type="file" name="upload">

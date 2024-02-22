@@ -18,10 +18,12 @@
 		<typeAlias type="kr.co.coco.colabo.model.dto.SkillChartDTO" alias="skillChart"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO" alias="projectMember"/>
 		<typeAlias type="kr.co.coco.colabo.model.dto.InviteProjectDTO" alias="InviteProject"/>
+		<typeAlias type="kr.co.coco.colabo.model.dto.ProjectPushDTO" alias="ProjectPush"/>
 		<typeAlias type="kr.co.coco.member.model.dto.MemberDTO" alias="member"/>
 		<typeAlias type="kr.co.coco.admin.model.dto.AdminDTO" alias="admin"/>
 		<typeAlias type="kr.co.coco.admin.model.dto.AdminBoardDTO" alias="adminBoard"/>
 		 <typeAlias type="kr.co.coco.mypage.model.dto.MyPageDTO" alias="mypage"/>
+		 <typeAlias type="kr.co.coco.boardPush.model.dto.BoardPushDTO" alias="boardPush"/>
 		
 	</typeAliases>
 	
@@ -40,6 +42,8 @@
 		<mapper resource="/mappers/admin/board/admin-board-mapper.xml"/>
 		<mapper resource="/mappers/admin/project/admin-project-mapper.xml"/>
 		<mapper resource="/mappers/admin/Inquiry/admin-Inquiry-mapper.xml"/>
+		<mapper resource="/mappers/admin/declaration/admin-declaration-mapper.xml"/>
+		<mapper resource="/mappers/mypage/mypage-boardPush-mapper.xml"/>
 	</mappers>
 
 

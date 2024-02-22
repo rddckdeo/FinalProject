@@ -16,6 +16,10 @@ public class ColaboDTO {
 	// 멤버관련 변수 
 	private int memberNo;
 	private String memberEmail;
+	private String memberHope;
+	private String memberStack;
+	private String memberNickname;
+	private String memberPhone;
 	
 	// 프로젝트 관련 변수
 	private int no;
@@ -50,6 +54,23 @@ public class ColaboDTO {
 	private String uploadPath; // 파일경로
 	private String uploadName; // 수정된 파일 이름
 	private String uploadOriginName; // 원본 파일 이름
+	
+	
+	
+	// 초대받은 프로젝트 DTO 
+	
+	private int inviteMNo;
+	private String inviteProjectDate;
+//	private String confirmText;
+	
+	// 신청받은 프로젝트 DTO
+	
+	private int applyMNo;
+	private String applyProjectDate;
+	
+	
+	
+	
 	
 	
 }

@@ -1,6 +1,10 @@
 package kr.co.coco.board.controller;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -22,6 +26,8 @@ import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.service.FreeCommentService;
 import kr.co.coco.board.model.service.FreeCommentServiceImpl;
+import kr.co.coco.boardPush.model.dto.BoardPushDTO;
+import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 
 
 @Controller
@@ -31,6 +37,8 @@ public class FreeCommentController {
 
 	@Autowired
     private FreeCommentServiceImpl freeCommentService;
+	@Autowired
+	private BoardPushServiceImpl pushService;
 
 	// 댓글 등록
 	@PostMapping("/SubmitRegistr")
@@ -59,6 +67,21 @@ public class FreeCommentController {
 	            Logger logger = LoggerFactory.getLogger(CommentController.class);
 	            logger.error("댓글 저장에 실패하였습니다.");
 	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 저장에 실패하였습니다.");
+	        }else {
+	        	Map<String, Object> param = new HashMap<>();
+	        	param.put("nickname",mNick);
+	        	// free_comment_no, free_comment_content
+	        	List<BoardPushDTO> pushList = pushService.getFreeList(mNo);
+	        	int freeBoardNo = 0;
+	        	for(BoardPushDTO dto : pushList) {
+	        		param.put("boardContent", dto.getPushContent());
+	        		param.put("boardNo", dto.getComment_no());
+	        		freeBoardNo = dto.getMNo();
+	        	}
+	        	// free_no를 통해서 free 게시판에 작성자 no를 가져와야함
+	        	int getPushFreeNo = pushService.getPushFreeNo(freeBoardNo);
+	        	param.put("mNo", getPushFreeNo);
+	        	int freePushEnroll = pushService.freePushEnroll(param);
 	        }
 
 	        // 댓글 등록 후에 해당 게시글의 댓글 수 증가

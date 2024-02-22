@@ -1,7 +1,13 @@
 package kr.co.coco.board.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +16,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +28,8 @@ import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.service.InfoCommentService;
 import kr.co.coco.board.model.service.InfoCommentServiceImpl;
+import kr.co.coco.boardPush.model.dto.BoardPushDTO;
+import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 
 @Controller
 @RequestMapping("/comment")
@@ -31,6 +38,8 @@ public class CommentController {
 	@Autowired
 	private InfoCommentServiceImpl infoCommentService;
 
+	@Autowired
+	private BoardPushServiceImpl pushService;
 	// 댓글 등록
 	@PostMapping("/SubmitRegistr")
 	@ResponseBody
@@ -56,6 +65,22 @@ public class CommentController {
 	            	Logger logger = LoggerFactory.getLogger(CommentController.class);
 	                logger.error("댓글 저장에 실패하였습니다.");
 	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 저장에 실패하였습니다.");
+	            }else { // board Push info Enroll
+	            	// 필요한 정보 가져오기
+	            	Map<String, Object> param = new HashMap<>();
+	            	param.put("nickname",mNick);
+	            	// info_comment_no, info_no, info_comment_content
+	            	List<BoardPushDTO> pushList = pushService.getInfoList(mNo);
+	            	int infoBoardNo = 0;
+	            	for(BoardPushDTO dto : pushList) {
+	            		param.put("boardContent", dto.getPushContent());
+	            		param.put("boardNo", dto.getComment_no());
+	            		infoBoardNo = dto.getMNo();
+	            	}
+	            	// info_no를 통해서 info 게시판에 작성자 no를 가져와야함
+	            	int getPushInfoNo = pushService.getPushInfoNo(infoBoardNo);
+	            	param.put("mNo", getPushInfoNo);
+	            	int infoPushEnroll = pushService.infoPushEnroll(param);
 	            }
 
 	            // 댓글 등록 후에 해당 게시글의 댓글 수 증가

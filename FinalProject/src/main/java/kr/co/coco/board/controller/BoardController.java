@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.slf4j.Logger;
 
 import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
@@ -20,6 +20,8 @@ import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
 import kr.co.coco.mypage.common.paging.mypagePageInfo;
 import kr.co.coco.mypage.common.paging.mypagePagination;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
+import kr.co.coco.colabo.model.service.ColaboServiceImpl;
 
 @Controller
 @RequestMapping("/board")
@@ -30,6 +32,9 @@ public class BoardController {
 
 	@Autowired
 	private FreeServiceImpl freeService;
+	
+	@Autowired
+	private ColaboServiceImpl colaboService;
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
@@ -61,12 +66,17 @@ public class BoardController {
 	    List<InfoDTO> infoPosts = infoService.getAllPosts(infoPageInfo.getOffset(), pageSize);
 
 	    // 자유 게시판 게시글 조회
-	    List<FreeDTO> freePosts = freeService.getAllPosts(freePageInfo.getOffset(), pageSize);
-
-	    model.addAttribute("infoPosts", infoPosts);
-	    model.addAttribute("freePosts", freePosts);
 	    model.addAttribute("infoPageInfo", infoPageInfo);
 	    model.addAttribute("freePageInfo", freePageInfo);
+	    List<FreeDTO> freePosts = freeService.getAllPosts(0, 5);
+	    
+	    // 추천 프로젝트 리스트
+ 		List<ColaboDTO> NProjectList = colaboService.getNProjectList();
+	 		
+	    
+	    model.addAttribute("infoPosts", infoPosts);
+	    model.addAttribute("freePosts", freePosts);
+	    model.addAttribute("NProjectList", NProjectList);
 
 	    logger.info("infoPosts: {}", infoPosts);
 	    logger.info("freePosts: {}", freePosts);
@@ -113,7 +123,10 @@ public class BoardController {
 	    return "board/main/boardSearch";
 	}
 	
-
+	@GetMapping("/boardPush.do")
+	public String BoardPushForm(){
+		return "redirect:/mypage/boardPush.do";
+	}
 
 
 }

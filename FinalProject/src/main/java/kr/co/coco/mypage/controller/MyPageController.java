@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +40,15 @@ import kr.co.coco.board.model.dto.InfoCommentDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
+
 import kr.co.coco.mypage.common.paging.mypagePageInfo;
 import kr.co.coco.mypage.common.paging.mypagePagination;
+
+import kr.co.coco.boardPush.model.dto.BoardPushDTO;
+import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
+import kr.co.coco.colabo.model.dto.ColaboDTO;
+import kr.co.coco.colabo.model.service.ColaboServiceImpl;
+
 import kr.co.coco.mypage.model.dto.MyPageDTO;
 import kr.co.coco.mypage.model.service.MyPageServiceImpl;
 
@@ -49,6 +58,17 @@ public class MyPageController {
 
 	@Autowired
 	private MyPageServiceImpl mypageService;
+
+	@Autowired
+	private InfoServiceImpl infoService;
+
+	@Autowired
+	private FreeServiceImpl freeService;
+	
+	@Autowired
+	private BoardPushServiceImpl pushService;
+	@Autowired
+	private ColaboServiceImpl colaboService;
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
@@ -64,6 +84,38 @@ public class MyPageController {
 			model.addAttribute("error", true);
 			return "myPage/myProfile";
 		} else {
+//			System.out.println("no: " + member.getNo());
+//			System.out.println("name: " + member.getName());
+//			System.out.println("hope: " + member.getHope());
+//			System.out.println("stack: " + member.getStack());
+			
+			// 리스트 세개로 나눠서  해당되는 리스트에 넣을생각
+			List<ColaboDTO> NList = new ArrayList<>();
+			List<ColaboDTO> CList = new ArrayList<>();
+			List<ColaboDTO> YList = new ArrayList<>();
+			
+			
+			// 내가 속한 프로젝트 전체리스트 가져오기
+			List<ColaboDTO> allList = colaboService.getProjectProfile(mNo);
+			
+			// 전체리스트에서 State 를 조회해서 해당되는 리스트에 넣기
+			for(int i =0; i< allList.size(); i++) {
+//				System.out.println(allList.get(i).getUploadName());
+//				System.out.println(allList.get(i).getState());
+				if(allList.get(i).getState() == 'N') {
+					NList.add(allList.get(i));
+				}else if(allList.get(i).getState() == 'C') {
+					CList.add(allList.get(i));
+				}else if(allList.get(i).getState() == 'Y') {
+					YList.add(allList.get(i));
+				}
+				
+			}
+			
+			model.addAttribute("NList", NList);
+			model.addAttribute("CList", CList);
+			model.addAttribute("YList", YList);
+			
 
 			model.addAttribute("hope", member.getHope());
 			model.addAttribute("stack", member.getStack());
@@ -250,7 +302,30 @@ public class MyPageController {
 
 		return "myPage/myComment";
 	}
-
+	//BoardPush List
+	@GetMapping("/boardPush.do")
+	public String boardPush(Model model, HttpSession session) {
+		// session에 no값 가져오기
+		Integer mNo = (Integer)session.getAttribute("no");
+		if(mNo != null) {
+			// boardPush에 board_push_check있는 확인 컬럼 N에서 Y로 바꾸기
+			int pushCheck = pushService.pushCheck(mNo);
+			System.out.println("pushCheck"+pushCheck);
+			if(pushCheck > 0) {
+				// List 가져오기
+				List<BoardPushDTO> pushList = pushService.pushList(mNo);
+				for(BoardPushDTO push : pushList) {
+					String indate = push.getPushIndate().substring(2,10);
+					push.setPushIndate(indate);
+				}
+				model.addAttribute("pushList",pushList);
+			}
+		}else {
+			return "redirect:/member/loginForm.do";
+		}
+		return "myPage/myBoardPush";
+	}
+	
 	// mainForm
 	@GetMapping("/mainForm.do")
 	public String mainForm() {

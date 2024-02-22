@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.coco.colabo.common.paging.PageInfo;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.dto.InviteProjectDTO;
+import kr.co.coco.colabo.model.dto.ProjectPushDTO;
 import kr.co.coco.colabo.model.dto.ScheduleDTO;
 import kr.co.coco.colabo.model.dto.SkillChartDTO;
 import kr.co.coco.colabo.model.dto.TeamProjectPerSonDTO;
@@ -183,6 +184,70 @@ public class ColaboDAO {
 
 	public int inviteProject(SqlSessionTemplate sqlSession, InviteProjectDTO invite) {
 		return sqlSession.insert("colaboMapper.inviteProject", invite);
+	}
+
+	public List<ColaboDTO> inviteApplyProject(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectList("colaboMapper.inviteApplyProject", memberNo);
+	}
+
+	public int inviteListCheck(SqlSessionTemplate sqlSession, InviteProjectDTO inviteListCheck) {
+		return sqlSession.selectOne("colaboMapper.inviteListCheck", inviteListCheck);
+	}
+
+	public int enrollProjectTeam(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.insert("colaboMapper.enrollProjectTeam", colabo);
+	}
+
+	public int deleteInviteList(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.delete("colaboMapper.deleteInviteList", colabo);
+	}
+
+	public int projectTeamCheck(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.selectOne("colaboMapper.projectTeamCheck", colabo);
+	}
+
+	public List<ColaboDTO> applyProject(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectList("colaboMapper.applyProject", memberNo);
+	}
+
+	public List<ColaboDTO> receiveApplyProject(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectList("colaboMapper.receiveApplyProject", memberNo);
+	}
+
+	public List<ColaboDTO> getNProjectList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("colaboMapper.getNProjectList");
+	}
+
+	public int enrollApplyProject(SqlSessionTemplate sqlSession, InviteProjectDTO apply) {
+		return sqlSession.insert("colaboMapper.enrollApplyProject", apply);
+	}
+
+	public int deleteApplyList(SqlSessionTemplate sqlSession, ColaboDTO colabo) {
+		return sqlSession.delete("colaboMapper.deleteApplyList", colabo);
+	}
+
+	public int applyListCheck(SqlSessionTemplate sqlSession, InviteProjectDTO applyListCheck) {
+		return sqlSession.selectOne("colaboMapper.applyListCheck", applyListCheck);
+	}
+
+	public int projectPush(SqlSessionTemplate sqlSession, ProjectPushDTO push) {
+		return sqlSession.insert("colaboMapper.projectPush", push);
+	}
+
+	public List<Integer> getprojectList(SqlSessionTemplate sqlSession, ProjectPushDTO projectPush) {
+		return sqlSession.selectList("colaboMapper.getprojectList", projectPush);
+	}
+
+	public List<ProjectPushDTO> getPushList(SqlSessionTemplate sqlSession, List<Integer> pushList) {
+		return sqlSession.selectList("colaboMapper.getPushList", pushList);
+	}
+
+	public int changePushType(SqlSessionTemplate sqlSession, ProjectPushDTO push) {
+		return sqlSession.update("colaboMapper.changePushType", push);
+	}
+
+	public int allChangePushType(SqlSessionTemplate sqlSession, ProjectPushDTO push) {
+		return sqlSession.update("colaboMapper.allChangePushType", push);
 	}
 
 }

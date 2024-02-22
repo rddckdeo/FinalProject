@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import kr.co.coco.admin.common.paging.AdminPageInfo;
 import kr.co.coco.admin.model.dao.AdminDAO;
 import kr.co.coco.admin.model.dto.AdminBoardDTO;
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoDTO;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.member.model.dto.MemberDTO;
@@ -110,6 +111,14 @@ public class AdminServiceImpl implements AdminService{
 	// delete member Count
 	public int deleteCount() {
 		return adminDao.deleteCount(sqlSession);
+	}
+	// search Member List Count
+	public int memberSearchListCount(String searchInput) {
+		return adminDao.memberSearchListCount(sqlSession, searchInput);
+	}
+	//memberList search
+	public List<MemberDTO> searchList(MemberDTO member, AdminPageInfo piMember, String searchInput){
+		return adminDao.searchList(sqlSession, member,piMember, searchInput);
 	}
 //	-----------------------------------------------------------------------
 //	admin Visit Page
@@ -265,5 +274,43 @@ public class AdminServiceImpl implements AdminService{
 	// admin Board answer Enroll
 		public int adminBoardDelete(int no) {
 			return adminDao.adminBoardDelete(sqlSession, no);
+		}
+	// admin board push witer 정보 가져오기
+		public int adminBoardWriter(int boardNo) {
+			return adminDao.adminBoardWriter(sqlSession, boardNo);
+		}
+
+	// --------------------------Admin Declaration Page---------------------------
+		public int deTodayCount() {
+			return adminDao.deTodayCount(sqlSession);
+		}
+		public int noneBlindCount() {
+			return adminDao.noneBlindCount(sqlSession);
+		}
+		public int blindCount() {
+			return adminDao.blindCount(sqlSession);
+		}
+		public int deTotalCount() {
+			return adminDao.deTotalCount(sqlSession);
+		}
+		// boardListCount
+		public List<DeclarationDTO> deTodayList(DeclarationDTO dec, AdminPageInfo pi){
+			return adminDao.deTodayList(sqlSession, dec, pi);
+		}
+		public List<DeclarationDTO> noneBlindList(DeclarationDTO dec, AdminPageInfo pi){
+			return adminDao.noneBlindList(sqlSession, dec, pi);
+		}
+		public List<DeclarationDTO> blindList(DeclarationDTO dec, AdminPageInfo pi){
+			return adminDao.blindList(sqlSession, dec, pi);
+		}
+		public List<DeclarationDTO> deTotalList(DeclarationDTO dec, AdminPageInfo pi){
+			return adminDao.deTotalList(sqlSession, dec, pi);
+		}
+		// blind 처리
+		public int declarationBlind(int no) {
+			return adminDao.declarationBlind(sqlSession, no);
+		}
+		public int declarationNoneBlind(int no) {
+			return adminDao.declarationNoneBlind(sqlSession, no);
 		}
 }

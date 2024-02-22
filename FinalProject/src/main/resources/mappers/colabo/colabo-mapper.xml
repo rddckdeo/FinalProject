@@ -28,6 +28,14 @@
 		<result column="M_NO" property="memberNo"></result>
 		<result column="M_NAME" property="memberName"></result>
 		<result column="M_EMAIL" property="memberEmail"></result>
+		<result column="M_NICKNAME" property="memberNickname"></result>
+		<result column="M_HOPE" property="memberHope"></result>
+		<result column="M_STACK" property="memberStack"></result>
+		<result column="M_NUMBER" property="memberPhone"></result>
+		<result column="INVITE_M_NO" property="inviteMNo"></result>
+		<result column="INVITE_PROJECT_DATE" property="inviteProjectDate"></result>
+		<result column="APPLY_M_NO" property="applyMNo"></result>
+		<result column="APPLY_PROJECT_DATE" property="applyProjectDate"></result>
 	</resultMap>
 	
 	<resultMap type="schedule" id="scheduleResultSet">
@@ -62,7 +70,158 @@
 		<result column="M_NO" property="memberNo"></result>
 		<result column="INVITE_M_NO" property="inviteMNo"></result>
 		<result column="INVITE_PROJECT_DATE" property="inviteProjectDate"></result>
+		<result column="APPLY_M_NO" property="applyMNo"></result>
+		<result column="APPLY_PROJECT_DATE" property="applyProjectDate"></result>
 	</resultMap>
+	
+	<resultMap type="ProjectPush" id="ProjectPushResultSet">
+		<result column="PUSH_NO" property="pushNo"></result>
+		<result column="PUSH_TYPE" property="pushType"></result>
+		<result column="PUSH_CONTENT" property="pushContent"></result>
+		<result column="PUSH_DATE" property="pushDate"></result>
+		<result column="PUSH_CHECK" property="pushCheck"></result>
+		<result column="ADD_M_NO" property="addMNo"></result>
+		<result column="M_NAME" property="addMName"></result>
+		<result column="RECEIVE_M_NO" property="receiveMNo"></result>
+		<result column="P_NO" property="projectNo"></result>
+		<result column="P_NAME" property="projectName"></result>
+	</resultMap>
+	
+	<update id="allChangePushType" parameterType="ProjectPush">
+		UPDATE COLABO_PROJECT_PUSH
+		SET PUSH_CHECK = 
+		CASE WHEN RECEIVE_M_NO = #{memberNo} THEN 'Y'
+		ELSE PUSH_CHECK
+		END,
+		CHECK_M_NO =
+		CASE WHEN RECEIVE_M_NO = 0 THEN 
+			CASE WHEN CHECK_M_NO IS NULL THEN #{checkMNo}
+				 WHEN CHECK_M_NO IS NOT NULL THEN CHECK_M_NO || ',' || #{checkMNo}
+				 END 
+		END
+		WHERE PUSH_NO IN 
+		<foreach collection="pushNoList" index="index" item="pushNo" open="(" close=")" separator=",">
+		#{pushNo}
+		</foreach>
+	</update>
+	
+	<update id="changePushType" parameterType="ProjectPush">
+		UPDATE COLABO_PROJECT_PUSH 
+		SET PUSH_CHECK = 
+		CASE WHEN RECEIVE_M_NO = #{memberNo} THEN 'Y'
+		ELSE PUSH_CHECK
+		END,
+		CHECK_M_NO =
+		CASE WHEN RECEIVE_M_NO = 0 THEN 
+			CASE WHEN CHECK_M_NO IS NULL THEN #{checkMNo}
+				 WHEN CHECK_M_NO IS NOT NULL THEN CHECK_M_NO || ',' || #{checkMNo}
+				 END 
+		END
+		WHERE PUSH_NO = #{pushNo}
+	</update>
+	
+	<select id="getPushList" parameterType="ProjectPush" resultMap="ProjectPushResultSet">
+		SELECT * FROM COLABO_PROJECT_PUSH cpp
+		JOIN MEMBER m 
+		ON cpp.ADD_M_NO = m.M_NO 
+		JOIN COLABO c
+		ON cpp.P_NO = c.P_NO 
+		WHERE cpp.PUSH_CHECK = 'N'
+		AND cpp.PUSH_NO IN 
+		<foreach collection="list" index="index" item="pushNo" open="(" close=")" separator=",">
+		#{pushNo}
+		</foreach>
+		ORDER BY cpp.PUSH_DATE DESC 
+	</select>
+	
+	<select id="getprojectList" parameterType="ProjectPush" resultType="int">
+		SELECT cpp.PUSH_NO  FROM COLABO_PERSON cp
+		JOIN COLABO_PROJECT_PUSH cpp 
+		ON cp.P_NO = cpp.P_NO 
+		WHERE ','||cpp.CHECK_M_NO||',' NOT LIKE '%,' || #{memberNo} || ',%'
+		AND cpp.RECEIVE_M_NO IN (0,#{memberNo})
+		AND (cpp.RECEIVE_M_NO &lt;&gt; 0 
+		OR cp.P_NO IN 
+		<foreach collection="projectNoList" index="index" item="projectNo" open="(" close=")" separator=",">
+		#{projectNo}
+		</foreach>)
+	</select>
+	
+	<insert id="projectPush" parameterType="ProjectPush">
+		INSERT INTO COLABO_PROJECT_PUSH VALUES(
+				colabo_push_no_seq.nextval, #{pushType}, #{pushContent}, SYSDATE,
+				#{pushCheck}, #{addMNo}, #{receiveMNo}, #{projectNo}, null)
+	</insert>
+	
+	<select id="applyListCheck" parameterType="InviteProject" resultType="_int">
+		SELECT count(*) FROM COLABO_APPLY_PROJECT cap 
+		WHERE M_NO = #{memberNo}
+		AND P_NO = #{projectNo}
+	</select>
+	
+	<delete id="deleteApplyList" parameterType="colabo">
+		DELETE FROM COLABO_APPLY_PROJECT cap 
+		WHERE P_NO = #{no}
+		AND M_NO = #{memberNo}
+	</delete>
+	
+	<insert id="enrollApplyProject">
+		INSERT INTO COLABO_APPLY_PROJECT VALUES(
+				#{projectNo},#{memberNo},#{applyMNo},SYSDATE)
+	</insert>
+	
+	<select id="getNProjectList" resultMap="colaboResultSet">
+		SELECT * FROM COLABO c 
+		WHERE P_STATE = 'N'
+	</select>
+	
+	<select id="receiveApplyProject" parameterType="int" resultMap="colaboResultSet">
+		SELECT * FROM COLABO_APPLY_PROJECT cap
+		JOIN COLABO c 
+		ON cap.P_NO  = c.P_NO 
+		JOIN MEMBER m
+		ON cap.M_NO = m.M_NO 
+		WHERE cap.APPLY_M_NO = #{memerNo}
+	</select>
+	
+	<select id="applyProject" parameterType="int" resultMap="colaboResultSet">
+		SELECT * FROM COLABO_APPLY_PROJECT cap
+		JOIN COLABO c 
+		ON cap.P_NO  = c.P_NO 
+		WHERE cap.M_NO = #{memerNo}
+	</select>
+	
+	<select id="projectTeamCheck" parameterType="colabo" resultType="_int">
+		SELECT count(*) FROM COLABO_PERSON
+		WHERE P_NO = #{no}
+		AND M_NO = #{memberNo}
+		AND M_NAME = #{memberName}
+		AND M_EMAIL = #{memberEmail}
+	</select>
+	
+	<delete id="deleteInviteList" parameterType="colabo">
+		DELETE FROM COLABO_INVITE_PROJECT cip 
+		WHERE P_NO = #{no}
+		AND M_NO = #{memberNo}
+	</delete>
+	
+	<insert id="enrollProjectTeam" parameterType="colabo">
+		INSERT INTO COLABO_PERSON VALUES(
+				#{no},#{memberNo},#{memberName},#{memberEmail},SYSDATE)
+	</insert>
+	
+	<select id="inviteListCheck" parameterType="InviteProject" resultType="_int">
+		SELECT count(*) FROM COLABO_INVITE_PROJECT cip 
+		WHERE M_NO = #{memberNo}
+		AND P_NO = #{projectNo}
+	</select>
+	
+	<select id="inviteApplyProject" parameterType="int" resultMap="colaboResultSet">
+		SELECT * FROM COLABO_INVITE_PROJECT cip
+		JOIN COLABO c 
+		ON cip.P_NO  = c.P_NO 
+		WHERE cip.M_NO = #{memerNo}
+	</select>
 	
 	<insert id="inviteProject" parameterType="InviteProject">
 		INSERT INTO COLABO_INVITE_PROJECT VALUES(

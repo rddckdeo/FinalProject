@@ -160,7 +160,7 @@
     border-radius: 50%;
 }
 
-.pagination a.active {
+/* .pagination a.active {
     background-color: #0085db;
     color: white;
 }
@@ -168,7 +168,7 @@
 .pagination a.active:hover {
     background-color: #0071ba;
     color: white;
-}
+} */
 
 .adminMain{
     width: 95%;
@@ -301,6 +301,23 @@
 	justify-content:center;
 	align-items:center;
 }
+.adminDeclarationModal{
+	width : 70%;
+	height : 40%;
+    border: 1px solid #B2B4B5;
+	border-radius: 2.5rem;
+	
+	background-color:white;
+	position: fixed;
+	top:50%;
+	left:60%;
+    transform: translate(-50%, -50%);
+	z-index: 1;
+	display:none;
+	
+	justify-content:center;
+	align-items:center;
+}
 .exitBtn{
 	position:absolute;
 	top:20px;
@@ -363,4 +380,8 @@
 }
 .btnMargin2{
 	margin : 10px 10px 0 10px;
+}
+
+.width170{
+	width:170px;
 }

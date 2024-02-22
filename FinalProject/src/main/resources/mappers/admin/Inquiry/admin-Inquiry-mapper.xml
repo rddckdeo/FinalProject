@@ -119,4 +119,10 @@
 		WHERE a_board_no = #{no}
 	</select>
 
-</mapper>
+	
+	<select id="adminBoardWriter" resultType="_int">
+		SELECT M_NO FROM ADMIN_BOARD
+		WHERE A_BOARD_NO = #{boardNo}
+	</select>
+	
+	</mapper>

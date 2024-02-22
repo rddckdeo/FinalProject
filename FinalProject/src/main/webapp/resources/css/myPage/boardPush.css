@@ -1,0 +1,63 @@
+.newSpan{
+	background-color: green;
+	border-radius: 1rem;
+	width : 10px;
+	height : 10px;
+	
+	display :block;
+}
+.checkSpan{
+	border-radius: 1rem;
+	width : 10px;
+	height : 10px;
+	
+	display :block;
+}
+
+.pTitle{
+	margin : 5px 0 5px 0;
+	font-size:16px;
+}
+.imgStyle{
+	margin : 5px 0 5px 0;
+	width:20px;
+	height:20px;
+	cursor:pointer;
+}
+
+.pushBtn{
+    background-color: #0085DB;
+	width:80%;
+	padding:10px;
+	color : white;
+	border-radius:0.25rem;
+	border : none;
+	margin-bottom:10px;
+	margin-top:10px;
+	
+	cursor: pointer;
+	display:flex;
+	justify-content:center;
+}
+.pushBtn:hover{
+	color:white !important;
+}
+.dropDownDiv{
+	max-height: 500px;
+	overflow:auto;
+}
+/* 알링 board */
+.marginLR{
+	margin : 0 20px 0 20px;
+}
+.pushFont1{
+	font-weight: 900;
+	font-size : 16px;
+}
+.pushFont2{
+	font-weight: 400;
+	font-size : 14px;
+}
+.padding20px{
+	padding:20px 0 20px 0;
+}
