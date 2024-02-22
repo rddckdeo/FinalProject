@@ -71,10 +71,6 @@ public class CommentController {
 	   
 	}
 
-
-	
-	
-	
 	// 댓글 수 조회및 UI 업데이트
 //	private void updateCommentCountUI(int infoNo) {
 //		int commentCount = infoCommentService.countComments(infoNo);
@@ -98,7 +94,7 @@ public class CommentController {
 	}
 
 	// 댓글 삭제
-	@DeleteMapping("/deleteComment/{infoCommentNo}")
+	@PostMapping("/deleteComment/{infoCommentNo}")
 	public ResponseEntity<String> deleteComment(@PathVariable int infoCommentNo) {
 
 	    // 댓글 삭제 전에 해당 게시글의 번호 가져오기
@@ -149,8 +145,10 @@ public class CommentController {
 	public ResponseEntity<?> updateComment(@RequestBody InfoCommentDTO infoCommentDao) {
 	    int infoCommentNo = infoCommentDao.getInfoCommentNo();
 	    String commentContent = infoCommentDao.getInfoCommentContent();
-	    int infoNo = infoCommentDao.getInfoNo();
 	    
+	    System.out.println("infoCommentNo: " + infoCommentNo);
+	    System.out.println("commentContent: " + commentContent);
+		
 	    InfoCommentDTO isUpdated = infoCommentService.updateComment(infoCommentNo, commentContent);
 
 	    if (isUpdated  != null) {

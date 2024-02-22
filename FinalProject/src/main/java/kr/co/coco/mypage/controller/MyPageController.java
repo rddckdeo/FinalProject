@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.slf4j.Logger;
@@ -124,67 +125,66 @@ public class MyPageController {
 	    session.setAttribute("stackList", stackList);
 	    session.setAttribute("intro", member.getIntro());
 	    session.setAttribute("number", member.getNumber());
+	    session.setAttribute("picture", member.getPicture());
+	    session.setAttribute("path", member.getPath());
 
 	    return "myPage/myInfoEdit";
 	}
 
 	// 프로필 정보 수정 처리
 	@PostMapping("/editProfile")
-	public ResponseEntity<?> editProfile(MultipartFile imageFile, @RequestParam String[] hope,
-			@RequestParam String[] stack, @RequestParam String intro, @RequestParam String nickname,
-			@RequestParam String email, @RequestParam String number, HttpSession session) {
+	@ResponseBody
+	public ResponseEntity<?> editProfile(MultipartFile upload, MyPageDTO editContent , HttpSession session) {
 
 		Integer mNo = (Integer) session.getAttribute("no");
 
-		// 기존 이미지 정보 가져오기
-		MyPageDTO member = mypageService.findMemberByNo(mNo);
-		String saveFileName = member.getImageFileName();
-		String savePath = member.getImageFilePath();
+		 MyPageDTO member = new MyPageDTO();
+		 System.out.println(editContent.getEmail());
+		 System.out.println(editContent.getNickname());
+//		 member.setHope(hope.toString());
+//		 
+//		 member.setHopeList(hope);
+//		 System.out.println(hope.toString());
+//		 member
+//				 
+//		
+//		// 수정시 업로드된 파일이 있는지 여부, DB에 이미 저장된 파일이 있는지 여부에 따라 조건문
+//        if(!upload.isEmpty()) {
+//           // 업로드파일이 있고  DB에 이미 저장된 파일이 있을시
+//
+//           upload.uploadMethod(upload, colabo);
+////                  System.out.println("둘다 비어있지않음 실행 ");
+//        }else if(upload.isEmpty()){
+//           // 업로드파일이 있고  DB에 저장된 파일이 없을시
+//        	upload.uploadMethod(upload, colabo);
+////                  System.out.println("업로드파일 있고  DB에 값은 비어있음 실행 ");
+//        }
+//        // 이제 업로드 파일이 있을땐 다 처리를하였지만 업로드파일이 없는데 DB엔 있을때는 
+//        // mapper 에서 쿼리문을 작성할때  uploadPath 로 조건문을 돌린다. 이유는
+//        // 파일이있을땐 이미 업로드되어있는 이름이 hidden 으로 서버쪾으로 넘어오기때문에
+//        // 항상 들어있게되어서 업로드가 있는것처럼 쿼리문이 실행된다.
+//        // 업로드파일이 없을땐  UploadFile클래스가 실행이 안되기때문에 uploadName 을 제외하고는 다 비어있다.
+//        
+//        int result = colaboService.projectEdit(colabo);
+//        
+//        if(result == 1 ) {
+//           submitPage = "redirect:/colabo/colaboBasicPage";
+//        }else {
+//           submitPage = "error/errorPage";
+//        }
+
 		
-	    System.out.println("Initial saveFileName: " + saveFileName);  // 초기 saveFileName 출력
-	    System.out.println("Initial savePath: " + savePath);  // 초기 savePath 출력
 
-		if (!imageFile.isEmpty()) {
-			String originName = imageFile.getOriginalFilename();
-			String extension = originName.substring(originName.lastIndexOf("."));
-
-			// 현재 시간과 랜덤 문자열을 사용하여 새로운 파일 이름을 생성
-			LocalDateTime nowDate = LocalDateTime.now();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
-			String output = nowDate.format(formatter);
-
-			int length = 8;
-			String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-			Random random = new Random();
-			String randomString = random.ints(length, 0, characters.length()).mapToObj(characters::charAt)
-					.map(Object::toString).collect(Collectors.joining());
-
-			saveFileName = output + "_" + randomString + extension;
-			savePath = "/Users/kangnayoung/git/FinalProject/FinalProject/src/main/webapp/resources/uploads/member/";
-
-	        System.out.println("Final saveFileName: " + saveFileName);  // 최종 saveFileName 출력
-	        System.out.println("Final savePath: " + savePath);  // 최종 savePath 출력
-	        
-			Path path = Paths.get(savePath + saveFileName);
-
-			try {
-				// 서버에 파일 저장
-				imageFile.transferTo(path.toFile());
-			} catch (IOException e) {
-				 System.out.println("File save error: " + e.getMessage());  // 파일 저장 오류 메시지 출력
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장에 실패하였습니다. 다시 시도해주세요.");
-			}
-		}
-
-		// 프로필 정보 업데이트
-		boolean isUpdateSuccessful = mypageService.updateProfile(mNo, hope, stack, intro, nickname, email, number,
-				saveFileName, savePath);
-
-		if (isUpdateSuccessful) {
+//		// 프로필 정보 업데이트
+//		boolean isUpdateSuccessful = mypageService.updateProfile(mNo, hope, stack, intro, nickname, email, number,
+//				saveFileName, savePath);
+//
+//		if (isUpdateSuccessful) {
 			return ResponseEntity.ok().body("수정이 완료되었습니다.");
-		} else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정에 실패하였습니다. 다시 시도해주세요.");
-		}
+//		} else {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정에 실패하였습니다. 다시 시도해주세요.");
+//		}
+//	}
 	}
 
 	// project

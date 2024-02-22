@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>Edit Profile</title>
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 </head>
 <style>
 .custom-file-upload input[type="file"] {
@@ -137,44 +139,56 @@
 </body>
 </html>
 <script>
-	//항목 삭제 
-	window.onload = function() {
-		Array.from(document.getElementsByClassName("deleteButton")).forEach(
-				function(deleteButton) {
-					deleteButton.addEventListener("click", function() {
-						var itemValue = deleteButton.getAttribute('data-item');
-						Array.from(profileForm.elements).forEach(
-								function(element) {
-									if (element.name === 'hope[]'
-											&& element.value === itemValue) {
-										element.remove();
-									}
-								});
-						deleteButton.parentElement.parentElement.remove();
-					});
-				});
 
-		//프로필 이미지 변경 
-		const profileForm = document.querySelector("form");
+let hopeList1111= "";
+let stackList1111= "";
 
-		profileForm.querySelector('input[type="file"]').addEventListener(
-				"change",
-				function() {
-					console.log(this.files[0]); 
-					profileForm.querySelector('.profileImg').src = URL
-							.createObjectURL(this.files[0]);
-				});
+window.onload = function() {
+    var hopeList = <c:out value="${sessionScope.hopeList}" />;
+    var stackList = <c:out value="${sessionScope.stackList}" />; 
 
-		//항목 추가 
-		document
-				.getElementById("addHopeItemButton")
-				.addEventListener(
-						"click",
-						function(event) {
-							event.preventDefault();
-							var newHopeItem = document
-									.getElementById("newHopeItem").value;
-							if (newHopeItem) {
+    const profileForm = document.querySelector("form");
+
+    hopeList.forEach(function(hopeItem) {
+        var hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "hope[]";
+        hiddenInput.value = hopeItem;
+        profileForm.appendChild(hiddenInput);
+    });
+    
+    stackList.forEach(function(stackItem) {
+        var hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "stack[]";
+        hiddenInput.value = stackItem;
+        profileForm.appendChild(hiddenInput);
+    });
+
+    console.log(Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
+    console.log(Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value));
+
+    Array.from(document.getElementsByClassName("deleteButton")).forEach(function(deleteButton) {
+        deleteButton.addEventListener("click", function() {
+            var itemValue = deleteButton.getAttribute('data-item');
+            Array.from(profileForm.elements).forEach(function(element) {
+                if (element.name === 'hope[]' && element.value === itemValue || element.name === 'stack[]' && element.value === itemValue) {
+                    element.remove();
+                }
+            });
+            deleteButton.parentElement.parentElement.remove();
+			hopeList = Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value);
+			stackList = Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value);
+            console.log(Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
+            console.log(Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value));
+        });
+    }); 
+
+  //항목 추가 
+		document.getElementById("addHopeItemButton").addEventListener("click", function(event) {
+			event.preventDefault();
+			var newHopeItem = document.getElementById("newHopeItem").value;
+			if (newHopeItem) {
 								var direction2Div = document
 										.createElement("div");
 								var pTag = document.createElement("p");
@@ -191,26 +205,19 @@
 								deleteButton.classList.add("deleteButton");
 								deleteButton.setAttribute('data-item',
 										newHopeItem);
-								deleteButton
-										.addEventListener(
-												"click",
-												function() {
-													var itemValue = deleteButton
-															.getAttribute('data-item');
-													Array
-															.from(
-																	profileForm.elements)
-															.forEach(
-																	function(
-																			element) {
-																		if (element.name === 'hope[]'
-																				&& element.value === itemValue) {
-																			element
-																					.remove();
-																		}
-																	});
-													direction2Div.remove();
-												});
+			
+								deleteButton.addEventListener("click", function() {
+								    var itemValue = deleteButton.getAttribute('data-item');
+								    Array.from(profileForm.elements).forEach(function(element) {
+								        if (element.name === 'stack[]' && element.value === itemValue) {
+								            element.remove();
+								        }
+								    });
+								    direction2Div.remove();
+
+								hopeList1111 = Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value);
+								    console.log(Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value));
+								});
 
 								pTag.appendChild(deleteButton);
 								direction2Div.appendChild(pTag);
@@ -226,107 +233,67 @@
 								profileForm.appendChild(hiddenInput);
 
 								document.getElementById("newHopeItem").value = "";
-							}
-						});
-
-		document.getElementById("addStackItemButton").addEventListener(
-						"click",
-						function(event) {
-							event.preventDefault();
-							var newStackItem = document
-									.getElementById("newStackItem").value;
-							if (newStackItem) {
-								var direction2Div = document
-										.createElement("div");
-								var pTag = document.createElement("p");
-								var deleteButton = document
-										.createElement("button");
-
-								direction2Div.classList.add("direction2");
-
-								pTag.textContent = newStackItem;
-								pTag.classList
-										.add("infoStack", "defaultMargin");
-
-								deleteButton.textContent = "X";
-								deleteButton.classList.add("deleteButton");
-								deleteButton.setAttribute('data-item',
-										newStackItem);
-								deleteButton
-										.addEventListener(
-												"click",
-												function() {
-													var itemValue = deleteButton
-															.getAttribute('data-item');
-													Array
-															.from(
-																	profileForm.elements)
-															.forEach(
-																	function(
-																			element) {
-																		if (element.name === 'stack[]'
-																				&& element.value === itemValue) {
-																			element
-																					.remove();
-																		}
-																	});
-													direction2Div.remove();
-												});
-
-								pTag.appendChild(deleteButton);
-								direction2Div.appendChild(pTag);
-
-								document.getElementsByClassName("stackItems")[0]
-										.appendChild(direction2Div);
-
-								var hiddenInput = document
-										.createElement("input");
-								hiddenInput.type = "hidden";
-								hiddenInput.name = "stack[]";
-								hiddenInput.value = newStackItem;
-								profileForm.appendChild(hiddenInput);
-
-								document.getElementById("newStackItem").value = "";
-							}
-						});
-
-		/* //수정 얼럿 
-		profileForm.addEventListener("submit", function(event) {
-			event.preventDefault();
-
-			if (confirm('수정하시겠습니까?')) {
-				var formData = new FormData(profileForm);
-				var xhr = new XMLHttpRequest();
-				xhr.open('POST', '/mypage/editProfile', true);
-
-				xhr.onload = function() {
-					if (xhr.status === 200) {
-						alert('수정되었습니다.');
-						window.location.href = '/mypage/mypage.do';
-					} else {
-						alert('수정에 실패하였습니다. 다시 시도해주세요.');
-					}
-				};
-
-				xhr.send(formData);
+								console.log(Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
 			}
-		}); */
+						});
 
-	}
+		//항목 추가 
+		document.getElementById("addStackItemButton").addEventListener("click", function(event) {
+			event.preventDefault();
+			var newStackItem = document.getElementById("newStackItem").value;
+			if (newStackItem) {
+				var direction2Div = document.createElement("div");
+				var pTag = document.createElement("p");
+				var deleteButton = document.createElement("button");
+
+				direction2Div.classList.add("direction2");
+
+				pTag.textContent = newStackItem;
+				pTag.classList.add("infoStack", "defaultMargin");
+
+				deleteButton.textContent = "X";
+				deleteButton.classList.add("deleteButton");
+				deleteButton.setAttribute('data-item', newStackItem);
+				
+				deleteButton.addEventListener("click", function() {
+					var itemValue = deleteButton.getAttribute('data-item');
+					Array.from(profileForm.elements).forEach(function(element) {
+						if (element.name === 'stack[]' && element.value === itemValue) {
+							element.remove();
+						}
+					});
+					direction2Div.remove();
+
+				stackList1111 = Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value);
+					console.log(Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value));
+				});
+
+				pTag.appendChild(deleteButton);
+				direction2Div.appendChild(pTag);
+
+				document.getElementsByClassName("stackItems")[0].appendChild(direction2Div);
+
+				var hiddenInput = document.createElement("input");
+				hiddenInput.type = "hidden";
+				hiddenInput.name = "stack[]";
+				hiddenInput.value = newStackItem;
+				profileForm.appendChild(hiddenInput);
+
+				document.getElementById("newStackItem").value = "";
+				
+			}
+		});
+}
 	/* 취소버튼  */
 	function confirmCancel() {
 		var confirmResult = confirm("취소하시면 작성된 내용이 사라집니다. 취소하시겠습니까?");
 		return confirmResult;
 	}
 
-	/* 저장버튼 */
-	function confirmSave() {
-		var confirmResult = confirm("저장하시겠습니까?");
-		return confirmResult;
-	}
-	
+
 	/* 프로필 이미지 변경 */
 	function handleFileInput(e) {
+		  	        
 		try {
 			var fileName = e.target.value.split(/(\\|\/)/g).pop();
 			console.log("Selected file: ", fileName);
@@ -341,12 +308,56 @@
 					document.querySelector(".profileImg").src = e.target.result;
 				}
 				reader.onerror = function(e) {
-					console.error("FileReader error: ", e);
+					console.error("에러남: ", e);
 				}
 				reader.readAsDataURL(e.target.files[0]);
 			}
 		} catch (error) {
-			console.error("An error occurred: ", error);
+			console.error("에러남 : ", error);
 		}
+	}
+	/* 저장버튼 */
+	function confirmSave() {
+		console.log("asdasdadasd");
+		console.log(hopeList1111);
+		console.log(stackList1111);
+/* 		console.log(Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
+		console.log(Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value));
+		 *//* console.log(fileName); */
+		console.log(document.getElementById('nickname').value);
+		console.log(document.getElementById('number').value);
+
+	/*	
+    var confirmResult = confirm("저장하시겠습니까?");
+    if (confirmResult) {
+        var hopeItems = Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value);
+        var stackItems = Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value);
+        console.log(hopeItems);
+ */        
+    /*     $.ajax({
+            type:'post',
+            url:'/mypage/editProfile',
+        	data: {
+          	  hope: hopeItems,
+              stack: stackItems,
+              imageFileName: fileName,
+              imageFilePath : '/resources/uploads/member/',
+              nickname: document.getElementById('nickname').value,
+              email: document.getElementById('email').value,
+              number: document.getElementById('number').value
+        },
+            dataType: "text",
+            success: function(data){   //요청 성공시 실행될 메서드
+            console.log('Success:', data);
+                 alert('데이터가 성공적으로 저장되었습니다!');
+         },
+         error:function(error){       //요청 실패시 에러 확인을 위함
+           console.error('Error:', error);
+              alert('데이터 저장 중에 오류가 발생했습니다.');
+         }
+     }) */
+	   /*  return confirmResult; */
+	
+		/* } */
 	}
 </script>

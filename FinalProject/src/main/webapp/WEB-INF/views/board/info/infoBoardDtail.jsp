@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,9 +49,8 @@
 									</c:if>
 								</div>
 								<div class="button-wrapper">
-								<p>이거 데이터 ${post}</p>
-									<%-- 									<c:choose>
-										<c:when test="${no == post.mNo}">
+									<c:choose>
+										<c:when test="${no == post.memberNo}">
 											<a href="/info/edit/${post.infoNo}" class="board-update-btn">수정하기</a>
 											<a data-info-no="${post.infoNo}" id="delete-link"
 												class="board-update-btn" onclick="deletePost(event)">삭제</a>
@@ -77,15 +76,13 @@
 											</form>
 										</div>
 									</div>
-								</div> --%>
-
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-										 <p>이거 데이터 ${post.memberNo} </p> 
+
 			<div class="row">
 				<div class="main-section">
 					<div class="container-fluid">
@@ -144,6 +141,7 @@
 							<div class="card">
 								<div class="main-boardList">
 									<div class="comment-registration">
+
 										<c:choose>
 											<c:when test="${empty sessionScope.no}">
 												<p>댓글 기능은 로그인 후 이용 가능합니다.</p>
@@ -191,19 +189,18 @@
 																	value="${comment.infoCommentDate}" disabled><br>
 
 																<label for="editComment">내용:</label>
-																<textarea id="editComment">${comment.infoCommentContent}</textarea>
-																<br> 
-																<input type="hidden" id="infoCommentNo" value="${comment.infoCommentNo}">
-
-
-																<input class="editSubmitButton" type="submit"
-																	value="수정하기">
+																<textarea id="editComment" class="editComment">${comment.infoCommentContent}</textarea>
+																<br> <input type="hidden" id="infoCommentNo"
+																	value="${comment.infoCommentNo}"> <input
+																	class="editSubmitButton" type="submit" value="수정하기">
 															</form>
 
 														</div>
 													</div>
 													<p>|</p>
-													<a class="delete-button" data-id="${comment.infoCommentNo}">삭제</a>
+													<a class="delete-button" onclick="deleteComment(this)"
+														data-id="${comment.infoCommentNo}">삭제</a>
+
 													<!-- 신고하기 버튼 -->
 													<button class="reportButton"
 														data-id="${comment.infoCommentNo}"
@@ -255,21 +252,28 @@
 		var infoNo; // 현재 페이지의 정보글 번호
 
 		// 댓글 삭제 
-		$(document).off('click', '.delete-button').on('click',
-				'.delete-button', function(event) {
-					var commentId = $(this).data('id');
-					console.log(commentId);
-					$.ajax({
-						type : 'DELETE',
-						url : '/comment/deleteComment/' + commentId
-					}).done(function(response) {
-						alert("댓글이 삭제되었습니다.");
-						location.reload();
-					}).fail(function(error) {
-						alert("댓글 삭제에 실패하였습니다.");
-					});
-				});
+				function deleteComment(button) {
+				    var commentId = button.getAttribute('data-id'); 
+				    event.preventDefault();
 
+				    var confirmDelete = confirm('정말로 삭제하시겠습니까?');
+
+				    if (confirmDelete) {
+				        $.ajax({
+				            type: 'POST',
+				            url: '/comment/deleteComment/' + commentId,
+				        }).done(function (response) {
+				            alert("댓글이 삭제되었습니다.");
+				            location.reload();
+				        }).fail(function (error) {
+				            alert("댓글 삭제에 실패하였습니다.");
+				        });
+				    }
+				}
+
+
+
+				
 			// 댓글 등록
 			$("#submitComment").click(function (event) {
 			    var commentContent = $('#commentContent').val();
@@ -278,6 +282,10 @@
 			
 			    if (!commentContent) {
 			        alert('댓글 내용을 입력해주세요.');
+			        return;
+			    }
+			    var isConfirmed = confirm('댓글을 등록하시겠습니까?');
+			    if (!isConfirmed) {
 			        return;
 			    }
 			
@@ -506,7 +514,7 @@
         var reportButtons = document.querySelectorAll('.reportButton');
         var closeButtons = document.querySelectorAll('.close');
         var reportForms = document.querySelectorAll('.reportForm');
-        var editForms = document.querySelectorAll('.editForm');
+        var editForms = document.querySelectorAll('.editSubmitButton');
 
         editButtons.forEach(function(button) {
             button.setAttribute('onclick', 'openEditModal(this)');
@@ -531,11 +539,9 @@
     
     /* 댓글 수정하기 */
     function openEditModal(button) {
-        var commentId = button.getAttribute('data-id');
-        var infoNo = button.getAttribute('data-infoNo'); 
-        var modal = document.querySelector('#editModal_' + commentId);
+        var commentId = button.getAttribute('data-id'); //수정버튼 데이터(댓글 넘버)
+        var modal = document.querySelector('#editModal_' + commentId); 
         modal.style.display = "block";
-        modal.dataset.infoNo = infoNo;
         
     }
 
@@ -545,17 +551,23 @@
     }
 
     function submitEditForm(form) {
-        event.preventDefault();
+        event.preventDefault(); //새로고침 방지
 
-        var infoCommentNo = form.querySelector('#infoCommentNo').value;
-        var commentContent = form.querySelector('#editComment').value; 
-        var infoNo = form.closest('.editModal').dataset.infoNo;  
+        var infoCommentNo = form.querySelector('#infoCommentNo').value; //infoCommentNo id가져올거임 
+        var commentContent = form.querySelector('.editComment').value;  //editComment 클래스 가져올거이
+        
+        console.log(form); // form 요소가 올바르게 전달되었는지 확인
+        console.log(form.querySelector('.editComment')); // .editComment 요소가 존재하는지 확인
+        console.log(form.querySelector('.editComment').value); // .editComment 요소의 값 확인
 
-
+        if (!commentContent || !commentContent.trim()) { 
+            alert("내용을 입력해주세요.");
+            return; 
+        } 
+        
         var data = {
         	    infoCommentNo: infoCommentNo,
-        	    commentContent: commentContent,
-        	    infoNo: infoNo
+        	    infoCommentContent: infoCommentContent
         	};
 
         if(confirm("댓글을 수정하시겠습니까?")) {
@@ -581,12 +593,6 @@
             });
         }
     }
-
-
-    
-    
-    
-    
 
     /* 댓글 신고하기 */
     function openReportModal(button) {
