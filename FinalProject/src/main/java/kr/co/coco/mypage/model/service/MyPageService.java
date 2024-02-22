@@ -41,6 +41,14 @@ public interface MyPageService {
 
 	//문의사항 진입 
 	List<AdminBoardDTO> getInquiries(Integer mNo);
+
+	// 문의게시판 조회수 증가
+	void increaseViewCount(int no);
+
+	// 문의게시판 디테일(정보가져오기)
+	AdminBoardDTO inquiryDtail(int no);
+
+
 	
 	
 	

@@ -126,8 +126,15 @@ public class FreeServiceImpl implements FreeService {
     }
 
     //게시글 신고하기 
+    @Override
 	public boolean report(DeclarationDTO declarationDto) {
 		return declarationDao.report(declarationDto);
+	}
+
+	//전체 게시글 수 조회 
+    @Override
+	public int countPosts() {
+    	return freeDao.countPosts();
 	}
 
 

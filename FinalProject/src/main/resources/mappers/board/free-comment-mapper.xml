@@ -65,8 +65,9 @@
 
     <!-- 댓글 삭제 -->
     <delete id="deleteComment" parameterType="int">
-        DELETE FROM
-        free_comment WHERE free_comment_no = #{id}
+        UPDATE free_comment
+		SET free_comment_delete_date = SYSDATE
+		WHERE free_comment_no = #{id}
     </delete>
 
     <!-- 댓글 번호로 댓글 정보 가져오기 -->
@@ -79,20 +80,6 @@
         SELECT free_no FROM free_comment WHERE free_comment_no = #{freeCommentNo}
     </select>
     
-	<!-- 자유게시판 댓글 가져오기 --> 
-<!-- 	<select id="fetchFreeCommentNo" parameterType="int"
-		resultType="freeComment">
-		SELECT
-		fc.*,
-		f.free_title AS post_title,
-		f.free_category AS post_category
-		FROM
-		free_comment fc
-		JOIN
-		free f ON fc.free_no = f.free_no
-		WHERE
-		fc.m_no = #{mNo}
-	</select> -->
 	
 		<!-- 댓글 업데이트 -->
 	<update id="updateComment" parameterType="freeComment">

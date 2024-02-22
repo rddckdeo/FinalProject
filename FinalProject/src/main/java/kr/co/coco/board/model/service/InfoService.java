@@ -44,4 +44,7 @@ public interface InfoService {
 	// 신고하기
 	boolean report(DeclarationDTO declarationDto);
 
+	//전체 게시글 수 
+	int countPosts();
+
 }

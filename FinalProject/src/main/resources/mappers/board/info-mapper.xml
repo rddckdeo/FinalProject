@@ -5,7 +5,7 @@
 
 	<resultMap id="InfoResultMap" type="info">
 
-		<id property="infoNo" column="info_no" />
+		<result property="infoNo" column="info_no" />
 		<result property="infoTitle" column="info_title" />
 		<result property="infoContent" column="info_content" />
 		<result property="infoDate" column="info_date" />
@@ -19,7 +19,7 @@
 		<result property="infoBlind" column="info_blind" />
 		<result property="infoCommentCount" column="info_comment_count" />
 
-		<result property="mNo" column="m_no" />
+		<result property="memberNo" column="m_no" />
 		<result property="nickname" column="nickname" />
 		<result property="commentCount" column="comment_count" />
 
@@ -69,18 +69,26 @@
 		i.info_no AS infoNo,
 		i.info_title AS infoTitle,
 		m.m_nickname AS nickname,
-		m.m_picture AS imageFileName,
+		m.m_no AS memberNo,
+		m.m_picture AS
+		imageFileName,
 		m.m_path AS imageFilePath,
-		i.info_content AS infoContent,
+		i.info_content
+		AS infoContent,
 		i.info_date AS infoDate,
 		i.info_views AS infoViews,
-		i.info_tag1 AS infoTag1,
+		i.info_tag1 AS
+		infoTag1,
 		i.info_tag2 AS infoTag2,
-		i.info_tag3 AS infoTag3,
-		(SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no) AS commentCount
+		i.info_tag3 AS
+		infoTag3,
+		(SELECT
+		COUNT(*) FROM info_comment WHERE info_no = i.info_no)
+		AS commentCount
 		FROM info i
 		JOIN member m ON i.m_no = m.m_no
-		WHERE i.info_no = #{infoNo}
+		WHERE
+		i.info_no = #{infoNo}
 	</select>
 
 
@@ -101,10 +109,11 @@
 		#{infoNo}
 	</update>
 
-<!--게시글 삭제  -->
+	<!--게시글 삭제 -->
 	<delete id="deletePost" parameterType="int">
 		UPDATE INFO
-		SET info_delete_date = SYSDATE
+		SET
+		info_delete_date = SYSDATE
 		WHERE
 		info_no = #{infoNo}
 	</delete>
@@ -115,7 +124,7 @@
 		info_views = info_views + 1 WHERE info_no = #{infoNo}
 	</update>
 
-
+	<!-- 카테고리별 게시글수 조회 -->
 	<select id="countPostsByCategory" parameterType="string"
 		resultType="int">
 		SELECT COUNT(*)
@@ -144,11 +153,13 @@
 		a.info_no = info_comment.info_no AND a.m_no =
 		info_comment.m_no
 		WHERE
-		a.INFO_CATEGORY = #{categoryName} AND a.info_delete_date IS NULL
+		a.INFO_CATEGORY = #{categoryName} AND
+		a.info_delete_date IS NULL
 		)
 		WHERE rnum
 		between #{startIndex} + 1
-		and #{startIndex} + #{pageSize}
+		and
+		#{startIndex} + #{pageSize}
 	</select>
 
 
@@ -156,16 +167,16 @@
 	<select id="searchPosts" parameterType="map" resultType="info">
 		SELECT *
 		FROM (
-		SELECT i.*, m.m_nickname AS nickname, m.m_picture AS imageFileName,
-		m.m_path AS imageFilePath,
+		SELECT
+		i.*, m.m_nickname AS nickname, m.m_picture AS imageFileName, m.m_path AS
+		imageFilePath,
 		NVL((SELECT COUNT(*) FROM info_comment WHERE info_no = i.info_no), 0) AS
 		commentCount,
-		row_number() over (order by i.INFO_DATE DESC) rnum
+		row_number() OVER (ORDER BY i.INFO_DATE DESC) rnum
 		FROM info i
-		JOIN member m ON
-		i.m_no = m.m_no
-		WHERE i.info_title LIKE '%' || #{query} || '%'
-		OR i.info_content LIKE '%' || #{query} || '%'
+		JOIN member m ON i.m_no = m.m_no
+		WHERE (i.info_title LIKE '%' || #{query} || '%' OR i.info_content LIKE '%'
+		|| #{query} || '%')
 		AND i.info_delete_date IS NULL
 		)
 		WHERE rnum BETWEEN #{startIndex} AND #{endIndex}
@@ -182,14 +193,14 @@
 		WHERE INFO_TITLE LIKE
 		'%'||#{query}||'%' OR INFO_CONTENT LIKE
 		'%'||#{query}||'%'
-		AND info_delete_date IS NULL
+		AND
+		info_delete_date IS NULL
 	</select>
 
 
 	<!-- 해당 게시글에 연결된 모든 댓글 삭제 -->
-	<delete id="deleteByInfoNo">
-		DELETE FROM info_comment WHERE info_no = #{infoNo}
-	</delete>
+	<!-- <delete id="deleteByInfoNo"> DELETE FROM info_comment WHERE info_no 
+		= #{infoNo} </delete> -->
 
 	<!-- 전체 게시글 조회 (페이징 처리) -->
 	<select id="getAllPosts" parameterType="map" resultType="info">
@@ -203,7 +214,15 @@
 		JOIN MEMBER m ON a.M_NO = m.M_NO
 		WHERE a.info_delete_date IS NULL
 		)
-		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+		WHERE rnum between #{startIndex} + 1
+		and #{startIndex} + #{pageSize}
+	</select>
+
+	<!-- 전체 게시글 수 조회 -->
+	<select id="countPosts" parameterType="string" resultType="int">
+		SELECT COUNT(*)
+		FROM INFO
+		WHERE info_delete_date IS NULL
 	</select>
 
 
@@ -256,16 +275,19 @@
 		GROUP BY info_no
 		) ic ON a.info_no =
 		ic.info_no
-		WHERE a.INFO_CATEGORY = #{categoryName} AND ic.info_delete_date IS NULL
+		WHERE a.INFO_CATEGORY = #{categoryName} AND
+		a.info_delete_date IS NULL
 		) WHERE rnum between
-		#{startIndex} + 1 and #{startIndex} + #{pageSize}
+		#{startIndex} + 1 and
+		#{startIndex} + #{pageSize}
 	</select>
 
 
 	<!-- 게시글 정렬: 조회 수별 -->
 	<select id="selectPostsOrderByViews" resultType="info">
 		SELECT * FROM (
-		SELECT a.*, member.m_nickname AS nickname,
+		SELECT a.*, member.m_nickname AS nickname, member.m_picture AS
+		imageFilePath, member.m_path AS imageFileName,
 		COALESCE(ic.commentCount, 0)
 		AS commentCount,
 		row_number() over (order by a.INFO_VIEWS DESC) rnum
@@ -278,20 +300,21 @@
 		GROUP BY info_no
 		) ic
 		ON a.info_no = ic.info_no
-		WHERE a.INFO_CATEGORY = #{categoryName} AND a.info_delete_date IS NULL
+		WHERE a.INFO_CATEGORY = #{categoryName} AND
+		a.info_delete_date IS NULL
 		)
-		WHERE rnum between #{startIndex} + 1 and #{startIndex} + #{pageSize}
+		WHERE rnum between #{startIndex} + 1 and
+		#{startIndex} + #{pageSize}
 	</select>
+
 
 
 	<!-- 마이페이지 no로 게시글 가져오기 -->
 	<select id="fetchPostsByMemberNo" resultType="info">
-		SELECT
-		f.*
-		FROM
-		info f
-		WHERE
-		f.m_no = #{mNo} AND info_delete_date IS NULL
+		SELECT f.*, m.m_nickname
+		FROM info f
+		JOIN member m ON f.m_no = m.m_no
+		WHERE f.m_no = #{mNo} AND f.info_delete_date IS NULL
 		<if test="start != null and limit != null">
 			OFFSET #{start} ROWS FETCH NEXT #{limit} ROWS ONLY
 		</if>
@@ -300,7 +323,8 @@
 	<!--마이페이지 총 게시글 수 가져오기 -->
 	<select id="allInfoBoardPostsNo" parameterType="int"
 		resultType="int">
-		SELECT COUNT(*) FROM info WHERE m_no = #{mNo}  AND info_delete_date IS NULL
+		SELECT COUNT(*) FROM info WHERE m_no = #{mNo} AND
+		info_delete_date IS NULL
 	</select>
 
 

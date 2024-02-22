@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	<mapper namespace="admin-adminBoardMapper">
-	
+<mapper namespace="admin-adminBoardMapper">
+
 	<resultMap type="adminBoard" id="adminBoardResultSet">
 		<result column="a_board_no" property="no"></result>
 		<result column="a_board_title" property="title"></result>
@@ -12,85 +12,111 @@
 		<result column="a_board_delete_date" property="deleteDate"></result>
 		<result column="a_board_answer" property="answer"></result>
 		<result column="m_no" property="mNo"></result>
-		<result column="a_board_answer_content" property="answerContent"></result>
+		<result column="a_board_answer_content"
+			property="answerContent"></result>
 		<result column="a_board_answer_date" property="answerDate"></result>
 		<result column="m_name" property="name"></result>
-		
+
 		<result column="m_path" property="imageFilePath"></result>
 		<result column="m_picture" property="imageFileName"></result>
-			
+
 	</resultMap>
 
 	<select id="incomCount" resultType="_int">
-		SELECT COUNT(*) FROM ADMIN_BOARD
+		SELECT COUNT(*) FROM
+		ADMIN_BOARD
 		WHERE A_BOARD_ANSWER = 'N'
 		AND A_BOARD_DELETE_DATE IS NULL
 		ORDER BY A_BOARD_IN_DATE DESC
 	</select>
 	<select id="comCount" resultType="_int">
-		SELECT COUNT(*) FROM ADMIN_BOARD
+		SELECT COUNT(*) FROM
+		ADMIN_BOARD
 		WHERE A_BOARD_ANSWER = 'Y'
 		AND A_BOARD_DELETE_DATE IS NULL
 		ORDER BY A_BOARD_IN_DATE DESC
 	</select>
 	<select id="totalCount" resultType="_int">
-		SELECT COUNT(*) FROM ADMIN_BOARD
+		SELECT COUNT(*) FROM
+		ADMIN_BOARD
 		WHERE A_BOARD_DELETE_DATE IS NULL
-		ORDER BY A_BOARD_IN_DATE DESC
+		ORDER BY A_BOARD_IN_DATE
+		DESC
 	</select>
 
 	<select id="incomList" resultMap="adminBoardResultSet">
-	    SELECT AB.*, M.M_NAME
-	    FROM ADMIN_BOARD AB
-	    JOIN MEMBER M ON AB.M_NO = M.M_NO
-	    WHERE AB.A_BOARD_ANSWER = 'N'
-	    AND AB.A_BOARD_DELETE_DATE IS NULL
-	    ORDER BY AB.A_BOARD_IN_DATE DESC
+		SELECT AB.*, M.M_NAME
+		FROM
+		ADMIN_BOARD AB
+		JOIN MEMBER M ON AB.M_NO = M.M_NO
+		WHERE AB.A_BOARD_ANSWER
+		= 'N'
+		AND AB.A_BOARD_DELETE_DATE IS NULL
+		ORDER BY AB.A_BOARD_IN_DATE
+		DESC
 	</select>
-	
+
 	<select id="comList" resultMap="adminBoardResultSet">
-	    SELECT AB.*, M.M_NAME
-	    FROM ADMIN_BOARD AB
-	    JOIN MEMBER M ON AB.M_NO = M.M_NO
-	    WHERE AB.A_BOARD_ANSWER = 'Y'
-	    AND AB.A_BOARD_DELETE_DATE IS NULL
-	    ORDER BY AB.A_BOARD_IN_DATE DESC
+		SELECT AB.*, M.M_NAME
+		FROM
+		ADMIN_BOARD AB
+		JOIN MEMBER M ON AB.M_NO = M.M_NO
+		WHERE AB.A_BOARD_ANSWER
+		= 'Y'
+		AND AB.A_BOARD_DELETE_DATE IS NULL
+		ORDER BY AB.A_BOARD_IN_DATE
+		DESC
 	</select>
-	
+
 	<select id="AdminBoardTotalList" resultMap="adminBoardResultSet">
-	    SELECT ab.*, M.M_NAME
-	    FROM ADMIN_BOARD ab
-	    JOIN MEMBER m ON ab.M_NO = m.M_NO
-	    WHERE ab.A_BOARD_DELETE_DATE IS NULL
-	    ORDER BY ab.A_BOARD_IN_DATE DESC
+		SELECT ab.*, M.M_NAME
+		FROM ADMIN_BOARD ab
+		JOIN MEMBER m ON ab.M_NO = m.M_NO
+		WHERE
+		ab.A_BOARD_DELETE_DATE IS NULL
+		ORDER BY ab.A_BOARD_IN_DATE DESC
 	</select>
-	
+
 	<update id="adminBoardEnroll">
-	    UPDATE ADMIN_BOARD SET A_BOARD_ANSWER = 'Y',
-	    A_BOARD_ANSWER_CONTENT = #{content},
-	    A_BOARD_ANSWER_DATE = SYSDATE
-	    WHERE A_BOARD_NO = #{no}
+		UPDATE ADMIN_BOARD SET A_BOARD_ANSWER = 'Y',
+		A_BOARD_ANSWER_CONTENT = #{content},
+		A_BOARD_ANSWER_DATE = SYSDATE
+		WHERE A_BOARD_NO = #{no}
 	</update>
-	
+
 	<update id="adminBoardDelete">
 		UPDATE ADMIN_BOARD SET A_BOARD_DELETE_DATE = SYSDATE
 		WHERE A_BOARD_NO = #{no}
 	</update>
-	
-		<!-- 마이페이지 문의사항 가져오기 -->
+
+	<!-- 마이페이지 문의사항 가져오기 -->
 	<select id="getInquiries" resultMap="adminBoardResultSet">
-    SELECT
-    mem.m_name,
-    mem.m_path AS imageFilePath,
-    mem.m_picture AS imageFileName,
-    ad.*
-    FROM
-    ADMIN_BOARD ad
-    JOIN member mem ON ad.m_no = mem.m_no
-    WHERE
-    ad.m_no = #{mNo}
-    AND ad.a_board_delete_date IS NULL
+		SELECT
+		mem.m_name,
+		mem.m_path AS imageFilePath,
+		mem.m_picture AS imageFileName,
+		TO_CHAR(ad.a_board_in_date, 'YYYY-MM-DD') AS inDate, 
+		ad.*
+		FROM
+		ADMIN_BOARD ad
+		JOIN member mem ON ad.m_no = mem.m_no
+		WHERE
+		ad.a_board_delete_date IS NULL
+		ORDER BY ad.a_board_in_date DESC
 	</select>
-	
-	
-	</mapper>
+
+	<!-- 문의게시판 조회수 증가 -->
+	<update id="increaseViewCount">
+		UPDATE ADMIN_BOARD
+		SET a_board_view = a_board_view + 1
+		WHERE a_board_no = #{no}
+	</update>
+
+	<!-- 문의게시판 디테일(정보가져오기) -->
+	<select id="inquiryDtail" resultMap="adminBoardResultSet">
+		SELECT *
+		FROM ADMIN_BOARD
+		WHERE a_board_no = #{no}
+	</select>
+
+</mapper>

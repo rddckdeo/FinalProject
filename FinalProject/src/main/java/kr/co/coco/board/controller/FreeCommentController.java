@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.service.FreeCommentService;
+import kr.co.coco.board.model.service.FreeCommentServiceImpl;
 
 
 @Controller
@@ -29,7 +30,7 @@ import kr.co.coco.board.model.service.FreeCommentService;
 public class FreeCommentController {
 
 	@Autowired
-    private FreeCommentService freeCommentService;
+    private FreeCommentServiceImpl freeCommentService;
 
 	// 댓글 등록
 	@PostMapping("/SubmitRegistr")
@@ -48,6 +49,8 @@ public class FreeCommentController {
 	    commentDTO.setFreeCommentDate(new java.sql.Date(System.currentTimeMillis()));
 	    commentDTO.setMNo(mNo);
 
+	    System.out.println(commentDTO.getFreeNo());
+	    
 	    try {
 	        FreeCommentDTO savedComment = freeCommentService.save(commentDTO);
 
@@ -129,7 +132,7 @@ public class FreeCommentController {
 				return ResponseEntity.ok().build();
 			} else {
 				// 신고 처리 실패 시 응답
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Declaration processing failed.");
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("신고처리 안됨");
 			}
 		} catch (Exception e) {
 			// 에러 발생 시 응답

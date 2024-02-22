@@ -67,7 +67,7 @@
 		JOIN member mem ON info.m_no = mem.m_no
 		JOIN info inf
 		ON info.info_no = inf.info_no
-		WHERE info.m_no = #{mNo}
+		WHERE info.m_no = #{mNo} AND info.info_comment_delete_date IS NULL
 	</select>
 
 	<!-- 자유게시판 댓글 가져오기 -->
@@ -81,7 +81,7 @@
 		JOIN member mem ON free.m_no = mem.m_no
 		JOIN free fre
 		ON free.free_no = fre.free_no
-		WHERE free.m_no = #{mNo}
+		WHERE free.m_no = #{mNo} AND free.free_comment_delete_date IS NULL
 	</select>
 
 	<!-- 문의사항 등록 -->

@@ -2,6 +2,7 @@ package kr.co.coco.board.model.service;
 
 import java.util.List;
 
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.dto.FreeDTO;
 
@@ -39,5 +40,11 @@ public interface FreeService {
 
     //검색 로직 
 	List<FreeDTO> searchFreePosts(String query, int freePage, int pageSize);
+
+	//게시글 신고하기 
+	boolean report(DeclarationDTO declarationDto);
+
+	//전체 게시글 수 조회 
+	int countPosts();
 
 }

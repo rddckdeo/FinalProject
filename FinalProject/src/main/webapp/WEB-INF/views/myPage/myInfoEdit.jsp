@@ -8,6 +8,22 @@
 <title>Edit Profile</title>
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
 </head>
+<style>
+.custom-file-upload input[type="file"] {
+	display: none;
+}
+
+.custom-file-upload label {
+	padding: 10px;
+	background-color: #4CAF50;
+	color: white;
+	cursor: pointer;
+}
+
+.custom-file-upload #file-name {
+	margin-left: 10px;
+}
+</style>
 <body>
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
@@ -30,15 +46,18 @@
 									<!-- card body -->
 									<div class="card-body height500 direction1"
 										style="padding-top: 0;">
-										<!-- Form -->
-										<!-- 										<form action="/mypage/editProfile" method="post"
-											enctype="multipart/form-data"> -->
+
 										<form>
-											<!-- Profile picture -->
+
 											<div>
-												<img src="${sessionScope.path}${sessionScope.picture}"
-													alt="Profile picture" class="profileImg"> <input
-													type="file" name="imageFile" />
+												<div class="custom-file-upload">
+													<img src="${sessionScope.path}${sessionScope.picture}"
+														alt="Profile picture" class="profileImg"> <input
+														type="file" id="file-input"
+														onchange="handleFileInput(event)"> <label
+														for="file-input">파일 선택</label> <span id="file-name">파일을
+														선택해주세요.</span>
+												</div>
 											</div>
 											<!-- 소개글 -->
 											<div class="myInfo direction2 alignCenter bottomMargin20">
@@ -102,8 +121,9 @@
 
 
 											<!-- 저장 버튼 -->
-											<button type="submit" class="btn btn-primary">저장</button>
-											<button onclick="history.back()" class="btn btn-primary">취소</button>
+											<button type="submit" class="btn btn-primary"
+												onclick="return confirmSave()">저장</button>
+											<a href="/mypage/myinfo.do" onclick="return confirmCancel()">취소</a>
 										</form>
 									</div>
 								</div>
@@ -270,7 +290,7 @@
 							}
 						});
 
-		//수정 얼럿 
+		/* //수정 얼럿 
 		profileForm.addEventListener("submit", function(event) {
 			event.preventDefault();
 
@@ -290,6 +310,43 @@
 
 				xhr.send(formData);
 			}
-		});
+		}); */
+
+	}
+	/* 취소버튼  */
+	function confirmCancel() {
+		var confirmResult = confirm("취소하시면 작성된 내용이 사라집니다. 취소하시겠습니까?");
+		return confirmResult;
+	}
+
+	/* 저장버튼 */
+	function confirmSave() {
+		var confirmResult = confirm("저장하시겠습니까?");
+		return confirmResult;
+	}
+	
+	/* 프로필 이미지 변경 */
+	function handleFileInput(e) {
+		try {
+			var fileName = e.target.value.split(/(\\|\/)/g).pop();
+			console.log("Selected file: ", fileName);
+			document.getElementById("file-name").textContent = fileName ? fileName
+					: "파일을 선택해주세요.";
+
+			if (e.target.files.length > 0) {
+				// 이미지 미리보기 업데이트
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					console.log("FileReader onload event fired");
+					document.querySelector(".profileImg").src = e.target.result;
+				}
+				reader.onerror = function(e) {
+					console.error("FileReader error: ", e);
+				}
+				reader.readAsDataURL(e.target.files[0]);
+			}
+		} catch (error) {
+			console.error("An error occurred: ", error);
+		}
 	}
 </script>

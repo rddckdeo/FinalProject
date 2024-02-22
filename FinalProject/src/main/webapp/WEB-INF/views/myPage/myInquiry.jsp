@@ -84,7 +84,7 @@
 													</div>
 
 													<div class="main-boardList-title">
-														<a href="">${inquiry.title}</a>
+														<a href="/mypage/inquiryDtail/${inquiry.no}">${inquiry.title}</a>
 													</div>
 
 													<div class="main-boardList-bottm-div">

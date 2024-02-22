@@ -45,7 +45,8 @@
 								</div>
 								<div class="button-wrapper">
 									<a href="/free/edit/${post.freeNo}" class="board-update-btn">수정하기</a>
-									<a href="#" data-free-no="${post.freeNo}" class="delete-link">삭제</a>
+									<a data-free-no="${post.freeNo}" id="delete-link" class="board-update-btn" onclick="deletePost(event)">삭제</a>
+
 
 									<!-- 신고하기 버튼 -->
 									<button id="reportButton" class="board-update-btn">신고하기</button>
@@ -138,7 +139,8 @@
 												<div class="comment-registration">
 													<input type="text" id="commentContent"
 														placeholder="댓글을 남겨주세요">
-													<button id="submitComment" type="button">등록</button>
+													<button id="submitComment" type="button" onclick="submitComment()">등록</button>
+
 												</div>
 											</c:otherwise>
 										</c:choose>
@@ -248,10 +250,10 @@
 				});
 
 		// 댓글 등록
-		$("#submitComment").click(function (event) {
+		function submitComment() {
     var commentContent = $('#commentContent').val();
     var mNo = $('body').data('mno');
-    var infoNo = $('body').data('free-no');
+    var freeNo = $('body').data('free-no');
 
     if (!commentContent) {
         alert('댓글 내용을 입력해주세요.');
@@ -269,8 +271,9 @@
         }),
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+            console.log('새로 등록된 댓글 번호: ', response.freeCommentNo);
             appendComment(response);
-            updateCommentCount(infoNo);
+            updateCommentCount(freeNo);
             // 댓글이 없다는 메시지 숨기기
             $('#no-comment-message').hide();
 
@@ -282,7 +285,8 @@
             console.error('댓글 저장에 실패하였습니다: ', err.status, err.statusText);
         }
     });
-});
+}
+
 
 // Bootstrap 모달 초기화
 $('.modal').modal({
@@ -292,6 +296,7 @@ $('.modal').modal({
 
 		// 서버에서 받아온 날짜 형식 변환
 		function formatDate(dateString) {
+			console.log('dateString:', dateString);
 			var months = {
 				"1월" : "01",
 				"2월" : "02",
@@ -307,13 +312,14 @@ $('.modal').modal({
 				"12월" : "12"
 			};
 
-			var dateParts = dateString.split(" ");
-			var month = months[dateParts[1]]; 
-			var day = ("0" + dateParts[1].replace(',', '')).slice(-2);
-			var year = dateParts[2];
-			var formattedDate = year + '-' + month + '-' + day;
+		    var date = new Date(dateString);
+		    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+		    var day = ("0" + date.getDate()).slice(-2);
+		    var year = date.getFullYear();
+		    var formattedDate = year + '-' + month + '-' + day;
 
-			return formattedDate;
+		    return formattedDate;
+
 		}
 
 		function appendComment(comment) {
@@ -376,35 +382,34 @@ $('.modal').modal({
 			console.log('조회수: ', views);
 		});
 
-		//게시글 삭제 
-		$(document).ready(function() {
-			$('.delete-link').click(function(e) {
-				e.preventDefault();
-				var freeNo = $(this).data('freeNo');
+		/* 게시글 삭제  */
+			function deletePost(event) {
+		        event.preventDefault();
 
-				var confirmDelete = confirm('정말로 삭제하시겠습니까?');
-				if (confirmDelete) {
-					$.ajax({
-						url : '/free/deletePost',
-						type : 'POST',
-						data : {
-							'freeNo' : freeNo
-						},
-						success : function(response) {
-							if (response.success) {
-								alert(response.message);
-								window.location.href = response.redirectUrl;
-							} else {
-								alert(response.message);
-							}
-						},
-						error : function(xhr, status, error) {
-							alert('게시글 삭제에 실패하였습니다: ' + error);
-						}
-					});
-				}
-			});
-		});
+		        var freeNo = event.target.dataset.freeNo;
+
+		        var confirmDelete = confirm('정말로 삭제하시겠습니까?');
+		        if (confirmDelete) {
+		            $.ajax({
+		                url: '/free/deletePost',
+		                type: 'POST',
+		                data: {
+		                    'freeNo': freeNo
+		                },
+		                success: function (response) {
+		                    if (response.success) {
+		                        alert(response.message);
+		                        window.location.href = response.redirectUrl;
+		                    } else {
+		                        alert(response.message);
+		                    }
+		                },
+		                error: function (xhr, status, error) {
+		                    alert('게시글 삭제에 실패하였습니다: ' + error);
+		                }
+		            });
+		        }
+		    }
 	</script>
 	<script>
 	//게시글 신고하기 
@@ -503,6 +508,7 @@ $('.modal').modal({
         });
     });
 
+    /* 댓글 신고하기 */
     window.onload = function() {
         var reportButtons = document.querySelectorAll('.reportButton');
         var closeButtons = document.querySelectorAll('.close');
@@ -529,14 +535,17 @@ $('.modal').modal({
 
                 var commentId = this.closest('.reportModal').dataset.id;
                 var reportType = this.querySelector('.reportType').value;
+                var mNo = document.body.dataset.mNo;
+                
                 var data = {
                     declarationType: 'freeComment',
-                    commentNo: commentId,
-                    reportType: reportType
+                    boardNo: commentId, 
+                    mNo: mNo,
+                    declarationContent: reportType
                 };
 
                 if(confirm("신고하시겠습니까?")) {
-                    fetch('/free/reportComment', {
+                    fetch('/freeComment/reportComment', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -549,7 +558,7 @@ $('.modal').modal({
                             alert("성공적으로 전송되었습니다.");
                             console.log('Success:', data);
                         } else {
-                            throw new Error('Network response was not ok');
+                        	throw new Error('오류 났으으음');
                         }
                     })
                     .catch((error) => {

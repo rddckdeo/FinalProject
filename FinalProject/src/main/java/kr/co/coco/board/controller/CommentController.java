@@ -41,9 +41,7 @@ public class CommentController {
 
 	        if (mNo == null || mNick == null) {
 	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-	        }
-
-	        Logger logger = LoggerFactory.getLogger(CommentController.class);
+	        }	     
 
 	        // 생성자를 이용하여 세션에서 가져온 닉네임을 설정
 	        commentDTO.setInfoCommentWriter(mNick);
@@ -55,6 +53,7 @@ public class CommentController {
 
 	            if (savedComment == null) {
 	                // 저장 실패 처리
+	            	Logger logger = LoggerFactory.getLogger(CommentController.class);
 	                logger.error("댓글 저장에 실패하였습니다.");
 	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 저장에 실패하였습니다.");
 	            }
@@ -65,6 +64,7 @@ public class CommentController {
 	            return ResponseEntity.ok(savedComment);
 
 	        } catch (Exception e) {
+	        	 Logger logger = LoggerFactory.getLogger(CommentController.class);
 	            logger.error("댓글 저장 중 오류가 발생하였습니다: ", e);
 	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 저장 중 오류가 발생하였습니다. 원인: " + e.getMessage());
 	        }
@@ -76,9 +76,9 @@ public class CommentController {
 	
 	
 	// 댓글 수 조회및 UI 업데이트
-	private void updateCommentCountUI(int infoNo) {
-		int commentCount = infoCommentService.countComments(infoNo);
-	}
+//	private void updateCommentCountUI(int infoNo) {
+//		int commentCount = infoCommentService.countComments(infoNo);
+//	}
 
 	// 특정 게시글 댓글 수 반환(새로고침 없이)
 	@GetMapping("/count/{infoNo}")
@@ -106,8 +106,11 @@ public class CommentController {
 
 	    infoCommentService.deleteById(infoCommentNo);
 
+	    // 댓글 삭제 후에 해당 게시글의 댓글 수 감소
+	    infoCommentService.decreaseCommentCount(infoNo);
+	    
 	    // 댓글 삭제 후에 해당 게시글의 댓글 수 업데이트
-	    updateCommentCountUI(infoNo);
+//	    updateCommentCountUI(infoNo);
 
 	    return ResponseEntity.ok("댓글이 삭제되었습니다.");
 	}
@@ -143,12 +146,12 @@ public class CommentController {
 	
 	// 댓글 수정하기
 	@PostMapping("/updateComment")
-	public ResponseEntity<?> updateComment(
-	    @RequestParam("infoCommentNo") int infoCommentNo,
-	    @RequestParam("commentContent") String commentContent,
-	    @RequestParam("infoNo") int infoNo) {
+	public ResponseEntity<?> updateComment(@RequestBody InfoCommentDTO infoCommentDao) {
+	    int infoCommentNo = infoCommentDao.getInfoCommentNo();
+	    String commentContent = infoCommentDao.getInfoCommentContent();
+	    int infoNo = infoCommentDao.getInfoNo();
 	    
-		InfoCommentDTO isUpdated = infoCommentService.updateComment(infoCommentNo, commentContent);
+	    InfoCommentDTO isUpdated = infoCommentService.updateComment(infoCommentNo, commentContent);
 
 	    if (isUpdated  != null) {
 	        return ResponseEntity.ok().build();

@@ -56,6 +56,13 @@ public class InfoCommentServiceImpl implements InfoCommentService {
 	public void increaseCommentCount(int infoNo) {
 		infoCommentDAO.increaseCommentCount(infoNo);
 	}
+	
+	//댓글 삭제 시, info_comment_count 업데이트
+	@Override
+	public void decreaseCommentCount(int infoNo) {
+		infoCommentDAO.decreaseCommentCount(infoNo);
+		
+	}
 
 	// 해당 게시글에 연결된 모든 댓글 삭제
 	@Override
@@ -75,6 +82,8 @@ public class InfoCommentServiceImpl implements InfoCommentService {
 	public boolean reportComment(DeclarationDTO declarationDto) {
 		return declarationDao.report(declarationDto);
 	}
+
+	
 
 
 

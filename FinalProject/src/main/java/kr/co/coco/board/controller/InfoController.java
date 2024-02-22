@@ -118,7 +118,7 @@ public class InfoController {
 	@PostMapping("/SubmitRegistr")
 	public String infoEnroll(InfoDTO info, HttpSession session) throws IllegalStateException, IOException {
 		Integer mNo = (Integer) session.getAttribute("no");
-		info.setMNo(mNo);
+		info.setMemberNo(mNo);
 
 		infoService.enrollBoard(info);
 		return "redirect:/info/category?name=" + info.getInfoCategory() + "&page=1";
@@ -144,7 +144,7 @@ public class InfoController {
 	public String updatePost(InfoDTO post, HttpSession session, RedirectAttributes redirectAttributes)
 			throws IllegalStateException, IOException {
 		Integer mNo = (Integer) session.getAttribute("no");
-		post.setMNo(mNo);
+		post.setMemberNo(mNo);
 
 		int result = infoService.updatePost(post.getInfoNo(), post);
 		if (result == 1) {

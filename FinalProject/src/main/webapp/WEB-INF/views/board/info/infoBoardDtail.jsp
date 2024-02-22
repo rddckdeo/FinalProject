@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +22,7 @@
 </head>
 <style>
 </style>
+<%-- <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}"> --%>
 <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}">
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
@@ -39,20 +42,25 @@
 						<div class="container-fluid">
 							<div class="categoryNavigation-div">
 								<div class="categoryNavigation">
-									<a href="">정보게시판 </a>
+									<p>정보게시판</p>
 									<c:if test="${not empty categoryName}">
 										<p>/</p>
-										<a href="">${categoryName}</a>
+										<p>${categoryName}</p>
 									</c:if>
 								</div>
 								<div class="button-wrapper">
-									<a href="/info/edit/${post.infoNo}" class="board-update-btn">수정하기</a>
-									<a data-info-no="${post.infoNo}" id="delete-link" class="board-update-btn" onclick="deletePost(event)">삭제</a>
-
-
-									<!-- 신고하기 버튼 -->
-									<button id="reportButton" class="board-update-btn">신고하기</button>
-
+								<p>이거 데이터 ${post}</p>
+									<%-- 									<c:choose>
+										<c:when test="${no == post.mNo}">
+											<a href="/info/edit/${post.infoNo}" class="board-update-btn">수정하기</a>
+											<a data-info-no="${post.infoNo}" id="delete-link"
+												class="board-update-btn" onclick="deletePost(event)">삭제</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 신고하기 버튼 -->
+											<button id="reportButton" class="board-update-btn">신고하기</button>
+										</c:otherwise>
+									</c:choose>
 									<!-- 신고하기 모달 -->
 									<div id="reportModal" class="modal">
 										<div class="modal-content">
@@ -69,6 +77,7 @@
 											</form>
 										</div>
 									</div>
+								</div> --%>
 
 								</div>
 							</div>
@@ -76,6 +85,7 @@
 					</div>
 				</div>
 			</div>
+										 <p>이거 데이터 ${post.memberNo} </p> 
 			<div class="row">
 				<div class="main-section">
 					<div class="container-fluid">
@@ -83,6 +93,8 @@
 							<div class="card">
 								<div class="main-boardList">
 									<div class="main-boardList-info">
+
+
 										<a href="#"><img
 											src="../../../..${post.imageFilePath}${post.imageFileName}"
 											alt="프로필" width="30" height="30"
@@ -162,40 +174,50 @@
 													<a href="JavaScript:void(0);" class="edit-button"
 														data-id="${comment.infoCommentNo}"
 														data-infoNo="${post.infoNo}" data-toggle="modal"
+														onclick="openEditModal(this)"
 														data-target="#editModal_${comment.infoCommentNo}">수정</a>
 
 													<!-- 수정하기 모달 -->
 													<div class="editModal"
 														id="editModal_${comment.infoCommentNo}">
 														<div class="modal-content">
-															<span class="close">&times;</span>
+															<span class="close" onclick="closeEditModal(this)">&times;</span>
 															<h2>댓글 수정하기</h2>
-															<form class="editForm">
+															<form onsubmit="submitEditForm(this)">
 																<label for="author">작성자:</label> <input type="text"
 																	id="author" value="${comment.nickname}" disabled><br>
 
-																<label for="date">작성일:</label> <input type="text"
-																	id="date" value="${comment.infoCommentDate}" disabled><br>
+																<label for="date">작성일:</label> <input type="" id="date"
+																	value="${comment.infoCommentDate}" disabled><br>
+
 																<label for="editComment">내용:</label>
 																<textarea id="editComment">${comment.infoCommentContent}</textarea>
-																<br> <input type="submit" value="수정하기">
+																<br> 
+																<input type="hidden" id="infoCommentNo" value="${comment.infoCommentNo}">
+
+
+																<input class="editSubmitButton" type="submit"
+																	value="수정하기">
 															</form>
+
 														</div>
 													</div>
 													<p>|</p>
 													<a class="delete-button" data-id="${comment.infoCommentNo}">삭제</a>
 													<!-- 신고하기 버튼 -->
 													<button class="reportButton"
-														data-id="${comment.infoCommentNo}">신고하기</button>
+														data-id="${comment.infoCommentNo}"
+														onclick="openReportModal(this)">신고하기</button>
 
 													<!-- 신고하기 모달 -->
 													<div class="reportModal"
 														id="reportModal_${comment.infoCommentNo}"
 														data-id="${comment.infoCommentNo}">
 														<div class="modal-content">
-															<span class="close">&times;</span>
+															<span class="close" onclick="closeReportModal(this)">&times;</span>
 															<h2>신고하기</h2>
-															<form class="reportForm">
+															<form class="reportForm"
+																onsubmit="submitReportForm(this)">
 																<label for="reportType">신고 종류:</label><br> <select
 																	class="reportType">
 																	<option value="spam">스팸</option>
@@ -323,26 +345,45 @@
 		}
 
 		function appendComment(comment) {
-	        var formattedDate = formatDate(comment.infoCommentDate);
+			var formattedDate = formatDate(comment.infoCommentDate);
 
-	        var commentRow = '<div class="comment-row">'
-	            + '<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}" alt="프로필" width="30" height="30" class="main-boardList-user-img"></a>'
-	            + '<a href="#" class="main-boardList-info-text">' + comment.infoCommentWriter + '</a>'
-	            + '<p class="main-boardList-info-text">' + formattedDate + '</p>'
-	            + '<div>'
-	            + '<a href="#">수정</a><p>|</p> <a class="delete-button" data-id="' + comment.infoCommentNo + '">삭제</a>'
-	            + '</div>'
-	            + '</div>'
-	            + '<div>'
-	            + '<p>' + comment.infoCommentContent + '</p>'
-	            + '</div>'
-	            + '<div class="card-project-hr-div">'
-	            + '<hr class="card-project-hr">'
-	            + '</div>';
+			var commentRow = '<div class="comment-row">'
+			    + '<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}" alt="프로필" width="30" height="30" class="main-boardList-user-img"></a>'
+			    + '<a href="#" class="main-boardList-info-text">' + comment.infoCommentWriter + '</a>'
+			    + '<p class="main-boardList-info-text">' + formattedDate + '</p>'
+			    + '<div>'
+			    + '<a href="#">수정</a><p>|</p> <a class="delete-button" data-id="' + comment.infoCommentNo + '">삭제</a><p>|</p> <a class="report-button" data-id="' + comment.infoCommentNo + '">신고하기</a>'
+			    + '</div>'
+			    + '</div>'
+			    + '<div>'
+			    + '<p>' + comment.infoCommentContent + '</p>'
+			    + '</div>'
+			    + '<div class="card-project-hr-div">'
+			    + '<hr class="card-project-hr">'
+			    + '</div>'
+			    + '<div class="reportModal" id="reportModal_' + comment.infoCommentNo + '" data-id="' + comment.infoCommentNo + '">'
+			    + '<div class="modal-content">'
+			    + '<span class="close">&times;</span>'
+			    + '<h2>신고하기</h2>'
+			    + '<form class="reportForm">'
+			    + '<label for="reportType">신고 종류:</label><br>'
+			    + '<select class="reportType">'
+			    + '<option value="spam">스팸</option>'
+			    + '<option value="abuse">욕설</option>'
+			    + '<option value="falseInfo">허위 정보</option>'
+			    + '</select><br><br>'
+			    + '<input class="reportSubmitButton" type="submit" value="신고하기">'
+			    + '</form>'
+			    + '</div>'
+			    + '</div>';
 
-	        $(".comment-list").append(commentRow); // 댓글 목록의 맨 아래에 추가
-	        $('#commentContent').val(''); //댓글 등록하고 나면 input에 작성한거 지움 
-	    }
+
+			$(".comment-list").append(commentRow); // 댓글 목록의 맨 아래에 추가
+			$('#commentContent').val(''); //댓글 등록하고 나면 input에 작성한거 지움 
+			
+		}
+
+
 
 		// 댓글 수 업데이트
 		function updateCommentCount(infoNo) {
@@ -373,6 +414,7 @@
 			console.log('조회수: ', views);
 
 		});
+		/* 게시글 삭제 */
 			function deletePost(event) {
 		        event.preventDefault();
 
@@ -459,123 +501,142 @@
         }
     });
 
-    <!-- 댓글 수정하기 -->
-    document.addEventListener('DOMContentLoaded', function () {
-        var editButtons = document.querySelectorAll('.edit-button');
-
-        editButtons.forEach(function (editButton) {
-            editButton.addEventListener('click', function (event) {
-                event.preventDefault();
-
-                var infoCommentNo = this.getAttribute('data-id');
-                var modal = document.querySelector('#editModal_' + infoCommentNo);
-                var infoNo = this.getAttribute('data-infoNo');
-
-                modal.style.display = "block";
-
-                var closeButton = modal.querySelector('.close');
-                closeButton.addEventListener('click', function () {
-                    modal.style.display = "none";
-                });
-
-                modal.querySelector('.editForm').addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    var commentContent = modal.querySelector('#editComment').value;
-
-                    var confirmUpdate = confirm('댓글을 수정하시겠습니까?');
-                    if (confirmUpdate) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/comment/updateComment',
-                            data: {
-                                'infoCommentNo': infoCommentNo,
-                                'commentContent': commentContent,
-                                'infoNo': infoNo
-                            },
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (response) {
-                                alert(response);
-                                modal.style.display = "none";
-                                location.reload();
-                            },
-                            error: function (error) {
-                                if (error.responseJSON && error.responseJSON.error) {
-                                    alert('댓글 수정에 실패하였습니다. 오류: ' + error.responseJSON.error);
-                                } else {
-                                    alert('댓글 수정에 실패하였습니다.');
-                                }
-                            }
-                        });
-                    } else {
-                        modal.style.display = "none";
-                    }
-                });
-            });
-        });
-    });
-
-		    
-		    
     window.onload = function() {
-        // 댓글 신고하기
+        var editButtons = document.querySelectorAll('.edit-button');
         var reportButtons = document.querySelectorAll('.reportButton');
         var closeButtons = document.querySelectorAll('.close');
         var reportForms = document.querySelectorAll('.reportForm');
+        var editForms = document.querySelectorAll('.editForm');
+
+        editButtons.forEach(function(button) {
+            button.setAttribute('onclick', 'openEditModal(this)');
+        });
 
         reportButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var commentId = this.dataset.id;
-                var modal = document.querySelector('#reportModal_' + commentId);
-                modal.style.display = "block";
-            });
+            button.setAttribute('onclick', 'openReportModal(this)');
         });
 
         closeButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var modal = this.closest('.reportModal');
-                modal.style.display = "none";
-            });
+            button.setAttribute('onclick', 'closeModal(this)');
         });
 
         reportForms.forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
+            form.setAttribute('onsubmit', 'submitReportForm(this)');
+        });
 
-                var commentId = this.closest('.reportModal').dataset.id;
-                var reportType = this.querySelector('.reportType').value;
-                var mNo = document.body.dataset.mNo;
-                
-                var data = {
-                    declarationType: 'infoComment',
-                    boardNo: commentId, 
-                    mNo: mNo,
-                    declarationContent: reportType
-                };
-
-                if(confirm("신고하시겠습니까?")) {
-                    fetch('/comment/reportComment', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    })
-                    .then(response => {
-                        if(response.ok) {
-                            this.closest('.reportModal').style.display = "none";  // 팝업 닫기
-                            alert("성공적으로 전송되었습니다.");
-                            console.log('Success:', data);
-                        } else {
-                            throw new Error('오류 났으으음');
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-                }
-            });
+        editForms.forEach(function(form) {
+            form.setAttribute('onsubmit', 'submitEditForm(this)');
         });
     }
+    
+    /* 댓글 수정하기 */
+    function openEditModal(button) {
+        var commentId = button.getAttribute('data-id');
+        var infoNo = button.getAttribute('data-infoNo'); 
+        var modal = document.querySelector('#editModal_' + commentId);
+        modal.style.display = "block";
+        modal.dataset.infoNo = infoNo;
+        
+    }
+
+    function closeEditModal(button) {
+        var modal = button.closest('.editModal');
+        modal.style.display = "none";
+    }
+
+    function submitEditForm(form) {
+        event.preventDefault();
+
+        var infoCommentNo = form.querySelector('#infoCommentNo').value;
+        var commentContent = form.querySelector('#editComment').value; 
+        var infoNo = form.closest('.editModal').dataset.infoNo;  
+
+
+        var data = {
+        	    infoCommentNo: infoCommentNo,
+        	    commentContent: commentContent,
+        	    infoNo: infoNo
+        	};
+
+        if(confirm("댓글을 수정하시겠습니까?")) {
+            fetch('/comment/updateComment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if(response.ok) {
+                    form.closest('.editModal').style.display = "none";  
+                    alert("성공적으로 수정되었습니다.");
+                    location.reload();
+                    console.log('Success:', data);
+                } else {
+                    throw new Error('오류 발생');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    }
+
+
+    
+    
+    
+    
+
+    /* 댓글 신고하기 */
+    function openReportModal(button) {
+        var commentId = button.dataset.id;
+        var modal = document.querySelector('#reportModal_' + commentId);
+        modal.style.display = "block";
+    }
+
+    function closeReportModal(button) {
+        var modal = button.closest('.reportModal');
+        modal.style.display = "none";
+    }
+
+    function submitReportForm(form) {
+        event.preventDefault();
+
+        var commentId = form.closest('.reportModal').dataset.id;
+        var reportType = form.querySelector('.reportType').value;
+        var mNo = document.body.dataset.mNo;
+        
+        var data = {
+            declarationType: 'infoComment',
+            boardNo: commentId, 
+            mNo: mNo,
+            declarationContent: reportType
+        };
+
+        if(confirm("신고하시겠습니까?")) {
+            fetch('/comment/reportComment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if(response.ok) {
+                    form.closest('.reportModal').style.display = "none";  // 팝업 닫기
+                    alert("성공적으로 전송되었습니다.");
+                    console.log('Success:', data);
+                } else {
+                    throw new Error('오류 났으으음');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    }
+
 
 </script>
 

@@ -22,9 +22,10 @@ public class FreeDTO {
 	private String freeTag1;
 	private String freeTag2;
 	private String freeTag3;
+	private String freeCategory;
 	private String freeBlind;
 	private int freeCommentCount;
-	private String freeCategory;
+
 
 	private int mNo;
 

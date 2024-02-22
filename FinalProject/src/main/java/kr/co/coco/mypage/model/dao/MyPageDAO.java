@@ -44,15 +44,16 @@ public class MyPageDAO {
         return sqlSession.selectList("freeMapper.fetchPostsByMemberNo", params);
     }
 
-    // 정보 게시판 총 게시글 조회 
-	public int allInfoBoardPostsNo(Integer mNo) {
-		return sqlSession.selectOne("infoMapper.allInfoBoardPostsNo");
-	}
-	
-//	자유게시판 총 게시글 조회
-	public int allFreeBoardPostsNo(Integer mNo) {
-		return sqlSession.selectOne("freeMapper.allFreeBoardPostsNo");
-	}
+ // 정보 게시판 총 게시글 조회 
+    public int allInfoBoardPostsNo(Integer mNo) {
+        return sqlSession.selectOne("infoMapper.allInfoBoardPostsNo", mNo);
+    }
+
+    // 자유게시판 총 게시글 조회
+    public int allFreeBoardPostsNo(Integer mNo) {
+        return sqlSession.selectOne("freeMapper.allFreeBoardPostsNo", mNo);
+    }
+
 
 	//정보게시판 댓글 가져오기 
 	public List<InfoCommentDTO> fetchInfoCommentNo(Integer mNo) {
@@ -98,6 +99,18 @@ public class MyPageDAO {
 	public List<AdminBoardDTO> getInquiries(Integer mNo) {
 	    return sqlSession.selectList("admin-adminBoardMapper.getInquiries", mNo);
 	}
+
+	// 문의게시판 조회수 증가
+	public int increaseViewCount(int no) {
+		 return sqlSession.update("admin-adminBoardMapper.increaseViewCount", no);
+	}
+
+	// 문의게시판 디테일(정보가져오기)
+	public AdminBoardDTO inquiryDtail(int no) {
+	    return sqlSession.selectOne("admin-adminBoardMapper.inquiryDtail", no);
+	}
+
+
 
 	
 

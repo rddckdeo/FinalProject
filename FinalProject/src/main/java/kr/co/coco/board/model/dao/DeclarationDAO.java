@@ -24,11 +24,11 @@ public class DeclarationDAO {
                     result = sqlSession.insert("declarationMapper.insertInfoDeclaration", declarationDto);
                     break;
                 case "free":
-                case "free_comment":
+                case "freeComment":
                     result = sqlSession.insert("declarationMapper.insertFreeDeclaration", declarationDto);
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid declaration type: " + declarationType);
+                    throw new IllegalArgumentException("타입 에러났음: " + declarationType);
             }
 
             return result > 0;
