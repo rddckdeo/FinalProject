@@ -8,7 +8,6 @@ window.addEventListener('load', function() {
 	}
 });
 function deleteBtn(no) {
-
 	$.ajax({
 		url: '/admin/deleteMember.do',
 		type: 'POST', // type의 값이 'post'가 아니라 'POST'여야 합니다.
