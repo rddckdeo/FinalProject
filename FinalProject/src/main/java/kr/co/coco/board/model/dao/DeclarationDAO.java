@@ -13,12 +13,10 @@ public class DeclarationDAO {
     private SqlSessionTemplate sqlSession;
     
     //신고하기 
-    public boolean insertDeclaration(DeclarationDTO declarationDto) {
+    public boolean report(DeclarationDTO declarationDto) {
         try {
             String declarationType = declarationDto.getDeclarationType();
             int result;
-            
-            System.out.println(declarationType);
 
             switch (declarationType) {
                 case "info":
@@ -26,11 +24,11 @@ public class DeclarationDAO {
                     result = sqlSession.insert("declarationMapper.insertInfoDeclaration", declarationDto);
                     break;
                 case "free":
-                case "free_comment":
+                case "freeComment":
                     result = sqlSession.insert("declarationMapper.insertFreeDeclaration", declarationDto);
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid declaration type: " + declarationType);
+                    throw new IllegalArgumentException("타입 에러났음: " + declarationType);
             }
 
             return result > 0;
@@ -39,6 +37,7 @@ public class DeclarationDAO {
             return false;
         }
     }
+
 
 
 }
