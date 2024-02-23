@@ -1,5 +1,6 @@
 package kr.co.coco.mypage.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -21,11 +23,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.controller.BoardController;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.dto.FreeDTO;
@@ -37,6 +43,8 @@ import kr.co.coco.boardPush.model.dto.BoardPushDTO;
 import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.service.ColaboServiceImpl;
+import kr.co.coco.mypage.common.paging.mypagePageInfo;
+import kr.co.coco.mypage.common.paging.mypagePagination;
 import kr.co.coco.mypage.model.dto.MyPageDTO;
 import kr.co.coco.mypage.model.service.MyPageServiceImpl;
 
@@ -120,102 +128,112 @@ public class MyPageController {
 	@GetMapping("/myinfo.do")
 	public String infoForm(Model model, HttpSession session) {
 
-	    Integer mNo = (Integer) session.getAttribute("no");
+		Integer mNo = (Integer) session.getAttribute("no");
 
-	    MyPageDTO member = mypageService.findMemberByNo(mNo);
+		MyPageDTO member = mypageService.findMemberByNo(mNo);
+		
+		List<String> hopeList = new ArrayList<>();
+		if(member.getHope() != null) {
+		    hopeList = Arrays.asList(member.getHope().split(","));
+		}
 
-	    List<String> hopeList = Arrays.asList(member.getHope().split(","));
-	    List<String> stackList = Arrays.asList(member.getStack().split(","));
+		List<String> stackList = new ArrayList<>();
+		if(member.getStack() != null) {
+		    stackList = Arrays.asList(member.getStack().split(","));
+		}
 
-	    model.addAttribute("name", member.getName());
-	    model.addAttribute("id", member.getId());
-	    model.addAttribute("email", member.getEmail());
-	    model.addAttribute("nickname", member.getNickname());
-	    model.addAttribute("hopeList", hopeList);
-	    model.addAttribute("stackList", stackList);
-	    model.addAttribute("intro", member.getIntro());
-	    model.addAttribute("number", member.getNumber());
+		model.addAttribute("name", member.getName());
+		model.addAttribute("id", member.getId());
+		model.addAttribute("email", member.getEmail());
+		model.addAttribute("nickname", member.getNickname());
+		model.addAttribute("hopeList", hopeList);
+		model.addAttribute("stackList", stackList);
+		model.addAttribute("intro", member.getIntro());
+		model.addAttribute("number", member.getNumber());
 
-	    return "myPage/myInfo";
+		return "myPage/myInfo";
 	}
 
 
 	// 프로필 정보 수정 페이지로 이동
 	@GetMapping("/editProfile.do")
 	public String editProfileForm(Model model, HttpSession session) {
-		Integer mNo = (Integer) session.getAttribute("no");
-		MyPageDTO member = mypageService.findMemberByNo(mNo);
-	    
-	    List<String> hopeList = Arrays.asList(member.getHope().split(","));
-	    List<String> stackList = Arrays.asList(member.getStack().split(","));
-	    
-		model.addAttribute("name", member.getName());
-		model.addAttribute("id", member.getId());
-		model.addAttribute("email", member.getEmail());
-		model.addAttribute("nickname", member.getNickname());
-	    model.addAttribute("hopeList", hopeList);
-	    model.addAttribute("stackList", stackList);
-		model.addAttribute("intro", member.getIntro());
-		model.addAttribute("number", member.getNumber());
-		
-		return "myPage/myInfoEdit";
+	    Integer mNo = (Integer) session.getAttribute("no");
+	    MyPageDTO member = mypageService.findMemberByNo(mNo);
+
+		List<String> hopeList = new ArrayList<>();
+		if(member.getHope() != null) {
+		    hopeList = Arrays.asList(member.getHope().split(","));
+		}
+
+		List<String> stackList = new ArrayList<>();
+		if(member.getStack() != null) {
+		    stackList = Arrays.asList(member.getStack().split(","));
+		}
+	    session.setAttribute("name", member.getName());
+	    session.setAttribute("id", member.getId());
+	    session.setAttribute("email", member.getEmail());
+	    session.setAttribute("nickname", member.getNickname());
+	    session.setAttribute("hopeList", hopeList);
+	    session.setAttribute("stackList", stackList);
+	    session.setAttribute("intro", member.getIntro());
+	    session.setAttribute("number", member.getNumber());
+	    session.setAttribute("picture", member.getPicture());
+	    session.setAttribute("path", member.getPath());
+
+	    return "myPage/myInfoEdit";
 	}
 	
 	// 프로필 정보 수정 처리
 	@PostMapping("/editProfile")
-	public ResponseEntity<?> editProfile(@RequestParam("imageFile") MultipartFile imageFile,
-	                                     @RequestParam String[] hope,
-	                                     @RequestParam String[] stack,
-	                                     @RequestParam String intro,
-	                                     @RequestParam String nickname,
-	                                     @RequestParam String email,
-	                                     @RequestParam String number,
-	                                     HttpSession session) {
+	@ResponseBody
+	public ResponseEntity<String> editProfile( MultipartFile upload, MyPageDTO editContent, HttpSession session) {
+
+	    // 세션에서 회원 번호 가져오기
 	    Integer mNo = (Integer) session.getAttribute("no");
 
-	    // 이미지 파일 처리
-	    String savePath = null;
+	    // 업로드된 파일 처리
+	    String uploadPath = "/Users/kangnayoung/git/FinalProject/FinalProject/src/main/webapp/resources/uploads/member";
 	    String saveFileName = null;
-	    
-	    if(!imageFile.isEmpty()) {
-	        String originName = imageFile.getOriginalFilename();
-	        String extension = originName.substring(originName.lastIndexOf(".")); 
 
-	        // 현재 시간과 랜덤 문자열을 사용하여 새로운 파일 이름을 생성
-	        LocalDateTime nowDate = LocalDateTime.now();
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
-	        String output = nowDate.format(formatter);
-
-	        int length = 8;		
-	        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&";  
-	        Random random = new Random();
-	        String randomString = random.ints(length, 0, characters.length())
-	                                .mapToObj(characters::charAt)
-	                                .map(Object::toString)
-	                                .collect(Collectors.joining());
-
-	        saveFileName = output + "_" + randomString + extension;
-	        savePath = "/Users/kangnayoung/git/FinalProject/FinalProject/src/main/webapp/resources/uploads/member/";  
-
-	        // 서버에 파일 저장
-	        Path path = Paths.get(savePath + saveFileName);
-	        try {
-	            imageFile.transferTo(path.toFile());
-	        } catch (IOException e) {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장에 실패하였습니다. 다시 시도해주세요.");
+	    try {
+	        if (upload != null && !upload.isEmpty()) {
+	            // 업로드된 파일이 존재하면 파일 저장
+	            saveFileName = saveUploadedFile(upload, uploadPath);
 	        }
+//	        else if(upload = null && upload.isEmpty()) {
+//	        	
+//	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(500).body("파일 저장 중 오류가 발생했습니다.");
 	    }
 
-	    // 프로필 정보 업데이트
-	    boolean isUpdateSuccessful = mypageService.updateProfile(mNo, hope, stack, intro, nickname, email, number, saveFileName, savePath);
+	    // 배열을 쉼표(,)로 구분된 문자열로 변환
+	    String hopeAsString = String.join(",", editContent.getHope());
+	    String stackAsString = String.join(",", editContent.getStack());
 
-	    // 수정 후 프로필 페이지로 AJAX 응답
+	    // 프로필 정보 업데이트
+	    boolean isUpdateSuccessful = mypageService.updateProfile(mNo, hopeAsString, stackAsString,
+	            editContent.getIntro(), editContent.getNickname(), editContent.getEmail(), editContent.getNumber(),
+	            saveFileName, uploadPath);
+
 	    if (isUpdateSuccessful) {
 	        return ResponseEntity.ok().body("수정이 완료되었습니다.");
 	    } else {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정에 실패하였습니다. 다시 시도해주세요.");
+	        return ResponseEntity.status(500).body("수정에 실패하였습니다. 다시 시도해주세요.");
 	    }
 	}
+
+
+    // 업로드된 파일 저장 메서드
+    private String saveUploadedFile(MultipartFile file, String uploadPath) throws IOException {
+        String originalFileName = file.getOriginalFilename();
+        String saveFileName = System.currentTimeMillis() + "_" + originalFileName;
+        File destFile = new File(uploadPath, saveFileName);
+        file.transferTo(destFile);
+        return saveFileName;
+    }
 
 
 
@@ -230,100 +248,141 @@ public class MyPageController {
 	}
 
 	// board
-	@GetMapping("/myboard.do")
-	public String boardForm(@RequestParam(defaultValue = "1") int infoPage,
-	                        @RequestParam(defaultValue = "1") int freePage,
-	                        @RequestParam(defaultValue = "5") int pageSize,
-	                        Model model, HttpSession session) {
+		@GetMapping("/myboard.do")
+		public String boardForm(Model model, HttpSession session,
+	            @RequestParam(value = "infoPage", defaultValue = "1") int infoPage,
+	            @RequestParam(value = "freePage", defaultValue = "1") int freePage,
+	            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
 
-	    Integer mNo = (Integer) session.getAttribute("no");
+		    session.setAttribute("infoPage", infoPage);
+		    session.setAttribute("freePage", freePage);
 
-	    // 정보 게시판 게시글 조회
-	    List<InfoDTO> infoPosts = mypageService.fetchInfoBoardPosts(mNo, infoPage, pageSize);
+		    infoPage = (Integer) session.getAttribute("infoPage");
+		    freePage = (Integer) session.getAttribute("freePage");
+		    
+		    Integer mNo = (Integer) session.getAttribute("no");
 
-	    // 자유 게시판 게시글 조회
-	    List<FreeDTO> freePosts = mypageService.fetchFreeBoardPosts(mNo, freePage, pageSize);
+		    // 총 게시글 수 조회
+		    int totalInfoPosts = mypageService.allInfoBoardPostsNo(mNo);
+		    int totalFreePosts = mypageService.allFreeBoardPostsNo(mNo);
+		    
 
-	    // 총 게시글 수 조회
-	    int totalInfoPosts = mypageService.allInfoBoardPostsNo(mNo);
-	    int totalFreePosts = mypageService.allFreeBoardPostsNo(mNo);
+		 // 페이지 정보 생성
+		    mypagePageInfo infoPageInfo = mypagePagination.getPageInfo(totalInfoPosts, infoPage, 5, pageSize);
+		    mypagePageInfo freePageInfo = mypagePagination.getPageInfo(totalFreePosts, freePage, 5, pageSize);
 
-	    // 총 페이지 수 계산
-	    int totalInfoPages = (int) Math.ceil((double) totalInfoPosts / pageSize);
-	    int totalFreePages = (int) Math.ceil((double) totalFreePosts / pageSize);
-		
-	    model.addAttribute("infoPage", infoPage);
-	    model.addAttribute("freePage", freePage);
-	    model.addAttribute("pageSize", pageSize);
-	    model.addAttribute("totalInfoPages", totalInfoPages);
-	    model.addAttribute("totalFreePages", totalFreePages);
-	    model.addAttribute("infoPosts", infoPosts);
-	    model.addAttribute("freePosts", freePosts);
-	    model.addAttribute("totalInfoPosts", totalInfoPosts);
-	    model.addAttribute("totalFreePosts", totalFreePosts);
+		    // 정보 게시판 게시글 조회
+		    List<InfoDTO> infoPosts = mypageService.fetchInfoBoardPosts(mNo, infoPage, pageSize);  
+		    
+		    // 자유 게시판 게시글 조회
+		    List<FreeDTO> freePosts = mypageService.fetchFreeBoardPosts(mNo, freePage, pageSize);
+		    
+		    model.addAttribute("infoPageInfo", infoPageInfo);
+		    model.addAttribute("freePageInfo", freePageInfo);
+		    model.addAttribute("infoPosts", infoPosts);
+		    model.addAttribute("freePosts", freePosts);
 
-	    System.out.println("Current Info Page: " + infoPage);
-	    System.out.println("Current Free Page: " + freePage);
-	    System.out.println("Total Info Pages: " + totalInfoPages);
-	    System.out.println("Total Free Pages: " + totalFreePages);
-	    System.out.println("totalInfoPosts: " + totalInfoPosts);
-	    System.out.println("totalFreePosts: " + totalFreePosts);
-
-	    logger.info("infoPosts: {}", infoPosts);
-	    logger.info("freePosts: {}", freePosts);
-
-	    return "myPage/myBoard";
-	}
-
-
-
-
-
-	// comment
-	@GetMapping("/mycomment.do")
-	public String commentForm(HttpSession session, Model model) {
-
-	    Integer mNo = (Integer) session.getAttribute("no");
-
-	    	List<InfoCommentDTO> infoComment = mypageService.fetchInfoCommentNo(mNo);
-	    	List<FreeCommentDTO> freeComment = mypageService.fetchFreeCommentNo(mNo);
-
-	        model.addAttribute("infoComment", infoComment);
-	        model.addAttribute("freeComment", freeComment);
-	        
-	       System.out.println(mNo);
-	        logger.info("infoComment: {}", infoComment);
-		    logger.info("freeComment: {}", freeComment);
-	        	       
-	    return "myPage/myComment";
-	}
-	//BoardPush List
-	@GetMapping("/boardPush.do")
-	public String boardPush(Model model, HttpSession session) {
-		// session에 no값 가져오기
-		Integer mNo = (Integer)session.getAttribute("no");
-		if(mNo != null) {
-			// boardPush에 board_push_check있는 확인 컬럼 N에서 Y로 바꾸기
-			int pushCheck = pushService.pushCheck(mNo);
-			System.out.println("pushCheck"+pushCheck);
-			if(pushCheck > 0) {
-				// List 가져오기
-				List<BoardPushDTO> pushList = pushService.pushList(mNo);
-				for(BoardPushDTO push : pushList) {
-					String indate = push.getPushIndate().substring(2,10);
-					push.setPushIndate(indate);
-				}
-				model.addAttribute("pushList",pushList);
-			}
-		}else {
-			return "redirect:/member/loginForm.do";
+		    return "myPage/myBoard";
 		}
-		return "myPage/myBoardPush";
+
+
+		// comment
+		@GetMapping("/mycomment.do")
+		public String commentForm(HttpSession session, Model model) {
+
+			Integer mNo = (Integer) session.getAttribute("no");
+
+			List<InfoCommentDTO> infoComment = mypageService.fetchInfoCommentNo(mNo);
+			List<FreeCommentDTO> freeComment = mypageService.fetchFreeCommentNo(mNo);
+
+			model.addAttribute("infoComment", infoComment);
+			model.addAttribute("freeComment", freeComment);
+
+			System.out.println(mNo);
+			logger.info("infoComment: {}", infoComment);
+			logger.info("freeComment: {}", freeComment);
+
+			return "myPage/myComment";
+		}
+		//BoardPush List
+		@GetMapping("/boardPush.do")
+		public String boardPush(Model model, HttpSession session) {
+			// session에 no값 가져오기
+			Integer mNo = (Integer)session.getAttribute("no");
+			if(mNo != null) {
+				// boardPush에 board_push_check있는 확인 컬럼 N에서 Y로 바꾸기
+				int pushCheck = pushService.pushCheck(mNo);
+				System.out.println("pushCheck"+pushCheck);
+				if(pushCheck > 0) {
+					// List 가져오기
+					List<BoardPushDTO> pushList = pushService.pushList(mNo);
+					for(BoardPushDTO push : pushList) {
+						String indate = push.getPushIndate().substring(2,10);
+						push.setPushIndate(indate);
+					}
+					model.addAttribute("pushList",pushList);
+				}
+			}else {
+				return "redirect:/member/loginForm.do";
+			}
+			return "myPage/myBoardPush";
+		}
+		
+		// mainForm
+		@GetMapping("/mainForm.do")
+		public String mainForm() {
+			return "redirect:/member/mainForm.do";
+		}
+
+		// 문의사항
+		@GetMapping("/inquiry.do")
+		public String inquiry(Model model, HttpSession session) {
+		    Integer mNo = (Integer) session.getAttribute("no");
+		    List<AdminBoardDTO> inquiries = mypageService.getInquiries(mNo);
+		    
+		    for(AdminBoardDTO dto : inquiries) {
+		    	System.out.println(dto.getMNo());
+		    }
+		    
+		    model.addAttribute("inquiries", inquiries);
+		    return "myPage/myInquiry";
+		}
+
+
+		// 문의사항 등록 페이지
+		@GetMapping("/inquiryRegistr.do")
+		public String inquiryRegistr() {
+
+			return "myPage/myInquiryRegistr";
+		}
+
+		// 문의 사항 등록
+		@PostMapping("/inquirySubmitRegistr")
+		public String inquirySubmitRegistration(@RequestParam("infoTitle") String infoTitle,
+				@RequestParam("mainText") String infoContent, HttpSession session, Model model) {
+
+
+				Integer mNo = (Integer) session.getAttribute("no");
+
+				mypageService.registerInquiry(mNo, infoTitle, infoContent);
+
+
+			return "redirect:/mypage/inquiry.do";
+		}
+		
+		//문의사항 디테일 페이지 
+		@GetMapping("/inquiryDtail/{no}")
+		public String inquiryDtail(@PathVariable("no") int no, Model model, HttpServletRequest request) {
+			
+			// 조회수 증가
+			mypageService.increaseViewCount(no);
+			
+			//정보 가져오기 
+		    AdminBoardDTO inquiry = mypageService.inquiryDtail(no);
+		    model.addAttribute("inquiry", inquiry);
+			
+			
+			return "myPage/myInquiryDtail";
+		}
+		
 	}
-	
-	// mainForm
-	@GetMapping("/mainForm.do")
-	public String mainForm() {
-		return "redirect:/member/mainForm.do";
-	}
-}

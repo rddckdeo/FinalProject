@@ -78,4 +78,34 @@
 		WHERE A_BOARD_NO = #{boardNo}
 	</select>
 	
+		<!-- 마이페이지 문의사항 가져오기 -->
+	<select id="getInquiries" resultMap="adminBoardResultSet">
+		SELECT
+		mem.m_name,
+		mem.m_path AS imageFilePath,
+		mem.m_picture AS imageFileName,
+		TO_CHAR(ad.a_board_in_date, 'YYYY-MM-DD') AS inDate, 
+		ad.*
+		FROM
+		ADMIN_BOARD ad
+		JOIN member mem ON ad.m_no = mem.m_no
+		WHERE
+		ad.a_board_delete_date IS NULL
+		ORDER BY ad.a_board_in_date DESC
+	</select>
+	
+		<!-- 문의게시판 조회수 증가 -->
+	<update id="increaseViewCount">
+		UPDATE ADMIN_BOARD
+		SET a_board_view = a_board_view + 1
+		WHERE a_board_no = #{no}
+	</update>
+
+	<!-- 문의게시판 디테일(정보가져오기) -->
+	<select id="inquiryDtail" resultMap="adminBoardResultSet">
+		SELECT *
+		FROM ADMIN_BOARD
+		WHERE a_board_no = #{no}
+	</select>
+	
 	</mapper>

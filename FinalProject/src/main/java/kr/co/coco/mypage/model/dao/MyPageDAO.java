@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.coco.admin.model.dto.AdminBoardDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.dto.FreeDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
@@ -43,15 +44,16 @@ public class MyPageDAO {
         return sqlSession.selectList("freeMapper.fetchPostsByMemberNo", params);
     }
 
-    // 정보 게시판 총 게시글 조회 
-	public int allInfoBoardPostsNo(Integer mNo) {
-		return sqlSession.selectOne("infoMapper.allInfoBoardPostsNo");
-	}
-	
-//	자유게시판 총 게시글 조회
-	public int allFreeBoardPostsNo(Integer mNo) {
-		return sqlSession.selectOne("freeMapper.allFreeBoardPostsNo");
-	}
+ // 정보 게시판 총 게시글 조회 
+    public int allInfoBoardPostsNo(Integer mNo) {
+        return sqlSession.selectOne("infoMapper.allInfoBoardPostsNo", mNo);
+    }
+
+    // 자유게시판 총 게시글 조회
+    public int allFreeBoardPostsNo(Integer mNo) {
+        return sqlSession.selectOne("freeMapper.allFreeBoardPostsNo", mNo);
+    }
+
 
 	//정보게시판 댓글 가져오기 
 	public List<InfoCommentDTO> fetchInfoCommentNo(Integer mNo) {
@@ -65,23 +67,52 @@ public class MyPageDAO {
 	}
 
 
-	 // 프로필 수정 
-	public int updateProfile(Integer mNo, String hopeString, String stackString, String intro, String nickname,
-	        String email, String number, String saveFileName, String savePath) {
-	    // 프로필 정보 업데이트
-	    Map<String, Object> param = new HashMap<>();
-	    param.put("mNo", mNo);
-	    param.put("hope", hopeString);
-	    param.put("stack", stackString);
-	    param.put("intro", intro);
-	    param.put("nickname", nickname);
-	    param.put("email", email);
-	    param.put("number", number);
-	    param.put("saveFileName", saveFileName);
-	    param.put("savePath", savePath);
+	 // 프로필 수정
+    public boolean updateProfile(Integer mNo, String hopeAsString, String stackAsString, String intro, String nickname,
+            String email, String number, String saveFileName, String uploadPath) {
 
-	    return sqlSession.update("mypageMapper.updateProfile", param);  
+        Map<String, Object> params = new HashMap<>();
+        params.put("mNo", mNo);
+        params.put("hopeAsString", hopeAsString);
+        params.put("stackAsString", stackAsString);
+        params.put("intro", intro);
+        params.put("nickname", nickname);
+        params.put("email", email);
+        params.put("number", number);
+        params.put("saveFileName", saveFileName);
+        params.put("savePath", uploadPath);
+
+        int result = sqlSession.update("mypageMapper.updateProfile", params);
+
+        return result > 0;
+    }
+
+	// 문의사항 등록
+	public int registerInquiry(Integer mNo, String infoTitle, String infoContent) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("mNo", mNo);
+	    params.put("infoTitle", infoTitle);
+	    params.put("infoContent", infoContent);
+	    
+	    return sqlSession.insert("mypageMapper.registerInquiry", params);
 	}
+
+	//문의사항 진입 
+	public List<AdminBoardDTO> getInquiries(Integer mNo) {
+	    return sqlSession.selectList("admin-adminBoardMapper.getInquiries", mNo);
+	}
+
+	// 문의게시판 조회수 증가
+	public int increaseViewCount(int no) {
+		 return sqlSession.update("admin-adminBoardMapper.increaseViewCount", no);
+	}
+
+	// 문의게시판 디테일(정보가져오기)
+	public AdminBoardDTO inquiryDtail(int no) {
+	    return sqlSession.selectOne("admin-adminBoardMapper.inquiryDtail", no);
+	}
+
+
 	
 
 }
