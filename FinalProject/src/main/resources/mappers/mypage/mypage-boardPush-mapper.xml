@@ -84,7 +84,7 @@
 	<select id="getBoardTitleInfo" resultType="String">
 		SELECT INFO_TITLE FROM INFO
 		WHERE INFO_NO = #{boardNo}
-		AND M_NO = #{mNo}
+		AND WHERE M_NO = #{mNo}
 	</select>
 	<select id="getBoardTitleFree" resultType="String">
 		SELECT FREE_TITLE FROM FREE

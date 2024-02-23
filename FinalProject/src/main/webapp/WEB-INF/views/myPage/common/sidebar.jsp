@@ -25,99 +25,6 @@
 		<div class="scroll-sidebar alignCenter" data-simplebar>
 			<!-- 로고 -->
 			<div class="d-flex mb-4 align-items-center justify-content-between">
-<<<<<<< HEAD
-				<!-- 				<a href="/member/mainForm.do" class="text-nowrap logo-img ms-0 ms-md-1"> <img
-					src="../../../resources/uploads/icon/cocoLogo.png" width="180" alt="logo">
-				</a> -->
-				<div
-					class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
-					id="sidebarCollapse">
-					<div
-						class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
-						id="sidebarCollapse">
-						<i class="ti ti-x fs-8"></i>
-					</div>
-					<!-- 사이드바 네비게이션-->
-					<nav class="sidebar-nav">
-						<ul id="sidebarnav" class="mb-4 pb-2">
-							<li><a href=""></a></li>
-
-
-							<!-- 사이드바 협업툴 바로가기-->
-							<li class="sidebar-item"><span
-								class="aside-icon p-2 bg-light-primary rounded-3"> <a
-									href="" id="cooperation-btn" class="btn btn-primary">협업툴
-										바로가기</a> <a href="/board/" id="cooperation-btn"
-									class="btn btn-primary">게시판 바로가기</a>
-							</span></li>
-							<!-- 사이트바 정보게시판 -->
-							<li class=" sidebarMain"><i class=""><span
-									class="sidebarFont">Home</span></i></li>
-							<li class="sidebar-item bottomMargin30"><a
-								class="alignEnd sidebar-link sidebar-link warning-hover-bg"
-								href="/mypage/mainForm.do" aria-expanded="false"> <span
-									class="aside-icon p-2 bg-light-warning rounded-3"> <i
-										class="ti ti-article fs-7 text-warning"></i>
-								</span> <span class="hide-menu ms-2 ps-1">메인 페이지</span>
-							</a></li>
-							<li class=" sidebarMain"><i class=""><span
-									class="sidebarFont">My Page</span></i></li>
-							<li class="sidebar-item bottomMargin10"><a
-								class="alignEnd sidebar-link sidebar-link warning-hover-bg"
-								href="/mypage/mypage.do" aria-expanded="false"> <span
-									class="aside-icon p-2 bg-light-warning rounded-3"> <i
-										class="ti ti-article fs-7 text-warning"></i>
-								</span> <span class="hide-menu ms-2 ps-1">프로필</span>
-							</a></li>
-							<li class="sidebar-item bottomMargin10"><a
-								class="alignEnd sidebar-link sidebar-link warning-hover-bg"
-								href="/mypage/myinfo.do" aria-expanded="false"> <span
-									class="aside-icon p-2 bg-light-warning rounded-3"> <i
-										class="ti ti-article fs-7 text-warning"></i>
-								</span> <span class="hide-menu ms-2 ps-1">내 정보 수정</span>
-							</a></li>
-
-
-
-							<li class="sidebar-item bottomMargin10"><a
-								class="alignEnd sidebar-link sidebar-link danger-hover-bg"
-								href="/colabo/myProjectProfile" aria-expanded="false"> <span
-									class="aside-icon p-2 bg-light-danger rounded-3"> <i
-										class="ti ti-alert-circle fs-7 text-danger"></i>
-
-								</span> <span class="hide-menu ms-2 ps-1">내 프로젝트</span>
-							</a></li>
-
-
-							<li class="sidebar-item bottomMargin10"><a
-								class="alignEnd sidebar-link sidebar-link danger-hover-bg"
-								href="/colabo/inviteApplyProject" aria-expanded="false"> <span
-									class="aside-icon p-2 bg-light-danger rounded-3"> <i
-										class="ti ti-alert-circle fs-7 text-danger"></i>
-								</span> <span class="hide-menu ms-2 ps-1">초대/신청 중인 프로젝트</span>
-							</a></li>
-							<li class="sidebar-item bottomMargin10"><a
-								class="alignEnd sidebar-link sidebar-link success-hover-bg"
-								href="/mypage/myboard.do" aria-expanded="false"> <span
-									class="aside-icon p-2 bg-light-success rounded-3"> <i
-										class="ti ti-cards fs-7 text-success"></i>
-										<li class="sidebar-item bottomMargin10"><a
-											class="alignEnd sidebar-link sidebar-link success-hover-bg"
-											href="/mypage/myboard.do" aria-expanded="false"> <span
-												class="aside-icon p-2 bg-light-success rounded-3"> <i
-													class="ti ti-cards fs-7 text-success"></i>
-
-											</span> <span class="hide-menu ms-2 ps-1">내가 작성한 글</span>
-										</a></li>
-										<li class="sidebar-item bottomMargin10"><a
-											class="alignEnd sidebar-link sidebar-link primary-hover-bg"
-											href="/mypage/mycomment.do" aria-expanded="false"> <span
-												class="aside-icon p-2 bg-light-primary rounded-3"> <i
-													class="ti ti-file-description fs-7 text-primary"></i>
-											</span> <span class="hide-menu ms-2 ps-1">내가 작성한 댓글</span>
-										</a></li>
-						
-=======
 				<div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
 					<i class="ti ti-x fs-8"></i>
 				</div>
@@ -181,26 +88,12 @@
 							</span> <span class="hide-menu ms-2 ps-1">내가 작성한 댓글</span>
 						</a>
 						</li>
->>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 						<li class="sidebar-item bottomMargin10"><a
 							class="alignEnd sidebar-link sidebar-link primary-hover-bg"
 							href="boardPush.do" aria-expanded="false"> <span
 								class="aside-icon p-2 bg-light-primary rounded-3"> <i
 									class="ti ti-file-description fs-7 text-primary"></i>
 							</span> <span class="hide-menu ms-2 ps-1">알림 모음</span>
-<<<<<<< HEAD
-						</a></li>
-						</ul>
-						<li class="footer_li"><a>개인정보처리방침</a>
-							<p>|</p>
-							<a>이용약관</a>
-						<p>|</p>
-							<a href="/mypage/inquiry.do">문의사항</a></li>
-					</nav>
-					<!-- End Sidebar navigation -->
-				</div>
-				<!-- End Sidebar scroll-->
-=======
 						</a>
 						</li>
 					</ul>
@@ -209,9 +102,10 @@
 					</li>
 				</nav>
 				<!-- End Sidebar navigation -->
->>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 			</div>
+			<!-- End Sidebar scroll-->
 		</div>
+
 	</aside>
 </body>
 </html>

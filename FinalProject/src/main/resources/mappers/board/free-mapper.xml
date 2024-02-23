@@ -19,15 +19,9 @@
     <result property="freeBlind" column="free_blind" />
     <result property="freeCommentCount" column="free_comment_count" />
 
-<<<<<<< HEAD
-		<result property="memberNo" column="m_no" />
-		<result property="nickname" column="nickname" />
-		<result property="commentCount" column="comment_count" />
-=======
     <result property="mNo" column="m_no" />
     <result property="nickname" column="nickname" />
     <result property="commentCount" column="comment_count" />
->>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 
     <result property="imageFileName" column="m_picture" />
     <result property="imageFilePath" column="m_path" />
@@ -62,10 +56,6 @@
 		#{freeTag1},
 		#{freeTag2},
 		#{freeTag3},
-<<<<<<< HEAD
-		#{memberNo},
-=======
->>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 		'N',
 		0
 		)
@@ -77,18 +67,8 @@
 		SELECT
 		f.free_no AS freeNo,
 		f.free_title AS freeTitle,
-<<<<<<< HEAD
-		m.m_nickname AS nickname,
-		m.m_no AS memberNo,
-		m.m_picture AS
-		imageFileName,
-		m.m_path AS imageFilePath,
-		f.free_content
-		AS freeContent,
-=======
 		m.m_nickname AS
 		nickname,
->>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 		f.free_content AS freeContent,
 		f.free_date AS freeDate,
 		f.free_views AS freeViews,

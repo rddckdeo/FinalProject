@@ -39,11 +39,11 @@
 	</select>
 
 	<!-- 프로필 수정 -->
-	<update id="updateProfile">
+ 	<update id="updateProfile" parameterType="java.util.Map">
 		UPDATE MEMBER
 		SET
-		M_HOPE = #{hope},
-		M_STACK = #{stack},
+		M_HOPE = #{hopeAsString},
+		M_STACK = #{stackAsString},
 		M_INTRO = #{intro},
 		M_NICKNAME = #{nickname},
 		M_EMAIL = #{email},
@@ -51,7 +51,7 @@
 		M_PICTURE = #{saveFileName},
 		M_PATH = #{savePath}
 		WHERE M_NO = #{mNo}
-	</update>
+	</update> 
 
 <!-- 정보게시판 댓글 가져오기 -->
 <select id="fetchInfoCommentNo" parameterType="int" resultType="infoComment">
@@ -71,8 +71,27 @@
     WHERE free.m_no = #{mNo}
 </select>
 
+<!-- 문의사항 등록 -->
+	<insert id="registerInquiry">
+		INSERT INTO ADMIN_BOARD (A_BOARD_NO, M_NO, A_BOARD_TITLE, A_BOARD_CONTENT,
+		A_BOARD_VIEW, A_BOARD_IN_DATE, A_BOARD_ANSWER, A_BOARD_ANSWER_DATE)
+		VALUES (admin_board_seq.NEXTVAL, #{mNo}, #{infoTitle}, #{infoContent},
+		0, SYSDATE, 'N', NULL)
+	</insert>
 
-
-
+<!-- 프로필 수정 쿼리 -->
+<!-- <update id="updateProfile" parameterType="java.util.Map">
+    UPDATE member
+    SET
+        m_hope = #{hopeAsString},
+        m_stack = #{stackAsString},
+        m_intro = #{intro},
+        m_nickname = #{nickname},
+        m_email = #{email},
+        m_number = #{number},
+        m_picture = #{saveFileName},
+        m_path = #{uploadPath}
+    WHERE m_no = #{mNo}
+</update> -->
 
 </mapper>  

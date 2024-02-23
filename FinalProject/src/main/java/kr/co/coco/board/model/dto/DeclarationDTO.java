@@ -18,9 +18,9 @@ public class DeclarationDTO {
     private String declarationDate;
     private String declarationWithdrawal;
     
-    // admin declaration
-    private String declarationWriter;
-    
+    private int infoCommentNo; // 댓글 번호
+
+
     @Override
     public String toString() {
         return "DeclarationDTO [declarationNo=" + declarationNo + ", mNo=" + mNo + ", declarationType="

@@ -118,7 +118,7 @@ public class FreeController {
     @PostMapping("/SubmitRegistr")
     public String freeEnroll(FreeDTO free, HttpSession session) throws IllegalStateException, IOException {
         Integer mNo = (Integer) session.getAttribute("no");
-        free.setMemberNo(mNo);
+        free.setMNo(mNo);
         
         freeService.enrollBoard(free);
         return "redirect:/free/category?name=" + free.getFreeCategory() + "&page=1";  
@@ -144,7 +144,7 @@ public class FreeController {
     public String updatePost(FreeDTO post, HttpSession session, RedirectAttributes redirectAttributes)
             throws IllegalStateException, IOException {
         Integer mNo = (Integer) session.getAttribute("no");
-        post.setMemberNo(mNo);
+        post.setMNo(mNo);
 
         int result = freeService.updatePost(post.getFreeNo(), post);
         if (result == 1) {

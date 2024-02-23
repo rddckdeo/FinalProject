@@ -33,13 +33,6 @@
         SET free_comment_count = free_comment_count + 1
         WHERE free_no = #{freeNo}
     </update>
-    
-    <!-- 댓글 삭제 -->
-    <delete id="deleteComment" parameterType="int">
-        UPDATE free_comment
-		SET free_comment_delete_date = SYSDATE
-		WHERE free_comment_no = #{id}
-    </delete>
 
     <!-- 댓글 목록 불러오기 -->
     <select id="selectCommentsByPostId" parameterType="int" resultType="freeComment">
@@ -69,14 +62,11 @@
         SELECT COUNT(*) FROM free_comment WHERE free_no = #{freeNo}
     </select>
 
-<<<<<<< HEAD
-=======
     <!-- 댓글 삭제 -->
     <delete id="deleteComment" parameterType="int">
         DELETE FROM
         free_comment WHERE free_comment_no = #{id}
     </delete>
->>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 
     <!-- 댓글 번호로 댓글 정보 가져오기 -->
     <select id="getCommentById" parameterType="int" resultType="freeComment">
