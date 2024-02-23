@@ -33,7 +33,7 @@
 					<form action="/colabo/projectEdit.do" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<legend>
-								<span class="number">1</span> 프로젝트 정보
+								<span class="number">1</span>${sessionScope.getProjectName} 팀 프로젝트 정보
 							</legend>
 							<c:choose>
 								<c:when test="${!empty list.uploadName}">
