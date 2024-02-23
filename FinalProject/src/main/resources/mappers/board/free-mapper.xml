@@ -19,7 +19,7 @@
 		<result property="freeBlind" column="free_blind" />
 		<result property="freeCommentCount" column="free_comment_count" />
 
-		<result property="mNo" column="m_no" />
+		<result property="memberNo" column="m_no" />
 		<result property="nickname" column="nickname" />
 		<result property="commentCount" column="comment_count" />
 
@@ -55,7 +55,7 @@
 		#{freeTag1},
 		#{freeTag2},
 		#{freeTag3},
-		#{mNo},
+		#{memberNo},
 		'N',
 		0
 		)
@@ -68,9 +68,12 @@
 		f.free_no AS freeNo,
 		f.free_title AS freeTitle,
 		m.m_nickname AS nickname,
+		m.m_no AS memberNo,
 		m.m_picture AS
 		imageFileName,
 		m.m_path AS imageFilePath,
+		f.free_content
+		AS freeContent,
 		f.free_content AS freeContent,
 		f.free_date AS freeDate,
 		f.free_views AS freeViews,

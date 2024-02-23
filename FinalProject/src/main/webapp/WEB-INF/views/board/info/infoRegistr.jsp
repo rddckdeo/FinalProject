@@ -91,7 +91,8 @@
 						</div>
 					</div>
 					<div class="button-wrapper">
-						<a href="#" onclick="history.back();" class="board-update-btn">취소하기</a>
+						<a href="#" onclick="cancelAndBack(event)"
+							class="board-update-btn">취소하기</a>
 						<button type="submit" id="submit" class="board-update-btn">등록하기</button>
 					</div>
 				</div>
@@ -228,14 +229,46 @@
                 editor = newEditor;
             });
 
-          document.querySelector('#submit').addEventListener('click', function() {
-      	    const shouldSubmit = window.confirm("등록하시겠습니까?");
-      	    if (shouldSubmit) {
-      	        const editorData = editor.getData();
-      	        document.querySelector('#editorData').value = editorData;
-      	        document.querySelector('#submitForm').submit(); 
-      	    }
-      	});
+        //저장 
+          document.querySelector('#submit').addEventListener('click', function(event) {
+              const title = document.querySelector('input[name="infoTitle"]').value;
+              const category = document.querySelector('#category').value;
+              const editorData = editor.getData();
 
+              if (!title) {
+                  alert('제목을 작성해주세요.');
+                  event.preventDefault();
+                  return;
+              }
+              if (!category) {
+                  alert('카테고리를 선택해주세요.');
+                  event.preventDefault();
+                  return;
+              }
+              if (!editorData) {
+                  alert('내용을 작성해주세요.');
+                  event.preventDefault();
+                  return;
+              }
+
+              const shouldSubmit = window.confirm("등록하시겠습니까?");
+              if (shouldSubmit) {
+                  document.querySelector('#editorData').value = editorData;
+                  document.querySelector('#submitForm').submit(); 
+              } else {
+                  event.preventDefault();
+              }
+          });
+
+
+          
+          // 취소하기 버튼 클릭 시
+          function cancelAndBack(event) {
+              event.preventDefault(); 
+              var confirmed = confirm('작성 중인 내용이 사라집니다. 정말로 취소하시겠습니까?');
+              if (confirmed) {
+                  history.back();
+              }
+          }
 
 </script>

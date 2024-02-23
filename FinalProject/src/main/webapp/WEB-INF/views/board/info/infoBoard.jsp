@@ -45,7 +45,7 @@ a.disabled {
 						<div class="container-fluid">
 							<div class="categoryNavigation-div">
 								<div class="categoryNavigation">
-									<p>정보게시판 </p>
+									<p>정보게시판</p>
 									<c:if test="${not empty categoryName}">
 										<p>|</p>
 										<p>${categoryName}</p>
@@ -100,61 +100,75 @@ a.disabled {
 										<c:forEach var="post" items="${posts}">
 
 											<div class="main-boardList">
+												<c:choose>
+													<c:when test="${post.infoBlind eq 'Y'}">
+														<div class="main-boardList-info">
+															<p>블라인드 처리된 글입니다.</p>
+														</div>
+													</c:when>
+													<c:otherwise>
 
-												<div class="main-boardList-info">
 
-													<div>
-														 <img src="../../../..${post.imageFileName}${post.imageFilePath}" 
-															alt="프로필" width="30" height="30">
+														<div class="main-boardList-info">
 
-														<p class="main-boardList-info-text">${post.nickname}</p>
-														<p class="main-boardList-info-text">|</p>
-														<p class="main-boardList-info-text">${post.infoDate}</p>
+															<div>
+																<img
+																	src="../../../..${post.imageFileName}${post.imageFilePath}"
+																	alt="프로필" width="30" height="30">
 
-													</div>
+																<p class="main-boardList-info-text">${post.nickname}</p>
+																<p class="main-boardList-info-text">|</p>
+																<p class="main-boardList-info-text">${post.infoDate}</p>
 
-												</div>
+															</div>
 
-												<div class="main-boardList-title">
-													<a href="/info/infoDtail/${post.infoNo}">${post.infoTitle}</a>
-												</div>
-
-												<div class="main-boardList-bottm-div">
-
-													<div class="main-boardList-tag">
-
-														<c:if test="${not empty post.infoTag1}">
-															<p class="tag-div">#${post.infoTag1}</p>
-														</c:if>
-
-														<c:if test="${not empty post.infoTag2}">
-															<p class="tag-div">#${post.infoTag2}</p>
-														</c:if>
-
-														<c:if test="${not empty post.infoTag3}">
-															<p class="tag-div">#${post.infoTag3}</p>
-														</c:if>
-
-													</div>
-
-													<div class="main-comment-section">
-
-														<div class="main-project-comment">
-															<img src="../../../../resources/uploads/icon/message.png" alt="message" width="20" height="20"
-																class="main-project-comment-text">
-															<p class="main-project-comment-text">${post.commentCount}</p>
 														</div>
 
-														<div class="main-project-comment">
-															<img src="../../../../resources/uploads/icon/views.png" alt="message" width="20" height="20"
-																class="main-project-comment-text">
-															<p class="main-project-comment-text"> ${post.infoViews}</p>
+														<div class="main-boardList-title">
+															<a href="/info/infoDtail/${post.infoNo}">${post.infoTitle}</a>
 														</div>
 
-													</div>
+														<div class="main-boardList-bottm-div">
 
-												</div>
+															<div class="main-boardList-tag">
 
+																<c:if test="${not empty post.infoTag1}">
+																	<p class="tag-div">#${post.infoTag1}</p>
+																</c:if>
+
+																<c:if test="${not empty post.infoTag2}">
+																	<p class="tag-div">#${post.infoTag2}</p>
+																</c:if>
+
+																<c:if test="${not empty post.infoTag3}">
+																	<p class="tag-div">#${post.infoTag3}</p>
+																</c:if>
+
+															</div>
+
+															<div class="main-comment-section">
+
+																<div class="main-project-comment">
+																	<img
+																		src="../../../../resources/uploads/icon/message.png"
+																		alt="message" width="20" height="20"
+																		class="main-project-comment-text">
+																	<p class="main-project-comment-text">${post.commentCount}</p>
+																</div>
+
+																<div class="main-project-comment">
+																	<img src="../../../../resources/uploads/icon/views.png"
+																		alt="message" width="20" height="20"
+																		class="main-project-comment-text">
+																	<p class="main-project-comment-text">
+																		${post.infoViews}</p>
+																</div>
+
+															</div>
+
+														</div>
+													</c:otherwise>
+												</c:choose>
 											</div>
 
 											<div class="card-project-hr-div">

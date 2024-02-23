@@ -27,7 +27,7 @@ public class FreeDTO {
 	private int freeCommentCount;
 
 
-	private int mNo;
+	private int memberNo;
 
 	private String nickname; // 작성자 닉네임
 	private int commentCount; // 댓글 수
@@ -41,7 +41,7 @@ public class FreeDTO {
 				+ freeDate + ", freeUpdateDate=" + freeUpdateDate + ", freeDeleteDate=" + freeDeleteDate
 				+ ", freeViews=" + freeViews + ", freeTag1=" + freeTag1 + ", freeTag2=" + freeTag2 + ", freeTag3="
 				+ freeTag3 + ", freeBlind=" + freeBlind + ", freeCommentCount=" + freeCommentCount + ", freeCategory="
-				+ freeCategory + ", mNo=" + mNo + ", nickname=" + nickname + ", commentCount=" + commentCount + "]";
+				+ freeCategory + ", mNo=" + memberNo + ", nickname=" + nickname + ", commentCount=" + commentCount + "]";
 	}
 
 }

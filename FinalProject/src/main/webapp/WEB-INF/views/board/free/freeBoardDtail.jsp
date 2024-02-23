@@ -18,6 +18,47 @@
 	integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ=="
 	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
+<style>
+.container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.inline-items {
+	display: flex;
+	align-items: center;
+}
+
+.margin-top-bottom {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.horizontal-layout {
+	display: flex;
+	align-items: center;
+}
+
+p {
+	font-size: 15px;
+}
+
+.comment-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.left-items, .right-items {
+	display: flex;
+	align-items: center;
+}
+
+.button-layout {
+	display: flex;
+	align-items: center;
+}
+</style>
 <body data-mNo="${sessionScope.no}" data-free-no="${freeNo}">
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
@@ -44,13 +85,17 @@
 									</c:if>
 								</div>
 								<div class="button-wrapper">
-									<a href="/free/edit/${post.freeNo}" class="board-update-btn">수정하기</a>
-									<a data-free-no="${post.freeNo}" id="delete-link" class="board-update-btn" onclick="deletePost(event)">삭제</a>
-
-
-									<!-- 신고하기 버튼 -->
-									<button id="reportButton" class="board-update-btn">신고하기</button>
-
+									<c:choose>
+										<c:when test="${no == post.memberNo}">
+											<a href="/free/edit/${post.freeNo}" class="board-update-btn">수정하기</a>
+											<a data-free-no="${post.freeNo}" id="delete-link"
+												class="board-update-btn" onclick="deletePost(event)">삭제</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 신고하기 버튼 -->
+											<button id="reportButton" class="board-update-btn">신고하기</button>
+										</c:otherwise>
+									</c:choose>
 									<!-- 신고하기 모달 -->
 									<div id="reportModal" class="modal">
 										<div class="modal-content">
@@ -82,32 +127,42 @@
 							<div class="card">
 								<div class="main-boardList">
 									<div class="main-boardList-info">
-										<a href="#"><img
-											src="../../../..${post.imageFilePath}${post.imageFileName}"
-											alt="프로필" width="30" height="30"
-											class="main-boardList-user-img"></a> <a href="#"
-											class="main-boardList-info-text">${post.nickname}</a>
-										<p class="main-boardList-info-text">${post.freeDate}</p>
-										<img src="../../../../resources/uploads/icon/message.png"
-											alt="" width="20" height="20"
-											class="main-project-comment-text">
-										<p id="commentCount_${post.freeNo}"
-											class="main-project-comment-text">${post.commentCount}</p>
-										<img src="../../../../resources/uploads/icon/views.png" alt=""
-											width="20" height="20" class="main-project-comment-text">
-										<p id="viewCount_${post.freeNo}"
-											class="main-project-comment-text">${post.freeViews}</p>
 
+										<div class="container margin-top-bottom">
+											<div class="inline-items">
+												<a href="#"><img
+													src="../../../..${post.imageFilePath}${post.imageFileName}"
+													alt="프로필" width="30" height="30"
+													class="main-boardList-user-img"></a> <a href="#"
+													class="main-boardList-info-text">${post.nickname}</a>
+												<p class="main-boardList-info-text">|</p>
+												<p class="main-boardList-info-text">${post.freeDate}</p>
+											</div>
+											<div class="inline-items">
+												<img src="../../../../resources/uploads/icon/message.png"
+													alt="" width="20" height="20"
+													class="main-project-comment-text">
+												<p id="commentCount_${post.freeNo}"
+													class="main-project-comment-text">${post.commentCount}</p>
+												<img src="../../../../resources/uploads/icon/views.png"
+													alt="" width="20" height="20"
+													class="main-project-comment-text">
+												<p id="viewCount_${post.freeNo}"
+													class="main-project-comment-text">${post.freeViews}</p>
+											</div>
+										</div>
 									</div>
-									<div>
+									<div class="margin-top-bottom horizontal-layout">
+										<p style="font-size: 18px">TITLE | &nbsp;&nbsp;</p>
 										<p>${post.freeTitle}</p>
 										<!-- 제목 -->
 									</div>
-									<div>
+									<hr>
+									<div class="margin-top-bottom">
 										<p>${post.freeContent}</p>
 										<!-- 내용 -->
 									</div>
-									<div class="main-boardList-tag">
+									<div class="main-boardList-tag margin-top-bottom">
 										<c:if test="${not empty post.freeTag1}">
 											<p class="tag-div">#${post.freeTag1}</p>
 										</c:if>
@@ -139,7 +194,7 @@
 												<div class="comment-registration">
 													<input type="text" id="commentContent"
 														placeholder="댓글을 남겨주세요">
-													<button id="submitComment" type="button" onclick="submitComment()">등록</button>
+													<button id="submitComment" type="button">등록</button>
 
 												</div>
 											</c:otherwise>
@@ -157,53 +212,57 @@
 													alt="프로필" width="30" height="30"
 													class="main-boardList-user-img"></a> <a href="#"
 													class="main-boardList-info-text">${comment.nickname}</a>
+												<p class="main-boardList-info-text">|</p>
 												<p class="main-boardList-info-text">${comment.freeCommentDate}</p>
-												<div>
-													<a href="JavaScript:void(0);" class="edit-button"
-														data-id="${comment.freeCommentNo}"
-														data-freeNo="${post.freeNo}" data-toggle="modal"
-														data-target="#editModal_${comment.freeCommentNo}">수정</a>
+												<div class="right-items button-layout">
+													<div>
+														<a href="JavaScript:void(0);" class="edit-button"
+															data-id="${comment.freeCommentNo}"
+															data-freeNo="${post.freeNo}" data-toggle="modal"
+															data-target="#editModal_${comment.freeCommentNo}">수정</a>
 
-													<!-- 수정하기 모달 -->
-													<div class="editModal"
-														id="editModal_${comment.freeCommentNo}">
-														<div class="modal-content">
-															<span class="close">&times;</span>
-															<h2>댓글 수정하기</h2>
-															<form class="editForm">
-																<label for="author">작성자:</label> <input type="text"
-																	id="author" value="${comment.nickname}" disabled><br>
+														<!-- 수정하기 모달 -->
+														<div class="editModal"
+															id="editModal_${comment.freeCommentNo}">
+															<div class="modal-content">
+																<span class="close">&times;</span>
+																<h2>댓글 수정하기</h2>
+																<form class="editForm">
+																	<label for="author">작성자:</label> <input type="text"
+																		id="author" value="${comment.nickname}" disabled><br>
 
-																<label for="date">작성일:</label> <input type="text"
-																	id="date" value="${comment.freeCommentDate}" disabled><br>
-																<label for="editComment">내용:</label>
-																<textarea id="editComment">${comment.freeCommentContent}</textarea>
-																<br> <input type="submit" value="수정하기">
-															</form>
+																	<label for="date">작성일:</label> <input type="text"
+																		id="date" value="${comment.freeCommentDate}" disabled><br>
+																	<label for="editComment">내용:</label>
+																	<textarea id="editComment">${comment.freeCommentContent}</textarea>
+																	<br> <input type="submit" value="수정하기">
+																</form>
+															</div>
 														</div>
-													</div>
-													<p>|</p>
-													<a class="delete-button" data-id="${comment.freeCommentNo}">삭제</a>
-													<!-- 신고하기 버튼 -->
-													<button class="reportButton"
-														data-id="${comment.freeCommentNo}">신고하기</button>
+														<p>|</p>
+														<a class="delete-button"
+															data-id="${comment.freeCommentNo}">삭제</a>
+														<!-- 신고하기 버튼 -->
+														<button class="reportButton"
+															data-id="${comment.freeCommentNo}">신고하기</button>
 
-													<!-- 신고하기 모달 -->
-													<div class="reportModal"
-														id="reportModal_${comment.freeCommentNo}"
-														data-id="${comment.freeCommentNo}">
-														<div class="modal-content">
-															<span class="close">&times;</span>
-															<h2>신고하기</h2>
-															<form class="reportForm">
-																<label for="reportType">신고 종류:</label><br> <select
-																	class="reportType">
-																	<option value="spam">스팸</option>
-																	<option value="abuse">욕설</option>
-																	<option value="falseInfo">허위 정보</option>
-																</select><br> <br> <input class="reportSubmitButton"
-																	type="submit" value="신고하기">
-															</form>
+														<!-- 신고하기 모달 -->
+														<div class="reportModal"
+															id="reportModal_${comment.freeCommentNo}"
+															data-id="${comment.freeCommentNo}">
+															<div class="modal-content">
+																<span class="close">&times;</span>
+																<h2>신고하기</h2>
+																<form class="reportForm">
+																	<label for="reportType">신고 종류:</label><br> <select
+																		class="reportType">
+																		<option value="spam">스팸</option>
+																		<option value="abuse">욕설</option>
+																		<option value="falseInfo">허위 정보</option>
+																	</select><br> <br> <input class="reportSubmitButton"
+																		type="submit" value="신고하기">
+																</form>
+															</div>
 														</div>
 													</div>
 
@@ -250,13 +309,17 @@
 				});
 
 		// 댓글 등록
-		function submitComment() {
+		$("#submitComment").click(function (event) {
     var commentContent = $('#commentContent').val();
     var mNo = $('body').data('mno');
     var freeNo = $('body').data('free-no');
 
     if (!commentContent) {
         alert('댓글 내용을 입력해주세요.');
+        return;
+    }
+    var isConfirmed = confirm('댓글을 등록하시겠습니까?');
+    if (!isConfirmed) {
         return;
     }
 
@@ -324,14 +387,6 @@ $('.modal').modal({
 
 		function appendComment(comment) {
 			var formattedDate = formatDate(comment.freeCommentDate);
-
-			var now = new Date();
-			var year = now.getFullYear();
-			var month = ("0" + (now.getMonth() + 1)).slice(-2);
-			var day = ("0" + now.getDate()).slice(-2);
-
-			console.log('formattedDate:', formattedDate);
-			console.log('month:', month);
 
 			var commentRow = '<div class="comment-row">'
 					+ '<a href="#"><img src="../../../../resources/uploads/member/기본프로필.png" alt="프로필" width="30" height="30"'

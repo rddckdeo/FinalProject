@@ -55,7 +55,7 @@
 		#{infoTag1},
 		#{infoTag2},
 		#{infoTag3},
-		#{mNo},
+		#{memberNo},
 		'N',
 		0
 		)

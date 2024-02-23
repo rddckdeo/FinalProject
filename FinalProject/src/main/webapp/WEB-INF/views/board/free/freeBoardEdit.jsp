@@ -83,8 +83,10 @@
 						</div>
 					</div>
 					<div class="button-wrapper">
-						<a href="#" onclick="history.back();" class="board-update-btn">취소하기</a>
-						<button type="submit" id="submit" class="board-update-btn">수정하기</button>
+						<a href="#" onclick="cancelAndBack(event)"
+							class="board-update-btn">취소하기</a>
+						<button type="submit" id="submit" class="board-update-btn"
+							onclick="onSubmitClick(event)">수정하기</button>
 
 					</div>
 				</div>
@@ -92,7 +94,7 @@
 		</div>
 	</form>
 
-	</div>
+	
 </body>
 <script>
 
@@ -106,9 +108,8 @@
                 break;
             }
         }
-    }
-</script>
-<script>
+    
+
     let editor;
           CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
             toolbar: {
@@ -233,9 +234,53 @@
               console.error(error);
           });
 
-          document.querySelector('.board-update-btn').addEventListener('click', () => {
-              const editorData = editor.getData();
-              document.querySelector('#editorData').value = editorData;
-          });
+          
+         
 
+       // 수정 버튼 클릭 시
+          document.querySelector('#submit').removeEventListener('click', onSubmitClick);
+          document.querySelector('#submit').addEventListener('click', function(event) {
+              onSubmitClick(event, editor);
+          });
+      }
+
+      function onSubmitClick(event, editor) {
+          const title = document.querySelector('input[name="infoTitle"]').value;
+          const category = document.querySelector('#category').value;
+          const editorData = editor.getData().trim(); 
+
+          if (!title) {
+              alert('제목을 작성해주세요.');
+              event.preventDefault();
+              return;
+          }
+          if (!category) {
+              alert('카테고리를 선택해주세요.');
+              event.preventDefault();
+              return;
+          }
+          if (!editorData) {
+              alert('내용을 작성해주세요.');
+              event.preventDefault();
+              return;
+          }
+
+          const shouldSubmit = window.confirm("수정하시겠습니까?");
+          if (!shouldSubmit) {
+              event.preventDefault();
+              return;
+          }
+      }
+
+
+
+
+ // 취소하기 버튼 클릭 시
+function cancelAndBack(event) {
+    event.preventDefault(); 
+    var confirmed = confirm('작성 중인 내용이 사라집니다. 정말로 취소하시겠습니까?');
+    if (confirmed) {
+        history.back();
+    }
+}
 </script>

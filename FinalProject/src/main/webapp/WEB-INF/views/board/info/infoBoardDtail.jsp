@@ -21,8 +21,46 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <style>
+.container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.inline-items {
+	display: flex;
+	align-items: center;
+}
+
+.margin-top-bottom {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.horizontal-layout {
+	display: flex;
+	align-items: center;
+}
+
+p {
+	font-size: 15px;
+}
+
+.comment-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.left-items, .right-items {
+	display: flex;
+	align-items: center;
+}
+
+.button-layout {
+    display: flex;
+    align-items: center;
+}
 </style>
-<%-- <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}"> --%>
 <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}">
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
@@ -91,33 +129,42 @@
 								<div class="main-boardList">
 									<div class="main-boardList-info">
 
-
-										<a href="#"><img
-											src="../../../..${post.imageFilePath}${post.imageFileName}"
-											alt="프로필" width="30" height="30"
-											class="main-boardList-user-img"></a> <a href="#"
-											class="main-boardList-info-text">${post.nickname}</a>
-										<p class="main-boardList-info-text">${post.infoDate}</p>
-										<img src="../../../../resources/uploads/icon/message.png"
-											alt="" width="20" height="20"
-											class="main-project-comment-text">
-										<p id="commentCount_${post.infoNo}"
-											class="main-project-comment-text">${post.commentCount}</p>
-										<img src="../../../../resources/uploads/icon/views.png" alt=""
-											width="20" height="20" class="main-project-comment-text">
-										<p id="viewCount_${post.infoNo}"
-											class="main-project-comment-text">${post.infoViews}</p>
+										<div class="container margin-top-bottom">
+											<div class="inline-items">
+												<a href="#"><img
+													src="../../../..${post.imageFilePath}${post.imageFileName}"
+													alt="프로필" width="30" height="30"
+													class="main-boardList-user-img"></a> <a href="#"
+													class="main-boardList-info-text">${post.nickname}</a>
+												<p class="main-boardList-info-text">|</p>
+												<p class="main-boardList-info-text">${post.infoDate}</p>
+											</div>
+											<div class="inline-items">
+												<img src="../../../../resources/uploads/icon/message.png"
+													alt="" width="20" height="20"
+													class="main-project-comment-text">
+												<p id="commentCount_${post.infoNo}"
+													class="main-project-comment-text">${post.commentCount}</p>
+												<img src="../../../../resources/uploads/icon/views.png"
+													alt="" width="20" height="20"
+													class="main-project-comment-text">
+												<p id="viewCount_${post.infoNo}"
+													class="main-project-comment-text">${post.infoViews}</p>
+											</div>
+										</div>
 
 									</div>
-									<div>
+									<div class="margin-top-bottom horizontal-layout">
+										<p style="font-size: 18px">TITLE | &nbsp;&nbsp;</p>
 										<p>${post.infoTitle}</p>
 										<!-- 제목 -->
 									</div>
-									<div>
+									<hr>
+									<div class="margin-top-bottom">
 										<p>${post.infoContent}</p>
 										<!-- 내용 -->
 									</div>
-									<div class="main-boardList-tag">
+									<div class="main-boardList-tag margin-top-bottom">
 										<c:if test="${not empty post.infoTag1}">
 											<p class="tag-div">#${post.infoTag1}</p>
 										</c:if>
@@ -162,74 +209,79 @@
 
 										<c:forEach items="${comments}" var="comment">
 											<div class="comment-row">
-												<a href="#"><img
-													src="../../../..${post.imageFilePath}${post.imageFileName}"
-													alt="프로필" width="30" height="30"
-													class="main-boardList-user-img"></a> <a href="#"
-													class="main-boardList-info-text">${comment.nickname}</a>
-												<p class="main-boardList-info-text">${comment.infoCommentDate}</p>
-												<div>
-													<a href="JavaScript:void(0);" class="edit-button"
-														data-id="${comment.infoCommentNo}"
-														data-infoNo="${post.infoNo}" data-toggle="modal"
-														onclick="openEditModal(this)"
-														data-target="#editModal_${comment.infoCommentNo}">수정</a>
+												<div class="left-items">
+													<a href="#"><img
+														src="../../../..${post.imageFilePath}${post.imageFileName}"
+														alt="프로필" width="30" height="30"
+														class="main-boardList-user-img"></a> <a href="#"
+														class="main-boardList-info-text">${comment.nickname}</a>
+														<p class="main-boardList-info-text">|</p>
+													<p class="main-boardList-info-text">${comment.infoCommentDate}</p>
+												</div>
+												<div class="right-items button-layout">
+													<div>
+														<a href="JavaScript:void(0);" class="edit-button"
+															data-id="${comment.infoCommentNo}"
+															data-infoNo="${post.infoNo}" data-toggle="modal"
+															onclick="openEditModal(this)"
+															data-target="#editModal_${comment.infoCommentNo}">수정</a>
 
-													<!-- 수정하기 모달 -->
-													<div class="editModal"
-														id="editModal_${comment.infoCommentNo}">
-														<div class="modal-content">
-															<span class="close" onclick="closeEditModal(this)">&times;</span>
-															<h2>댓글 수정하기</h2>
-															<form onsubmit="submitEditForm(this)">
-																<label for="author">작성자:</label> <input type="text"
-																	id="author" value="${comment.nickname}" disabled><br>
+														<!-- 수정하기 모달 -->
+														<div class="editModal"
+															id="editModal_${comment.infoCommentNo}">
+															<div class="modal-content">
+																<span class="close" onclick="closeEditModal(this)">&times;</span>
+																<h2>댓글 수정하기</h2>
+																<form onsubmit="submitEditForm(this)">
+																	<label for="author">작성자:</label> <input type="text"
+																		id="author" value="${comment.nickname}" disabled><br>
 
-																<label for="date">작성일:</label> <input type="" id="date"
-																	value="${comment.infoCommentDate}" disabled><br>
+																	<label for="date">작성일:</label> <input type="" id="date"
+																		value="${comment.infoCommentDate}" disabled><br>
 
-																<label for="editComment">내용:</label>
-																<textarea id="editComment" class="editComment">${comment.infoCommentContent}</textarea>
-																<br> <input type="hidden" id="infoCommentNo"
-																	value="${comment.infoCommentNo}"> <input
-																	class="editSubmitButton" type="submit" value="수정하기">
-															</form>
+																	<label for="editComment">내용:</label>
+																	<textarea id="editComment" class="editComment">${comment.infoCommentContent}</textarea>
+																	<br> <input type="hidden" id="infoCommentNo"
+																		value="${comment.infoCommentNo}"> <input
+																		class="editSubmitButton" type="submit" value="수정하기">
+																</form>
 
+															</div>
 														</div>
-													</div>
-													<p>|</p>
-													<a class="delete-button" onclick="deleteComment(this)"
-														data-id="${comment.infoCommentNo}">삭제</a>
+														<span>|</span>
+														<a class="delete-button" onclick="deleteComment(this)"
+															data-id="${comment.infoCommentNo}">삭제</a>
 
-													<!-- 신고하기 버튼 -->
-													<button class="reportButton"
-														data-id="${comment.infoCommentNo}"
-														onclick="openReportModal(this)">신고하기</button>
+														<!-- 신고하기 버튼 -->
+														<button class="reportButton"
+															data-id="${comment.infoCommentNo}"
+															onclick="openReportModal(this)">신고하기</button>
 
-													<!-- 신고하기 모달 -->
-													<div class="reportModal"
-														id="reportModal_${comment.infoCommentNo}"
-														data-id="${comment.infoCommentNo}">
-														<div class="modal-content">
-															<span class="close" onclick="closeReportModal(this)">&times;</span>
-															<h2>신고하기</h2>
-															<form class="reportForm"
-																onsubmit="submitReportForm(this)">
-																<label for="reportType">신고 종류:</label><br> <select
-																	class="reportType">
-																	<option value="spam">스팸</option>
-																	<option value="abuse">욕설</option>
-																	<option value="falseInfo">허위 정보</option>
-																</select><br> <br> <input class="reportSubmitButton"
-																	type="submit" value="신고하기">
-															</form>
+														<!-- 신고하기 모달 -->
+														<div class="reportModal"
+															id="reportModal_${comment.infoCommentNo}"
+															data-id="${comment.infoCommentNo}">
+															<div class="modal-content">
+																<span class="close" onclick="closeReportModal(this)">&times;</span>
+																<h2>신고하기</h2>
+																<form class="reportForm"
+																	onsubmit="submitReportForm(this)">
+																	<label for="reportType">신고 종류:</label><br> <select
+																		class="reportType">
+																		<option value="spam">스팸</option>
+																		<option value="abuse">욕설</option>
+																		<option value="falseInfo">허위 정보</option>
+																	</select><br> <br> <input class="reportSubmitButton"
+																		type="submit" value="신고하기">
+																</form>
+															</div>
 														</div>
-													</div>
 
+													</div>
 												</div>
 											</div>
 											<div>
-												<p>${comment.infoCommentContent}</p>
+												<p class="margin-top-bottom">${comment.infoCommentContent}</p>
 												<!-- 댓글 내용 -->
 											</div>
 											<div class="card-project-hr-div">
@@ -567,7 +619,7 @@
         
         var data = {
         	    infoCommentNo: infoCommentNo,
-        	    infoCommentContent: infoCommentContent
+        	    infoCommentContent: commentContent
         	};
 
         if(confirm("댓글을 수정하시겠습니까?")) {
