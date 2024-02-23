@@ -31,12 +31,16 @@
 						<!-- margin-bottom 0 설정 ((height 600 설정)) -->
 						<div class="card mb-0 height600">
 							<div class="direction2 logoutDiv">
-								<div class="logoutDiv">
-									<a class="logoutAtag" href="adminForm.do" onclick="return checkLogin()">admin</a>
-								</div>
-								<div class="logoutDiv">
-									<a class="logoutAtag" href="mypage.do" onclick="return checkLogin()">myPage</a>
-								</div>
+								<c:if test="${sessionScope.type eq 0}">
+									<div class="logoutDiv">
+										<a class="logoutAtag" href="adminForm.do" onclick="return checkLogin()">admin</a>
+									</div>
+								</c:if>
+								<c:if test="${!empty sessionScope.id}">
+									<div class="logoutDiv">
+										<a class="logoutAtag" href="mypage.do" onclick="return checkLogin()">myPage</a>
+									</div>
+								</c:if>
 								<c:choose>
 									<c:when test="${!empty no}">
 										<div class="logoutDiv">
