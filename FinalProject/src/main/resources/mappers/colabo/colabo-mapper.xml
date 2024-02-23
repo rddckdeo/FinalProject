@@ -87,6 +87,11 @@
 		<result column="P_NAME" property="projectName"></result>
 	</resultMap>
 	
+	<select id="getProjectName" parameterType="int" resultType="String">
+		SELECT P_NAME FROM COLABO
+		WHERE P_NO = #{getProjectNo}
+	</select>
+	
 	<update id="allChangePushType" parameterType="ProjectPush">
 		UPDATE COLABO_PROJECT_PUSH
 		SET PUSH_CHECK = 

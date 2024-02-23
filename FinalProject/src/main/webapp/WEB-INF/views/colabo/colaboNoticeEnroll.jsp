@@ -28,12 +28,11 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="card w-100" style="width:70%; height:70%;">
-						<h3> ~~~ 팀 공지게시판</h3>
+						<h3> ${sessionScope.getProjectName} 팀 공지작성</h3>
 <!-- 						<div style="text-align: right;"> -->
 <!-- 							<button style="width:60px; text-align: center;" onclick="enterNoticePage()">글수정</button> -->
 <!-- 						</div> -->
 						
-						<h3>글쓰기</h3>
          <hr>
          <br>
 

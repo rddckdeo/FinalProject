@@ -29,7 +29,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="card w-100" style="width:70%; height:70%;">
-						<h3> ${projectName} 팀 공지게시판</h3>
+						<h3> ${sessionScope.getProjectName} 팀 공지게시판</h3>
 						<div style="text-align: right;">
 							<button class="btn btn-outline-primary" style="width:150px; text-align: center; type:button;" onclick="enterNoticePage()">글작성</button>
 						</div>

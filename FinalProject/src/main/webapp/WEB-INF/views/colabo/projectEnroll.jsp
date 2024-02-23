@@ -33,7 +33,7 @@
 					<form action="/colabo/projectEnroll.do" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<legend>
-								<span class="number">1</span> 프로젝트 생성자 정보
+								<span class="number">1</span>${sessionScope.getProjectName} 팀 프로젝트 생성자 정보
 							</legend>
 							<input type="hidden" name="memberNo" value="${list.memberNo}">
 							<input type="text" name="memberName" value="${list.memberName}" readonly>
