@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Insert title here</title> 
 <!-- jQuery 로딩 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
@@ -85,6 +85,7 @@ p {
 									</c:if>
 								</div>
 								<div class="button-wrapper">
+<<<<<<< HEAD
 									<c:choose>
 										<c:when test="${no == post.memberNo}">
 											<a href="/free/edit/${post.freeNo}" class="board-update-btn">수정하기</a>
@@ -96,6 +97,14 @@ p {
 											<button id="reportButton" class="board-update-btn">신고하기</button>
 										</c:otherwise>
 									</c:choose>
+=======
+									<a href="/free/edit/${post.freeNo}" class="board-update-btn">수정하기</a>
+									<a href="#" data-info-no="${post.freeNo}" class="delete-link">삭제</a>
+									
+									<!-- 신고하기 버튼 -->
+									<button id="reportButton" class="board-update-btn">신고하기</button>
+
+>>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 									<!-- 신고하기 모달 -->
 									<div id="reportModal" class="modal">
 										<div class="modal-content">
@@ -112,8 +121,8 @@ p {
 											</form>
 										</div>
 									</div>
-
-
+									
+									
 								</div>
 							</div>
 						</div>
@@ -195,7 +204,10 @@ p {
 													<input type="text" id="commentContent"
 														placeholder="댓글을 남겨주세요">
 													<button id="submitComment" type="button">등록</button>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 												</div>
 											</c:otherwise>
 										</c:choose>
@@ -214,12 +226,19 @@ p {
 													class="main-boardList-info-text">${comment.nickname}</a>
 												<p class="main-boardList-info-text">|</p>
 												<p class="main-boardList-info-text">${comment.freeCommentDate}</p>
+<<<<<<< HEAD
 												<div class="right-items button-layout">
 													<div>
 														<a href="JavaScript:void(0);" class="edit-button"
 															data-id="${comment.freeCommentNo}"
 															data-freeNo="${post.freeNo}" data-toggle="modal"
 															data-target="#editModal_${comment.freeCommentNo}">수정</a>
+=======
+												<div>
+													<a href="JavaScript:void(0);"class="edit-button"
+														data-id="${comment.freeCommentNo}" data-infoNo="${post.freeNo}" data-toggle="modal"
+														data-target="#editModal_${comment.freeCommentNo}">수정</a>
+>>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 
 														<!-- 수정하기 모달 -->
 														<div class="editModal"
@@ -231,6 +250,7 @@ p {
 																	<label for="author">작성자:</label> <input type="text"
 																		id="author" value="${comment.nickname}" disabled><br>
 
+<<<<<<< HEAD
 																	<label for="date">작성일:</label> <input type="text"
 																		id="date" value="${comment.freeCommentDate}" disabled><br>
 																	<label for="editComment">내용:</label>
@@ -238,6 +258,14 @@ p {
 																	<br> <input type="submit" value="수정하기">
 																</form>
 															</div>
+=======
+																<label for="date">작성일:</label> <input type="text"
+																	id="date" value="${comment.freeCommentDate}" disabled><br>
+																<label for="editComment">내용:</label>
+																<textarea id="editComment">${comment.freeCommentContent}</textarea>
+																<br> <input type="submit" value="수정하기"> 
+															</form>
+>>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 														</div>
 														<p>|</p>
 														<a class="delete-button"
@@ -265,7 +293,7 @@ p {
 															</div>
 														</div>
 													</div>
-
+													
 												</div>
 											</div>
 											<div>
@@ -309,6 +337,7 @@ p {
 				});
 
 		// 댓글 등록
+<<<<<<< HEAD
 		$("#submitComment").click(function (event) {
     var commentContent = $('#commentContent').val();
     var mNo = $('body').data('mno');
@@ -322,44 +351,47 @@ p {
     if (!isConfirmed) {
         return;
     }
+=======
+		$("#submitComment").click(function(event) {
+			var commentContent = $('#commentContent').val();
+			var mNo = $('body').data('mno');
+			var freeNo = $('body').data('free-no');
 
-    $.ajax({
-        type: 'POST',
-        url: '/freeComment/SubmitRegistr',
-        dataType: 'json',
-        data: JSON.stringify({
-            freeCommentContent: commentContent,
-            mNo: mNo,
-            freeNo: freeNo
-        }),
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            console.log('새로 등록된 댓글 번호: ', response.freeCommentNo);
-            appendComment(response);
-            updateCommentCount(freeNo);
-            // 댓글이 없다는 메시지 숨기기
-            $('#no-comment-message').hide();
+			console.log('commentContent:', commentContent);
+			console.log('mNo:', mNo);
+			console.log('freeNo:', freeNo);
+>>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
 
-            // 댓글 등록 후 모달 트리거
-            var commentId = response.freeCommentNo;
-            triggerEditModal(commentId);
-        },
-        error: function (err) {
-            console.error('댓글 저장에 실패하였습니다: ', err.status, err.statusText);
-        }
-    });
-}
+			if (!commentContent) {
+				alert('댓글 내용을 입력해주세요.');
+				return;
+			}
 
+			$.ajax({
+				type : 'POST',
+				url : '/freeComment/SubmitRegistr',
+				dataType : 'json',
+				data : JSON.stringify({
+					freeCommentContent : commentContent,
+					mNo : mNo,
+					freeNo : freeNo
+				}),
+				contentType : 'application/json; charset=utf-8',
+				success : function(response) {
+					appendComment(response);
+					updateCommentCount(freeNo);
 
-// Bootstrap 모달 초기화
-$('.modal').modal({
-    backdrop: 'static',
-    keyboard: false
-});
+					// 댓글이 없다는 메시지 숨기기
+					$('#no-comment-message').hide();
+				},
+				error : function(err) {
+					console.log('댓글 저장에 실패하였습니다: ', err);
+				}
+			});
+		});
 
 		// 서버에서 받아온 날짜 형식 변환
 		function formatDate(dateString) {
-			console.log('dateString:', dateString);
 			var months = {
 				"1월" : "01",
 				"2월" : "02",
@@ -375,14 +407,13 @@ $('.modal').modal({
 				"12월" : "12"
 			};
 
-		    var date = new Date(dateString);
-		    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-		    var day = ("0" + date.getDate()).slice(-2);
-		    var year = date.getFullYear();
-		    var formattedDate = year + '-' + month + '-' + day;
+			var dateParts = dateString.split(" ");
+			var month = months[dateParts[1]]; 
+			var day = ("0" + dateParts[1].replace(',', '')).slice(-2);
+			var year = dateParts[2];
+			var formattedDate = year + '-' + month + '-' + day;
 
-		    return formattedDate;
-
+			return formattedDate;
 		}
 
 		function appendComment(comment) {
@@ -437,37 +468,37 @@ $('.modal').modal({
 			console.log('조회수: ', views);
 		});
 
-		/* 게시글 삭제  */
-			function deletePost(event) {
-		        event.preventDefault();
+		//게시글 삭제 
+		$(document).ready(function() {
+			$('.delete-link').click(function(e) {
+				e.preventDefault();
+				var freeNo = $(this).data('freeNo');
 
-		        var freeNo = event.target.dataset.freeNo;
-
-		        var confirmDelete = confirm('정말로 삭제하시겠습니까?');
-		        if (confirmDelete) {
-		            $.ajax({
-		                url: '/free/deletePost',
-		                type: 'POST',
-		                data: {
-		                    'freeNo': freeNo
-		                },
-		                success: function (response) {
-		                    if (response.success) {
-		                        alert(response.message);
-		                        window.location.href = response.redirectUrl;
-		                    } else {
-		                        alert(response.message);
-		                    }
-		                },
-		                error: function (xhr, status, error) {
-		                    alert('게시글 삭제에 실패하였습니다: ' + error);
-		                }
-		            });
-		        }
-		    }
+				var confirmDelete = confirm('정말로 삭제하시겠습니까?');
+				if (confirmDelete) {
+					$.ajax({
+						url : '/free/deletePost',
+						type : 'POST',
+						data : {
+							'freeNo' : freeNo
+						},
+						success : function(response) {
+							if (response.success) {
+								alert(response.message);
+								window.location.href = response.redirectUrl;
+							} else {
+								alert(response.message);
+							}
+						},
+						error : function(xhr, status, error) {
+							alert('게시글 삭제에 실패하였습니다: ' + error);
+						}
+					});
+				}
+			});
+		});
 	</script>
 	<script>
-	//게시글 신고하기 
     var modal = document.getElementById("reportModal");
     var btn = document.getElementById("reportButton");
     var span = document.getElementsByClassName("close")[0];
@@ -490,18 +521,18 @@ $('.modal').modal({
         e.preventDefault();
 
         var reportType = document.getElementById('reportType').value;
-        var freeNo = document.body.dataset.freeNo;
+        var infoNo = document.body.dataset.infoNo;
         var mNo = document.body.dataset.mNo;
 
         var data = {
-            declarationType: 'free',
-            boardNo: freeNo,
+            declarationType: 'info',
+            boardNo: infoNo,
             mNo: mNo,
             declarationContent: reportType
         };
 
         if (confirm("신고하시겠습니까?")) {
-            fetch('/free/report', {
+            fetch('/info/report', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -533,7 +564,7 @@ $('.modal').modal({
 
                 var commentId = this.getAttribute('data-id');
                 var modal = document.querySelector('#editModal_' + commentId);
-                var freeNo = this.getAttribute('data-freeNo');
+                var infoNo = this.getAttribute('data-infoNo');
 
                 modal.style.display = "block";
 
@@ -547,7 +578,7 @@ $('.modal').modal({
                     var commentContent = modal.querySelector('#editComment').value;
 
                     var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/freeComment/updateComment', true);
+                    xhr.open('POST', '/comment/updateComment', true);
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     xhr.onload = function () {
                         if (xhr.status === 200) {
@@ -556,14 +587,14 @@ $('.modal').modal({
                             alert('댓글 수정에 실패하였습니다.');
                         }
                     };
-                    xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&freeNo=' + freeNo);
+                    xhr.send('commentId=' + commentId + '&commentContent=' + commentContent + '&infoNo=' + infoNo);
                 });
 
             });
         });
     });
-
-    /* 댓글 신고하기 */
+</script>
+	<script>
     window.onload = function() {
         var reportButtons = document.querySelectorAll('.reportButton');
         var closeButtons = document.querySelectorAll('.close');
@@ -590,17 +621,14 @@ $('.modal').modal({
 
                 var commentId = this.closest('.reportModal').dataset.id;
                 var reportType = this.querySelector('.reportType').value;
-                var mNo = document.body.dataset.mNo;
-                
                 var data = {
-                    declarationType: 'freeComment',
-                    boardNo: commentId, 
-                    mNo: mNo,
-                    declarationContent: reportType
+                    declarationType: 'comment',
+                    commentNo: commentId,
+                    reportType: reportType
                 };
 
                 if(confirm("신고하시겠습니까?")) {
-                    fetch('/freeComment/reportComment', {
+                    fetch('/info/report', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -613,7 +641,7 @@ $('.modal').modal({
                             alert("성공적으로 전송되었습니다.");
                             console.log('Success:', data);
                         } else {
-                        	throw new Error('오류 났으으음');
+                            throw new Error('Network response was not ok');
                         }
                     })
                     .catch((error) => {

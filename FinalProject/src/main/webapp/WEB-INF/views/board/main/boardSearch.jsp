@@ -57,6 +57,21 @@ a.disabled {
 								<div class="button-wrapper">
 									<a href="/info/registr" class="board-update-btn"
 										onclick="return checkLogin()">게시글 작성</a>
+
+									<!-- <ul class="nav-item dropdown">
+										<button class="nav-link dropdown-toggle toggle-btn" href="#"
+											id="dropdownMenuButton" role="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+											<img class="sort-img"
+												src="../../../../resources/uploads/icon/Sort.png" alt="">
+											정렬
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+											<li><a class="dropdown-item" href="#">최신순</a></li>
+											<li><a class="dropdown-item" href="#">댓글순</a></li>
+											<li><a class="dropdown-item" href="#">조회순</a></li>
+										</ul>
+									</ul> -->
 								</div>
 
 							</div>

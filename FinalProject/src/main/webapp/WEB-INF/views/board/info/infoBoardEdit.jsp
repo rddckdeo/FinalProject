@@ -108,6 +108,7 @@
 
 </body>
 <script>
+<<<<<<< HEAD
 window.onload = function() {
     var saved = "${post.infoCategory}"; 
     var selectElement = document.getElementById("category"); 
@@ -116,6 +117,18 @@ window.onload = function() {
         if (selectElement.options[i].value == saved) { 
             selectElement.options[i].selected = true; 
             break;
+=======
+
+    window.onload = function() {
+        var saved = "${post.infoCategory}"; 
+        var selectElement = document.getElementById("category"); 
+
+        for (var i = 0; i < selectElement.options.length; i++) {
+            if (selectElement.options[i].value == saved) { 
+                selectElement.options[i].selected = true; 
+                break;
+            }
+>>>>>>> 853b8ab3734fda818623a71ac1df0d47cdec0a73
         }
     }
     // 기존에 등록된 CKEditor 인스턴스를 저장할 변수

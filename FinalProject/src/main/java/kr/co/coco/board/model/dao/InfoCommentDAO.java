@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.InfoCommentDTO;
 
 @Repository
@@ -31,11 +30,6 @@ public class InfoCommentDAO {
     public void increaseCommentCount(int infoNo) {
         sqlSession.update("infoCommentMapper.increaseCommentCount", infoNo);
     }
-    
-  //댓글 삭제 시, info_comment_count 업데이트 
-	public void decreaseCommentCount(int infoNo) {
-		 sqlSession.update("infoCommentMapper.decreaseCommentCount", infoNo);	
-	}
 
 	// 댓글 번호로 댓글 정보 가져오기
 	public InfoCommentDTO getCommentById(int commentId) {
@@ -47,6 +41,7 @@ public class InfoCommentDAO {
 	public List<InfoCommentDTO> selectCommentsByPostId(int infoNo) {
 		return sqlSession.selectList("infoCommentMapper.selectCommentsByPostId", infoNo);
 	}
+
 	// 사용자 닉네임 불러오기
 	public String getNickname(int mNo) {
 		return sqlSession.selectOne("infoCommentMapper.getNickname", mNo);
@@ -85,14 +80,6 @@ public class InfoCommentDAO {
         params.put("commentContent", commentContent);
         sqlSession.update("infoCommentMapper.updateComment", params);
     }
-
-    //댓글 신고하기 
-	public boolean reportComment(DeclarationDTO declarationDto) {
-	
-		return false;
-	}
-
-
 
 
 

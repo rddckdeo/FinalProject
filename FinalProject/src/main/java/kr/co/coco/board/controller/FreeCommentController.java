@@ -1,6 +1,5 @@
 package kr.co.coco.board.controller;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.service.FreeCommentService;
-import kr.co.coco.board.model.service.FreeCommentServiceImpl;
 import kr.co.coco.boardPush.model.dto.BoardPushDTO;
 import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 
@@ -36,7 +32,7 @@ import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 public class FreeCommentController {
 
 	@Autowired
-    private FreeCommentServiceImpl freeCommentService;
+    private FreeCommentService freeCommentService;
 	@Autowired
 	private BoardPushServiceImpl pushService;
 
@@ -57,8 +53,6 @@ public class FreeCommentController {
 	    commentDTO.setFreeCommentDate(new java.sql.Date(System.currentTimeMillis()));
 	    commentDTO.setMNo(mNo);
 
-	    System.out.println(commentDTO.getFreeNo());
-	    
 	    try {
 	        FreeCommentDTO savedComment = freeCommentService.save(commentDTO);
 
@@ -136,44 +130,6 @@ public class FreeCommentController {
         return ResponseEntity.ok("댓글이 삭제되었습니다.");
     }
 
-	//댓글 신고하기
-	@PostMapping("/reportComment")
-	public ResponseEntity<?> reportComment(@RequestBody DeclarationDTO declarationDto, HttpSession session) {
-		try {
-
-			Integer mNo = (Integer) session.getAttribute("no");
-
-			// 사용자 번호 세팅
-			declarationDto.setMNo(mNo);
-
-			// 신고 처리 로직 수행
-			boolean isSuccessful = freeCommentService.reportComment(declarationDto);
-
-			// 신고 처리 결과에 따른 응답
-			if (isSuccessful) {
-				// 신고 처리 성공 시 응답
-				return ResponseEntity.ok().build();
-			} else {
-				// 신고 처리 실패 시 응답
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("신고처리 안됨");
-			}
-		} catch (Exception e) {
-			// 에러 발생 시 응답
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	
-	//댓글 수정하기 
-	@PostMapping("/updateComment")
-	public String updateComment(
-	    @RequestParam("commentId") int commentId, 
-	    @RequestParam("commentContent") String commentContent, 
-	    @RequestParam("freeNo") int freeNo) {
-	    freeCommentService.updateComment(commentId, commentContent);
-	    return "redirect:/free/freeDtail/" + freeNo;
-	}
-	
     // 댓글 번호로 게시글 번호 가져오기
     private int getFreeNoFromComment(int freeCommentNo) {
         return freeCommentService.getFreeNoFromComment(freeCommentNo);

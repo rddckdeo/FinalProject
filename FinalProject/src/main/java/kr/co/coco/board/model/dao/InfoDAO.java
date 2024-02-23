@@ -113,11 +113,6 @@ public class InfoDAO {
 	    return sqlSession.selectList("infoMapper.selectPostsOrderByViews", params);
 	}
 
-	//전체 게시글 수 
-	public int countPosts() {
-		return sqlSession.selectOne("infoMapper.countPosts");
-	}
-
 
 
 
