@@ -28,7 +28,6 @@
 			<!-- 헤더 영역 -->
 			<jsp:include page="./../board/common/header.jsp" />
 			<div class="container-fluid"></div>
-			<div class="cardSize">
 				<div class="row">
 					<div class="categoryNavigation-section">
 						<div class="container-fluid">
@@ -127,18 +126,12 @@
 
 										</c:otherwise>
 									</c:choose>
-
-
-
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
-	</div>
 </body>
 </html>
