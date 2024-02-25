@@ -9,16 +9,16 @@
 
 <header>
 	<div class="row">
-		<div class="main-section-header">
-			<div class="header-icon">
-				<nav class="navbar navbar-expand-lg">
+		<div class="main-section-header" style="padding-top:25px !important;">
+			<div class="header-icon" style="padding-right:30px !important;">
+				<nav class="navbar navbar-expand-lg" style="padding:8px 0 8px 0 !important;">
 					<div class="navbar-collapse justify-content-end px-0"
 						id="navbarNav">
-						<ul
-							class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-							<li class="nav-item dropdown"><a
-								class="nav-link nav-icon-hover" href="#" id="header-bell"
-								data-bs-toggle="dropdown" aria-expanded="false"> <img
+						<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+							<li class="nav-item dropdown">
+							<a class="nav-link nav-icon-hover" href="#" id="header-bell"
+								data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 7px;"> 
+								<img
 									src="../../../../resources/uploads/icon/bell.png" alt=""
 									width="35" height="35" class="rounded-circle"> 
 									<span class="notification-counter" id="viewCountSpan"></span> <!-- 알림 카운트를 표시 -->
@@ -44,15 +44,11 @@
 											</c:otherwise>
 										</c:choose>
 									</div>
-								</div></li>
-
-
-							<a href="#" target="_blank" id="header-chat"><img
-								src="../../../../resources/uploads/icon/message.png" alt=""
-								width="31" height="31"></a>
-							<li class="nav-item dropdown"><a
-								class="nav-link nav-icon-hover" href="#" id="drop2"
-								data-bs-toggle="dropdown" aria-expanded="false"> <img src="${sessionScope.path}${sessionScope.picture}"
+								</div>
+							</li>
+							<li class="nav-item dropdown">
+							<a class="nav-link nav-icon-hover" href="#" id="drop2"
+								data-bs-toggle="dropdown" aria-expanded="false" style="margin-top:7px"> <img src="${sessionScope.path}${sessionScope.picture}"
 									alt="" width="35" height="35" class="rounded-circle">
 							</a>
 								<div
@@ -86,9 +82,9 @@
 												<a href="/member/loginForm.do">로그인 하러 가기</a>
 											</c:otherwise>
 										</c:choose>
-
 									</div>
-								</div></li>
+								</div>
+							</li>
 						</ul>
 					</div>
 				</nav>

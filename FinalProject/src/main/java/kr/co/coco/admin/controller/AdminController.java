@@ -42,7 +42,6 @@ public class AdminController {
 		String type = (String)session.getAttribute("type");
 		int check = adminCheck(type);
 		if(check == 1) {
-			
 		
 // --------------------------Summay Count------------------------------ //
 			// Count list 가져오기
@@ -121,8 +120,11 @@ public class AdminController {
 	}
 	//방문자 현황
 	@GetMapping("/adminVisit.do")
-	public String adminVisit(Model model, MemberDTO member, 
+	public String adminVisit(Model model, MemberDTO member, HttpSession session,
 			@RequestParam(value = "cpage", defaultValue = "1") int cpage) {
+		String type = (String)session.getAttribute("type");
+		int check = adminCheck(type);
+		if(check == 1) {
 		// Summary
 		int day = adminService.dayVisit();
 		int week = adminService.weekVisit();
@@ -157,14 +159,19 @@ public class AdminController {
 		model.addAttribute("piVisit",piVisit);
 		
 		return "admin/adminVisit";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	//사용자 관리
 	@GetMapping("/adminMember.do")
-	public String adminMember(MemberDTO member, Model model, 
+	public String adminMember(MemberDTO member, Model model, HttpSession session,
 			@RequestParam(value="cpage",defaultValue="1") int cpage,
 			@RequestParam(value="status",defaultValue="total") String status,
 			@RequestParam (defaultValue = "")String searchInput
 			) {
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		//Summary
 		int newUserDay = adminService.newUserDay();
 		int newUserMonth = adminService.newUserMonth();
@@ -238,14 +245,18 @@ public class AdminController {
 		model.addAttribute("totalList",totalList);
 		model.addAttribute("newUserList",newUserList);
 		model.addAttribute("deleteList",deleteList);
-		
 		return "admin/adminMember";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 프로젝트 관리
 	@GetMapping("/adminProject.do")
-	public String adminProject(Model model, ColaboDTO colabo,
+	public String adminProject(Model model, ColaboDTO colabo, HttpSession session,
 						@RequestParam(value="cpage",defaultValue="1")int cpage,
 						@RequestParam(value="status",defaultValue="n")String status){
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		// ----------------------summary----------------------
 		int np = adminService.newProject();
 		int sp = adminService.startProject();
@@ -290,12 +301,17 @@ public class AdminController {
 		model.addAttribute("endProjectList",endProjectList);
 		
 		return "admin/adminProject";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 문의 사항
 	@GetMapping("/adminInquiry.do")
-	public String adminInquiry(AdminBoardDTO admin, Model model,
+	public String adminInquiry(AdminBoardDTO admin, Model model, HttpSession session,
 			@RequestParam(value="cpage", defaultValue="1")int cpage,
 			@RequestParam(value="status",defaultValue="incom")String status){
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		// ----------------------summary----------------------
 		int incomCount = adminService.incomCount();
 		int comCount = adminService.comCount();
@@ -349,12 +365,17 @@ public class AdminController {
 			return "admin/adminInquiry";
 		}
 		return "admin/adminInquiry";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 게시판 현황
 	@GetMapping("/adminBoard.do")
-	public String adminBoard(InfoDTO info, Model model,
+	public String adminBoard(InfoDTO info, Model model, HttpSession session,
 			@RequestParam(value="cpage",defaultValue="1") int cpage,
 			@RequestParam(value="status",defaultValue="info") String status) {
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		int infoTodayCount = adminService.infoTodayCount();
 		int infoCommentTodayCount = adminService.infoCommentTodayCount();
 		int freeTodayCount = adminService.freeTodayCount();
@@ -406,12 +427,17 @@ public class AdminController {
 			return "admin/adminBoard";
 		}
 		return "admin/adminBoard";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 신고 현황
 	@GetMapping("/adminDeclaration.do")
-	public String adminDeclaration(Model model, DeclarationDTO dec,
+	public String adminDeclaration(Model model, DeclarationDTO dec,HttpSession session,
 						@RequestParam(value="cpage", defaultValue= "1") int cpage,
 						@RequestParam(value="status", defaultValue="total") String status) {
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		int deTodayCount = adminService.deTodayCount();
 		int noneBlindCount = adminService.noneBlindCount();
 		int blindCount = adminService.blindCount();
@@ -493,8 +519,9 @@ public class AdminController {
 			model.addAttribute("title","금일 신고"); // title 제목
 			return "admin/adminDeclaration";
 		}
-		
 		return "admin/adminDeclaration";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// mainPage 이동
 	@GetMapping("/mainForm.do")
@@ -673,3 +700,4 @@ public class AdminController {
 		}
 	}
 }
+

@@ -82,9 +82,9 @@
 	</select>
 	<!-- get Board Title -->
 	<select id="getBoardTitleInfo" resultType="String">
-		SELECT INFO_TITLE FROM INFO
-		WHERE INFO_NO = #{boardNo}
-		AND WHERE M_NO = #{mNo}
+	    SELECT INFO_TITLE FROM INFO
+	    WHERE INFO_NO = #{boardNo}
+	    AND M_NO = #{mNo}
 	</select>
 	<select id="getBoardTitleFree" resultType="String">
 		SELECT FREE_TITLE FROM FREE
@@ -114,15 +114,15 @@
 	    )
 	</insert>
 	
-	<select id="getInfoList" resultMap ="getInfoList">
-		SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
-		FROM (
-		    SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
-		    FROM INFO_COMMENT
-		    WHERE M_NO = #{mNo}
-		    ORDER BY INFO_COMMENT_DATE DESC
-		) 
-		WHERE ROWNUM = 1;
+	<select id="getInfoList" resultMap="getInfoList">
+	    SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
+	    FROM (
+	        SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
+	        FROM INFO_COMMENT
+	        WHERE M_NO = #{mNo}
+	        ORDER BY INFO_COMMENT_DATE DESC
+	    ) 
+	    WHERE ROWNUM = 1
 	</select>
 	<select id="getPushInfoNo" resultType="_int">
 		SELECT M_NO FROM INFO

@@ -23,10 +23,8 @@ public class BoardPushController {
 	@GetMapping("/pushList.do")
 	public List<BoardPushDTO> pushList(HttpSession session){
 		int mNo = (Integer)session.getAttribute("no");
-		System.out.println("boardPush session no =" + mNo);
 		List<BoardPushDTO> pushList = pushService.pushList(mNo);
 		int pushListCount = pushService.pushListCount(mNo);
-		System.out.println("pushListCount = " + pushListCount);
 		
 		return pushList;
 	}

@@ -6,11 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>profile</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
-
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
 
 </head>
@@ -25,8 +24,7 @@
 		<!-- 페이지 오른쪽 컨텐츠 영역 -->
 		<div class="body-wrapper">
 			<!-- 헤더 영역 -->
-			<%@ include file="/WEB-INF/views/myPage/common/header.jsp"%>
-			<div class="cardSize">
+			<jsp:include page="./../board/common/header.jsp" />
 				<div class="row">
 					<div class="main-section">
 						<div class="container-fluid">
@@ -237,6 +235,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>
