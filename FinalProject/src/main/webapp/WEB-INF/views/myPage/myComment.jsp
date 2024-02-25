@@ -21,8 +21,7 @@
 		<!-- 페이지 오른쪽 컨텐츠 영역 -->
 		<div class="body-wrapper">
 			<!-- 헤더 영역 -->
-			<%@ include file="/WEB-INF/views/myPage/common/header.jsp"%>
-			<div class="cardSize">
+			<jsp:include page="./../board/common/header.jsp" />
 				<div class="row">
 					<div class="main-section">
 						<div class="container-fluid">
@@ -99,15 +98,12 @@
         </c:if>
     </div>
 </div>
-
-
-
-										<!-- 페이지네이션 -->
-										<!-- <div class="pagination">
-												<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-													href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
-													href="#">5</a> <a href="#">&gt;</a>
-											</div> -->
+						<!-- 페이지네이션 -->
+						<!-- <div class="pagination">
+								<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
+									href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
+									href="#">5</a> <a href="#">&gt;</a>
+							</div> -->
 									</div>
 
 								</div>
@@ -117,6 +113,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>

@@ -19,7 +19,8 @@ public class DeclarationDTO {
     private String declarationWithdrawal;
     
     private int infoCommentNo; // 댓글 번호
-
+    
+    private String declarationWriter;
 
     @Override
     public String toString() {

@@ -1391,7 +1391,10 @@ public class ColaboMainController {
 		return "";
 	}
 	
-	
+	@GetMapping("/boardPush.do")
+	public String boardPush() {
+		return "redirect:/mypage/boardPush.do";
+	}
 	
 	
 	

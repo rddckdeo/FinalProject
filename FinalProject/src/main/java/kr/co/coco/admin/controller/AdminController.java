@@ -39,85 +39,92 @@ public class AdminController {
 	public String adminForm(HttpSession session, Model model, MemberDTO member, InfoDTO info,
 			@RequestParam(value = "cpage", defaultValue = "1") int cpage,
 			@RequestParam(value = "status", defaultValue = "visit") String status) {
+		String type = (String)session.getAttribute("type");
+		int check = adminCheck(type);
+		if(check == 1) {
+		
 // --------------------------Summay Count------------------------------ //
-		// Count list 가져오기
-		int visitCount = adminService.visitCount(); // 전체 방문
-		int freeCount = adminService.freeCount(); // 전체 자유게시판
-		int infoCount = adminService.infoCount(); // 전체 정보게시판
-		int projectCount = adminService.projectCount(); // 전체 프로젝트
-		int boardCount = adminService.boardCount(); // 전체 문의사항
-		int deCount = adminService.deCount(); // 전체 신고수
-		
-		int totalBoard = freeCount + infoCount; // 자유게시판 + 정보게시판
-		// 통계 그래프
-		int day = adminService.dayVisit();
-		int week = adminService.weekVisit();
-		int month = adminService.monthVisit();
-		
-		model.addAttribute("visitCount",visitCount);
-		model.addAttribute("totalBoard",totalBoard);
-		model.addAttribute("projectCount",projectCount);
-		model.addAttribute("boardCount",boardCount);
-		model.addAttribute("deCount",deCount);
-		
-		model.addAttribute("day",day);
-		model.addAttribute("week",week);
-		model.addAttribute("month",month);
-		
+			// Count list 가져오기
+			int visitCount = adminService.visitCount(); // 전체 방문
+			int freeCount = adminService.freeCount(); // 전체 자유게시판
+			int infoCount = adminService.infoCount(); // 전체 정보게시판
+			int projectCount = adminService.projectCount(); // 전체 프로젝트
+			int boardCount = adminService.boardCount(); // 전체 문의사항
+			int deCount = adminService.deCount(); // 전체 신고수
+			
+			int totalBoard = freeCount + infoCount; // 자유게시판 + 정보게시판
+			// 통계 그래프
+			int day = adminService.dayVisit();
+			int week = adminService.weekVisit();
+			int month = adminService.monthVisit();
+			
+			model.addAttribute("visitCount",visitCount);
+			model.addAttribute("totalBoard",totalBoard);
+			model.addAttribute("projectCount",projectCount);
+			model.addAttribute("boardCount",boardCount);
+			model.addAttribute("deCount",deCount);
+			
+			model.addAttribute("day",day);
+			model.addAttribute("week",week);
+			model.addAttribute("month",month);
+			
 // --------------------------PAGE------------------------------ //
-		int pageLimit = 5;
-		int boardLimit = 5;
-		
-		int visitListCount = adminService.selectVisitList(member);
-		int freeListCount = adminService.freeListCountToday(); // newMember paging
-		int infoListCount = adminService.infoListCountToday(); // deleteMember paging
-		// 객체 생성(pi1, pi2, pi3)
-		AdminPageInfo pi1 = new AdminPageInfo(); // visit
-		AdminPageInfo pi2 = new AdminPageInfo(); // info
-		AdminPageInfo pi3 = new AdminPageInfo(); // free
-		if(status.equals("visit")) {
-			pi1 = AdminPagination.getPageInfo(visitListCount, cpage, pageLimit, boardLimit);
-			pi2 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
-			pi3 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
-		}else if(status.equals("info")) {
-			pi1 = AdminPagination.getPageInfo(visitListCount,1, pageLimit, boardLimit);
-			pi2 = AdminPagination.getPageInfo(infoListCount,cpage, pageLimit, boardLimit);
-			pi3 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
-		}else if(status.equals("free")) {
-			pi1 = AdminPagination.getPageInfo(visitListCount,1, pageLimit, boardLimit);
-			pi2 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
-			pi3 = AdminPagination.getPageInfo(freeListCount,cpage, pageLimit, boardLimit);
-		}
+			int pageLimit = 5;
+			int boardLimit = 5;
+			
+			int visitListCount = adminService.selectVisitList(member);
+			int freeListCount = adminService.freeListCountToday(); // newMember paging
+			int infoListCount = adminService.infoListCountToday(); // deleteMember paging
+			// 객체 생성(pi1, pi2, pi3)
+			AdminPageInfo pi1 = new AdminPageInfo(); // visit
+			AdminPageInfo pi2 = new AdminPageInfo(); // info
+			AdminPageInfo pi3 = new AdminPageInfo(); // free
+			if(status.equals("visit")) {
+				pi1 = AdminPagination.getPageInfo(visitListCount, cpage, pageLimit, boardLimit);
+				pi2 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
+				pi3 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
+			}else if(status.equals("info")) {
+				pi1 = AdminPagination.getPageInfo(visitListCount,1, pageLimit, boardLimit);
+				pi2 = AdminPagination.getPageInfo(infoListCount,cpage, pageLimit, boardLimit);
+				pi3 = AdminPagination.getPageInfo(freeListCount,1, pageLimit, boardLimit);
+			}else if(status.equals("free")) {
+				pi1 = AdminPagination.getPageInfo(visitListCount,1, pageLimit, boardLimit);
+				pi2 = AdminPagination.getPageInfo(infoListCount,1, pageLimit, boardLimit);
+				pi3 = AdminPagination.getPageInfo(freeListCount,cpage, pageLimit, boardLimit);
+			}
 // --------------------------LIST------------------------------ //
-		// visit List 가져오기
-		List<MemberDTO> visitList = adminService.selectListToday(member, pi1);
-		// 시간으로 가져오기
-		for (MemberDTO item : visitList) {
-			// 2023-12-26 15:57:48.0
-			String indate = item.getLoginDate().substring(11, 19);
-			item.setLoginDate(indate);
-		}
-		// info list 가져오기
-		List<InfoDTO> infoList = adminService.infoListToday(info, pi2);
-		// free list 가져오기
-		List<InfoDTO> freeList = adminService.freeListToday(info, pi3);
-		
-		System.out.println(infoListCount);
-		
+			// visit List 가져오기
+			List<MemberDTO> visitList = adminService.selectListToday(member, pi1);
+			// 시간으로 가져오기
+			for (MemberDTO item : visitList) {
+				// 2023-12-26 15:57:48.0
+				String indate = item.getLoginDate().substring(11, 19);
+				item.setLoginDate(indate);
+			}
+			// info list 가져오기
+			List<InfoDTO> infoList = adminService.infoListToday(info, pi2);
+			// free list 가져오기
+			List<InfoDTO> freeList = adminService.freeListToday(info, pi3);
+			
 // --------------------------model------------------------------ //
-		model.addAttribute("visitList",visitList);
-		model.addAttribute("freeList",freeList);
-		model.addAttribute("infotList",infoList);
-		model.addAttribute("pi1",pi1);
-		model.addAttribute("pi2",pi2);
-		model.addAttribute("pi3",pi3);
-		
-		return "admin/adminMain";
+			model.addAttribute("visitList",visitList);
+			model.addAttribute("freeList",freeList);
+			model.addAttribute("infotList",infoList);
+			model.addAttribute("pi1",pi1);
+			model.addAttribute("pi2",pi2);
+			model.addAttribute("pi3",pi3);
+			
+			return "admin/adminMain";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	//방문자 현황
 	@GetMapping("/adminVisit.do")
-	public String adminVisit(Model model, MemberDTO member, 
+	public String adminVisit(Model model, MemberDTO member, HttpSession session,
 			@RequestParam(value = "cpage", defaultValue = "1") int cpage) {
+		String type = (String)session.getAttribute("type");
+		int check = adminCheck(type);
+		if(check == 1) {
 		// Summary
 		int day = adminService.dayVisit();
 		int week = adminService.weekVisit();
@@ -152,14 +159,19 @@ public class AdminController {
 		model.addAttribute("piVisit",piVisit);
 		
 		return "admin/adminVisit";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	//사용자 관리
 	@GetMapping("/adminMember.do")
-	public String adminMember(MemberDTO member, Model model, 
+	public String adminMember(MemberDTO member, Model model, HttpSession session,
 			@RequestParam(value="cpage",defaultValue="1") int cpage,
 			@RequestParam(value="status",defaultValue="total") String status,
 			@RequestParam (defaultValue = "")String searchInput
 			) {
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		//Summary
 		int newUserDay = adminService.newUserDay();
 		int newUserMonth = adminService.newUserMonth();
@@ -233,14 +245,18 @@ public class AdminController {
 		model.addAttribute("totalList",totalList);
 		model.addAttribute("newUserList",newUserList);
 		model.addAttribute("deleteList",deleteList);
-		
 		return "admin/adminMember";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 프로젝트 관리
 	@GetMapping("/adminProject.do")
-	public String adminProject(Model model, ColaboDTO colabo,
+	public String adminProject(Model model, ColaboDTO colabo, HttpSession session,
 						@RequestParam(value="cpage",defaultValue="1")int cpage,
 						@RequestParam(value="status",defaultValue="n")String status){
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		// ----------------------summary----------------------
 		int np = adminService.newProject();
 		int sp = adminService.startProject();
@@ -285,12 +301,17 @@ public class AdminController {
 		model.addAttribute("endProjectList",endProjectList);
 		
 		return "admin/adminProject";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 문의 사항
 	@GetMapping("/adminInquiry.do")
-	public String adminInquiry(AdminBoardDTO admin, Model model,
+	public String adminInquiry(AdminBoardDTO admin, Model model, HttpSession session,
 			@RequestParam(value="cpage", defaultValue="1")int cpage,
 			@RequestParam(value="status",defaultValue="incom")String status){
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		// ----------------------summary----------------------
 		int incomCount = adminService.incomCount();
 		int comCount = adminService.comCount();
@@ -344,12 +365,17 @@ public class AdminController {
 			return "admin/adminInquiry";
 		}
 		return "admin/adminInquiry";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 게시판 현황
 	@GetMapping("/adminBoard.do")
-	public String adminBoard(InfoDTO info, Model model,
+	public String adminBoard(InfoDTO info, Model model, HttpSession session,
 			@RequestParam(value="cpage",defaultValue="1") int cpage,
 			@RequestParam(value="status",defaultValue="info") String status) {
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		int infoTodayCount = adminService.infoTodayCount();
 		int infoCommentTodayCount = adminService.infoCommentTodayCount();
 		int freeTodayCount = adminService.freeTodayCount();
@@ -401,12 +427,17 @@ public class AdminController {
 			return "admin/adminBoard";
 		}
 		return "admin/adminBoard";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// 신고 현황
 	@GetMapping("/adminDeclaration.do")
-	public String adminDeclaration(Model model, DeclarationDTO dec,
+	public String adminDeclaration(Model model, DeclarationDTO dec,HttpSession session,
 						@RequestParam(value="cpage", defaultValue= "1") int cpage,
 						@RequestParam(value="status", defaultValue="total") String status) {
+		String adminType = (String)session.getAttribute("type");
+		int check = adminCheck(adminType);
+		if(check == 1) {
 		int deTodayCount = adminService.deTodayCount();
 		int noneBlindCount = adminService.noneBlindCount();
 		int blindCount = adminService.blindCount();
@@ -488,8 +519,9 @@ public class AdminController {
 			model.addAttribute("title","금일 신고"); // title 제목
 			return "admin/adminDeclaration";
 		}
-		
 		return "admin/adminDeclaration";
+		}
+		return "redirect:/member/mainForm.do";
 	}
 	// mainPage 이동
 	@GetMapping("/mainForm.do")
@@ -543,8 +575,6 @@ public class AdminController {
 		Map<String, Object>param = new HashMap<>();
 		param.put("no", no);
 		param.put("status", status);
-		System.out.println(param.get("no"));
-		System.out.println(param.get("status"));
 		int result = adminService.deleteBoard(param);
 		
 	    return result;
@@ -581,7 +611,6 @@ public class AdminController {
 		// board_push Enroll ( admin board )
 			// 게시글 작성자의 no를 가져와야함
 		int adminBoardWriter = adminService.adminBoardWriter(no);
-		System.out.println("Controller , adminBoardWriter = "+adminBoardWriter);
 		Map<String, Object>param = new HashMap<>();
 		param.put("boardNo", no);
 		param.put("mNo",adminBoardWriter);
@@ -626,7 +655,6 @@ public class AdminController {
 			boardType = dto.getBoardType();
 		}
 		Map<String, Object> param = new HashMap<>();
-		System.out.println("adminController, HashMap Test = " + boardType);
 		param.put("mNo",mNo);
 		param.put("boardNo",boardNo);
 		// board_Tile값 가져오기 ( info와 free 테이블이 나눠져 있기에 구분
@@ -659,5 +687,17 @@ public class AdminController {
 			return 0;
 		}
 	}
-
+	
+	public int adminCheck(String type) {
+		try {
+			int adminCheck = Integer.parseInt(type);
+			if(adminCheck == 1) {
+				return 0;
+			}
+			return 1;
+		}catch(NumberFormatException | NullPointerException e) {
+			return 0;
+		}
+	}
 }
+

@@ -9,17 +9,15 @@
 
 <header>
 	<div class="row">
-		<div class="main-section-header">
-			<div class="header-icon">
-				<nav class="navbar navbar-expand-lg">
-					<div class="navbar-collapse justify-content-end px-0"
-						id="navbarNav">
-						<ul
-							class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-							<li class="nav-item dropdown"><a
-								class="nav-link nav-icon-hover" href="#" id="header-bell"
-								data-bs-toggle="dropdown" aria-expanded="false"> <img
-									src="../../../../resources/uploads/icon/bell.png" alt=""
+		<div class="mainSectionHeader">
+			<div class="headerIcon">
+				<nav class="navbar navbar-expand-lg" style="padding:8px 0 8px 0 !important;">
+						<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+							<!-- 알림 시작 -->
+							<li class="nav-item dropdown">
+							<a class="nav-link nav-icon-hover" href="#" id="header-bell"
+								data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 7px;"> 
+								<img src="../../../../resources/uploads/icon/bell.png" alt=""
 									width="35" height="35" class="rounded-circle"> 
 									<span class="notification-counter" id="viewCountSpan"></span> <!-- 알림 카운트를 표시 -->
 							</a>
@@ -44,19 +42,15 @@
 											</c:otherwise>
 										</c:choose>
 									</div>
-								</div></li>
-
-
-							<a href="#" target="_blank" id="header-chat"><img
-								src="../../../../resources/uploads/icon/message.png" alt=""
-								width="31" height="31"></a>
-							<li class="nav-item dropdown"><a
-								class="nav-link nav-icon-hover" href="#" id="drop2"
-								data-bs-toggle="dropdown" aria-expanded="false"> <img src="${sessionScope.path}${sessionScope.picture}"
+								</div>
+							</li>
+							<!-- 알림 종료 -->
+							<li class="nav-item dropdown">
+							<a class="nav-link nav-icon-hover" href="#" id="drop2"
+								data-bs-toggle="dropdown" aria-expanded="false" style="margin-top:7px"> <img src="${sessionScope.path}${sessionScope.picture}"
 									alt="" width="35" height="35" class="rounded-circle">
 							</a>
-								<div
-									class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+								<div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
 									aria-labelledby="drop2">
 									<div class="message-body">
 										<c:choose>
@@ -65,17 +59,17 @@
 												<a href="/mypage/mypage.do"
 													class="d-flex align-items-center gap-2 dropdown-item">
 													<i class="ti ti-user fs-6"></i>
-													<p class="mb-0 fs-3">마이페이지</p>
+													<p class="mb-0 fs-3 pushFont">마이페이지</p>
 												</a>
 												<a href="javascript:void(0)"
 													class="d-flex align-items-center gap-2 dropdown-item">
 													<i class="ti ti-mail fs-6"></i>
-													<p class="mb-0 fs-3">내 정보</p>
+													<p class="mb-0 fs-3 pushFont">내 정보</p>
 												</a>
 												<a href="javascript:void(0)"
 													class="d-flex align-items-center gap-2 dropdown-item">
 													<i class="ti ti-list-check fs-6"></i>
-													<p class="mb-0 fs-3">내 프로젝트</p>
+													<p class="mb-0 fs-3 pushFont">내 프로젝트</p>
 												</a>
 												<a href="/member/logout.do"
 													class="btn btn-outline-primary mx-3 mt-2 d-block shadow-none">Logout</a>
@@ -86,13 +80,12 @@
 												<a href="/member/loginForm.do">로그인 하러 가기</a>
 											</c:otherwise>
 										</c:choose>
-
 									</div>
-								</div></li>
+								</div>
+							</li>
 						</ul>
 					</div>
 				</nav>
 			</div>
 		</div>
-	</div>
 </header>

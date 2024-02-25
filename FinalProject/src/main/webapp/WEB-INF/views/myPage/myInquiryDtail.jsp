@@ -34,7 +34,7 @@
 		<!-- 페이지 오른쪽 컨텐츠 영역 -->
 		<div class="body-wrapper">
 			<!-- 헤더 영역 -->
-			<%@ include file="/WEB-INF/views/myPage/common/header.jsp"%>
+			<jsp:include page="./../board/common/header.jsp" />
 
 			<div class="container-fluid">
 				<h1 class="card-project-name">문의 내용</h1>
@@ -127,6 +127,7 @@
 
 			</div>
 		</div>
+	</div>
 </body>
 
 </html>

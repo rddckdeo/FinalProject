@@ -20,8 +20,7 @@
 		<!-- 페이지 오른쪽 컨텐츠 영역 -->
 		<div class="body-wrapper">
 			<!-- 헤더 영역 -->
-			<%@ include file="/WEB-INF/views/myPage/common/header.jsp"%>
-			<div class="cardSize">
+			<jsp:include page="./../board/common/header.jsp" />
 				<div class="row">
 					<div class="main-section">
 						<div class="container-fluid">
@@ -98,6 +97,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>
