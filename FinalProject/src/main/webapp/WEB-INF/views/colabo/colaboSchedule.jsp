@@ -41,7 +41,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="card w-100" style="width:70%; height:70%;">
-						<h3>공용 일정표</h3>
+						<h3>${sessionScope.getProjectName} 팀 공용 일정표</h3>
 						
 						 <div id="calendar"></div>
 						

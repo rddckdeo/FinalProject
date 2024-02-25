@@ -428,6 +428,11 @@ public class ColaboServiceImpl implements ColaboService{
 	public int allChangePushType(ProjectPushDTO push) {
 		return colaboDAO.allChangePushType(sqlSession, push);
 	}
+
+
+	public String getProjectName(int getProjectNo) {
+		return colaboDAO.getProjectName(sqlSession, getProjectNo);
+	}
 	
 	
 	

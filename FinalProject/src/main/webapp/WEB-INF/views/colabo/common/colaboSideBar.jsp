@@ -138,23 +138,6 @@
                 <span class="hide-menu ms-2 ps-1">프로젝트 기능분담</span>
               </a>
             </li>
-           
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
-              <span class="hide-menu">Extra</span>
-            </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link success-hover-bg"
-                href="./icon-tabler.html"
-                aria-expanded="false"
-              >
-                <span class="aside-icon p-2 bg-light-success rounded-3">
-                  <i class="ti ti-mood-happy fs-7 text-success"></i>
-                </span>
-                <span class="hide-menu ms-2 ps-1">Icons</span>
-              </a>
-            </li>
             <li class="sidebar-item">
               <a
                 class="sidebar-link sidebar-link primary-hover-bg"
@@ -171,29 +154,21 @@
           <div class="pb-3 options text-nowrap">
             <div class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-5"></i>
-              <span class="hide-menu">More options</span>
+              <span class="hide-menu">인삿말</span>
             </div>
 
             <ul class="sidebar-list">
               <li class="sidebar-list-item">
                 <i class="ti ti-circle text-primary fs-4"></i>
-                <span class="hide-menu ms-2">Applications</span>
+                <span class="hide-menu ms-2">찾아와</span>
               </li>
               <li class="sidebar-list-item">
                 <i class="ti ti-circle text-danger fs-4"></i>
-                <span class="hide-menu ms-2">Form Options</span>
+                <span class="hide-menu ms-2">주셔서</span>
               </li>
               <li class="sidebar-list-item">
                 <i class="ti ti-circle text-warning fs-4"></i>
-                <span class="hide-menu ms-2">Table Variations</span>
-              </li>
-              <li class="sidebar-list-item">
-                <i class="ti ti-circle text-success fs-4"></i>
-                <span class="hide-menu ms-2">Charts Selection</span>
-              </li>
-              <li class="sidebar-list-item">
-                <i class="ti ti-circle text-indigo fs-4"></i>
-                <span class="hide-menu ms-2">Widgets</span>
+                <span class="hide-menu ms-2">감사합니다</span>
               </li>
             </ul>
           </div>

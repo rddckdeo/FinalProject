@@ -30,9 +30,9 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="card w-100" style="width:70%; height:70%;">
-						<h3>프로젝트 기능분담 페이지 </h3>
+						<h3> 프로젝트 기능분담 페이지 </h3>
 						<div>
-							<p>~~~~ 프로젝트</p>
+							<p>${sessionScope.getProjectName} 프로젝트</p>
 							<div style="max-width: 50%;">
 								<canvas id="barExample" style="height: 530px; width:800px"></canvas>
 							</div>

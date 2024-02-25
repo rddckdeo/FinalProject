@@ -157,6 +157,9 @@ public interface ColaboService {
 	
 	// 알림 전체삭제 클릭시 전체타입 변경 
 	public int allChangePushType(ProjectPushDTO push);
+	
+	// 프로젝트 이름 가져오기
+	public String getProjectName(int getProjectNo);
 }
 
 
