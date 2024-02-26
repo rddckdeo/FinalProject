@@ -157,10 +157,10 @@ public class FreeController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> deletePost(@RequestParam("freeNo") int freeNo) {
         Map<String, Object> response = new HashMap<>();
-
+        
         // 게시글 삭제
         int result = freeService.deletePost(freeNo);
-
+        
         if (result == 1) {
             response.put("message", "게시글이 성공적으로 삭제되었습니다.");
             response.put("success", true);
@@ -170,7 +170,7 @@ public class FreeController {
             response.put("success", false);
             response.put("redirectUrl", "/free/freeDtail/" + freeNo);  
         }
-
+        
         return ResponseEntity.ok(response);
     }
 
@@ -202,6 +202,10 @@ public class FreeController {
  			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
  		}
  	}
-
+ 	
+	@GetMapping("/boardPush.do")
+	public String BoardPushForm(){
+		return "redirect:/mypage/boardPush.do";
+	}
 
 }
