@@ -643,6 +643,7 @@ public class AdminController {
 	@PostMapping("/declarationBlind.do")
 	public int declarationBlind(@RequestParam(value="no")int no) { // declaration No
 		int result = adminService.declarationBlind(no);
+		System.out.println("declaration No" + no);
 		// mNo ( 알림을 받아야하는 사람의 mNo ), boardNo, boardType 가져오는 메서드
 		List<BoardPushDTO> declarationList = pushService.declarationList(no);
 		// boardTitle 가져와야함
@@ -655,6 +656,8 @@ public class AdminController {
 			boardType = dto.getBoardType();
 		}
 		Map<String, Object> param = new HashMap<>();
+		
+		System.out.println("board no = "+ boardNo);
 		param.put("mNo",mNo);
 		param.put("boardNo",boardNo);
 		System.out.println(mNo);
@@ -664,6 +667,7 @@ public class AdminController {
 		String getBoardTitle = null;
 		if(boardType.equals("info")) {
 			getBoardTitle = pushService.getBoardTitleInfo(param);
+			System.out.println(getBoardTitle + "if문 안");
 
 		}else if(boardType.equals("free")) {
 			getBoardTitle = pushService.getBoardTitleFree(param);
@@ -673,6 +677,11 @@ public class AdminController {
 		System.out.println("getBoardTitle : "+getBoardTitle);
 		param.put("boardType", boardType);
 		param.put("title", getBoardTitle);
+		System.out.println("mNo"+param.get("mNo"));
+		System.out.println("boardNo"+param.get("boardNo"));
+		System.out.println("boardType"+param.get("boardType"));
+		System.out.println("getBoardTitle"+param.get("title"));
+		
 		int boardPushBlind = pushService.boardPushBlind(param);
 		if(result == 1) {
 			return result;
