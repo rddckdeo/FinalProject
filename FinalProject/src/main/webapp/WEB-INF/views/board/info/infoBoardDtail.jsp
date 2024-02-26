@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title> <
+<title>Insert title here</title>
 <!-- jQuery 로딩 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
@@ -60,27 +60,29 @@ p {
 	display: flex;
 	align-items: center;
 }
-.comment-input{
-    border: none;
-    border-bottom: 1px solid;
-    width: 70%;
-    margin-top: 30px;
-    margin-bottom: 40px;
-    margin-right:10px;
-    height:30px;
+
+.comment-input {
+	border: none;
+	border-bottom: 1px solid;
+	width: 70%;
+	margin-top: 30px;
+	margin-bottom: 40px;
+	margin-right: 10px;
+	height: 30px;
 }
-.comment-button{
-    color: #fff;
-    border-color: #0085db;
-    background-color: #0085db;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 12px rgba(26, 115, 232, 0.3);
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    cursor: pointer;
-    padding: 9px 27px 9px 27px;
-    border-radius: 7px;
+
+.comment-button {
+	color: #fff;
+	border-color: #0085db;
+	background-color: #0085db;
+	transition: all 0.3s ease;
+	box-shadow: 0 5px 12px rgba(26, 115, 232, 0.3);
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	padding: 9px 27px 9px 27px;
+	border-radius: 7px;
 }
 </style>
 <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}">
@@ -156,8 +158,8 @@ p {
 												<a href="#"><img
 													src="../../../..${post.imageFilePath}${post.imageFileName}"
 													alt="프로필" width="30" height="30"
-													class="main-boardList-user-img"></a> <a href="#"
-													class="main-boardList-info-text">${post.nickname}</a>
+													class="main-boardList-user-img"></a> <p
+													class="main-boardList-info-text">${post.nickname}</p>
 												<p class="main-boardList-info-text">|</p>
 												<p class="main-boardList-info-text">${post.infoDate}</p>
 											</div>
@@ -217,15 +219,17 @@ p {
 											</c:when>
 											<c:otherwise>
 												<div class="comment-registration">
-													<input type="text" id="commentContent" class="comment-input"
-														placeholder="댓글을 남겨주세요">
-													<button id="submitComment" class="comment-button" type="button">등록</button>
+													<input type="text" id="commentContent"
+														class="comment-input" placeholder="댓글을 남겨주세요">
+													<button id="submitComment" class="comment-button"
+														type="button">등록</button>
 												</div>
 											</c:otherwise>
 										</c:choose>
 									</div>
+									<!-- 댓글 목록 -->
 									<div class="comment-list">
-										<p id="no-comment-message" style="text-align: center;"
+										<p id="no-comment-message"
 											${not empty comments ? 'style="display: none;"' : ''}>댓글이
 											없습니다.</p>
 
@@ -235,8 +239,8 @@ p {
 													<a href="#"><img
 														src="../../../..${post.imageFilePath}${post.imageFileName}"
 														alt="프로필" width="30" height="30"
-														class="main-boardList-user-img"></a> <p
-														class="main-boardList-info-text">${comment.nickname}</p>
+														class="main-boardList-user-img"></a>
+													<p class="main-boardList-info-text">${comment.nickname}</p>
 													<p class="main-boardList-info-text">|</p>
 													<p class="main-boardList-info-text">${comment.infoCommentDate}</p>
 												</div>

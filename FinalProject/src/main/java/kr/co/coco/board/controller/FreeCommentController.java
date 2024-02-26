@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.service.FreeCommentService;
+import kr.co.coco.board.model.service.FreeCommentServiceImpl;
 import kr.co.coco.boardPush.model.dto.BoardPushDTO;
 import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 
@@ -33,7 +34,7 @@ import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
 public class FreeCommentController {
 
 	@Autowired
-    private FreeCommentService freeCommentService;
+    private FreeCommentServiceImpl freeCommentService;
 	@Autowired
 	private BoardPushServiceImpl pushService;
 
