@@ -48,45 +48,55 @@
 								<div class="main-boardList">
 
 									<div>
-										<div>
-											<img
-												src="../../..${inquiry.imageFilePath}${inquiry.imageFileName}"
-												alt="프로필" width="30" height="30">
-
-											<p class="main-boardList-info-text">작성일 :
-												${inquiry.inDate}</p>
-											<div class="main-project-comment">
-												<img src="../../../../resources/uploads/icon/message.png"
-													alt="message" width="20" height="20"
-													class="main-project-comment-text">
-
-												<c:choose>
-													<c:when test="${inquiry.answer eq 'N'}">
-														<p class="main-project-comment-text">답변 미등록</p>
-													</c:when>
-													<c:when test="${inquiry.answer eq 'Y'}">
-														<p class="main-project-comment-text">답변 완료</p>
-													</c:when>
-												</c:choose>
+										<div
+											style="display: flex; align-items: center; justify-content: space-between;">
+											<!-- 이미지와 작성일 가로 정렬 -->
+											<div style="display: flex; align-items: center;  margin-bottom:23px;margin-top:15px;">
+												<img src="../../..${imageFilePath}${imageFileName}"
+													alt="프로필" width="30" height="30" style="margin-right:5px;">
+												<p class="main-boardList-info-text">작성일 :
+													${inquiry.inDate}</p>
 											</div>
 
-											<div class="main-project-comment">
-												<img src="../../../../resources/uploads/icon/views.png"
-													alt="message" width="20" height="20"
-													class="main-project-comment-text">
-												<p class="main-project-comment-text">${inquiry.view}</p>
+											<div style="display: flex; flex-direction: column;">
+												<div
+													style="display: flex; justify-content: space-between; align-items: center;">
+													<div style="display: flex; align-items: center;">
+														<img src="../../../../resources/uploads/icon/message.png"
+															alt="message" width="20" height="20"
+															class="main-project-comment-text" style="margin-right:10px;">
+														<c:choose>
+															<c:when test="${inquiry.answer eq 'N'}">
+																<p class="main-project-comment-text" style="margin-right:10px;">답변 미등록</p>
+															</c:when>
+															<c:when test="${inquiry.answer eq 'Y'}">
+																<p class="main-project-comment-text" style="margin-right:10px;">답변 완료</p>
+															</c:when>
+														</c:choose>
+													</div>
+
+													<div style="display: flex; align-items: center; margin-right:10px;">
+														<img src="../../../../resources/uploads/icon/views.png"
+															alt="message" width="20" height="20" style="margin-right:10px;"
+															class="main-project-comment-text">
+														<p class="main-project-comment-text">${inquiry.view}</p>
+													</div>
+												</div>
+
+
 											</div>
+
 										</div>
 
-										<p class="form-lable">제목</p>
-										<p>${inquiry.title}</p>
+										<p class="form-lable" style="margin-bottom:23px;">제목</p>
+										<p style="margin-bottom:18px;">${inquiry.title}</p>
+
+										<div>
+											<p class="form-lable" style="margin-bottom:23px;">문의 내용</p>
+											<p style="margin-bottom:18px;">${inquiry.content}</p>
+										</div>
 									</div>
 
-									<div>
-										<p class="form-lable">문의 내용</p>
-										<p>${inquiry.content}</p>
-
-									</div>
 
 								</div>
 							</div>

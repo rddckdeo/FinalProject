@@ -25,4 +25,24 @@
         )
     </insert>
     
+    <!-- 자유게시판 신고 등록 -->
+    <insert id="insertFreeDeclaration" parameterType="declaration">
+        INSERT INTO Declaration (
+            declaration_no,
+            m_no,
+            declaration_type,
+            board_no,
+            declaration_content,
+            declaration_date,
+            declaration_withdrawal
+        ) VALUES (
+            declaration_no_seq.NEXTVAL,
+            #{mNo},
+            #{declarationType},
+            #{boardNo},
+            #{declarationContent},
+            SYSDATE,
+            'N'
+        )
+        </insert>
 </mapper>

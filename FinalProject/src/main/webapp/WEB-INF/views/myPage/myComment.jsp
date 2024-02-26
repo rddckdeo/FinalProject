@@ -33,66 +33,78 @@
 									<div class="card-body height500 direction1"
 										style="padding-top: 0;">
 										<!-- card -->
-										<div class="direction1 width100 boxShadow borderDefault bottomMargin20 borderRadiusd2">
-    <h1 class="titleText1">댓글 모음</h1>
+										<div
+											class="direction1 width100 boxShadow borderDefault bottomMargin20 borderRadiusd2">
+											<h1 class="titleText1">댓글 모음</h1>
 
-    <!-- infoComment 모음 -->
-    <div class="main-commentList bottomBorder bottomPadding10">
-        <c:if test="${not empty infoComment}">
-            <c:forEach var="infoComment" items="${infoComment}">
-                <div class="main-boardList-info">
-                    <div class="direction1 commentCard">
-                        <div class="direction2 alignCenter bottomMargin10">
-                            <img src="../../../..${infoComment.imageFilePath}${infoComment.imageFileName}" alt="" width="30"
-                                height="30"
-                                class="main-boardList-user-img commentItem">
-                            <p class="main-boardList-info-text commentItem">닉네임:
-                                ${infoComment.nickname}</p>
-                            <p class="main-boardList-info-text commentItem">등록일:
-                                ${infoComment.infoCommentDate}</p> 
-                            <p class="main-boardList-info-text commentItem">게시글
-                                이름: ㅁㅁ</p>
-                        </div>
-                        <div class="direction2">
-                            <p class="commentItem">댓글 내용:
-                                ${infoComment.infoCommentContent}</p> <!-- 수정된 부분 -->
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-        </c:if>
+											<!-- infoComment 모음 -->
+											<div class="main-commentList bottomBorder bottomPadding10">
+											<p>정보 게시판 댓글</p>
+												<c:if test="${not empty infoComment}">
+													<c:forEach var="infoCommentItem" items="${infoComment}">
+														<div class="main-boardList-info">
+															<div class="direction1 commentCard">
+																<div class="direction2 alignCenter bottomMargin10">
+																	<img
+																		src="${pageContext.request.contextPath}${infoCommentItem.imageFilePath}/${infoCommentItem.imageFileName}"
+																		alt="" width="30" height="30"
+																		class="main-boardList-user-img commentItem">
+																	<p class="main-boardList-info-text commentItem">닉네임:
+																		${infoCommentItem.infoCommentWriter}</p>
+																	<p class="main-boardList-info-text commentItem">등록일:
+																		${infoCommentItem.infoCommentDate}</p>
+																	<a href="/info/infoDtail/${infoCommentItem.infoNo}" class="main-boardList-info-text commentItem">게시글
+																		제목: ${infoCommentItem.infoTitle}</a>
+																</div>
+																<div class="direction2">
+																	<a href="/info/infoDtail/${infoCommentItem.infoNo}" class="commentItem">댓글 내용:
+																		${infoCommentItem.infoCommentContent}</a>
+																</div>
+															</div>
+														</div>
+													</c:forEach>
+												</c:if>
 
-        <c:if test="${empty infoComment}">
-            <p class="no-comments-message">등록된 댓글이 없습니다.</p>
-        </c:if>
-    </div>
+												<c:if test="${empty infoComment}">
+													<p class="no-comments-message">등록된 댓글이 없습니다.</p>
+												</c:if>
+											</div>
 
-    <!-- freeComment 모음 -->
-    <div class="main-commentList bottomBorder bottomPadding10">
-        <c:if test="${not empty freeComment}">
-            <c:forEach var="freeComment" items="${freeComment}">
-                <div class="main-boardList-info">
-                    <div class="direction1 commentCard">
-                        <div class="direction2 alignCenter bottomMargin10">
-                            <img src="../../../..${freeComment.imageFilePath}${freeComment.imageFileName}" alt="" width="30"
-                                height="30"
-                                class="main-boardList-user-img commentItem">
-                            <p class="main-boardList-info-text commentItem">닉네임:
-                              </p>
-                            <p class="main-boardList-info-text commentItem">등록일:
-                                ${freeComment.freeCommentDate}</p>
-                            <p class="main-boardList-info-text commentItem">게시글 제목 : 
-                               
-                        </div>
-                        <div class="direction2">
-                            <p class="commentItem">댓글 내용:
-                                ${freeComment.freeCommentContent}</p>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-        </c:if>
+											<!-- freeComment 모음 -->
+											<div class="main-commentList bottomBorder bottomPadding10">
+											<p>자유 게시판 댓글</p>
+												<c:if test="${not empty freeComment}">
+													<c:forEach var="freeCommentItem" items="${freeComment}">
+														<div class="main-boardList-info">
+															<div class="direction1 commentCard">
+																<div class="direction2 alignCenter bottomMargin10">
+																	<img
+																		src="${pageContext.request.contextPath}${freeCommentItem.imageFilePath}/${freeCommentItem.imageFileName}"
+																		alt="" width="30" height="30"
+																		class="main-boardList-user-img commentItem">
+																	<p class="main-boardList-info-text commentItem">닉네임: ${freeCommentItem.freeCommentWriter}</p>
+																	<p class="main-boardList-info-text commentItem">등록일:
+																		${freeCommentItem.freeCommentDate}</p>
+																	<a href="/free/freeDtail/${freeCommentItem.freeNo}">게시글
+																		제목: ${freeCommentItem.freeTitle}</a>
+																</div>
+																<div class="direction2">
+																	<a class="commentItem" href="/free/freeDtail/${freeCommentItem.freeNo}">댓글 내용:
+																		${freeCommentItem.freeCommentContent}</a>
+																</div>
+															</div>
+														</div>
+													</c:forEach>
+												</c:if>
 
+<<<<<<< HEAD
+												<c:if test="${empty freeComment}">
+													<p class="no-comments-message">등록된 댓글이 없습니다.</p>
+												</c:if>
+											</div>
+										</div>
+
+=======
         <c:if test="${empty freeComment}">
             <p class="no-comments-message">등록된 댓글이 없습니다.</p>
         </c:if>
@@ -104,6 +116,7 @@
 									href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
 									href="#">5</a> <a href="#">&gt;</a>
 							</div> -->
+>>>>>>> 351b37b4530213d45826bf06d36aa77f1b0764ea
 									</div>
 
 								</div>

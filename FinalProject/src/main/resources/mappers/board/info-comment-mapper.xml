@@ -52,28 +52,27 @@
 	</update>
 
 	<!-- 댓글 목록 불러오기 -->
-	<select id="selectCommentsByPostId" parameterType="int"
-		resultType="infoComment">
-		SELECT
-		ic.info_comment_no AS infoCommentNo,
-		ic.info_no AS
-		infoNo,
-		ic.m_no AS mNo,
-		ic.info_comment_content AS infoCommentContent,
-		ic.info_comment_date AS infoCommentDate,
-		m.m_nickname AS nickname,
-		m.m_picture AS imageFileName,
-		m.m_path AS imageFilePath
-		FROM
-		info_comment ic
-
-		JOIN
-		member m ON ic.m_no = m.m_no
-		WHERE
-		ic.info_no =
-		#{infoNo}
-		AND ic.info_comment_delete_date IS NULL
-	</select>
+<select id="selectCommentsByPostId" parameterType="int" resultType="infoComment">
+    SELECT
+    ic.info_comment_no AS infoCommentNo,
+    ic.info_no AS infoNo,
+    ic.m_no AS mNo,
+    ic.info_comment_content AS infoCommentContent,
+    ic.info_comment_date AS infoCommentDate,
+    m.m_nickname AS nickname,
+    m.m_picture AS imageFileName,
+    m.m_path AS imageFilePath,
+    i.info_title AS infoTitle
+    FROM
+    info_comment ic
+    JOIN
+    member m ON ic.m_no = m.m_no
+    JOIN
+    info i ON ic.info_no = i.info_no
+    WHERE
+    ic.info_no = #{infoNo}
+    AND ic.info_comment_delete_date IS NULL
+</select>
 
 
 	<!-- 사용자 닉네임 불러오기 -->

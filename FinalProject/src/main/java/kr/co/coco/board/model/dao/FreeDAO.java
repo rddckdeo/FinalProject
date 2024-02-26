@@ -111,4 +111,9 @@ public class FreeDAO {
 		return sqlSession.selectList("freeMapper.selectPostsOrderByViews", params);
 	}
 
+	//전체 게시글 수 
+	public int countPosts() {
+		return sqlSession.selectOne("freeMapper.countPosts");
+	}
+
 }

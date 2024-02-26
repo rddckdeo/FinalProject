@@ -311,7 +311,8 @@
 
 	<!-- 마이페이지 no로 게시글 가져오기 -->
 	<select id="fetchPostsByMemberNo" resultType="info">
-		SELECT f.*, m.m_nickname
+		SELECT f.*, m.m_nickname AS nickname,  m.m_picture AS
+		imageFilePath, m.m_path AS imageFileName
 		FROM info f
 		JOIN member m ON f.m_no = m.m_no
 		WHERE f.m_no = #{mNo} AND f.info_delete_date IS NULL

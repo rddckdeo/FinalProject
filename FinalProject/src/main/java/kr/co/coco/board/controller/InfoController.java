@@ -162,16 +162,13 @@ public class InfoController {
 	public ResponseEntity<Map<String, Object>> deletePost(@RequestParam("infoNo") int infoNo) {
 		Map<String, Object> response = new HashMap<>();
 
-		// 해당 게시글에 연결된 모든 댓글 삭제
-//		infoCommentService.deleteCommentsByPostId(infoNo);		
-	
 		// 게시글 삭제
 		int result = infoService.deletePost(infoNo);
 
 		if (result == 1) {
 			response.put("message", "게시글이 성공적으로 삭제되었습니다.");
 			response.put("success", true);
-			response.put("redirectUrl", "/info/category");
+			response.put("redirectUrl", "/board/");
 		} else {
 			response.put("message", "게시글 삭제에 실패하였습니다.");
 			response.put("success", false);

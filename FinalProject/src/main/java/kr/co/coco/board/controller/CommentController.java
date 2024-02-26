@@ -90,10 +90,6 @@ public class CommentController {
 	   
 	}
 
-	// 댓글 수 조회및 UI 업데이트
-//	private void updateCommentCountUI(int infoNo) {
-//		int commentCount = infoCommentService.countComments(infoNo);
-//	}
 
 	// 특정 게시글 댓글 수 반환(새로고침 없이)
 	@GetMapping("/count/{infoNo}")

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 import kr.co.coco.board.model.service.FreeCommentService;
 import kr.co.coco.boardPush.model.dto.BoardPushDTO;
@@ -92,12 +93,6 @@ public class FreeCommentController {
 	}
 
 
-
-    // 댓글 수 조회및 UI 업데이트
-    private void updateCommentCountUI(int freeNo) {
-        int commentCount = freeCommentService.countComments(freeNo);
-    }
-
     // 특정 게시글 댓글 수 반환(새로고침 없이)
     @GetMapping("/count/{freeNo}")
     @ResponseBody
@@ -125,16 +120,63 @@ public class FreeCommentController {
         freeCommentService.deleteById(freeCommentNo);
 
         // 댓글 삭제 후에 해당 게시글의 댓글 수 업데이트
-        updateCommentCountUI(freeNo);
+        freeCommentService.decreaseCommentCount(freeNo);
 
         return ResponseEntity.ok("댓글이 삭제되었습니다.");
     }
 
-    // 댓글 번호로 게시글 번호 가져오기
-    private int getFreeNoFromComment(int freeCommentNo) {
-        return freeCommentService.getFreeNoFromComment(freeCommentNo);
-    }
     
+  //댓글 신고하기
+  	@PostMapping("/reportComment")
+  	public ResponseEntity<?> reportComment(@RequestBody DeclarationDTO declarationDto, HttpSession session) {
+  		try {
 
+  			Integer mNo = (Integer) session.getAttribute("no");
+
+  			// 사용자 번호 세팅
+  			declarationDto.setMNo(mNo);
+
+  			// 신고 처리 로직 수행
+  			boolean isSuccessful = freeCommentService.freeReportComment(declarationDto);
+
+  			// 신고 처리 결과에 따른 응답
+  			if (isSuccessful) {
+  				// 신고 처리 성공 시 응답
+  				return ResponseEntity.ok().build();
+  			} else {
+  				// 신고 처리 실패 시 응답
+  				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("실패했음.");
+  			}
+  		} catch (Exception e) {
+  			// 에러 발생 시 응답
+  			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+  		}
+  	}
+  	
+  	
+  	// 댓글 수정하기
+  	@PostMapping("/updateComment")
+  	public ResponseEntity<?> updateComment(@RequestBody FreeCommentDTO freeCommentDao) {
+  	    int freeCommentNo = freeCommentDao.getFreeCommentNo();
+  	    String commentContent = freeCommentDao.getFreeCommentContent();
+  	    
+  	    System.out.println("freeCommentNo: " + freeCommentNo);
+  	    System.out.println("commentContent: " + commentContent);
+  		
+  	  FreeCommentDTO isUpdated = freeCommentService.updateComment(freeCommentNo, commentContent);
+
+  	    if (isUpdated  != null) {
+  	        return ResponseEntity.ok().build();
+  	    } else {
+  	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정에 실패하였습니다.");
+  	    }
+  	}
+
+
+
+  	// 댓글 번호로 게시글 번호 가져오기
+  	private int getFreeNoFromComment(int freeCommentNo) {
+  		return freeCommentService.getFreeNoFromComment(freeCommentNo);
+  	}
 	
 }

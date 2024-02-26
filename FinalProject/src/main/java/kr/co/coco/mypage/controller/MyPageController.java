@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.tribes.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,12 @@ import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
 import kr.co.coco.boardPush.model.dto.BoardPushDTO;
 import kr.co.coco.boardPush.model.service.BoardPushServiceImpl;
+import kr.co.coco.colabo.common.upload.UploadFile;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.service.ColaboServiceImpl;
 import kr.co.coco.mypage.common.paging.mypagePageInfo;
 import kr.co.coco.mypage.common.paging.mypagePagination;
+import kr.co.coco.mypage.common.upload.MypageUploadFile;
 import kr.co.coco.mypage.model.dto.MyPageDTO;
 import kr.co.coco.mypage.model.service.MyPageServiceImpl;
 
@@ -119,6 +122,8 @@ public class MyPageController {
 			model.addAttribute("hope", member.getHope());
 			model.addAttribute("stack", member.getStack());
 			model.addAttribute("intro", member.getIntro());
+			model.addAttribute("fileName", member.getImageFileName());
+			model.addAttribute("filePath", member.getImageFilePath());
 		}
 		return "myPage/myProfile";
 	}
@@ -131,6 +136,16 @@ public class MyPageController {
 		Integer mNo = (Integer) session.getAttribute("no");
 
 		MyPageDTO member = mypageService.findMemberByNo(mNo);
+		
+	    // 세션에서 이미지 정보 가져오기
+	    String uploadName = (String) session.getAttribute("uploadName");
+	    String uploadPath = (String) session.getAttribute("uploadPath");
+
+	    // 세션에 이미지 정보가 없는 경우, DB에서 가져온 정보 사용
+	    if (uploadName == null || uploadPath == null) {
+	        uploadName = member.getUploadName();
+	        uploadPath = member.getUploadPath();
+	    }
 		
 		List<String> hopeList = new ArrayList<>();
 		if(member.getHope() != null) {
@@ -150,6 +165,8 @@ public class MyPageController {
 		model.addAttribute("stackList", stackList);
 		model.addAttribute("intro", member.getIntro());
 		model.addAttribute("number", member.getNumber());
+	    model.addAttribute("uploadName", member.getImageFileName());
+	    model.addAttribute("uploadPath", member.getImageFilePath());
 
 		return "myPage/myInfo";
 	}
@@ -170,76 +187,56 @@ public class MyPageController {
 		if(member.getStack() != null) {
 		    stackList = Arrays.asList(member.getStack().split(","));
 		}
-	    session.setAttribute("name", member.getName());
-	    session.setAttribute("id", member.getId());
-	    session.setAttribute("email", member.getEmail());
-	    session.setAttribute("nickname", member.getNickname());
-	    session.setAttribute("hopeList", hopeList);
-	    session.setAttribute("stackList", stackList);
-	    session.setAttribute("intro", member.getIntro());
-	    session.setAttribute("number", member.getNumber());
-	    session.setAttribute("picture", member.getPicture());
-	    session.setAttribute("path", member.getPath());
+		session.setAttribute("name", member.getName());
+		session.setAttribute("id", member.getId());
+		session.setAttribute("email", member.getEmail());
+		session.setAttribute("nickname", member.getNickname());
+		session.setAttribute("hopeList", hopeList);
+		session.setAttribute("stackList", stackList);
+		session.setAttribute("intro", member.getIntro());
+		session.setAttribute("number", member.getNumber());
+		session.setAttribute("picture", member.getPicture());
+		session.setAttribute("path", member.getPath());
 
 	    return "myPage/myInfoEdit";
 	}
 	
-	// 프로필 정보 수정 처리
+	//프로필 수정 
 	@PostMapping("/editProfile")
 	@ResponseBody
-	public ResponseEntity<String> editProfile( MultipartFile upload, MyPageDTO editContent, HttpSession session) {
-
+	public ResponseEntity<String> editProfile(MultipartFile imageFile, MyPageDTO myPageInfo, HttpSession session) {
 	    // 세션에서 회원 번호 가져오기
 	    Integer mNo = (Integer) session.getAttribute("no");
-
+	    System.out.println(myPageInfo);
 	    // 업로드된 파일 처리
-	    String uploadPath = "/Users/kangnayoung/git/FinalProject/FinalProject/src/main/webapp/resources/uploads/member";
-	    String saveFileName = null;
-
-	    try {
-	        if (upload != null && !upload.isEmpty()) {
-	            // 업로드된 파일이 존재하면 파일 저장
-	            saveFileName = saveUploadedFile(upload, uploadPath);
-	        }
-//	        else if(upload = null && upload.isEmpty()) {
-//	        	
-//	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        return ResponseEntity.status(500).body("파일 저장 중 오류가 발생했습니다.");
+	    if (imageFile != null && !imageFile.isEmpty()) {
+	        // 업로드된 파일이 존재하면 파일 저장
+	        MypageUploadFile.uploadMethod(imageFile, myPageInfo);
+	    } else {
+	        // 이미지 파일이 없는 경우, 기존에 DB에 저장된 이미지 정보를 사용
+	    	MyPageDTO member = mypageService.findMemberByNo(mNo);
+	        myPageInfo.setUploadName(member.getUploadName());
+	        myPageInfo.setUploadPath(member.getUploadPath());
 	    }
 
 	    // 배열을 쉼표(,)로 구분된 문자열로 변환
-	    String hopeAsString = String.join(",", editContent.getHope());
-	    String stackAsString = String.join(",", editContent.getStack());
+	    String hopeAsString = String.join(",", myPageInfo.getHope());
+	    String stackAsString = String.join(",", myPageInfo.getStack());
 
 	    // 프로필 정보 업데이트
 	    boolean isUpdateSuccessful = mypageService.updateProfile(mNo, hopeAsString, stackAsString,
-	            editContent.getIntro(), editContent.getNickname(), editContent.getEmail(), editContent.getNumber(),
-	            saveFileName, uploadPath);
+	            myPageInfo.getIntro(), myPageInfo.getNickname(), myPageInfo.getEmail(), myPageInfo.getNumber(),
+	            myPageInfo.getUploadName(), myPageInfo.getUploadPath());
 
 	    if (isUpdateSuccessful) {
-	        return ResponseEntity.ok().body("수정이 완료되었습니다.");
+	        return ResponseEntity.ok().body("/mypage/editProfile.do");  
 	    } else {
 	        return ResponseEntity.status(500).body("수정에 실패하였습니다. 다시 시도해주세요.");
 	    }
 	}
 
 
-    // 업로드된 파일 저장 메서드
-    private String saveUploadedFile(MultipartFile file, String uploadPath) throws IOException {
-        String originalFileName = file.getOriginalFilename();
-        String saveFileName = System.currentTimeMillis() + "_" + originalFileName;
-        File destFile = new File(uploadPath, saveFileName);
-        file.transferTo(destFile);
-        return saveFileName;
-    }
 
-
-
-
-
-	
 	
 	// project
 	@GetMapping("/myproject.do")
@@ -304,6 +301,7 @@ public class MyPageController {
 
 			return "myPage/myComment";
 		}
+		
 		//BoardPush List
 		@GetMapping("/boardPush.do")
 		public String boardPush(Model model, HttpSession session) {
@@ -380,6 +378,8 @@ public class MyPageController {
 			//정보 가져오기 
 		    AdminBoardDTO inquiry = mypageService.inquiryDtail(no);
 		    model.addAttribute("inquiry", inquiry);
+		    model.addAttribute("imageFilePath", inquiry.getImageFilePath());
+		    model.addAttribute("imageFileName", inquiry.getImageFileName());
 			
 			
 			return "myPage/myInquiryDtail";
