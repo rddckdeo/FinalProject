@@ -97,26 +97,12 @@
 													</c:forEach>
 												</c:if>
 
-<<<<<<< HEAD
 												<c:if test="${empty freeComment}">
 													<p class="no-comments-message">등록된 댓글이 없습니다.</p>
 												</c:if>
 											</div>
 										</div>
 
-=======
-        <c:if test="${empty freeComment}">
-            <p class="no-comments-message">등록된 댓글이 없습니다.</p>
-        </c:if>
-    </div>
-</div>
-						<!-- 페이지네이션 -->
-						<!-- <div class="pagination">
-								<a href="#">&lt;</a> <a href="#" class="active">1</a> <a
-									href="#">2</a> <a href="#">3</a> <a href="#">4</a> <a
-									href="#">5</a> <a href="#">&gt;</a>
-							</div> -->
->>>>>>> 351b37b4530213d45826bf06d36aa77f1b0764ea
 									</div>
 
 								</div>

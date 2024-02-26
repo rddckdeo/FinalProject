@@ -21,7 +21,7 @@
 	margin-right: 5px;
 }
 
-.modal {
+.modalt {
 	display: none;
 	position: fixed;
 	z-index: 1;
@@ -35,7 +35,7 @@
 	padding-top: 60px;
 }
 
-.modal-content {
+.modal-contentt {
 	background-color: #fefefe;
 	margin: 5% auto;
 	padding: 20px;
@@ -43,14 +43,14 @@
 	width: 80%;
 }
 
-.close {
+.closet {
 	color: #aaa;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
 }
 
-.close:hover, .close:focus {
+.closet:hover, .closet:focus {
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
@@ -160,18 +160,18 @@
 					</ul>
 					<li class="footer_li"><a class="privacy_link"
 						onclick="openModal('privacyModal')">개인정보처리방침</a>
-						<div id="privacyModal" class="modal">
-							<div class="modal-content">
-								<span class="close" onclick="closeModal('privacyModal')">&times;</span>
+						<div id="privacyModal" class="modalt">
+							<div class="modal-contentt">
+								<span class="closet" onclick="closeModal('privacyModal')">&times;</span>
 								<!-- 개인정보 처리 방침 내용 추가 -->
 								<h3>개인정보 처리 방침</h3>
 								<p>여기에 개인정보 처리 방침 내용을 입력하세요.</p>
 							</div>
 						</div>
 						<p>|</p> <a class="terms_link" onclick="openModal('termsModal')">이용약관</a>
-						<div id="termsModal" class="modal">
-							<div class="modal-content">
-								<span class="close" onclick="closeModal('termsModal')">&times;</span>
+						<div id="termsModal" class="modalt">
+							<div class="modal-contentt">
+								<span class="closet" onclick="closeModal('termsModal')">&times;</span>
 								<!-- 이용 약관 내용 추가 -->
 								<h1>이용약관</h1>
 
@@ -239,7 +239,7 @@
 
 	// 모달 외부 클릭 시 닫기
 	window.onclick = function(event) {
-		var modals = document.getElementsByClassName('modal');
+		var modals = document.getElementsByClassName('modalt');
 		for (var i = 0; i < modals.length; i++) {
 			var modal = modals[i];
 			if (event.target == modal) {
