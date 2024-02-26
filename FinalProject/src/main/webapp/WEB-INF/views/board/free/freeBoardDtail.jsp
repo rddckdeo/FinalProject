@@ -421,13 +421,13 @@ p {
 				"12월" : "12"
 			};
 
-			var dateParts = dateString.split(" ");
-			var month = months[dateParts[1]]; 
-			var day = ("0" + dateParts[1].replace(',', '')).slice(-2);
-			var year = dateParts[2];
-			var formattedDate = year + '-' + month + '-' + day;
+		    var date = new Date(dateString);
+		    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+		    var day = ("0" + date.getDate()).slice(-2);
+		    var year = date.getFullYear();
+		    var formattedDate = year + '-' + month + '-' + day;
 
-			return formattedDate;
+		    return formattedDate;
 		}
 
 		function appendComment(comment) {
