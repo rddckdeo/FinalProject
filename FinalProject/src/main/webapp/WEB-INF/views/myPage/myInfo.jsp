@@ -9,7 +9,28 @@
 <title>profile</title>
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
 </head>
+<style>
+.myInfo {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
+    .direction2 {
+        margin-right: 10px; /* 가로 간격 조절 */
+        margin-bottom: 10px; /* 세로 간격 조절 */
+    }
+
+    .infoStackSeparator {
+        width: 100%; /* 가로 구분선을 줄 길이를 100%로 설정하여 가로로 꽉 채우도록 함 */
+        border: none; /* 가로 구분선에 대한 테두리를 없앰 */
+        border-top: 1px solid #ccc; /* 가로 구분선의 색상 및 두께 설정 */
+        margin: 10px 0; /* 가로 구분선 위아래 간격 조절 */
+    }
+
+    .infoStack.defaultMargin {
+        margin-right: 10px; /* 각각의 아이템 간격 조절 */
+    }
+</style>
 <body>
 	<!-- 전체 구조 -->
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
@@ -32,8 +53,8 @@
 									<!-- card body -->
 									<div class="card-body height500 direction1"
 										style="padding-top: 0;">
-										<div>
-											<img src="${sessionScope.path}${sessionScope.picture}"
+										<div >
+											<img src="../../..${uploadPath}${uploadName}"
 												alt="Profile picture" class="profileImg">
 										</div>
 										<!-- id -->
@@ -74,21 +95,26 @@
 											<p class="leftMargin20">${number}</p>
 										</div>
 										<h1 class="font20px bottomMargin20">희망직무 및 기술스택</h1>
-										<div class="myInfo bottomMargin20 padding30">
+										<div class="myInfo bottomMargin20 padding30"
+											style="display: flex; flex-wrap: wrap;">
 											<c:forEach var="hopeItem" items="${hopeList}">
-												<div class="direction2">
-													<p class="infoStack defaultMargin">${hopeItem}</p>
-												</div>
-											</c:forEach>
-											<c:forEach var="stackItem" items="${stackList}">
-												<div class="direction2">
-													<p class="infoStack defaultMargin">${stackItem}</p>
-												</div>
-											</c:forEach>
+        <div class="direction2">
+            <p class="infoStack defaultMargin">${hopeItem}</p>
+        </div>
+    </c:forEach>
+
+    <!-- 가로 정렬을 위한 구분선 -->
+    <hr class="infoStackSeparator">
+
+    <!-- 스택 아이템 세로 정렬 -->
+    <c:forEach var="stackItem" items="${stackList}">
+        <div class="direction2">
+            <p class="infoStack defaultMargin">${stackItem}</p>
+        </div>
+    </c:forEach>
 										</div>
 										<a class="btn btn-outline-secondary"
 											href="/mypage/editProfile.do">수정하기</a>
-
 
 									</div>
 								</div>
@@ -98,6 +124,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>

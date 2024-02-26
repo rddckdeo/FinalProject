@@ -40,6 +40,10 @@ public class MyPageDTO {
 	
 	private String freeTitle;
 	
+	private String uploadPath; // 파일경로
+	private String uploadName; // 수정된 파일 이름
+	private String uploadOriginName; // 원본 파일 이름
+	
 	
 	@Override
 	public String toString() {

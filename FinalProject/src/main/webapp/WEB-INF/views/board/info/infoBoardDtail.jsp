@@ -57,8 +57,30 @@ p {
 }
 
 .button-layout {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
+}
+.comment-input{
+    border: none;
+    border-bottom: 1px solid;
+    width: 70%;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    margin-right:10px;
+    height:30px;
+}
+.comment-button{
+    color: #fff;
+    border-color: #0085db;
+    background-color: #0085db;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 12px rgba(26, 115, 232, 0.3);
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 9px 27px 9px 27px;
+    border-radius: 7px;
 }
 </style>
 <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}">
@@ -155,7 +177,7 @@ p {
 
 									</div>
 									<div class="margin-top-bottom horizontal-layout">
-										<p style="font-size: 18px">TITLE | &nbsp;&nbsp;</p>
+										<p style="font-size: 18px">제목 | &nbsp;&nbsp;</p>
 										<p>${post.infoTitle}</p>
 										<!-- 제목 -->
 									</div>
@@ -195,15 +217,15 @@ p {
 											</c:when>
 											<c:otherwise>
 												<div class="comment-registration">
-													<input type="text" id="commentContent"
+													<input type="text" id="commentContent" class="comment-input"
 														placeholder="댓글을 남겨주세요">
-													<button id="submitComment" type="button">등록</button>
+													<button id="submitComment" class="comment-button" type="button">등록</button>
 												</div>
 											</c:otherwise>
 										</c:choose>
 									</div>
 									<div class="comment-list">
-										<p id="no-comment-message"
+										<p id="no-comment-message" style="text-align: center;"
 											${not empty comments ? 'style="display: none;"' : ''}>댓글이
 											없습니다.</p>
 
@@ -215,67 +237,72 @@ p {
 														alt="프로필" width="30" height="30"
 														class="main-boardList-user-img"></a> <a href="#"
 														class="main-boardList-info-text">${comment.nickname}</a>
-														<p class="main-boardList-info-text">|</p>
+													<p class="main-boardList-info-text">|</p>
 													<p class="main-boardList-info-text">${comment.infoCommentDate}</p>
 												</div>
 												<div class="right-items button-layout">
 													<div>
-														<a href="JavaScript:void(0);" class="edit-button"
-															data-id="${comment.infoCommentNo}"
-															data-infoNo="${post.infoNo}" data-toggle="modal"
-															onclick="openEditModal(this)"
-															data-target="#editModal_${comment.infoCommentNo}">수정</a>
+														<c:choose>
+															<c:when test="${no == post.memberNo}">
+																<a href="JavaScript:void(0);" class="edit-button"
+																	data-id="${comment.infoCommentNo}"
+																	data-infoNo="${post.infoNo}" data-toggle="modal"
+																	onclick="openEditModal(this)"
+																	data-target="#editModal_${comment.infoCommentNo}">수정</a>
 
-														<!-- 수정하기 모달 -->
-														<div class="editModal"
-															id="editModal_${comment.infoCommentNo}">
-															<div class="modal-content">
-																<span class="close" onclick="closeEditModal(this)">&times;</span>
-																<h2>댓글 수정하기</h2>
-																<form onsubmit="submitEditForm(this)">
-																	<label for="author">작성자:</label> <input type="text"
-																		id="author" value="${comment.nickname}" disabled><br>
+																<!-- 수정하기 모달 -->
+																<div class="editModal"
+																	id="editModal_${comment.infoCommentNo}">
+																	<div class="modal-content">
+																		<span class="close" onclick="closeEditModal(this)">&times;</span>
+																		<h2>댓글 수정하기</h2>
+																		<form onsubmit="submitEditForm(this)">
+																			<label for="author">작성자:</label> <input type="text"
+																				id="author" value="${comment.nickname}" disabled><br>
 
-																	<label for="date">작성일:</label> <input type="" id="date"
-																		value="${comment.infoCommentDate}" disabled><br>
+																			<label for="date">작성일:</label> <input type=""
+																				id="date" value="${comment.infoCommentDate}"
+																				disabled><br> <label for="editComment">내용:</label>
+																			<textarea id="editComment" class="editComment">${comment.infoCommentContent}</textarea>
+																			<br> <input type="hidden" id="infoCommentNo"
+																				value="${comment.infoCommentNo}"> <input
+																				class="editSubmitButton" type="submit" value="수정하기">
+																		</form>
 
-																	<label for="editComment">내용:</label>
-																	<textarea id="editComment" class="editComment">${comment.infoCommentContent}</textarea>
-																	<br> <input type="hidden" id="infoCommentNo"
-																		value="${comment.infoCommentNo}"> <input
-																		class="editSubmitButton" type="submit" value="수정하기">
-																</form>
+																	</div>
+																</div>
 
-															</div>
-														</div>
-														<span>|</span>
-														<a class="delete-button" onclick="deleteComment(this)"
-															data-id="${comment.infoCommentNo}">삭제</a>
+																<span>|</span>
+																<a class="delete-button" onclick="deleteComment(this)"
+																	data-id="${comment.infoCommentNo}">삭제</a>
+															</c:when>
+															<c:otherwise>
+																<!-- 신고하기 버튼 -->
+																<button class="reportButton"
+																	data-id="${comment.infoCommentNo}"
+																	onclick="openReportModal(this)">신고하기</button>
 
-														<!-- 신고하기 버튼 -->
-														<button class="reportButton"
-															data-id="${comment.infoCommentNo}"
-															onclick="openReportModal(this)">신고하기</button>
-
-														<!-- 신고하기 모달 -->
-														<div class="reportModal"
-															id="reportModal_${comment.infoCommentNo}"
-															data-id="${comment.infoCommentNo}">
-															<div class="modal-content">
-																<span class="close" onclick="closeReportModal(this)">&times;</span>
-																<h2>신고하기</h2>
-																<form class="reportForm"
-																	onsubmit="submitReportForm(this)">
-																	<label for="reportType">신고 종류:</label><br> <select
-																		class="reportType">
-																		<option value="spam">스팸</option>
-																		<option value="abuse">욕설</option>
-																		<option value="falseInfo">허위 정보</option>
-																	</select><br> <br> <input class="reportSubmitButton"
-																		type="submit" value="신고하기">
-																</form>
-															</div>
-														</div>
+																<!-- 신고하기 모달 -->
+																<div class="reportModal"
+																	id="reportModal_${comment.infoCommentNo}"
+																	data-id="${comment.infoCommentNo}">
+																	<div class="modal-content">
+																		<span class="close" onclick="closeReportModal(this)">&times;</span>
+																		<h2>신고하기</h2>
+																		<form class="reportForm"
+																			onsubmit="submitReportForm(this)">
+																			<label for="reportType">신고 종류:</label><br> <select
+																				class="reportType">
+																				<option value="spam">스팸</option>
+																				<option value="abuse">욕설</option>
+																				<option value="falseInfo">허위 정보</option>
+																			</select><br> <br> <input class="reportSubmitButton"
+																				type="submit" value="신고하기">
+																		</form>
+																	</div>
+																</div>
+															</c:otherwise>
+														</c:choose>
 
 													</div>
 												</div>
@@ -406,38 +433,47 @@ p {
 
 		function appendComment(comment) {
 			var formattedDate = formatDate(comment.infoCommentDate);
-
-			var commentRow = '<div class="comment-row">'
-			    + '<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}" alt="프로필" width="30" height="30" class="main-boardList-user-img"></a>'
-			    + '<a href="#" class="main-boardList-info-text">' + comment.infoCommentWriter + '</a>'
-			    + '<p class="main-boardList-info-text">' + formattedDate + '</p>'
-			    + '<div>'
-			    + '<a href="#">수정</a><p>|</p> <a class="delete-button" data-id="' + comment.infoCommentNo + '">삭제</a><p>|</p> <a class="report-button" data-id="' + comment.infoCommentNo + '">신고하기</a>'
-			    + '</div>'
-			    + '</div>'
-			    + '<div>'
-			    + '<p>' + comment.infoCommentContent + '</p>'
-			    + '</div>'
-			    + '<div class="card-project-hr-div">'
-			    + '<hr class="card-project-hr">'
-			    + '</div>'
-			    + '<div class="reportModal" id="reportModal_' + comment.infoCommentNo + '" data-id="' + comment.infoCommentNo + '">'
-			    + '<div class="modal-content">'
-			    + '<span class="close">&times;</span>'
-			    + '<h2>신고하기</h2>'
-			    + '<form class="reportForm">'
-			    + '<label for="reportType">신고 종류:</label><br>'
-			    + '<select class="reportType">'
-			    + '<option value="spam">스팸</option>'
-			    + '<option value="abuse">욕설</option>'
-			    + '<option value="falseInfo">허위 정보</option>'
-			    + '</select><br><br>'
-			    + '<input class="reportSubmitButton" type="submit" value="신고하기">'
-			    + '</form>'
-			    + '</div>'
-			    + '</div>';
-
-
+			    
+			     var commentRow = '<div class="comment-row">'
+			    	    + '<div class="left-items">'
+			    	    + '<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}" alt="프로필" width="30" height="30" class="main-boardList-user-img"></a>'
+			    	    + '<a href="#" class="main-boardList-info-text">' + comment.infoCommentWriter + '</a>'
+			    	    + '<p class="main-boardList-info-text">|</p>'
+			    	    + '<p class="main-boardList-info-text">' + formattedDate + '</p>'
+			    	    + '</div>'
+			            + '<div class="right-items button-layout">'
+			            + '<div>'
+			            + '<a href="JavaScript:void(0);" class="edit-button common-button" data-id="' + comment.infoCommentNo + '" data-infoNo="' + comment.infoNo + '" data-toggle="modal" onclick="openEditModal(this)" data-target="#editModal_' + comment.infoCommentNo + '">수정</a>'
+			            // 수정 및 삭제 버튼에 동일한 클래스 추가
+			            + '<span class="common-button delete-button" onclick="deleteComment(this)" data-id="' + comment.infoCommentNo + '">삭제</span>'
+			            // 신고하기 버튼은 빼기
+			            + '</div>'
+			            + '</div>'
+			            + '</div>'
+			            + '<div>'
+			            + '<p class="margin-top-bottom">' + comment.infoCommentContent + '</p>'
+			            + '</div>'
+			            + '<div class="card-project-hr-div">'
+			            + '<hr class="card-project-hr">'
+			            + '</div>'
+			            + '<!-- 수정하기 모달 -->'
+			            + '<div class="editModal" id="editModal_' + comment.infoCommentNo + '">'
+			            + '<div class="modal-content">'
+			            + '<span class="close" onclick="closeEditModal(this)">&times;</span>'
+			            + '<h2>댓글 수정하기</h2>'
+			            + '<form onsubmit="submitEditForm(this)">'
+			            + '<label for="author">작성자:</label> <input type="text" id="author" value="' + comment.infoCommentWriter + '" disabled><br>'
+			            + '<label for="date">작성일:</label> <input type="text" id="date" value="' + formattedDate + '" disabled><br>'
+			            + '<label for="editComment">내용:</label>'
+			            + '<textarea id="editComment" class="editComment">' + comment.infoCommentContent + '</textarea>'
+			            + '<br> <input type="hidden" id="infoCommentNo" value="' + comment.infoCommentNo + '">'
+			            + '<input class="editSubmitButton common-button" type="submit" value="수정하기">'
+			            + '</form>'
+			            + '</div>'
+			            + '</div>';
+			        
+			        
+			     
 			$(".comment-list").append(commentRow); // 댓글 목록의 맨 아래에 추가
 			$('#commentContent').val(''); //댓글 등록하고 나면 input에 작성한거 지움 
 			

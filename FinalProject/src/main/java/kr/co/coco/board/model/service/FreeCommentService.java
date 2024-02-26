@@ -1,5 +1,6 @@
 package kr.co.coco.board.model.service;
 
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;
 
 
@@ -17,9 +18,19 @@ public interface FreeCommentService {
     // 댓글 번호로 게시글 번호 가져오기
     public int getFreeNoFromComment(int freeCommentNo);
 
-    //댓글 등록 시, info_comment_count 업데이트 
+    //댓글 등록 시, free_comment_count 업데이트 
 	void increaseCommentCount(int freeNo);
 
+	//댓글 삭제 시, free_comment_count 업데이트 
+	void decreaseCommentCount(int freeNo);
+	
 	// 해당 게시글에 연결된 모든 댓글 삭제
 	void deleteCommentsByPostId(int freeNo);
+	
+	// 댓글 수정
+	FreeCommentDTO updateComment(int freeCommentNo, String commentContent);
+
+	//댓글 신고하기 
+	boolean freeReportComment(DeclarationDTO declarationDto);
+
 }

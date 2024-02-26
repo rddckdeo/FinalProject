@@ -21,6 +21,8 @@ import kr.co.coco.board.model.service.FreeServiceImpl;
 import kr.co.coco.board.model.service.InfoServiceImpl;
 import kr.co.coco.colabo.model.dto.ColaboDTO;
 import kr.co.coco.colabo.model.service.ColaboServiceImpl;
+import kr.co.coco.mypage.common.paging.mypagePageInfo;
+import kr.co.coco.mypage.common.paging.mypagePagination;
 
 @Controller
 @RequestMapping("/board")
@@ -38,31 +40,50 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	//게시판 메인페이지 
-	@GetMapping("/")
-	public String infoBoard(Model model, HttpSession session) {
-	    Integer no = (Integer) session.getAttribute("no");
-	    String noString = String.valueOf(no);
-	    System.out.println("no: " + noString);
+		@GetMapping("/")
+		public String infoBoard(Model model, HttpSession session,
+		                        @RequestParam(value = "infoPage", defaultValue = "1") int infoPage,
+		                        @RequestParam(value = "freePage", defaultValue = "1") int freePage,
+		                        @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
 
-	    // 정보 게시판 게시글 조회
-	    List<InfoDTO> infoPosts = infoService.getAllPosts(0, 5);
+		    session.setAttribute("infoPage", infoPage);
+		    session.setAttribute("freePage", freePage);
 
-	    // 자유 게시판 게시글 조회
-	    List<FreeDTO> freePosts = freeService.getAllPosts(0, 5);
-	    
-	    // 추천 프로젝트 리스트
- 		List<ColaboDTO> NProjectList = colaboService.getNProjectList();
-	 		
-	    
-	    model.addAttribute("infoPosts", infoPosts);
-	    model.addAttribute("freePosts", freePosts);
-	    model.addAttribute("NProjectList", NProjectList);
+		    infoPage = (Integer) session.getAttribute("infoPage");
+		    freePage = (Integer) session.getAttribute("freePage");
+		    
+		    Integer no = (Integer) session.getAttribute("no");
+//		    String noString = String.valueOf(no);
+//		    System.out.println("no: " + noString);
 
-	    logger.info("infoPosts: {}", infoPosts);
-	    logger.info("freePosts: {}", freePosts);
+		    int infoPostCount = infoService.countPosts(); 
+		    int freePostCount = freeService.countPosts(); 
 
-	    return "board/main/boardMain";
-	}
+		    mypagePageInfo infoPageInfo = mypagePagination.getPageInfo(infoPostCount, infoPage, 10, pageSize); 
+		    mypagePageInfo freePageInfo = mypagePagination.getPageInfo(freePostCount, freePage, 10, pageSize); 
+
+
+		    // 정보 게시판 게시글 조회
+		    List<InfoDTO> infoPosts = infoService.getAllPosts(infoPageInfo.getOffset(), pageSize);
+
+		    // 자유 게시판 게시글 조회
+		    model.addAttribute("infoPageInfo", infoPageInfo);
+		    model.addAttribute("freePageInfo", freePageInfo);
+		    List<FreeDTO> freePosts = freeService.getAllPosts(0, 5);
+		    
+		    // 추천 프로젝트 리스트
+	 		List<ColaboDTO> NProjectList = colaboService.getNProjectList();
+		 		
+		    
+		    model.addAttribute("infoPosts", infoPosts);
+		    model.addAttribute("freePosts", freePosts);
+		    model.addAttribute("NProjectList", NProjectList);
+
+		    logger.info("infoPosts: {}", infoPosts);
+		    logger.info("freePosts: {}", freePosts);
+
+		    return "board/main/boardMain";
+		}
 
 
 	// 검색

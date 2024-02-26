@@ -17,11 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.coco.board.model.dto.DeclarationDTO;
 import kr.co.coco.board.model.dto.FreeCommentDTO;  
 import kr.co.coco.board.model.dto.FreeDTO;  
 import kr.co.coco.board.model.service.FreeCommentServiceImpl; 
@@ -44,8 +46,11 @@ public class FreeController {
     public String freeCategoryBoard(@RequestParam(value = "name", required = false) String categoryName,
             @RequestParam(value = "sortType", required = false, defaultValue = "date") String sortType,
             @RequestParam(value = "page", defaultValue = "1") int currentPage,
-            @RequestParam(value = "size", defaultValue = "5") int pageSize, Model model) {
+            @RequestParam(value = "size", defaultValue = "5") int pageSize, Model model, HttpSession session) {
 
+		// 세션에서 넘버 가져오기
+		Integer mNo = (Integer) session.getAttribute("no");
+		
         // 게시글 총 개수
         int totalPosts = freeService.countPostsByCategory(categoryName);
 
@@ -64,15 +69,6 @@ public class FreeController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("sortType", sortType);
-
-//        System.out.println("Model attributes:");
-//        Map<String, Object> modelMap = model.asMap();
-//        System.out.println("posts: " + modelMap.get("posts"));
-//        System.out.println("totalPosts: " + modelMap.get("totalPosts"));
-//        System.out.println("totalPages: " + modelMap.get("totalPages"));
-//        System.out.println("currentPage: " + modelMap.get("currentPage"));
-//        System.out.println("categoryName: " + modelMap.get("categoryName"));
-//        System.out.println("sortType: " + modelMap.get("sortType"));
 
         return "board/free/freeBoard";  
     }
@@ -118,7 +114,7 @@ public class FreeController {
     @PostMapping("/SubmitRegistr")
     public String freeEnroll(FreeDTO free, HttpSession session) throws IllegalStateException, IOException {
         Integer mNo = (Integer) session.getAttribute("no");
-        free.setMNo(mNo);
+        free.setMemberNo(mNo);
         
         freeService.enrollBoard(free);
         return "redirect:/free/category?name=" + free.getFreeCategory() + "&page=1";  
@@ -144,7 +140,7 @@ public class FreeController {
     public String updatePost(FreeDTO post, HttpSession session, RedirectAttributes redirectAttributes)
             throws IllegalStateException, IOException {
         Integer mNo = (Integer) session.getAttribute("no");
-        post.setMNo(mNo);
+        post.setMemberNo(mNo);
 
         int result = freeService.updatePost(post.getFreeNo(), post);
         if (result == 1) {
@@ -162,16 +158,13 @@ public class FreeController {
     public ResponseEntity<Map<String, Object>> deletePost(@RequestParam("freeNo") int freeNo) {
         Map<String, Object> response = new HashMap<>();
 
-        // 해당 게시글에 연결된 모든 댓글 삭제
-        freeCommentService.deleteCommentsByPostId(freeNo);
-
         // 게시글 삭제
         int result = freeService.deletePost(freeNo);
 
         if (result == 1) {
             response.put("message", "게시글이 성공적으로 삭제되었습니다.");
             response.put("success", true);
-            response.put("redirectUrl", "/free/category"); 
+            response.put("redirectUrl", "/board/"); 
         } else {
             response.put("message", "게시글 삭제에 실패하였습니다.");
             response.put("success", false);
@@ -181,6 +174,34 @@ public class FreeController {
         return ResponseEntity.ok(response);
     }
 
+ // 게시글 신고하기
+ 	@PostMapping("/report")
+ 	public ResponseEntity<?> reportInfo(@RequestBody DeclarationDTO declarationDto, HttpSession session) {
+ 		try {
+
+ 			Integer mNo = (Integer) session.getAttribute("no");
+
+ 			// 사용자 번호 세팅
+ 			declarationDto.setMNo(mNo);
+
+ 			// 신고 처리 로직 수행
+ 			boolean isSuccessful = freeService.report(declarationDto);
+ 			
+ 			System.out.println("댓글 넘버: " + declarationDto.getInfoCommentNo());
+
+ 			// 신고 처리 결과에 따른 응답
+ 			if (isSuccessful) {
+ 				// 신고 처리 성공 시 응답
+ 				return ResponseEntity.ok().build();
+ 			} else {
+ 				// 신고 처리 실패 시 응답
+ 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Declaration processing failed.");
+ 			}
+ 		} catch (Exception e) {
+ 			// 에러 발생 시 응답
+ 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+ 		}
+ 	}
 
 
 }

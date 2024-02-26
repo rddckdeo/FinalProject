@@ -14,7 +14,16 @@
   
 
 </head>
-
+<style>
+.card-project-name {
+	color: gray;
+	font-size: 35px;
+}
+.text-style {
+	color: gray;
+	font-size: 25px;
+}
+</style>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
@@ -39,7 +48,7 @@
 
 							<!-- 초대받은 프로젝트 -->
 							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">초대받은 프로젝트</h1>
+								<h1 class="text-style">초대받은 프로젝트</h1>
 								<div class="direction2 scrollbar">
 								<c:set var="InviteCount" value="0"></c:set>
 									<!-- 개별 Card -->
@@ -103,7 +112,7 @@
 							</div>
 							<!-- 신청중인 프로젝트 -->
 							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">신청중인 프로젝트</h1>
+								<h1 class="text-style">신청중인 프로젝트</h1>
 								<div class="direction2 scrollbar">
 								<c:set var="ApplyCount" value="0"></c:set>
 									<!-- 개별 Card -->
@@ -164,7 +173,7 @@
 								</div>
 							</div>
 							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">신청받은 프로젝트</h1>
+								<h1 class="text-style">신청받은 프로젝트</h1>
 								<div class="direction2 scrollbar">
 								<c:set var="receiveCount" value="0"></c:set>
 									<!-- 개별 Card -->

@@ -3,94 +3,108 @@
 
 <mapper namespace="FreeCommentMapper">
 
-	    <!-- 댓글 저장 -->
-    <insert id="insertComment" parameterType="freeComment">
-        <selectKey keyProperty="freeCommentNo" resultType="int" order="BEFORE">
-            SELECT free_comment_no_seq.NEXTVAL FROM dual
-        </selectKey>
-        INSERT INTO free_comment (
-            free_comment_no,
-            free_no,
-            m_no,
-            free_comment_content,
-            free_comment_date,
-            free_comment_blind,
-            free_comment_writer
-        ) VALUES (
-            #{freeCommentNo},
-            #{freeNo},
-            #{mNo},
-            #{freeCommentContent},
-            SYSDATE,
-            'N',
-            #{freeCommentWriter}
-        )
-    </insert>
+	<!-- 댓글 저장 -->
+	<insert id="insertComment" parameterType="freeComment">
+		<selectKey keyProperty="freeCommentNo" resultType="int"
+			order="BEFORE">
+			SELECT free_comment_no_seq.NEXTVAL FROM dual
+		</selectKey>
+		INSERT INTO free_comment (
+		free_comment_no,
+		free_no,
+		m_no,
+		free_comment_content,
+		free_comment_date,
+		free_comment_blind,
+		free_comment_writer
+		) VALUES (
+		#{freeCommentNo},
+		#{freeNo},
+		#{mNo},
+		#{freeCommentContent},
+		SYSDATE,
+		'N',
+		#{freeCommentWriter}
+		)
+	</insert>
 
-    <!-- 댓글 등록 시, free_comment_count 업데이트  -->
-    <update id="increaseCommentCount" parameterType="int">
-        UPDATE free
-        SET free_comment_count = free_comment_count + 1
-        WHERE free_no = #{freeNo}
-    </update>
+	<!-- 댓글 등록 시, free_comment_count 업데이트 -->
+	<update id="increaseCommentCount" parameterType="int">
+		UPDATE free
+		SET free_comment_count = free_comment_count + 1
+		WHERE free_no = #{freeNo}
+	</update>
 
-    <!-- 댓글 목록 불러오기 -->
-    <select id="selectCommentsByPostId" parameterType="int" resultType="freeComment">
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		UPDATE free_comment
+		SET
+		free_comment_delete_date = SYSDATE
+		WHERE free_comment_no = #{id}
+	</delete>
+
+	<!-- 댓글 수 감소 -->
+	<update id="decreaseCommentCount" parameterType="int">
+		UPDATE free
+		SET
+		free_comment_count = free_comment_count - 1
+		WHERE free_no = #{freeNo}
+	</update>
+
+	<!-- 댓글 목록 불러오기 -->
+<select id="selectCommentsByPostId" parameterType="int" resultType="freeComment">
     SELECT
     fc.free_comment_no AS freeCommentNo,
     fc.free_no AS freeNo,
     fc.m_no AS mNo,
     fc.free_comment_content AS freeCommentContent,
     fc.free_comment_date AS freeCommentDate,
-    m.m_nickname AS nickname
+    m.m_nickname AS nickname,
+    m.m_picture AS imageFileName,
+    m.m_path AS imageFilePath,
+    f.free_title AS freeTitle
     FROM
     free_comment fc
     JOIN
     member m ON fc.m_no = m.m_no
+    JOIN
+    free f ON fc.free_no = f.free_no
     WHERE
-    fc.free_no = #{freeNo}
-    </select>
+    fc.free_no = #{freeNo} AND fc.free_comment_delete_date IS NULL
+</select>
 
-    <!-- 사용자 닉네임 불러오기 -->
-    <select id="getNickname" parameterType="int" resultType="string">
-        SELECT
-        m_nickname FROM member WHERE m_no = #{mNo}
-    </select>
-
-    <!-- 새로고침 없이 댓글 수 업데이트 -->
-    <select id="countComments" parameterType="int" resultType="int">
-        SELECT COUNT(*) FROM free_comment WHERE free_no = #{freeNo}
-    </select>
-
-    <!-- 댓글 삭제 -->
-    <delete id="deleteComment" parameterType="int">
-        DELETE FROM
-        free_comment WHERE free_comment_no = #{id}
-    </delete>
-
-    <!-- 댓글 번호로 댓글 정보 가져오기 -->
-    <select id="getCommentById" parameterType="int" resultType="freeComment">
-        SELECT * FROM free_comment WHERE free_comment_no = #{freeCommentNo}
-    </select>
-
-    <!-- 댓글 번호로 게시글 번호 가져오기 -->
-    <select id="getFreeNoFromComment" resultType="int" parameterType="int">
-        SELECT free_no FROM free_comment WHERE free_comment_no = #{freeCommentNo}
-    </select>
-    
-	<!-- 자유게시판 댓글 가져오기 --> 
-<!-- 	<select id="fetchFreeCommentNo" parameterType="int"
-		resultType="freeComment">
+	<!-- 사용자 닉네임 불러오기 -->
+	<select id="getNickname" parameterType="int" resultType="string">
 		SELECT
-		fc.*,
-		f.free_title AS post_title,
-		f.free_category AS post_category
-		FROM
-		free_comment fc
-		JOIN
-		free f ON fc.free_no = f.free_no
-		WHERE
-		fc.m_no = #{mNo}
-	</select> -->
+		m_nickname FROM member WHERE m_no = #{mNo}
+	</select>
+
+	<!-- 새로고침 없이 댓글 수 업데이트 -->
+	<select id="countComments" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM free_comment WHERE free_no = #{freeNo}
+	</select>
+
+
+	<!-- 댓글 번호로 댓글 정보 가져오기 -->
+	<select id="getCommentById" parameterType="int"
+		resultType="freeComment">
+		SELECT * FROM free_comment WHERE free_comment_no = #{freeCommentNo}
+	</select>
+
+	<!-- 댓글 번호로 게시글 번호 가져오기 -->
+	<select id="getFreeNoFromComment" resultType="int"
+		parameterType="int">
+		SELECT free_no FROM free_comment WHERE free_comment_no = #{freeCommentNo}
+	</select>
+
+	<!-- 댓글 업데이트 -->
+	<update id="updateComment" parameterType="freeComment">
+		UPDATE free_comment
+		SET
+		free_comment_content = #{commentContent},
+		free_comment_update_date =
+		SYSDATE
+		WHERE free_comment_no = #{freeCommentNo}
+	</update>
 
 </mapper>

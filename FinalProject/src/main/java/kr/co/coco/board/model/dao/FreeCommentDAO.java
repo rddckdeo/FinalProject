@@ -1,6 +1,8 @@
 package kr.co.coco.board.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,20 @@ public class FreeCommentDAO {
     public void deleteCommentsByPostId(int freeNo) {
         sqlSession.delete("freeMapper.deleteByFreeNo", freeNo);
     }
+
+    //댓글 수정
+	public void updateComment(int freeCommentNo, String commentContent) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("freeCommentNo", freeCommentNo);
+        params.put("commentContent", commentContent);
+        sqlSession.update("freeCommentMapper.updateComment", params);
+    }
+
+	//댓글 신고하기 
+	public boolean decreaseCommentCount(int freeNo) {
+		return false;
+	}
+
 
 
 }

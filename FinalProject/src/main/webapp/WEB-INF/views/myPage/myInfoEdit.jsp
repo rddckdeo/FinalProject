@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>Edit Profile</title>
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 </head>
@@ -24,6 +26,43 @@
 
 .custom-file-upload #file-name {
 	margin-left: 10px;
+}
+
+.custom-file-upload {
+	margin-bottom: 30px;
+}
+
+.no-border {
+	border: none;
+	font-size: 18px;
+	margin-left: 10px;
+	border-bottom: 1px solid;
+}
+
+.no-border-no-edit {
+	border: none;
+	font-size: 18px;
+	margin-left: 10px;
+	color: gray;
+}
+
+.no-border-textarea {
+	width: 60%;
+	border: none;
+	font-size: 18px;
+	margin-left: 10px;
+	border-bottom: 1px solid;
+}
+
+.no-border-textarea-div {
+	align-items: flex-start; /* 상단 정렬 */
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.no-border-textarea {
+	height: 100px; /* textarea 높이 조정 */
+	padding-top: 5px;
 }
 </style>
 <body>
@@ -49,7 +88,7 @@
 									<div class="card-body height500 direction1"
 										style="padding-top: 0;">
 
-										<form>
+										<form id="fileUploadForm">
 
 											<div>
 												<div class="custom-file-upload">
@@ -62,36 +101,41 @@
 												</div>
 											</div>
 											<!-- 소개글 -->
-											<div class="myInfo direction2 alignCenter bottomMargin20">
-												<label for="intro" class="leftMargin20">소개글 :</label> <input
-													type="text" id="intro" name="intro" value="${intro}"
-													placeholder="소개글이 없습니다. 소개글을 입력해주세요.">
+											<div
+												class="myInfo direction2 alignCenter bottomMargin20 no-border-textarea-div">
+												<label for="intro" class="leftMargin20 ">소개글 :</label>
+												<textarea id="intro" name="intro" class="no-border-textarea"
+													placeholder="소개글이 없습니다. 소개글을 입력해주세요.">${intro}</textarea>
 											</div>
 											<!-- ID -->
 											<div class="myInfo direction2 alignCenter bottomMargin20">
 												<label for="id" class="leftMargin20">ID :</label> <input
-													type="text" id="id" name="id" value="${id}" readonly>
+													type="text" id="id" name="id" class="no-border-no-edit"
+													value="${id}" readonly>
 											</div>
 											<!-- 이름 -->
 											<div class="myInfo direction2 alignCenter bottomMargin20">
 												<label for="name" class="leftMargin20">이름 :</label> <input
-													type="text" id="name" name="name" value="${name}" readonly>
+													type="text" id="name" name="name" class="no-border-no-edit"
+													value="${name}" readonly>
 											</div>
 											<!-- 닉네임 -->
 											<div class="myInfo direction2 alignCenter bottomMargin20">
 												<label for="nickname" class="leftMargin20">닉네임 :</label> <input
-													type="text" id="nickname" name="nickname"
+													type="text" id="nickname" class="no-border" name="nickname"
 													value="${nickname}">
 											</div>
 											<!-- E-mail -->
 											<div class="myInfo direction2 alignCenter bottomMargin20">
 												<label for="email" class="leftMargin20">E-mail :</label> <input
-													type="email" id="email" name="email" value="${email}">
+													type="email" id="email" name="email" class="no-border"
+													value="${email}">
 											</div>
 											<!-- 휴대폰 번호 -->
 											<div class="myInfo direction2 alignCenter bottomMargin20">
 												<label for="number" class="leftMargin20">휴대폰 번호 :</label> <input
-													type="tel" id="number" name="number" value="${number}">
+													type="tel" id="number" name="number" class="no-border"
+													value="${number}">
 											</div>
 
 											<h1 class="font20px bottomMargin20">희망직무 및 기술스택</h1>
@@ -125,7 +169,8 @@
 											<!-- 저장 버튼 -->
 											<button type="submit" class="btn btn-primary"
 												onclick="return confirmSave()">저장</button>
-											<a href="/mypage/myinfo.do" onclick="return confirmCancel()">취소</a>
+											<a href="/mypage/myinfo.do" class="btn btn-primary"
+												onclick="return confirmCancel()">취소</a>
 										</form>
 									</div>
 								</div>
@@ -140,13 +185,14 @@
 </html>
 <script>
 
-let hopeList1111= "";
-let stackList1111= "";
-let profileForm;
+let hopeList1111= ''; 
+let stackList1111= ''; 
+let profileForm; 
 
 window.onload = function() {
-    var hopeList = <c:out value="${sessionScope.hopeList}" />;
-    var stackList = <c:out value="${sessionScope.stackList}" />; 
+    var hopeList = [<c:forEach var="item" items="${sessionScope.hopeList}">"${item}",</c:forEach>]; 
+    var stackList = [<c:forEach var="item" items="${sessionScope.stackList}">"${item}",</c:forEach>]; 
+
 
     profileForm = document.querySelector("form");
 
@@ -234,7 +280,7 @@ window.onload = function() {
 								profileForm.appendChild(hiddenInput);
 
 								document.getElementById("newHopeItem").value = "";
-								console.log(Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
+								console.log("희망직무 추가 : " + Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
 			}
 						});
 
@@ -281,6 +327,7 @@ window.onload = function() {
 				profileForm.appendChild(hiddenInput);
 
 				document.getElementById("newStackItem").value = "";
+				console.log("스텍직무 추가 : " + Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
 				
 			}
 		});
@@ -292,20 +339,19 @@ window.onload = function() {
 	}
 
 
-	/* 프로필 이미지 변경 */
-	function handleFileInput(e) {
-		  	        
-		try {
-			var fileName = e.target.value.split(/(\\|\/)/g).pop();
-			console.log("Selected file: ", fileName);
-			document.getElementById("file-name").textContent = fileName ? fileName
-					: "파일을 선택해주세요.";
+	var fileName;  // fileName 변수 선언
 
+	/* 프로필 이미지 변경 */
+	function handleFileInput(e) {	
+		try {
+			fileName = e.target.files[0].name;  // 사용자가 선택한 파일의 이름을 fileName에 저장
+			document.getElementById("file-name").textContent = fileName ? fileName : "파일을 선택해주세요.";
+			
 			if (e.target.files.length > 0) {
 				// 이미지 미리보기 업데이트
 				var reader = new FileReader();
+				
 				reader.onload = function(e) {
-					console.log("FileReader onload event fired");
 					document.querySelector(".profileImg").src = e.target.result;
 				}
 				reader.onerror = function(e) {
@@ -317,49 +363,80 @@ window.onload = function() {
 			console.error("에러남 : ", error);
 		}
 	}
-	/* 저장버튼 */
+
+	// 저장버튼
+	$(document).ready(function() {
+	    $('#fileUploadForm').submit(function(event) {
+	        event.preventDefault();
+	        confirmSave();
+	    });
+	});
+
 	function confirmSave() {
-		console.log("asdasdadasd");
-		console.log(hopeList1111);
-		console.log(stackList1111);
-/* 		console.log(Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value));
-		console.log(Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value));
-		 *//* console.log(fileName); */
-		console.log(document.getElementById('nickname').value);
-		console.log(document.getElementById('number').value);
+	    var confirmResult = confirm("저장하시겠습니까?");
+
+	    if (confirmResult) {
+	        var hopeItems = Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value);
+	        var stackItems = Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value);
+
+	        var formData = new FormData();
+
+				hopeItems.forEach(function(item, index) {
+			    formData.append("hope", item);
+			});
+			stackItems.forEach(function(item, index) {
+			    formData.append("stack", item);
+			});
+
+	        // 나머지 필요한 데이터를 FormData에 추가
+	        formData.set("imageFileName", fileName);
+	        formData.set("imageFilePath", '/resources/uploads/member/');
+
+	        var imageFile = document.getElementById('file-input').files[0];
+	        if (imageFile) {
+	            formData.append("imageFile", imageFile, imageFile.name);
+	        } else {
+	            formData.set("imageFile", '');
+	        }
+
+	        formData.set("intro", document.getElementById('intro').value);
+	        formData.set("nickname", document.getElementById('nickname').value);
+	        formData.set("email", document.getElementById('email').value);
+	        formData.set("number", document.getElementById('number').value);
+	        
+	        console.log("폼 데이터에 추가된 hope 필드들: ", Array.from(formData.getAll("hope")));
+	        console.log("폼 데이터에 추가된 stack 필드들: ", Array.from(formData.getAll("stack")));
+	        console.log("파일 이름: ", fileName);
+	        console.log("닉네임: ", document.getElementById('nickname').value);
+	        console.log("이메일: ", document.getElementById('email').value);
+	        console.log("번호: ", document.getElementById('number').value);
 
 		
-   
-  var confirmResult = confirm("저장하시겠습니까?");
-    if (confirmResult) {
-        var hopeItems = Array.from(profileForm.elements).filter(element => element.name === 'hope[]').map(element => element.value);
-        var stackItems = Array.from(profileForm.elements).filter(element => element.name === 'stack[]').map(element => element.value);
-        console.log(hopeItems);
-         
-         $.ajax({
-            type:'post',
-            url:'/mypage/editProfile',
-        	data: {
-          	  hope: hopeItems,
-              stack: stackItems,
-              imageFileName: fileName,
-              imageFilePath : '/resources/uploads/member/',
-              nickname: document.getElementById('nickname').value,
-              email: document.getElementById('email').value,
-              number: document.getElementById('number').value
-        },
-            dataType: "text",
-            success: function(data){   //요청 성공시 실행될 메서드
-            console.log('Success:', data);
-                 alert('데이터가 성공적으로 저장되었습니다!');
-         },
-         error:function(error){       //요청 실패시 에러 확인을 위함
-           console.error('Error:', error);
-              alert('데이터 저장 중에 오류가 발생했습니다.');
-         }
-     }) 
-	     return confirmResult; 
-	
-		 } 
-	} 
+
+	        $.ajax({
+	            type: 'POST',
+	            enctype: 'multipart/form-data',
+	            url: '/mypage/editProfile',
+	            data: formData,
+	            processData: false,
+	            contentType: false,
+	            dataType: "text",
+	            success: function(data) {
+	                console.log('Success:', data);
+
+	                alert('데이터가 성공적으로 저장되었습니다!');
+	                window.location.href = "/mypage/myinfo.do";
+	            },
+	            error: function(error) {
+	                console.error('Error:', error);
+	                alert('데이터 저장 중에 오류가 발생했습니다.');
+	            }
+	        });
+
+	        return confirmResult;
+	    }
+	}
+
+
+
 </script>

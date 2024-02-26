@@ -60,24 +60,23 @@ public class CommentController {
 	            	Logger logger = LoggerFactory.getLogger(CommentController.class);
 	                logger.error("댓글 저장에 실패하였습니다.");
 	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 저장에 실패하였습니다.");
+	            }else { // board Push info Enroll
+	            	// 필요한 정보 가져오기
+	            	Map<String, Object> param = new HashMap<>();
+	            	param.put("nickname",mNick);
+	            	// info_comment_no, info_no, info_comment_content
+	            	List<BoardPushDTO> pushList = pushService.getInfoList(mNo);
+	            	int infoBoardNo = 0;
+	            	for(BoardPushDTO dto : pushList) {
+	            		param.put("boardContent", dto.getPushContent());
+	            		param.put("boardNo", dto.getComment_no());
+	            		infoBoardNo = dto.getMNo();
+	            	}
+	            	// info_no를 통해서 info 게시판에 작성자 no를 가져와야함
+	            	int getPushInfoNo = pushService.getPushInfoNo(infoBoardNo);
+	            	param.put("mNo", getPushInfoNo);
+	            	int infoPushEnroll = pushService.infoPushEnroll(param);
 	            }
-//	                else { // board Push info Enroll
-//	            	// 필요한 정보 가져오기
-//	            	Map<String, Object> param = new HashMap<>();
-//	            	param.put("nickname",mNick);
-//	            	// info_comment_no, info_no, info_comment_content
-//	            	List<BoardPushDTO> pushList = pushService.getInfoList(mNo);
-//	            	int infoBoardNo = 0;
-//	            	for(BoardPushDTO dto : pushList) {
-//	            		param.put("boardContent", dto.getPushContent());
-//	            		param.put("boardNo", dto.getComment_no());
-//	            		infoBoardNo = dto.getMNo();
-//	            	}
-//	            	// info_no를 통해서 info 게시판에 작성자 no를 가져와야함
-//	            	int getPushInfoNo = pushService.getPushInfoNo(infoBoardNo);
-//	            	param.put("mNo", getPushInfoNo);
-//	            	int infoPushEnroll = pushService.infoPushEnroll(param);
-//	            }
 
 	            // 댓글 등록 후에 해당 게시글의 댓글 수 증가
 	            infoCommentService.increaseCommentCount(savedComment.getInfoNo());
@@ -92,10 +91,6 @@ public class CommentController {
 	   
 	}
 
-	// 댓글 수 조회및 UI 업데이트
-//	private void updateCommentCountUI(int infoNo) {
-//		int commentCount = infoCommentService.countComments(infoNo);
-//	}
 
 	// 특정 게시글 댓글 수 반환(새로고침 없이)
 	@GetMapping("/count/{infoNo}")

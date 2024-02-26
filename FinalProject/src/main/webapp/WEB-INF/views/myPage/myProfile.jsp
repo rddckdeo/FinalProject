@@ -7,16 +7,32 @@
 <head>
 <meta charset="UTF-8">
 <title>profile</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<!-- <link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+	crossorigin="anonymous"> -->
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js" integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.6.0/jquery.json.min.js"
+	integrity="sha512-QE2PMnVCunVgNeqNsmX6XX8mhHW+OnEhUhAWxlZT0o6GFBJfGRCfJ/Ut3HGnVKAxt8cArm7sEqhq2QdSF0R7VQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <link rel="stylesheet"
 	href="../../../../resources/css/board/common/template.css" />
 </head>
-
+<style>
+.card-project-name {
+	color: gray;
+	font-size: 35px;
+}
+.text-style {
+	color: gray;
+	font-size: 25px;
+}
+</style>
 <body>
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical"
 		data-navbarbg="skin6" data-sidebartype="full"
@@ -41,7 +57,7 @@
 										<!-- 프로필 이미지, 이름, 희망 직무 등 -->
 										<div
 											class="justifyCenter width100 height200 direction2 padding30 ">
-											<img src="${sessionScope.path}${sessionScope.picture}"
+											<img src="../../..${filePath}${fileName}"
 												alt="Profile picture" class="profileImg">
 											<div class="width100 height200 direction2 padding30">
 												<div class="profileP justifyCenter direction1">
@@ -75,204 +91,271 @@
 										<!-- 소개 -->
 										<div
 											class="width100 padding30 height200 boxShadow borderDefault bottomMargin20">
-											<h1>소개글</h1>
+											<h1 class="text-style">소개글</h1>
 											<c:choose>
-														<c:when test="${!empty intro}">
-															<p class="small15">${intro}</p>
-														</c:when>
-														<c:otherwise>
-															<p class="small15">소개글이 없습니다.</p>
-														</c:otherwise>
-													</c:choose>
-											
+												<c:when test="${!empty intro}">
+													<p class="small15">${intro}</p>
+												</c:when>
+												<c:otherwise>
+													<p class="small15">소개글이 없습니다.</p>
+												</c:otherwise>
+											</c:choose>
+
 										</div>
 										<!-- 참여한 프로젝트 -->
-							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">참여한 프로젝트</h1>
-								<div class="direction2 scrollbar">
-								<c:set var="Ncount" value="0"></c:set>
-									<!-- 개별 Card -->
-									<c:if test="${!empty NList}">
-										<c:forEach var="item" items="${NList}">
-										<div class="card-item">
-											<c:choose>
-												<c:when test="${!empty item.uploadName}">
-													<img src="/resources/uploads/colabo/project/${item.uploadName}" style= height:180px class="card-img-top" alt="...">
-												</c:when>
-												<c:otherwise>
-													<img src="/resources/uploads/colabo/project/기본이미지.jpg" style= height:180px class="card-img-top" alt="...">
-												</c:otherwise>
-											</c:choose>
-											<div class="card-content">
-												<h5 class="card-title">${item.name} 프로젝트</h5>
-												<p class="card-text height100">${item.detail}</p>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectN${Ncount}">상세보기</button>
-<!-- 프로젝트정보 Modal -->   
-<div class="modal fade" id="projectN${Ncount}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">프로젝트 상세 정보</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-	      <div class="modal-body">
-	      
-	      <h3><strong>1. 프로젝트 주제</strong></h3>
-	      <h5>${item.subject}</h5>
-	      <br>
-	      <h3><strong>2. 프로젝트 이름</strong></h3>
-	      <h5>${item.name}</h5>
-	      <br>
-	      <h3><strong>3. 프로젝트 설명</strong></h3>
-	      <h5>${item.detail}</h5>
-	      <br>
-	      <h3><strong>4. 프로젝트 기술스택</strong></h3>
-	      <h5>${item.stack}</h5>
-	      <br>
-	      <h3><strong>4. 프로젝트 시작일</strong></h3>
-	      <h5>${item.startDate}</h5>
-	      
-	      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div>
-</div>
+										<div
+											class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
+											<h1 class="text-style">참여한 프로젝트</h1>
+											<div class="direction2 scrollbar">
+												<c:set var="Ncount" value="0"></c:set>
+												<!-- 개별 Card -->
+												<c:if test="${!empty NList}">
+													<c:forEach var="item" items="${NList}">
+														<div class="card-item">
+															<c:choose>
+																<c:when test="${!empty item.uploadName}">
+																	<img
+																		src="/resources/uploads/colabo/project/${item.uploadName}"
+																		style="height: 180px" class="card-img-top" alt="...">
+																</c:when>
+																<c:otherwise>
+																	<img src="/resources/uploads/colabo/project/기본이미지.jpg"
+																		style="height: 180px" class="card-img-top" alt="...">
+																</c:otherwise>
+															</c:choose>
+															<div class="card-content">
+																<h5 class="card-title">${item.name}프로젝트</h5>
+																<p class="card-text height100">${item.detail}</p>
+																<button type="button" class="btn btn-primary"
+																	data-bs-toggle="modal"
+																	data-bs-target="#projectN${Ncount}">상세보기</button>
+																<!-- 프로젝트정보 Modal -->
+																<div class="modal fade" id="projectN${Ncount}"
+																	data-bs-backdrop="static" data-bs-keyboard="false"
+																	tabindex="-1" aria-labelledby="staticBackdropLabel"
+																	aria-hidden="true">
+																	<div class="modal-dialog">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h1 class="modal-title fs-5"
+																					id="staticBackdropLabel">프로젝트 상세 정보</h1>
+																				<button type="button" class="btn-close"
+																					data-bs-dismiss="modal" aria-label="Close"></button>
+																			</div>
+																			<div class="modal-body">
+
+																				<h3>
+																					<strong>1. 프로젝트 주제</strong>
+																				</h3>
+																				<h5>${item.subject}</h5>
+																				<br>
+																				<h3>
+																					<strong>2. 프로젝트 이름</strong>
+																				</h3>
+																				<h5>${item.name}</h5>
+																				<br>
+																				<h3>
+																					<strong>3. 프로젝트 설명</strong>
+																				</h3>
+																				<h5>${item.detail}</h5>
+																				<br>
+																				<h3>
+																					<strong>4. 프로젝트 기술스택</strong>
+																				</h3>
+																				<h5>${item.stack}</h5>
+																				<br>
+																				<h3>
+																					<strong>4. 프로젝트 시작일</strong>
+																				</h3>
+																				<h5>${item.startDate}</h5>
+
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary"
+																					data-bs-dismiss="modal">닫기</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<c:set var="Ncount" value="${Ncount+1}"></c:set>
+													</c:forEach>
+												</c:if>
+
+
 											</div>
 										</div>
-		<c:set var="Ncount" value="${Ncount+1}"></c:set>
-										</c:forEach>
-									</c:if>
-									
-									
-								</div>
-							</div>
-							<!-- 진행중인 프로젝트 -->
-							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">진행중인 프로젝트</h1>
-								<div class="direction2 scrollbar">
-								<c:set var="Ccount" value="0"></c:set>
-									<!-- 개별 Card -->
-									<c:if test="${!empty CList}">
-										<c:forEach var="item" items="${CList}">
-										<div class="card-item">
-											<c:choose>
-												<c:when test="${!empty item.uploadName}">
-													<img src="/resources/uploads/colabo/project/${item.uploadName}" style= height:180px class="card-img-top" alt="...">
-												</c:when>
-												<c:otherwise>
-													<img src="/resources/uploads/colabo/project/기본이미지.jpg" style= height:180px class="card-img-top" alt="...">
-												</c:otherwise>
-											</c:choose>
-											<div class="card-content">
-												<h5 class="card-title">${item.name} 프로젝트</h5>
-												<p class="card-text height100">${item.detail}</p>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectC${Ccount}">상세보기</button>
-<!-- 프로젝트정보 Modal -->   
-<div class="modal fade" id="projectC${Ccount}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">프로젝트 상세 정보</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-	      <div class="modal-body">
-	      
-	      <h3><strong>1. 프로젝트 주제</strong></h3>
-	      <h5>${item.subject}</h5>
-	      <br>
-	      <h3><strong>2. 프로젝트 이름</strong></h3>
-	      <h5>${item.name}</h5>
-	      <br>
-	      <h3><strong>3. 프로젝트 설명</strong></h3>
-	      <h5>${item.detail}</h5>
-	      <br>
-	      <h3><strong>4. 프로젝트 기술스택</strong></h3>
-	      <h5>${item.stack}</h5>
-	      <br>
-	      <h3><strong>4. 프로젝트 시작일</strong></h3>
-	      <h5>${item.startDate}</h5>
-	      
-	      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div>
-</div>
+										<!-- 진행중인 프로젝트 -->
+										<div
+											class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
+											<h1 class="text-style">진행중인 프로젝트</h1>
+											<div class="direction2 scrollbar">
+												<c:set var="Ccount" value="0"></c:set>
+												<!-- 개별 Card -->
+												<c:if test="${!empty CList}">
+													<c:forEach var="item" items="${CList}">
+														<div class="card-item">
+															<c:choose>
+																<c:when test="${!empty item.uploadName}">
+																	<img
+																		src="/resources/uploads/colabo/project/${item.uploadName}"
+																		style="height: 180px" class="card-img-top" alt="...">
+																</c:when>
+																<c:otherwise>
+																	<img src="/resources/uploads/colabo/project/기본이미지.jpg"
+																		style="height: 180px" class="card-img-top" alt="...">
+																</c:otherwise>
+															</c:choose>
+															<div class="card-content">
+																<h5 class="card-title">${item.name}프로젝트</h5>
+																<p class="card-text height100">${item.detail}</p>
+																<button type="button" class="btn btn-primary"
+																	data-bs-toggle="modal"
+																	data-bs-target="#projectC${Ccount}">상세보기</button>
+																<!-- 프로젝트정보 Modal -->
+																<div class="modal fade" id="projectC${Ccount}"
+																	data-bs-backdrop="static" data-bs-keyboard="false"
+																	tabindex="-1" aria-labelledby="staticBackdropLabel"
+																	aria-hidden="true">
+																	<div class="modal-dialog">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h1 class="modal-title fs-5"
+																					id="staticBackdropLabel">프로젝트 상세 정보</h1>
+																				<button type="button" class="btn-close"
+																					data-bs-dismiss="modal" aria-label="Close"></button>
+																			</div>
+																			<div class="modal-body">
+
+																				<h3>
+																					<strong>1. 프로젝트 주제</strong>
+																				</h3>
+																				<h5>${item.subject}</h5>
+																				<br>
+																				<h3>
+																					<strong>2. 프로젝트 이름</strong>
+																				</h3>
+																				<h5>${item.name}</h5>
+																				<br>
+																				<h3>
+																					<strong>3. 프로젝트 설명</strong>
+																				</h3>
+																				<h5>${item.detail}</h5>
+																				<br>
+																				<h3>
+																					<strong>4. 프로젝트 기술스택</strong>
+																				</h3>
+																				<h5>${item.stack}</h5>
+																				<br>
+																				<h3>
+																					<strong>4. 프로젝트 시작일</strong>
+																				</h3>
+																				<h5>${item.startDate}</h5>
+
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary"
+																					data-bs-dismiss="modal">닫기</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<c:set var="Ccount" value="${Ccount+1}"></c:set>
+													</c:forEach>
+												</c:if>
+
+
 											</div>
 										</div>
-		<c:set var="Ccount" value="${Ccount+1}"></c:set>
-										</c:forEach>
-									</c:if>
-									
-									
-								</div>
-							</div>
-							<!-- 완료된 프로젝트 -->
-							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">완료된 프로젝트</h1>
-								<div class="direction2 scrollbar">
-								<c:set var="Ycount" value="0"></c:set>
-								
-									<!-- 개별 Card -->
-									<c:if test="${!empty YList}">
-										<c:forEach var="item" items="${YList}">
-										<div class="card-item">
-											<c:choose>
-												<c:when test="${!empty item.uploadName}">
-													<img src="/resources/uploads/colabo/project/${item.uploadName}" style= height:180px class="card-img-top" alt="...">
-												</c:when>
-												<c:otherwise>
-													<img src="/resources/uploads/colabo/project/기본이미지.jpg" style= height:180px class="card-img-top" alt="...">
-												</c:otherwise>
-											</c:choose>
-											<div class="card-content">
-												<h5 class="card-title">${item.name} 프로젝트</h5>
-												<p class="card-text height100">${item.detail}</p>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectY${Ycount}">상세보기</button>
-<!-- 프로젝트정보 Modal -->   
-<div class="modal fade" id="projectY${Ycount}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">프로젝트 상세 정보</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-	      <div class="modal-body">
-	      
-	      <h3><strong>1. 프로젝트 주제</strong></h3>
-	      <h5>${item.subject}</h5>
-	      <br>
-	      <h3><strong>2. 프로젝트 이름</strong></h3>
-	      <h5>${item.name}</h5>
-	      <br>
-	      <h3><strong>3. 프로젝트 설명</strong></h3>
-	      <h5>${item.detail}</h5>
-	      <br>
-	      <h3><strong>4. 프로젝트 기술스택</strong></h3>
-	      <h5>${item.stack}</h5>
-	      <br>
-	      <h3><strong>4. 프로젝트 시작일</strong></h3>
-	      <h5>${item.startDate}</h5>
-	      
-	      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div>
-</div>											</div>
+										<!-- 완료된 프로젝트 -->
+										<div
+											class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
+											<h1 class="bottomMargin20 text-style">완료된 프로젝트</h1>
+											<div class="direction2 scrollbar">
+												<c:set var="Ycount" value="0"></c:set>
+
+												<!-- 개별 Card -->
+												<c:if test="${!empty YList}">
+													<c:forEach var="item" items="${YList}">
+														<div class="card-item">
+															<c:choose>
+																<c:when test="${!empty item.uploadName}">
+																	<img
+																		src="/resources/uploads/colabo/project/${item.uploadName}"
+																		style="height: 180px" class="card-img-top" alt="...">
+																</c:when>
+																<c:otherwise>
+																	<img src="/resources/uploads/colabo/project/기본이미지.jpg"
+																		style="height: 180px" class="card-img-top" alt="...">
+																</c:otherwise>
+															</c:choose>
+															<div class="card-content">
+																<h5 class="card-title">${item.name}프로젝트</h5>
+																<p class="card-text height100">${item.detail}</p>
+																<button type="button" class="btn btn-primary"
+																	data-bs-toggle="modal"
+																	data-bs-target="#projectY${Ycount}">상세보기</button>
+																<!-- 프로젝트정보 Modal -->
+																<div class="modal fade" id="projectY${Ycount}"
+																	data-bs-backdrop="static" data-bs-keyboard="false"
+																	tabindex="-1" aria-labelledby="staticBackdropLabel"
+																	aria-hidden="true">
+																	<div class="modal-dialog">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h1 class="modal-title fs-5"
+																					id="staticBackdropLabel">프로젝트 상세 정보</h1>
+																				<button type="button" class="btn-close"
+																					data-bs-dismiss="modal" aria-label="Close"></button>
+																			</div>
+																			<div class="modal-body">
+
+																				<h3>
+																					<strong>1. 프로젝트 주제</strong>
+																				</h3>
+																				<h5>${item.subject}</h5>
+																				<br>
+																				<h3>
+																					<strong>2. 프로젝트 이름</strong>
+																				</h3>
+																				<h5>${item.name}</h5>
+																				<br>
+																				<h3>
+																					<strong>3. 프로젝트 설명</strong>
+																				</h3>
+																				<h5>${item.detail}</h5>
+																				<br>
+																				<h3>
+																					<strong>4. 프로젝트 기술스택</strong>
+																				</h3>
+																				<h5>${item.stack}</h5>
+																				<br>
+																				<h3>
+																					<strong>4. 프로젝트 시작일</strong>
+																				</h3>
+																				<h5>${item.startDate}</h5>
+
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary"
+																					data-bs-dismiss="modal">닫기</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<c:set var="Ycount" value="${Ycount+1}"></c:set>
+
+													</c:forEach>
+												</c:if>
+
+
+											</div>
 										</div>
-		<c:set var="Ycount" value="${Ycount+1}"></c:set>
-										
-										</c:forEach>
-									</c:if>
-									
-									
-								</div>
-							</div>
 									</div>
 								</div>
 							</div>

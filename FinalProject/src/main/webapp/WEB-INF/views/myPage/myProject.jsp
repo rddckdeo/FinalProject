@@ -14,7 +14,16 @@
   
 
 </head>
-
+<style>
+.card-project-name {
+	color: gray;
+	font-size: 35px;
+}
+.text-style {
+	color: gray;
+	font-size: 25px;
+}
+</style>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
@@ -33,13 +42,13 @@
 							<div class="container-fluid">
 								<!-- Card 안쪽 -->
 								<div class="card">
-									<h1 class="card-project-name bottomMargin20">My Project</h1>
+									<h1 class="card-project-name">My Project</h1>
 									<!-- card body -->
 									<div class="card-body height500 direction1" style="padding-top: 0;">
 
 							<!-- 참여한 프로젝트 -->
 							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">참여한 프로젝트</h1>
+								<h1 class="text-style">참여한 프로젝트</h1>
 								<div class="direction2 scrollbar">
 								<c:set var="Ncount" value="0"></c:set>
 									<!-- 개별 Card -->
@@ -101,7 +110,7 @@
 							</div>
 							<!-- 진행중인 프로젝트 -->
 							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">진행중인 프로젝트</h1>
+								<h1 class="text-style">진행중인 프로젝트</h1>
 								<div class="direction2 scrollbar">
 								<c:set var="Ccount" value="0"></c:set>
 									<!-- 개별 Card -->
@@ -163,7 +172,7 @@
 							</div>
 							<!-- 완료된 프로젝트 -->
 							<div class="width100 height200 padding30 boxShadow borderDefault bottomMargin20">
-								<h1 class="bottomMargin20">완료된 프로젝트</h1>
+								<h1 class="text-style">완료된 프로젝트</h1>
 								<div class="direction2 scrollbar">
 								<c:set var="Ycount" value="0"></c:set>
 								

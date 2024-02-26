@@ -5,11 +5,12 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter // 게터
 @Setter // 세터
 @NoArgsConstructor
-
+@ToString
 public class FreeDTO {
 
 	private int freeNo;
@@ -26,7 +27,7 @@ public class FreeDTO {
 	private int freeCommentCount;
 	private String freeCategory;
 
-	private int mNo;
+	private int memberNo;
 
 	private String nickname; // 작성자 닉네임
 	private int commentCount; // 댓글 수
@@ -34,13 +35,7 @@ public class FreeDTO {
 	private String imageFileName;
 	private String imageFilePath;
 
-	@Override
-	public String toString() {
-		return "FreeDTO [freeNo=" + freeNo + ", freeTitle=" + freeTitle + ", freeContent=" + freeContent + ", freeDate="
-				+ freeDate + ", freeUpdateDate=" + freeUpdateDate + ", freeDeleteDate=" + freeDeleteDate
-				+ ", freeViews=" + freeViews + ", freeTag1=" + freeTag1 + ", freeTag2=" + freeTag2 + ", freeTag3="
-				+ freeTag3 + ", freeBlind=" + freeBlind + ", freeCommentCount=" + freeCommentCount + ", freeCategory="
-				+ freeCategory + ", mNo=" + mNo + ", nickname=" + nickname + ", commentCount=" + commentCount + "]";
-	}
+
+
 
 }

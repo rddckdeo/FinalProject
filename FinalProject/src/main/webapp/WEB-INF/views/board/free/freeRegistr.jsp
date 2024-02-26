@@ -35,11 +35,6 @@
 				<h1 class="card-project-name">게시글 등록</h1>
 			</div>
 
-			<div class="categoryNavigation-div">
-				<div class="categoryNavigation">
-					<a href="">자유게시판 </a>
-				</div>
-			</div>
 			<form action="/free/SubmitRegistr" method="post" id="submitForm">
 				<div class="row">
 					<div class="main-section">

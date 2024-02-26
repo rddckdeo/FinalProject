@@ -114,16 +114,16 @@
 	    )
 	</insert>
 	
-	<select id="getInfoList" resultMap ="getInfoList">
-		SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
-		FROM (
-		    SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
-		    FROM INFO_COMMENT
-		    WHERE M_NO = #{mNo}
-		    ORDER BY INFO_COMMENT_DATE DESC
-		) 
-		WHERE ROWNUM = 1;
-	</select>
+   <select id="getInfoList" resultMap="getInfoList">
+       SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
+       FROM (
+           SELECT INFO_COMMENT_NO, INFO_NO, INFO_COMMENT_CONTENT 
+           FROM INFO_COMMENT
+           WHERE M_NO = #{mNo}
+           ORDER BY INFO_COMMENT_DATE DESC
+       ) 
+       WHERE ROWNUM = 1
+   </select>
 	<select id="getPushInfoNo" resultType="_int">
 		SELECT M_NO FROM INFO
 		WHERE INFO_NO = #{infoBoardNo}

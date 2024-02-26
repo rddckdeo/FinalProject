@@ -21,7 +21,6 @@ a.disabled {
 	position: relative;
 	min-height: 500px;
 }
-
 </style>
 <body>
 	<!-- 전체 구조 -->
@@ -66,7 +65,7 @@ a.disabled {
 																<div class="main-boardList-info">
 
 																	<div>
-																		<img src="${sessionScope.path}${sessionScope.picture}"
+																		<img src="../../..${freePost.imageFilePath}${freePost.imageFileName}"
 																			alt="프로필" width="30" height="30">
 
 																		<p class="main-boardList-info-text">작성일 :
@@ -179,7 +178,7 @@ a.disabled {
 																<div class="main-boardList-info">
 
 																	<div>
-																		<img src="${sessionScope.path}${sessionScope.picture}"
+																		<img src="../../..${imageFilePath}${imageFileName}"
 																			alt="프로필" width="30" height="30">
 
 																		<p class="main-boardList-info-text">작성일 :
