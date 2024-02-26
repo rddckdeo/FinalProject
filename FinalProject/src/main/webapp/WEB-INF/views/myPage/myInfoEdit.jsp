@@ -371,8 +371,9 @@ window.onload = function() {
 	        confirmSave();
 	    });
 	});
-
 	function confirmSave() {
+		 event.preventDefault(); 
+		 
 	    var confirmResult = confirm("저장하시겠습니까?");
 
 	    if (confirmResult) {

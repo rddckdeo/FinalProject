@@ -162,6 +162,7 @@
     ) 
     WHERE ROWNUM = 1
 </select>
+
 	<select id="getPushFreeNo" resultType="_int">
 		SELECT M_NO FROM FREE
 		WHERE FREE_NO = #{freeBoardNo}

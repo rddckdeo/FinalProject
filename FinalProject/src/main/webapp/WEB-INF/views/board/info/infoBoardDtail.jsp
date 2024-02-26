@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title> <
+<title>Insert title here</title>
 <!-- jQuery 로딩 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet"
@@ -60,27 +60,29 @@ p {
 	display: flex;
 	align-items: center;
 }
-.comment-input{
-    border: none;
-    border-bottom: 1px solid;
-    width: 70%;
-    margin-top: 30px;
-    margin-bottom: 40px;
-    margin-right:10px;
-    height:30px;
+
+.comment-input {
+	border: none;
+	border-bottom: 1px solid;
+	width: 70%;
+	margin-top: 30px;
+	margin-bottom: 40px;
+	margin-right: 10px;
+	height: 30px;
 }
-.comment-button{
-    color: #fff;
-    border-color: #0085db;
-    background-color: #0085db;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 12px rgba(26, 115, 232, 0.3);
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    cursor: pointer;
-    padding: 9px 27px 9px 27px;
-    border-radius: 7px;
+
+.comment-button {
+	color: #fff;
+	border-color: #0085db;
+	background-color: #0085db;
+	transition: all 0.3s ease;
+	box-shadow: 0 5px 12px rgba(26, 115, 232, 0.3);
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	padding: 9px 27px 9px 27px;
+	border-radius: 7px;
 }
 </style>
 <body data-mNo="${sessionScope.no}" data-info-no="${infoNo}">
@@ -156,8 +158,8 @@ p {
 												<a href="#"><img
 													src="../../../..${post.imageFilePath}${post.imageFileName}"
 													alt="프로필" width="30" height="30"
-													class="main-boardList-user-img"></a> <a href="#"
-													class="main-boardList-info-text">${post.nickname}</a>
+													class="main-boardList-user-img"></a>
+												<p class="main-boardList-info-text">${post.nickname}</p>
 												<p class="main-boardList-info-text">|</p>
 												<p class="main-boardList-info-text">${post.infoDate}</p>
 											</div>
@@ -165,8 +167,10 @@ p {
 												<img src="../../../../resources/uploads/icon/message.png"
 													alt="" width="20" height="20"
 													class="main-project-comment-text">
+
 												<p id="commentCount_${post.infoNo}"
 													class="main-project-comment-text">${post.commentCount}</p>
+
 												<img src="../../../../resources/uploads/icon/views.png"
 													alt="" width="20" height="20"
 													class="main-project-comment-text">
@@ -176,27 +180,36 @@ p {
 										</div>
 
 									</div>
-									<div class="margin-top-bottom horizontal-layout">
-										<p style="font-size: 18px">제목 | &nbsp;&nbsp;</p>
-										<p>${post.infoTitle}</p>
-										<!-- 제목 -->
-									</div>
-									<hr>
-									<div class="margin-top-bottom">
-										<p>${post.infoContent}</p>
-										<!-- 내용 -->
-									</div>
-									<div class="main-boardList-tag margin-top-bottom">
-										<c:if test="${not empty post.infoTag1}">
-											<p class="tag-div">#${post.infoTag1}</p>
-										</c:if>
-										<c:if test="${not empty post.infoTag2}">
-											<p class="tag-div">#${post.infoTag2}</p>
-										</c:if>
-										<c:if test="${not empty post.infoTag3}">
-											<p class="tag-div">#${post.infoTag3}</p>
-										</c:if>
-									</div>
+									<c:choose>
+										<c:when test="${post.infoBlind eq 'Y'}">
+										       <p style="font-size: 18px; color:blue;"> 블라인드 처리된 글입니다.</p>
+										    </c:when>
+										<c:otherwise>
+											<div class="margin-top-bottom horizontal-layout">
+												<p style="font-size: 18px">제목 | &nbsp;&nbsp;</p>
+												<p>${post.infoTitle}</p>
+												<!-- 제목 -->
+											</div>
+											<hr>
+											<div class="margin-top-bottom">
+												<p>${post.infoContent}</p>
+												<!-- 내용 -->
+											</div>
+											<div class="main-boardList-tag margin-top-bottom">
+												<c:if test="${not empty post.infoTag1}">
+													<p class="tag-div">#${post.infoTag1}</p>
+												</c:if>
+												<c:if test="${not empty post.infoTag2}">
+													<p class="tag-div">#${post.infoTag2}</p>
+												</c:if>
+												<c:if test="${not empty post.infoTag3}">
+													<p class="tag-div">#${post.infoTag3}</p>
+												</c:if>
+											</div>
+										</c:otherwise>
+									</c:choose>
+
+
 								</div>
 							</div>
 						</div>
@@ -217,15 +230,17 @@ p {
 											</c:when>
 											<c:otherwise>
 												<div class="comment-registration">
-													<input type="text" id="commentContent" class="comment-input"
-														placeholder="댓글을 남겨주세요">
-													<button id="submitComment" class="comment-button" type="button">등록</button>
+													<input type="text" id="commentContent"
+														class="comment-input" placeholder="댓글을 남겨주세요">
+													<button id="submitComment" class="comment-button"
+														type="button">등록</button>
 												</div>
 											</c:otherwise>
 										</c:choose>
 									</div>
+									<!-- 댓글 목록 -->
 									<div class="comment-list">
-										<p id="no-comment-message" style="text-align: center;"
+										<p id="no-comment-message"
 											${not empty comments ? 'style="display: none;"' : ''}>댓글이
 											없습니다.</p>
 
@@ -235,8 +250,8 @@ p {
 													<a href="#"><img
 														src="../../../..${post.imageFilePath}${post.imageFileName}"
 														alt="프로필" width="30" height="30"
-														class="main-boardList-user-img"></a> <p
-														class="main-boardList-info-text">${comment.nickname}</p>
+														class="main-boardList-user-img"></a>
+													<p class="main-boardList-info-text">${comment.nickname}</p>
 													<p class="main-boardList-info-text">|</p>
 													<p class="main-boardList-info-text">${comment.infoCommentDate}</p>
 												</div>
@@ -308,8 +323,19 @@ p {
 												</div>
 											</div>
 											<div>
-												<p class="margin-top-bottom">${comment.infoCommentContent}</p>
+
 												<!-- 댓글 내용 -->
+
+												<c:choose>
+													<c:when test="${comment.infoCommentBlind eq 'Y'}">
+												               <p class="margin-top-bottom" style="color:blue;"> 블라인드 처리된 글입니다.</p>
+												            </c:when>
+													<c:otherwise>
+														<p class="margin-top-bottom">${comment.infoCommentContent}</p>
+													</c:otherwise>
+												</c:choose>
+
+
 											</div>
 											<div class="card-project-hr-div">
 												<hr class="card-project-hr">
@@ -437,16 +463,15 @@ p {
 			     var commentRow = '<div class="comment-row">'
 			    	    + '<div class="left-items">'
 			    	    + '<a href="#"><img src="../../../..${post.imageFilePath}${post.imageFileName}" alt="프로필" width="30" height="30" class="main-boardList-user-img"></a>'
-			    	    + '<a href="#" class="main-boardList-info-text">' + comment.infoCommentWriter + '</a>'
+			    	    + '<p class="main-boardList-info-text">' + comment.infoCommentWriter + '</p>'
 			    	    + '<p class="main-boardList-info-text">|</p>'
 			    	    + '<p class="main-boardList-info-text">' + formattedDate + '</p>'
 			    	    + '</div>'
 			            + '<div class="right-items button-layout">'
 			            + '<div>'
 			            + '<a href="JavaScript:void(0);" class="edit-button common-button" data-id="' + comment.infoCommentNo + '" data-infoNo="' + comment.infoNo + '" data-toggle="modal" onclick="openEditModal(this)" data-target="#editModal_' + comment.infoCommentNo + '">수정</a>'
-			            // 수정 및 삭제 버튼에 동일한 클래스 추가
+			            + '<span> | </span>'				
 			            + '<span class="common-button delete-button" onclick="deleteComment(this)" data-id="' + comment.infoCommentNo + '">삭제</span>'
-			            // 신고하기 버튼은 빼기
 			            + '</div>'
 			            + '</div>'
 			            + '</div>'

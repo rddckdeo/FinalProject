@@ -58,20 +58,6 @@ a.disabled {
 									<a href="/info/registr" class="board-update-btn"
 										onclick="return checkLogin()">게시글 작성</a>
 
-									<!-- <ul class="nav-item dropdown">
-										<button class="nav-link dropdown-toggle toggle-btn" href="#"
-											id="dropdownMenuButton" role="button"
-											data-bs-toggle="dropdown" aria-expanded="false">
-											<img class="sort-img"
-												src="../../../../resources/uploads/icon/Sort.png" alt="">
-											정렬
-										</button>
-										<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-											<li><a class="dropdown-item" href="#">최신순</a></li>
-											<li><a class="dropdown-item" href="#">댓글순</a></li>
-											<li><a class="dropdown-item" href="#">조회순</a></li>
-										</ul>
-									</ul> -->
 								</div>
 
 							</div>
@@ -113,23 +99,34 @@ a.disabled {
 
 												</div>
 												<div class="main-boardList-title">
-													<a href="/info/infoDtail/${post.infoNo}">${post.infoTitle}</a>
+													<a href="/info/infoDtail/${post.infoNo}"> <c:choose>
+															<c:when test="${post.infoBlind eq 'Y'}">
+																<p style="color: blue;">블라인드 처리된 글입니다.</p>
+															</c:when>
+															<c:otherwise>
+												                ${post.infoTitle}
+												            </c:otherwise>
+														</c:choose>
+													</a>
 												</div>
+
 
 												<div class="main-boardList-bottm-div">
 
 													<div class="main-boardList-tag">
-														<c:if
-															test="${post.infoTag1 != null && !empty post.infoTag1}">
-															<p class="tag-div">#${post.infoTag1}</p>
-														</c:if>
-														<c:if
-															test="${post.infoTag2 != null && !empty post.infoTag2}">
-															<p class="tag-div">#${post.infoTag2}</p>
-														</c:if>
-														<c:if
-															test="${post.infoTag3 != null && !empty post.infoTag3}">
-															<p class="tag-div">#${post.infoTag3}</p>
+														<c:if test="${post.infoBlind ne 'Y'}">
+															<c:if
+																test="${post.infoTag1 != null && !empty post.infoTag1}">
+																<p class="tag-div">#${post.infoTag1}</p>
+															</c:if>
+															<c:if
+																test="${post.infoTag2 != null && !empty post.infoTag2}">
+																<p class="tag-div">#${post.infoTag2}</p>
+															</c:if>
+															<c:if
+																test="${post.infoTag3 != null && !empty post.infoTag3}">
+																<p class="tag-div">#${post.infoTag3}</p>
+															</c:if>
 														</c:if>
 													</div>
 
@@ -159,26 +156,26 @@ a.disabled {
 								<!-- 페이지네이션 -->
 								<div class="pagination" id="pagination">
 									<div>
-									<c:if test="${totalFreePages > 0}">
-										<a
-											href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage - 1 < 1 ? 1 : infoPage - 1}&pageSize=${pageSize}"
-											class="${infoPage == 1 ? 'disabled' : ''}">&lt;</a>
-										<c:forEach var="i" begin="1" end="${totalInfoPages}">
-											<c:choose>
-												<c:when test="${i == infoPage}">
-													<a
-														href="/board/search?query=${query}&freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}"
-														class="active">${i}</a>
-												</c:when>
-												<c:otherwise>
-													<a
-														href="/board/search?query=${query}&freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}">${i}</a>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-										<a
-											href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage + 1 > totalInfoPages ? totalInfoPages : infoPage + 1}&pageSize=${pageSize}"
-											class="${infoPage == totalInfoPages ? 'disabled' : ''}">&gt;</a>
+										<c:if test="${totalFreePages > 0}">
+											<a
+												href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage - 1 < 1 ? 1 : infoPage - 1}&pageSize=${pageSize}"
+												class="${infoPage == 1 ? 'disabled' : ''}">&lt;</a>
+											<c:forEach var="i" begin="1" end="${totalInfoPages}">
+												<c:choose>
+													<c:when test="${i == infoPage}">
+														<a
+															href="/board/search?query=${query}&freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}"
+															class="active">${i}</a>
+													</c:when>
+													<c:otherwise>
+														<a
+															href="/board/search?query=${query}&freePage=${freePage}&infoPage=${i}&pageSize=${pageSize}">${i}</a>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+											<a
+												href="/board/search?query=${query}&freePage=${freePage}&infoPage=${infoPage + 1 > totalInfoPages ? totalInfoPages : infoPage + 1}&pageSize=${pageSize}"
+												class="${infoPage == totalInfoPages ? 'disabled' : ''}">&gt;</a>
 										</c:if>
 									</div>
 								</div>
@@ -243,24 +240,38 @@ a.disabled {
 														<p class="main-boardList-info-text">${post.freeDate}</p>
 													</div>
 												</div>
+
+
 												<div class="main-boardList-title">
-													<a href="/free/freeDtail/${post.freeNo}">${post.freeTitle}</a>
+													<a href="/free/freeDtail/${post.freeNo}"> <c:choose>
+															<c:when test="${post.freeBlind eq 'Y'}">
+																<p style="color: blue;">블라인드 처리된 글입니다.</p>
+															</c:when>
+															<c:otherwise>
+												               ${post.freeTitle}
+												            </c:otherwise>
+														</c:choose>
+													</a>
 												</div>
+
+
 
 												<div class="main-boardList-bottm-div">
 
 													<div class="main-boardList-tag">
-														<c:if
-															test="${post.freeTag1 != null && !empty post.freeTag1}">
-															<p class="tag-div">#${post.freeTag1}</p>
-														</c:if>
-														<c:if
-															test="${post.freeTag2 != null && !empty post.freeTag2}">
-															<p class="tag-div">#${post.freeTag2}</p>
-														</c:if>
-														<c:if
-															test="${post.freeTag3 != null && !empty post.freeTag3}">
-															<p class="tag-div">#${post.freeTag3}</p>
+														<c:if test="${post.freeBlind ne 'Y'}">
+															<c:if
+																test="${post.freeTag1 != null && !empty post.freeTag1}">
+																<p class="tag-div">#${post.freeTag1}</p>
+															</c:if>
+															<c:if
+																test="${post.freeTag2 != null && !empty post.freeTag2}">
+																<p class="tag-div">#${post.freeTag2}</p>
+															</c:if>
+															<c:if
+																test="${post.freeTag3 != null && !empty post.freeTag3}">
+																<p class="tag-div">#${post.freeTag3}</p>
+															</c:if>
 														</c:if>
 													</div>
 

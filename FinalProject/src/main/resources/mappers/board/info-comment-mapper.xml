@@ -62,7 +62,8 @@
     m.m_nickname AS nickname,
     m.m_picture AS imageFileName,
     m.m_path AS imageFilePath,
-    i.info_title AS infoTitle
+    i.info_title AS infoTitle,
+    ic.info_comment_blind AS infoCommentBlind 
     FROM
     info_comment ic
     JOIN
