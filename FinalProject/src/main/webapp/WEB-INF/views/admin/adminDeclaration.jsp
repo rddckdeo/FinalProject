@@ -90,6 +90,7 @@
 														</div>
 													</div>
 												</li>
+											</ul>
 											</c:forEach>
 											<div class="pagination">
 												<c:choose>
@@ -114,7 +115,6 @@
 													</c:otherwise>
 												</c:choose>
 											</div>
-										</ul>
 									</div>
 								</div>
 								<!-- Card End -->

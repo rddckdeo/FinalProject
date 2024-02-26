@@ -250,6 +250,10 @@ public class ColaboDAO {
 		return sqlSession.update("colaboMapper.allChangePushType", push);
 	}
 
+	public String getProjectName(SqlSessionTemplate sqlSession, int getProjectNo) {
+		return sqlSession.selectOne("colaboMapper.getProjectName", getProjectNo);
+	}
+
 }
 
 

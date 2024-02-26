@@ -47,6 +47,7 @@ public class ColaboMainController {
 		
 		// 최초에 colabo 페이지 들어왔을대 default 값으로 getProjectNo 을 0으로 넣어놈
 		session.setAttribute("getProjectNo", 0);
+		session.setAttribute("getProjectName", "이름이 없습니다");
 //		System.out.println(session.getAttribute("getProjectNo"));
 //		session.setAttribute("no", 1); // 나중에 멤버넘버 로그인했을때 생긴 세션으로 처리하기
 		int memberNo =  (int)session.getAttribute("no");
@@ -72,11 +73,15 @@ public class ColaboMainController {
 	@ResponseBody
 	public String getProjectSession(@RequestParam("projectNo")int projectNo,HttpSession session) {
 		
+		
 		// 배너에 생성되어있는 프로젝트를 선택했을때 projectNo 기존에있던 세션제거 새로생성
 		session.removeAttribute("getProjectNo");
+		session.removeAttribute("getProjectName");
+		
+		String projectName = colaboService.getProjectName(projectNo);
 		
 		session.setAttribute("getProjectNo", projectNo);
-		
+		session.setAttribute("getProjectName", projectName);
 //		System.out.println("가져온 넘버는 : "+projectNo);
 		
 		return "";
@@ -394,11 +399,11 @@ public class ColaboMainController {
 		return "colabo/colaboBasic";
 	}
 	@GetMapping("/colaboSchedule")
-	public String Schedule() {
+	public String Schedule(HttpSession session, Model model) {
 		return "colabo/colaboSchedule";
 	}
 	@GetMapping("/colaboDraw")
-	public String colaboDraw() {
+	public String colaboDraw(HttpSession session, Model model) {
 		return "colabo/colaboDraw";
 	}
 	@GetMapping("/colaboSkill")
@@ -432,13 +437,15 @@ public class ColaboMainController {
 		// 목록 불러오기
 		List<ColaboDTO> list = colaboService.selectListAll(pi, colabo);
 		
+		// 프로젝트 이름 가져오기
+		String projectName = colaboService.getProjectName(getProjectNo);
+		
 		// 게시글 없는 프로젝트에서 공지부분 들어가게되면 nullpointException 나옴
 		if(!list.isEmpty()) {
 			for(ColaboDTO item : list) {
 				String noticeDate = item.getNoticeDate().substring(0,10);
 				item.setNoticeDate(noticeDate);
 			}
-			String projectName = list.get(0).getName();
 			
 			model.addAttribute("projectName", projectName);
 			model.addAttribute("row", row);
@@ -446,7 +453,7 @@ public class ColaboMainController {
 			model.addAttribute("pi", pi);
 			
 		}else {
-			model.addAttribute("projectName", null);
+			model.addAttribute("projectName", projectName);
 			model.addAttribute("row", row);
 			model.addAttribute("list", list);
 			model.addAttribute("pi", pi);
@@ -1384,7 +1391,10 @@ public class ColaboMainController {
 		return "";
 	}
 	
-	
+	@GetMapping("/boardPush.do")
+	public String boardPush() {
+		return "redirect:/mypage/boardPush.do";
+	}
 	
 	
 	

@@ -31,7 +31,7 @@ window.addEventListener('load', function(){
 					a.href = "boardPush.do";
 					// p태그 생성
 					let p = document.createElement('p');
-					p.classList.add('mb-0', 'fs-3');
+					p.classList.add('mb-0', 'fs-3', 'pushFont');
 					if(pushDTO.pushType === 'comment'){
 						p.textContent = '게시글에 댓글이 달렸습니다.';					
 					}else if(pushDTO.pushType === 'blind'){

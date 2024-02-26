@@ -8,15 +8,13 @@
 <meta charset="UTF-8">
 <title>profile</title>
 <%@ include file="/WEB-INF/views/myPage/common/head.jsp"%>
-<link rel="stylesheet"
-	href="../../../../resources/css/board/info/infoBoard.css" />
+<link rel="stylesheet" href="../../../../resources/css/board/info/infoBoard.css" />
 </head>
 <style>
 a.disabled {
 	pointer-events: none;
 	color: gray;
 }
-
 .board-card-row {
 	position: relative;
 	min-height: 500px;
@@ -32,10 +30,9 @@ a.disabled {
 		<!-- 페이지 오른쪽 컨텐츠 영역 -->
 		<div class="body-wrapper">
 			<!-- 헤더 영역 -->
-			<%@ include file="/WEB-INF/views/myPage/common/header.jsp"%>
-			<div class="cardSize">
+			<jsp:include page="./../board/common/header.jsp" />
 				<div class="row">
-					<div class="main-section">
+					<div class="main-section" style="padding-top:25px;">
 						<div class="container-fluid">
 							<div class="container-fluid">
 								<!-- Card 안쪽 -->
@@ -264,9 +261,6 @@ a.disabled {
 														href="/mypage/myboard.do/?freePage=${freePage}&infoPage=${infoPage + 1 > infoPageInfo.maxPage ? infoPageInfo.maxPage : infoPage + 1}"
 														class="${infoPage == infoPageInfo.maxPage ? 'disabled' : ''}">&gt;</a>
 												</div>
-
-
-
 											</div>
 										</div>
 									</div>
@@ -277,6 +271,5 @@ a.disabled {
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>

@@ -54,13 +54,12 @@ public class CommentController {
 
 	        try {
 	            InfoCommentDTO savedComment = infoCommentService.save(commentDTO);
-
 	            if (savedComment == null) {
 	                // 저장 실패 처리
 	            	Logger logger = LoggerFactory.getLogger(CommentController.class);
 	                logger.error("댓글 저장에 실패하였습니다.");
 	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 저장에 실패하였습니다.");
-	            }else { // board Push info Enroll
+	            } else { // board Push info Enroll
 	            	// 필요한 정보 가져오기
 	            	Map<String, Object> param = new HashMap<>();
 	            	param.put("nickname",mNick);

@@ -235,8 +235,8 @@ p {
 													<a href="#"><img
 														src="../../../..${post.imageFilePath}${post.imageFileName}"
 														alt="프로필" width="30" height="30"
-														class="main-boardList-user-img"></a> <a href="#"
-														class="main-boardList-info-text">${comment.nickname}</a>
+														class="main-boardList-user-img"></a> <p
+														class="main-boardList-info-text">${comment.nickname}</p>
 													<p class="main-boardList-info-text">|</p>
 													<p class="main-boardList-info-text">${comment.infoCommentDate}</p>
 												</div>

@@ -8,6 +8,7 @@
 <link href="/resources/css/member/default.css" rel="stylesheet">
 <link href="/resources/css/myPage/myPage.css" rel="stylesheet">
 <link href="/resources/css/myPage/boardMain.css" rel="stylesheet">
+<link href="/resources/css/board/common/template.css" rel="stylesheet">
 </head>
 <body>
 
