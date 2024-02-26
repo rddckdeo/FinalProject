@@ -198,11 +198,11 @@ public class MyPageController {
 	    System.out.println(myPageInfo);
 	    MyPageDTO member = mypageService.findMemberByNo(mNo);
 	    // 업로드된 파일 처리
-	    if (imageFile != null && !member.getUploadName().isEmpty()) {
+	    if (imageFile != null && member.getUploadName() != null) {
 	        // 업로드된 파일이 존재하면 파일 저장
 	        MypageUploadFile.uploadMethod(imageFile, myPageInfo);
 	        MypageUploadFile.deleteFile(member.getUploadName());
-	    }else if (imageFile != null && member.getUploadName().isEmpty()) {
+	    }else if (imageFile != null && member.getUploadName() == null) {
 	    	MypageUploadFile.uploadMethod(imageFile, myPageInfo);
 	    } else {
 	        // 이미지 파일이 없는 경우, 기존에 DB에 저장된 이미지 정보를 사용
