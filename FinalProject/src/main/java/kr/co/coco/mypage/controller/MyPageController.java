@@ -196,13 +196,16 @@ public class MyPageController {
 	    // 세션에서 회원 번호 가져오기
 	    Integer mNo = (Integer) session.getAttribute("no");
 	    System.out.println(myPageInfo);
+	    MyPageDTO member = mypageService.findMemberByNo(mNo);
 	    // 업로드된 파일 처리
-	    if (imageFile != null && !imageFile.isEmpty()) {
+	    if (imageFile != null && !member.getUploadName().isEmpty()) {
 	        // 업로드된 파일이 존재하면 파일 저장
 	        MypageUploadFile.uploadMethod(imageFile, myPageInfo);
+	        MypageUploadFile.deleteFile(member.getUploadName());
+	    }else if (imageFile != null && member.getUploadName().isEmpty()) {
+	    	MypageUploadFile.uploadMethod(imageFile, myPageInfo);
 	    } else {
 	        // 이미지 파일이 없는 경우, 기존에 DB에 저장된 이미지 정보를 사용
-	    	MyPageDTO member = mypageService.findMemberByNo(mNo);
 	        myPageInfo.setUploadName(member.getUploadName());
 	        myPageInfo.setUploadPath(member.getUploadPath());
 	    }
@@ -259,6 +262,7 @@ public class MyPageController {
 		    // 정보 게시판 게시글 조회
 		    List<InfoDTO> infoPosts = mypageService.fetchInfoBoardPosts(mNo, infoPage, pageSize);  
 		    
+		    System.out.println("testsetsetstsettesttest"+infoPosts.get(0).getImageFileName());
 		    // 자유 게시판 게시글 조회
 		    List<FreeDTO> freePosts = mypageService.fetchFreeBoardPosts(mNo, freePage, pageSize);
 		    
