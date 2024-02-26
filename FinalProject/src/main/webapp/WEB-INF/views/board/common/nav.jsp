@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="/resources/css/member/default.css" rel="stylesheet">
 <title>Insert title here</title>
 </head>
 <style>
@@ -18,7 +19,7 @@ margin-top:40px;
 	margin-left:5px;
 	margin-right:5px;
 }
-.modal {
+.modal-t {
 	display: none;
 	position: fixed;
 	z-index: 1;
@@ -32,7 +33,7 @@ margin-top:40px;
 	padding-top: 60px;
 }
 
-.modal-content {
+.modal-content-t {
 	background-color: #fefefe;
 	margin: 5% auto;
 	padding: 20px;
@@ -60,7 +61,7 @@ margin-top:40px;
 		<!-- 사이드바 스크롤-->
 		<div class="scroll-sidebar" data-simplebar>
 			<!-- 로고 -->
-			<div class="d-flex mb-4 align-items-center justify-content-between">
+			<div class="d-flex mb-4 align-items-center justify-content-between direction1">
 				<a href="/member/mainForm.do" class="text-nowrap logo-img ms-0 ms-md-1"> <img
 					src="../../../../resources/uploads/icon/cocoLogo.png" width="180"
 					alt="">
@@ -198,8 +199,8 @@ margin-top:40px;
 					</ul>
 					<li class="footer_li"><a class="privacy_link"
 						onclick="openModal('privacyModal')">개인정보처리방침</a>
-						<div id="privacyModal" class="modal">
-							<div class="modal-content">
+						<div id="privacyModal" class="modal-t">
+							<div class="modal-content-t">
 								<span class="close" onclick="closeModal('privacyModal')">&times;</span>
 								<!-- 개인정보 처리 방침 내용 추가 -->
 								<h3>개인정보 처리 방침</h3>
@@ -249,9 +250,9 @@ margin-top:40px;
 [회사/서비스명]은 귀하의 개인 정보를 소중히 여깁니다. 귀하의 개인 정보 보호와 관련된 권리를 보장하기 위해 최선을 다하겠습니다. 혹시 개인 정보 처리 방침에 대한 추가적인 문의사항이 있으시면 [고객센터 연락처 또는 이메일]로 문의해주시기 바랍니다.</p>
 							</div>
 						</div>
-						<p>|</p> <a class="terms_link" onclick="openModal('termsModal')">이용약관</a>
+						<p>|</p> <a class="terms_link-t" onclick="openModal('termsModal')">이용약관</a>
 						<div id="termsModal" class="modal">
-							<div class="modal-content">
+							<div class="modal-content-t">
 								<span class="close" onclick="closeModal('termsModal')">&times;</span>
 								<!-- 이용 약관 내용 추가 -->
 								<h1>이용약관</h1>

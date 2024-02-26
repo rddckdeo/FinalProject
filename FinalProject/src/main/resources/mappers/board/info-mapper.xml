@@ -82,6 +82,7 @@
 		i.info_tag2 AS infoTag2,
 		i.info_tag3 AS
 		infoTag3,
+		i.info_blind AS infoBlind,
 		(SELECT
 		COUNT(*) FROM info_comment WHERE info_no = i.info_no)
 		AS commentCount

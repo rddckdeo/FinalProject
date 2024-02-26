@@ -104,7 +104,8 @@ a.disabled {
 												<div class="main-boardList-info">
 
 													<div>
-														 <img src="../../../..${post.imageFileName}${post.imageFilePath}" 
+														<img
+															src="../../../..${post.imageFileName}${post.imageFilePath}"
 															alt="프로필" width="30" height="30">
 
 														<p class="main-boardList-info-text">${post.nickname}</p>
@@ -116,39 +117,50 @@ a.disabled {
 												</div>
 
 												<div class="main-boardList-title">
-													<a href="/info/infoDtail/${post.infoNo}">${post.infoTitle}</a>
+													<a href="/info/infoDtail/${post.infoNo}"> <c:choose>
+															<c:when test="${post.infoBlind eq 'Y'}">
+																<p style="color:blue;">블라인드 처리된 글입니다.</p>
+															</c:when>
+															<c:otherwise>
+												                ${post.infoTitle}
+												            </c:otherwise>
+														</c:choose>
+													</a>
 												</div>
 
 												<div class="main-boardList-bottm-div">
 
 													<div class="main-boardList-tag">
+														<c:if test="${post.infoBlind ne 'Y'}">
+															<c:if test="${not empty post.infoTag1}">
+																<p class="tag-div">#${post.infoTag1}</p>
+															</c:if>
 
-														<c:if test="${not empty post.infoTag1}">
-															<p class="tag-div">#${post.infoTag1}</p>
+															<c:if test="${not empty post.infoTag2}">
+																<p class="tag-div">#${post.infoTag2}</p>
+															</c:if>
+
+															<c:if test="${not empty post.infoTag3}">
+																<p class="tag-div">#${post.infoTag3}</p>
+															</c:if>
 														</c:if>
-
-														<c:if test="${not empty post.infoTag2}">
-															<p class="tag-div">#${post.infoTag2}</p>
-														</c:if>
-
-														<c:if test="${not empty post.infoTag3}">
-															<p class="tag-div">#${post.infoTag3}</p>
-														</c:if>
-
 													</div>
 
 													<div class="main-comment-section">
 
 														<div class="main-project-comment">
-															<img src="../../../../resources/uploads/icon/message.png" alt="message" width="20" height="20"
+															<img src="../../../../resources/uploads/icon/message.png"
+																alt="message" width="20" height="20"
 																class="main-project-comment-text">
 															<p class="main-project-comment-text">${post.commentCount}</p>
 														</div>
 
 														<div class="main-project-comment">
-															<img src="../../../../resources/uploads/icon/views.png" alt="message" width="20" height="20"
+															<img src="../../../../resources/uploads/icon/views.png"
+																alt="message" width="20" height="20"
 																class="main-project-comment-text">
-															<p class="main-project-comment-text"> ${post.infoViews}</p>
+															<p class="main-project-comment-text">
+																${post.infoViews}</p>
 														</div>
 
 													</div>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="FreeCommentMapper">
+<mapper namespace="freeCommentMapper">
 
 	<!-- 댓글 저장 -->
 	<insert id="insertComment" parameterType="freeComment">
@@ -31,7 +31,8 @@
 	<!-- 댓글 등록 시, free_comment_count 업데이트 -->
 	<update id="increaseCommentCount" parameterType="int">
 		UPDATE free
-		SET free_comment_count = free_comment_count + 1
+		SET
+		free_comment_count = free_comment_count + 1
 		WHERE free_no = #{freeNo}
 	</update>
 
@@ -52,26 +53,28 @@
 	</update>
 
 	<!-- 댓글 목록 불러오기 -->
-<select id="selectCommentsByPostId" parameterType="int" resultType="freeComment">
-    SELECT
-    fc.free_comment_no AS freeCommentNo,
-    fc.free_no AS freeNo,
-    fc.m_no AS mNo,
-    fc.free_comment_content AS freeCommentContent,
-    fc.free_comment_date AS freeCommentDate,
-    m.m_nickname AS nickname,
-    m.m_picture AS imageFileName,
-    m.m_path AS imageFilePath,
-    f.free_title AS freeTitle
-    FROM
-    free_comment fc
-    JOIN
-    member m ON fc.m_no = m.m_no
-    JOIN
-    free f ON fc.free_no = f.free_no
-    WHERE
-    fc.free_no = #{freeNo} AND fc.free_comment_delete_date IS NULL
-</select>
+	<select id="selectCommentsByPostId" parameterType="int"
+		resultType="freeComment">
+		SELECT
+		fc.free_comment_no AS freeCommentNo,
+		fc.free_no AS freeNo,
+		fc.m_no AS mNo,
+		fc.free_comment_content AS freeCommentContent,
+		fc.free_comment_date AS freeCommentDate,
+		m.m_nickname AS nickname,
+		m.m_picture AS imageFileName,
+		m.m_path AS imageFilePath,
+		f.free_title AS freeTitle,
+		fc.free_comment_blind AS freeCommentBlind
+		FROM
+		free_comment fc
+		JOIN
+		member m ON fc.m_no = m.m_no
+		JOIN
+		free f ON fc.free_no = f.free_no
+		WHERE
+		fc.free_no = #{freeNo} AND fc.free_comment_delete_date IS NULL
+	</select>
 
 	<!-- 사용자 닉네임 불러오기 -->
 	<select id="getNickname" parameterType="int" resultType="string">
@@ -88,13 +91,15 @@
 	<!-- 댓글 번호로 댓글 정보 가져오기 -->
 	<select id="getCommentById" parameterType="int"
 		resultType="freeComment">
-		SELECT * FROM free_comment WHERE free_comment_no = #{freeCommentNo}
+		SELECT * FROM free_comment WHERE free_comment_no =
+		#{freeCommentNo}
 	</select>
 
 	<!-- 댓글 번호로 게시글 번호 가져오기 -->
 	<select id="getFreeNoFromComment" resultType="int"
 		parameterType="int">
-		SELECT free_no FROM free_comment WHERE free_comment_no = #{freeCommentNo}
+		SELECT free_no FROM free_comment WHERE free_comment_no =
+		#{freeCommentNo}
 	</select>
 
 	<!-- 댓글 업데이트 -->

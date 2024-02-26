@@ -22,48 +22,48 @@ public class FreeCommentDAO {
 
     // 댓글 저장
     public FreeCommentDTO save(FreeCommentDTO commentDTO) {
-        sqlSession.insert("FreeCommentMapper.insertComment", commentDTO);
+        sqlSession.insert("freeCommentMapper.insertComment", commentDTO);
         return getCommentById(commentDTO.getFreeCommentNo());
     }
 
     // 댓글 번호로 댓글 정보 가져오기
     public FreeCommentDTO getCommentById(int commentId) {
-        return sqlSession.selectOne("FreeCommentMapper.getCommentById", commentId);
+        return sqlSession.selectOne("freeCommentMapper.getCommentById", commentId);
     }
 
     // 댓글 목록 불러오기
     public List<FreeCommentDTO> selectCommentsByPostId(int freeNo) {
-        return sqlSession.selectList("FreeCommentMapper.selectCommentsByPostId", freeNo);
+        return sqlSession.selectList("freeCommentMapper.selectCommentsByPostId", freeNo);
     }
 
     // 사용자 닉네임 불러오기
     public String getNickname(int mNo) {
-        return sqlSession.selectOne("FreeCommentMapper.getNickname", mNo);
+        return sqlSession.selectOne("freeCommentMapper.getNickname", mNo);
     }
 
     // 새로고침 없이 댓글 수 업데이트
     public int countComments(int freeNo) {
-        return sqlSession.selectOne("FreeCommentMapper.countComments", freeNo);
+        return sqlSession.selectOne("freeCommentMapper.countComments", freeNo);
     }
 
     // 댓글 삭제
     public int delete(Integer id) {
-        return sqlSession.delete("FreeCommentMapper.deleteComment", id);
+        return sqlSession.delete("freeCommentMapper.deleteComment", id);
     }
 
     // 댓글 번호로 게시글 번호 가져오기
     public int getFreeNoFromComment(int freeCommentNo) {
-        return sqlSession.selectOne("FreeCommentMapper.getFreeNoFromComment", freeCommentNo);
+        return sqlSession.selectOne("freeCommentMapper.getFreeNoFromComment", freeCommentNo);
     }
 
     // 댓글 등록 시, free_comment_count 업데이트
     public void increaseCommentCount(int freeNo) {
-        sqlSession.update("FreeCommentMapper.increaseCommentCount", freeNo);
+        sqlSession.update("freeCommentMapper.increaseCommentCount", freeNo);
     }
 
     // 해당 게시글에 연결된 모든 댓글 삭제
     public void deleteByFreeNo(int freeNo) {
-        sqlSession.delete("FreeCommentMapper.deleteByFreeNo", freeNo);
+        sqlSession.delete("freeCommentMapper.deleteByFreeNo", freeNo);
     }
 
     // 해당 게시글에 연결된 모든 댓글 삭제
