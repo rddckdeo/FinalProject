@@ -43,7 +43,7 @@
 								<p class="font20px subP whiteColor">방문자 통계</p>
 								<div class="direction2 justifyAround alignCenter height80per">
 									<div class="subCard4 boxShadow borderDefault backWhite borderRadiusd2">
-										<canvas id="bar-chart-horizontal" width="600" height="200"></canvas>
+										<canvas id="bar-chart-horizontal" width="600" height="200" style="max-height:350px;"></canvas>
 										<script>
 											new Chart(document.getElementById("bar-chart-horizontal"), {
 										    type: 'horizontalBar',

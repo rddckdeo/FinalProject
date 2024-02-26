@@ -19,7 +19,7 @@ import kr.co.coco.mypage.model.dto.MyPageDTO;
 
 public class MypageUploadFile {
 	
-	 private static final String UPLOAD_PATH = "/Users/kangnayoung/git/FinalProject/FinalProject/src/main/webapp/resources/uploads/member/";
+	 private static final String UPLOAD_PATH = "C:\\Users\\USER\\git\\FinalProject\\FinalProject\\src\\main\\webapp\\resources\\uploads\\member\\";
 
 	
     public static boolean deleteFile(String fileName) {
