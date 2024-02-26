@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="/resources/css/member/default.css" rel="stylesheet">
 <title>Insert title here</title>
 </head>
 <style>
@@ -26,7 +27,7 @@ margin-top:40px;
 		<!-- 사이드바 스크롤-->
 		<div class="scroll-sidebar" data-simplebar>
 			<!-- 로고 -->
-			<div class="d-flex mb-4 align-items-center justify-content-between">
+			<div class="d-flex mb-4 align-items-center justify-content-between direction1">
 				<a href="/member/mainForm.do" class="text-nowrap logo-img ms-0 ms-md-1"> <img
 					src="../../../../resources/uploads/icon/cocoLogo.png" width="180"
 					alt="">
