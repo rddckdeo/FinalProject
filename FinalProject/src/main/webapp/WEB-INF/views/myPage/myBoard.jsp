@@ -62,7 +62,7 @@ a.disabled {
 																<div class="main-boardList-info">
 
 																	<div>
-																		<img src="../../..${freePost.imageFilePath}${freePost.imageFileName}"
+																		<img src="../../..${freePost.imageFileName}${freePost.imageFilePath}"
 																			alt="프로필" width="30" height="30">
 
 																		<p class="main-boardList-info-text">작성일 :
@@ -96,7 +96,7 @@ a.disabled {
 
 																		<div class="main-project-comment">
 																			<img
-																				src="../../../../resources/uploads/icon/message.png"
+																				src="../../../resources/uploads/icon/message.png"
 																				alt="message" width="20" height="20"
 																				class="main-project-comment-text">
 																			<p class="main-project-comment-text">${freePost.freeCommentCount}</p>
@@ -175,7 +175,7 @@ a.disabled {
 																<div class="main-boardList-info">
 
 																	<div>
-																		<img src="../../..${imageFilePath}${imageFileName}"
+																		<img src="../../../${infoPost.imageFileName}${infoPost.imageFilePath}"
 																			alt="프로필" width="30" height="30">
 
 																		<p class="main-boardList-info-text">작성일 :
