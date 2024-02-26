@@ -152,16 +152,16 @@
 	    )
 	</insert>
 	<!-- free -->
-	<select id="getFreeList" resultMap ="getFreeList">
-		SELECT FREE_COMMENT_NO, FREE_NO, FREE_COMMENT_CONTENT 
-		FROM (
-		    SELECT FREE_COMMENT_NO, FREE_NO, FREE_COMMENT_CONTENT 
-		    FROM FREE_COMMENT
-		    WHERE M_NO = #{mNo}
-		    ORDER BY FREE_COMMENT_DATE DESC
-		) 
-		WHERE ROWNUM = 1;
-	</select>
+<select id="getFreeList" resultMap="getFreeList">
+    SELECT FREE_COMMENT_NO, FREE_NO, FREE_COMMENT_CONTENT 
+    FROM (
+        SELECT FREE_COMMENT_NO, FREE_NO, FREE_COMMENT_CONTENT 
+        FROM FREE_COMMENT
+        WHERE M_NO = #{mNo}
+        ORDER BY FREE_COMMENT_DATE DESC
+    ) 
+    WHERE ROWNUM = 1
+</select>
 	<select id="getPushFreeNo" resultType="_int">
 		SELECT M_NO FROM FREE
 		WHERE FREE_NO = #{freeBoardNo}
