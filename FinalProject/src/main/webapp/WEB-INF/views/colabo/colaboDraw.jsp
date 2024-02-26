@@ -35,6 +35,8 @@
 			 <%@ include file="./common/colaboHeader.jsp" %>
 			<div class="container-fluid">
 	<br>
+	<h3> ${sessionScope.getProjectName} 팀 그림판</h3>
+	<hr>
     <!-- 색조정 버튼들 -->
     <button id="black" class="changeColor btn btn-outline-primary" value="black" style="background-color:black">검정</button>
     <button id="redBtn" class="changeColor btn btn-outline-primary" value="red" style="background-color:red">빨강</button>

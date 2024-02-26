@@ -138,18 +138,6 @@
                 <span class="hide-menu ms-2 ps-1">프로젝트 기능분담</span>
               </a>
             </li>
-            <li class="sidebar-item">
-              <a
-                class="sidebar-link sidebar-link primary-hover-bg"
-                href="./sample-page.html"
-                aria-expanded="false"
-              >
-                <span class="aside-icon p-2 bg-light-primary rounded-3">
-                  <i class="ti ti-aperture fs-7 text-primary"></i>
-                </span>
-                <span class="hide-menu ms-2 ps-1">Sample Page</span>
-              </a>
-            </li>
           </ul>
           <div class="pb-3 options text-nowrap">
             <div class="nav-small-cap">
