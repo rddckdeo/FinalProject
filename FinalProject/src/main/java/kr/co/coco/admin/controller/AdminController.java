@@ -657,6 +657,9 @@ public class AdminController {
 		Map<String, Object> param = new HashMap<>();
 		param.put("mNo",mNo);
 		param.put("boardNo",boardNo);
+		System.out.println(mNo);
+		System.out.println(boardNo);
+		
 		// board_Tile값 가져오기 ( info와 free 테이블이 나눠져 있기에 구분
 		String getBoardTitle = null;
 		if(boardType.equals("info")) {
@@ -667,6 +670,7 @@ public class AdminController {
 		}else {
 			System.out.println("getBoardTitle Error");
 		}
+		System.out.println("getBoardTitle : "+getBoardTitle);
 		param.put("boardType", boardType);
 		param.put("title", getBoardTitle);
 		int boardPushBlind = pushService.boardPushBlind(param);

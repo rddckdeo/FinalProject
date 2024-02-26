@@ -88,8 +88,8 @@
 										</div>
 										<!-- paging 처리 -->
 									</div>
-									<div class="subCard2 boxShadow borderDefault backWhite borderRadiusd2">
-										<canvas id="doughnut-chart" width="250" height="140"></canvas>
+									<div class="subCard2 boxShadow borderDefault backWhite borderRadiusd2" style="display:flex; justify-content:center;">
+										<canvas id="doughnut-chart" width="250" height="140" style="max-width: 600px;"></canvas>
 										<script>
 											new Chart(document.getElementById("doughnut-chart"), {
 											    type: 'doughnut',
