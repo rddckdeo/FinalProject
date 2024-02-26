@@ -90,8 +90,8 @@
 														</div>
 													</div>
 												</li>
-											</ul>
 											</c:forEach>
+											</ul>
 											<div class="pagination">
 												<c:choose>
 													<c:when test="${pi.cpage eq 1}">
