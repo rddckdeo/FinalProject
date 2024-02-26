@@ -29,7 +29,7 @@
 				<div class="row">
 					<div class="card w-100" style="width:70%; height:70%;">
 						
-						<h3>상세보기</h3>
+						<h3>수정하기</h3>
          <hr>
          <br>
 		<form action="/colabo/noticeEdit.do" method="post" >
