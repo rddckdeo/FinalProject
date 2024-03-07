@@ -24,5 +24,10 @@ CoCo 프로젝트는 자신의 아이디어를 기획 및 구상하여 프로젝
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/feea80be-d074-4de1-8003-63a8cb8b394b)
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/5328cc2d-8a68-4186-be86-0bc1ae47092f)
 ## 나의 기능 소개
+- Main Page
 
+- 로그인, 회원가입
+  -  [[⭐로그인|로그인]]
+- Admin Page
+- 알림 기능 구현
 ## 프로젝트 후기
