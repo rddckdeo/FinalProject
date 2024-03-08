@@ -1,6 +1,10 @@
 # 개발자 협력 웹사이트 CoCo (Collaboration Code)
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/e8e30ab1-3acf-4c62-b6ef-25ada0d50d8c)
-
+# 나의 기능
+- ## [Main Page](https://github.com/rddckdeo/FinalProject/wiki/%E2%AD%90Main-Page)
+- ## [로그인, 회원가입](https://github.com/rddckdeo/FinalProject/wiki/%E2%AD%90intro-1)
+- ## [Admin Page]
+- ## [알림 기능]
 ## 프로젝트 소개
 **프로젝트 팀명 | CoCo ( Collaboration Code )
 <br/>
@@ -44,13 +48,7 @@ CoCo 프로젝트는 자신의 아이디어를 기획 및 구상하여 프로젝
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/18e985ab-cdc2-4f80-8f59-d353b4569272)
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/feea80be-d074-4de1-8003-63a8cb8b394b)
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/5328cc2d-8a68-4186-be86-0bc1ae47092f)
-## 나의 기능 소개
-- Main Page
 
-- 로그인, 회원가입
-  -  [[⭐로그인|로그인]]
-- Admin Page
-- 알림 기능 구현
 ## 프로젝트 후기
 - 마지막 final 프로젝트는 기존 세미 프로젝트보다 비중있고 더욱 큰 프로젝트를 하고싶다는 욕심이 커서 처음에 팀원들과 주제를 정할 떄 바로 정하지 못하고 헤매었으나 그때 나왔던 주제를 합쳐서 새로운 개념의 홈페이지를 만들자는 의견으로 결정되어 CoCo 프로젝트를 만들게 되었습니다. 예전 프로젝트를 진행할 때 작업을 하다 끊기거나 다음날이 되었을 때 어디까지 작업했는지 찾고 내가 어떤 부분을 설정했는지 기억이 안나서 헤매는 시간이 많았는데 이번 final 프로젝트는 그러한 오류사항을 만들고 싶지 않아 개별적으로 체크리스트를 만들어 필요한 작업이 어떤 것인지, 어떤 부분을 작업했는지 등을 기록해두니 작업에 대한 이해와 불필요한 시간 소요가 없어졌습니다.
 <p align="center">
