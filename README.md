@@ -45,8 +45,7 @@ CoCo 프로젝트는 자신의 아이디어를 기획 및 구상하여 프로젝
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/5328cc2d-8a68-4186-be86-0bc1ae47092f)
 
 # 나의 기능 
-### ( 더 자세한 설명을 원하실 경우 Click해주세요 )
-- ## [Main Page](https://github.com/rddckdeo/FinalProject/wiki/%E2%AD%90Main-Page)
+- ## Main Page
 ### Main Page는 협업 홈페이지와 게시판 홈페이지 중 선택하여 들어갈 수 있으며 로그인, 마이페이지, Admin 페이지로 이동할 수 있는 포털사이트 개념으로 만들었습니다.
 ### 1.페이지 별 이동
 5개의 홈페이지로 이동할 수 있으며 각각 로그인을 해야만 이동할 수 있는 페이지, 비회원도 이용 가능한 홈페이지, admin 권한을 부여받은 인원 접속 가능한 홈페이지가 있습니다.
@@ -57,15 +56,15 @@ CoCo 프로젝트는 자신의 아이디어를 기획 및 구상하여 프로젝
 3. admin이 접속했을 경우 admin Page 접속이 보이게 설정
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/c894ea3e-62d2-4b36-81bc-218a54b1f9fe)
 
-- ## [로그인, 회원가입](https://github.com/rddckdeo/FinalProject/wiki/%E2%AD%90intro-1)
+- ## 로그인, 회원가입
 ### 로그인 기능
-1. 로그인, 로그아웃 기능 구현 <br/>
+### 1. 로그인, 로그아웃 기능 구현 <br/>
 <p align="center">
     <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/fb2a6e62-7c9c-497a-b2e5-1a270831814c" width="400" height="500">
 </p> <br/>
 
 
-2. sweet alert를 사용한 Login 여부 확인
+### 2. sweet alert를 사용한 Login 여부 확인
 <div align="center">
 <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/33b953dc-c106-410a-a779-dc943e5fa19e" width ="300" height="200">
 <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/c68432e1-ce5f-4f1e-817f-8a49bc6f82a6" width ="300" height="200">
@@ -74,24 +73,24 @@ CoCo 프로젝트는 자신의 아이디어를 기획 및 구상하여 프로젝
 
 
 ### 회원 가입
-1. 아이디, 닉네임 중복체크 기능
+### 1. 아이디, 닉네임 중복체크 기능
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/8f673394-dd73-4358-800d-a862627b5265) <br/>
 회원가입을 하기 전 ID 또는 닉네임이 중복되면 안되기에 버튼을 click하여 데이터베이스에 일치하는 값이 있는지 확인을 합니다.
 - 일차하는 값이 있을 경우 "이미 (아이디가, 닉네임이) 있습니다." 표시
 - 일치하는 값이 없을 경우 "사용 가능한 (아이디, 닉네임)입니다." 표시
 
-2. 비밀번호 암호화
+### 2. 비밀번호 암호화
 - 스프링 시큐리티에서 제공하는 bcryptpasswordencoder를 사용하여 비밀번호 암호화 사용
 <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/77be0d2e-9f45-4742-b8de-6859fe099819" width ="500" height="150"> <br/>
 - 로그인을 할 때도 bcryptpasswordencoder에 포함된 match 기능을 사용하여 입력한 비밀번호와 암호화된 비밀번호가 일치한지 여부를 확인
 
-3. 비밀번호 일치 여부 확인
+### 3. 비밀번호 일치 여부 확인
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/57f34ccf-59eb-4466-bca7-7e1272b378cc) <br/>
 입력한 비밀번호와 비밀번호 재확인에 입력된 값을 비교하여 해당 값이 일치한지 표시
 - 일치하는 경우 "비밀번호가 일치합니다" 표시
 - 일치하지 않을 경우 "비밀번호가 일치하지 않습니다." 표시
 
-4. 희망직무, 기술스택 입력  <br/>
+### 4. 희망직무, 기술스택 입력  <br/>
 <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/4486f44b-e108-4ce0-b0ae-d47bd5990a82"> <br/>
 개발자들이 모여 프로젝트를 만드는 홈페이지이기에 자신이 원하는 희망직무, 기술스택을 입력할 수 있도록 설정하였습니다.
 희망직무 및 기술스택을 입력하는 것이 아닌 선택하게 만들 수 있지만 카테고리가 매우 많기에 회원가입하는 본인이 직접 입력할 수 있도록 하였습니다.
@@ -99,20 +98,20 @@ CoCo 프로젝트는 자신의 아이디어를 기획 및 구상하여 프로젝
 - 잘못 입력한 것은 도중 삭제 가능
 - 입력을 여러개 할 경우 " , "가 붙어서 DB에 값을 전달 ( 예시 : Spring, java, HTML, CSS )
 
-5. 약관 동의 <br/>
+### 5. 약관 동의 <br/>
 ![Animation3](https://github.com/rddckdeo/FinalProject/assets/150643230/03d59ba9-f896-44d0-88c2-9153d827c36c) <br/>
 회원가입을 할 경우 필수인 약관 동의는 Modal을 이용하였습니다.
 - 동의를 선택하지 않을 경우 약관 동의 체크박스가 체크되지 않음
 - 동의를 선택할 경우 약관 동의 체크박스가 체크
 
-6. 조건 미충족 시 제출 불가
+### 6. 조건 미충족 시 제출 불가
 - 아이디 중복체크, 닉네임 중복체크, 비밀번호 일치여부, 약관동의 중 하나라도 조건을 만족하지 못하면 회원가입 버튼이 Click되지 않게 설정하였습니다. 
 
 ![Animation4](https://github.com/rddckdeo/FinalProject/assets/150643230/caf1d24c-07a8-453d-a33e-325290c7c40b) <br/>
 
 - ## Admin Page
 ### Admin이 홈페이지를 관리하기 위해 필요한 기능들과 통계를 보여주는 홈페이지 입니다.
-1. 기능별 페이지 구현
+### 1. 기능별 페이지 구현
 ![Animation5](https://github.com/rddckdeo/FinalProject/assets/150643230/5400df3e-9bc9-48c8-b147-885ff31bbfa4)
 - Admin Home : 홈페이지의 전체 방문자,게시글,문의 등 요약을 보여주며 금일 방문자 및 방문자의 대한 그래프를 표시
 - 방문자 현황 : 방문자 통계를 막대그래프로 표현 및 전체 방문자 List 표현
@@ -122,33 +121,49 @@ CoCo 프로젝트는 자신의 아이디어를 기획 및 구상하여 프로젝
 - 게시판 현황 : 게시판 별 List 출력, 삭제 기능
 - 신고 List : 금일, 미처리 신고, 처리 신고, 전체 별 List 출력, Modal을 이용한 Detail 페이지 구현, Blind 처리 및 철회 기능 추가
 
-2. Summary ( 요약 ) <br/>
+### 2. Summary ( 요약 ) <br/>
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/53b39eda-133f-4e36-ad0b-d74f241f87dc)
 Admin이 관리하는 페이지이기에 금일 신규 가입, 금일 신규 프로젝트 또는 신고의 수 등 각각의 통계가 필요하다 생각하여 각 페이지마다 Summary를 상단에 위치시켜 admin이 한 눈에 볼 수 있게 설정하였습니다.
 - admin Page의 main page에는 각 카테고리 별 전체 수를 표시
 - 사용자, 프로젝트, 신고 등 각 카테고리에 필요한 통계 수를 작성
 
-3. 게시판 List 불러오기 <br/>
+### 3. 게시판 List 불러오기 <br/>
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/22a38141-98f8-4068-bd9a-d6c4953167f6)<br/>
 각 페이지마다 List가 필요하지만 페이지마다 필요한 List의 내용과 수, 조건 등이 다르기에 List를 3가지 방법으로 나눠 각각 적재적소하게 List를 불러오게 하였습니다.<br/>
 ![Animation6](https://github.com/rddckdeo/FinalProject/assets/150643230/7a2fcffc-c69a-47aa-acd0-c3eeda16e0d7)<br/>
 
-4. 게시글 기능 ( 추가 , 삭제, 복구 )
+### 4. 게시글 기능 (  삭제, 복구 )
+Admin이 관리를 하는 요소 중 중요한 것은 컨텐츠를 삭제하거나 사용자를 복구 시키는 것이라 생각되어 아래 기능을 추가하였습니다.
+- 사용자 삭제 및 복구 기능
+- 프로젝트 삭제 기능
+- 문의사항 삭제 기능
+- 게시판 및 댓글 삭제 기능
 
+### 5. 신고 내역 처리 ( Blind, 철회 )
+![image](https://github.com/rddckdeo/FinalProject/assets/150643230/49c0e66d-0e43-4008-9ab1-2b4820b2caa0)<br/>
+블라인드 처리의 경우 아래의 순서로 진행된다.
+- 게시글 또는 댓글이 부적절하여 '신고'를 한다.
+- 신고된 내용은 Admin에게 전달되어 게시글을 검토한다.
+- 검토한 게시글이 부적절 할 경우 Blind처리, 부적절하지 않을 경우 철회 처리를 한다.
+- Blind 처리된 게시글 또는 댓글은 Blind처리가 되어 다른 사용자에게 보이지 않는다.
 
-5. 신고 내역 처리 ( Blind, 철회 )
-![image](https://github.com/rddckdeo/FinalProject/assets/150643230/49c0e66d-0e43-4008-9ab1-2b4820b2caa0)
 
 - ## 알림 기능
 ### 내가 작성한 게시글에 답글이 달리거나 Admin에게 문의한 답변이 도착하거나 나의 게시글이 Blind처리가 되었을 경우 알림이 표시됩니다.
-1. 마우스를 올릴 경우 발생한 이벤트를 확인할 수 있습니다.
+### 1. 마우스를 올릴 경우 발생한 이벤트를 확인할 수 있습니다. <br/>
+아래 3가지의 이벤트가 발생 시 알림 List에 표시가 됩니다.
+- 내가 작성한 게시글에 댓글이 달렸을 경우
+- 내가 문의한 내용이 답변이 도착하였을 경우
+- 내가 작성한 게시글이 Blind 처리가 되었을 경우
+<img src="https://github.com/rddckdeo/FinalProject/assets/150643230/57a6e292-09b9-4beb-ae6f-11b6a256b0fe" width ="300" height="400">
 
-2. 확인하지 않은 알림의 구분
+### 2. 확인하지 않은 알림의 구분
+- 확인되지 않은 신규 알림의 경우 알림 옆에 초록색 동그라미가 표시되게 설정을 해두었습니다.
+<img src="https://github.com/rddckdeo/FinalProject/assets/150643230/0a6cdffa-005b-4d83-95ad-7496dca39c51" width ="600" height="200">
 
-3. 현재 전체 알림 수와 확인하지 않은 알림 수를 표시
-
-4. 알림 전체 List
-
+### 3. 알림 전체 List
+알림으로 이동을 누르면 현재까지의 모든 알림을 열람할 수 있는 my page로 이동하여 현재까지의 알림을 모두 확인할 수 있습니다.
+![image](https://github.com/rddckdeo/FinalProject/assets/150643230/418b608b-ad96-4880-a84f-9b4454e2cde6)
 
 ## 프로젝트 후기
 - 마지막 final 프로젝트는 기존 세미 프로젝트보다 비중있고 더욱 큰 프로젝트를 하고싶다는 욕심이 커서 처음에 팀원들과 주제를 정할 떄 바로 정하지 못하고 헤매었으나 그때 나왔던 주제를 합쳐서 새로운 개념의 홈페이지를 만들자는 의견으로 결정되어 CoCo 프로젝트를 만들게 되었습니다. 예전 프로젝트를 진행할 때 작업을 하다 끊기거나 다음날이 되었을 때 어디까지 작업했는지 찾고 내가 어떤 부분을 설정했는지 기억이 안나서 헤매는 시간이 많았는데 이번 final 프로젝트는 그러한 오류사항을 만들고 싶지 않아 개별적으로 체크리스트를 만들어 필요한 작업이 어떤 것인지, 어떤 부분을 작업했는지 등을 기록해두니 작업에 대한 이해와 불필요한 시간 소요가 없어졌습니다.
