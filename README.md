@@ -1,5 +1,17 @@
 # 개발자 협력 웹사이트 CoCo (Collaboration Code)
 ![image](https://github.com/rddckdeo/FinalProject/assets/150643230/e8e30ab1-3acf-4c62-b6ef-25ada0d50d8c)
+
+# 홈페이지 사진
+
+<div align="center">
+    <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/12f67307-5155-4891-8116-d698e04aa635" width="600">
+    <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/b3822f22-94dc-4685-bf1c-e37cd6a16539" width="300" height="330">
+    <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/9c802c65-0ac7-4595-a866-e0f4e35958be" width="600">
+    <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/4580c359-f5cc-4cd1-aa60-30e123f24db5" width="600">
+    <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/8573412f-b6ab-40f3-bda0-ac30a9a861b6" width="600">
+    <img src="https://github.com/rddckdeo/FinalProject/assets/150643230/f1f31391-24d1-4afd-be15-6e63112fd531" width="600">
+</div>
+
 ## 프로젝트 소개
 **프로젝트 팀명 | CoCo ( Collaboration Code )
 <br/>
